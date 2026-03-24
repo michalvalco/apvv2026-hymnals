@@ -136,3 +136,36 @@ Detailed reference file: `resources/notes-Schoen-2022-Utraquismus.md`. Key impli
 
 ### File organisation note
 The `resources/notes-*.md` files (Schoen, Sekelská 2019) use a briefing-document format, while `Sources/*.md` files use the project source-note template. Both are functional. The `resources/` notes serve as detailed reference files; `Sources/` entries are the canonical documentation. When time allows, key data from `resources/notes-*` should be migrated into `Sources/` template entries. Not urgent — the information is captured and cross-referenced in Source_Index.
+
+
+---
+
+## Session Log: 2026-03-24 (Claude Desktop, afternoon session)
+
+### Completed
+1. **Sekelská 2019 ("De Cultu Sanctorum") — processed.** Full text extracted, structured note written at `resources/notes-Sekelska-2019-DeCultuSanctorum.md`. Key finding: named Utraquist + Brethren hymn sources entering CS; Tranovský's theological filtering visible in Christocentric redirection (SYN in majuscule) and preface argumentation.
+
+2. **Schoen 2022 (*Der böhmische Utraquismus als Konfession*) — detailed reference file.** At `resources/notes-Schoen-2022-Utraquismus.md`. Integrates publisher data, TOC, five core theses, historiographical repositioning of David/Haberkern/older Czech scholarship, deployment guide for §§2–5, critical questions. **Book not yet acquired — €168, QuFRG Bd. 100, Gütersloher Verlagshaus.**
+
+3. **Three-column Eucharistic comparison — MAJOR ANALYTICAL OUTPUT.** At `Sources/Analysis_Eucharistic_ThreeColumn.md`. Compared FC SD VII (1577), ConfFidei 1535 Art. 13, and CB 1575 Art. XV (from Czech PDF uploaded by Michal).
+   - **Bombshell finding:** CB 1575 uses formula "duchovně i podstatně, věrou i také ústy" = "spiritually AND substantially, by faith AND ALSO by mouth." This is NOT the "Calvinist interpretation" (contra Britannica). It's a deliberate bridging formula closer to FC SD VII than to Calvin.
+   - **Sharpest divergence:** Manducatio impiorum — affirmed in FC SD VII, absent from both ConfFidei 1535 and CB 1575. This is the confessional fault line.
+   - **Testable hypothesis for §5:** Do CS Eucharistic hymns stay in the CB's irenic register or sharpen toward FC SD VII's precision? If sharpened, that IS the "Lutheranisation."
+
+4. **Brown 2005 (*Singing the Gospel*) — detailed reference file.** At `resources/notes-Brown-2005-SingingTheGospel.md`. Confirmed as closest methodological precedent. Key finding: Brown has NOT been cited in Czech/Slovak hymnological scholarship — our chapter genuinely bridges two independent scholarly conversations.
+
+5. **Source_Index.md updated** with 9 new secondary sources from literature search.
+6. **Revision_Notes.md updated** with literature search results summary and Schoen repositioning note.
+
+### New files created this session
+- `resources/notes-Sekelska-2019-DeCultuSanctorum.md` (6.6 KB)
+- `resources/notes-Schoen-2022-Utraquismus.md` (13.6 KB)
+- `resources/notes-Brown-2005-SingingTheGospel.md` (~12 KB)
+- `Sources/Analysis_Eucharistic_ThreeColumn.md` (~10 KB)
+- `resources/literature-search-2026-03-24.md` (23.9 KB) [from earlier in session]
+
+### Next session priorities
+1. **Digital source hunt:** Open the annotation document (`Valčo - Dogmatická komparácia... - Anotácia a osnova 02.docx`) and systematically search for downloadable primary sources (hymnals, agendas, devotional material). Start with Kramerius, Manuscriptorium, HTB.
+2. **Acquire Schoen 2022** (€168) — interlibrary loan or institutional purchase.
+3. **First hymn-pair comparison:** Pick one hymn Sekelská identified as Brethren-origin in CS and compare the two versions. This is the make-or-break evidence for the thesis.
+4. **Complete CB 1575 column** in the three-column analysis — verify "duchovně i podstatně" against Just/Rothkegel 2012 if acquired.

@@ -57,3 +57,29 @@ The transfer of hymns from Czech Reformation sources (particularly Unity of Bret
 ---
 
 *Last updated: 2026-03-24 (audit pass: infrastructure fixes, source mapping, acquisition strategy)*
+
+
+---
+
+## Status Update — 2026-03-24 (end of afternoon session)
+
+**Phase:** Still Phase 2, but significant analytical work now done (edging into Phase 3 for the Eucharistic *locus*).
+
+### Major progress since morning audit
+- **Eucharistic analysis substantially advanced:** Three-column comparison (FC SD VII / ConfFidei 1535 / CB 1575) completed with major finding — CB 1575's "duchovně i podstatně, věrou i také ústy" formula is NOT Calvinist. This corrects the standard Britannica characterisation and gives §4.1 its analytical backbone.
+- **Literature search complete:** 37 sources across 5 categories; challenges to thesis identified and responses formulated.
+- **Three detailed reference files written:** Schoen 2022 (Utraquist confessionalisation), Brown 2005 (methodological model), Sekelská 2019 (saints in CS).
+- **Source documentation expanded:** 8 source notes in `Sources/`, 3 reference files in `resources/notes-*.md`, Source_Index at 60+ entries.
+- **Testable hypothesis formulated:** Do CS Eucharistic hymns show confessional sharpening beyond the CB 1575's irenic register? If yes → "Lutheranisation" at the *lex orandi* level.
+
+### Updated priority list
+1. ~~Source verification~~ → ongoing, but all new work is verified against primaries
+2. ~~Database access~~ → done
+3. **Digital source hunt** — systematic search for downloadable hymnals/agendas/devotional material (NEXT SESSION)
+4. **Acquire Schoen 2022** — €168, non-negotiable for §3.2
+5. **First hymn-pair comparison** — the make-or-break evidence for the thesis
+6. **Read Brown 2005** — at least Ch. 1, 5, 6, 7
+7. ~~Structured documentation~~ → now at 8 documented sources + 3 reference files
+8. ~~Comparative matrix~~ → superseded by the three-column analysis
+
+*Last updated: 2026-03-24, end of afternoon session.*
