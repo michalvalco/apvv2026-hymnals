@@ -18,3 +18,7 @@ desktop.ini
 # Temporary files
 *.tmp
 *.bak
+
+# Node / Astro (stray build artifacts outside website/)
+node_modules/
+.astro/
