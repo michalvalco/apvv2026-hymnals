@@ -1,0 +1,47 @@
+---
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  description?: string;
+  lang?: "sk" | "en";
+}
+
+const {
+  title,
+  description = "Teologická paradigma liturgických a hymnologických prameňov v protestantskom prostredí strednej Európy",
+  lang = "sk",
+} = Astro.props;
+
+const siteTitle = "TEPALIT Digital Companion";
+const fullTitle = title === siteTitle ? title : `${title} | ${siteTitle}`;
+---
+
+<!doctype html>
+<html lang={lang} class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}/favicon.svg`} />
+    <title>{fullTitle}</title>
+  </head>
+  <body class="flex min-h-screen flex-col">
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50
+             focus:rounded focus:bg-ink focus:px-4 focus:py-2 focus:text-parchment focus:no-underline"
+    >
+      Skip to content
+    </a>
+
+    <Header />
+    <main id="main" class="flex-1">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>
