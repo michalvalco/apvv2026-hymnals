@@ -35,7 +35,7 @@
 
 ### What needs doing (Phase 2 priorities)
 1. **Source verification:** All AI-generated reports contain potential fabricated citations — systematic verification required before any can be used
-2. ~~**Database access:** Test Hymnorum Thesaurus Bohemicus and Manuscriptorium for actual usability~~ → Tested 2026-03-24; results in `Revision_Notes.md`
+2. ~~**Database access:** Test Hymnorum Thesaurus Bohemicus and Manuscriptorium for actual usability~~ → **Done 2026-03-24.** All 4 databases (HTB, Manuscriptorium, Kramerius MZK/NKP) accessible via browser. HTB = highest relevance (21K hymn entries). Manuscriptorium has digitised Jistebnický kancionál. Kramerius MZK has CS scans (may need CZ library card). Full results in `Revision_Notes.md`.
 3. **Primary source acquisition:** Locate digitised Šamotulský kancionál (1561), Ivančický kancionál (1564); acquisition strategy for 8 unlocated sources now in `Revision_Notes.md`
 4. **Structured documentation:** Convert existing materials into Source_Index entries per the template (2 of 54 documented so far: `Benka_2024`, `GresovaSek_2023`)
 5. ~~**Comparative matrix:** Build systematic locus × confession table as analytical backbone~~ → Source-to-Section Mapping table populated in `Outline.md` (31 sources × 9 sections)

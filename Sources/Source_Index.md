@@ -14,7 +14,7 @@ Status legend: 📋 = identified, 📖 = accessed/read, 📝 = documented (Sourc
 | Confessio Pentapolitana (1549) | `ConfPentapol_1549` | 📋 | [Google Books (1844 ed.)](https://books.google.com) | Regional reception of CA |
 | Confessio Heptapolitana (1559) | `ConfHeptapol_1559` | 📋 | — | |
 | Confessio Scepusiana (1569) | `ConfScepus_1569` | 📋 | — | |
-| Cithara Sanctorum (1636+) | `CitharaSanct_1636` | 📋 | [UKB Digital](https://www.ulib.sk/) (1745 ed.) / REAL-R (1636 ed.) | Central source for transfer analysis |
+| Cithara Sanctorum (1636+) | `CitharaSanct_1636` | 📋 | [UKB Digital](https://www.ulib.sk/) (1745 ed.) / [REAL-R](http://real-r.mtak.hu/) (1636 ed.) / [Kramerius MZK](https://kramerius.mzk.cz/) (UUID: 48fe9d67…; may require CZ library registration) | Central source for transfer analysis |
 | Luther: Formula Missae (1523) | `Luther_FormMissae_1523` | 📋 | WA | |
 | Luther: Deutsche Messe (1526) | `Luther_DtMesse_1526` | 📋 | WA | |
 | Luther: De captivitate Babylonica (1520) | `Luther_DeCaptiv_1520` | 📋 | WA | |
@@ -27,7 +27,7 @@ Status legend: 📋 = identified, 📖 = accessed/read, 📝 = documented (Sourc
 | Four Articles of Prague (1420) | `ArtPrag_1420` | 📋 | — | |
 | Basel Compacts (1436) | `CompBasil_1436` | 📋 | [Archive.org](https://archive.org) | |
 | Agenda Česká (1581) + Bystrická agenda (1585) | `AgCeska_1581` | 📝 | **Critical edition: Benka 2024 (MLS X)** in `resources/`; also raw scans (229 pp.) in `Monografia/Resources/Agenda Ceska 1581/` | Neo-Utraquist liturgical order. Full scholarly transcription with apparatus now available. See `Benka_2024.md`. Mass rite: ed. pp. 131–150. |
-| Jistebnický kancionál (c. 1420) | `KancJisteb_1420` | 📋 | [Manuscriptorium](https://www.manuscriptorium.com/) | |
+| Jistebnický kancionál (c. 1420) | `KancJisteb_1420` | 📋 | [Manuscriptorium](https://www.manuscriptorium.com/cs/node/755) (MS Praha, KNM, II C 7, c. 1430 — digitised) | Hussite hymns + liturgical texts |
 | Jan Hus: De ecclesia (1413) | `Hus_DeEccl_1413` | 📋 | — | |
 | Jakoubek ze Stříbra: Eucharistic writings | `Jakoubek_Euch` | 📋 | — | Defence of communion *sub utraque* (c. 1414) |
 

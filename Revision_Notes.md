@@ -60,10 +60,40 @@ Sources currently lacking access/location info — prioritised by section releva
 | Four Articles of Prague (1420) | `ArtPrag_1420` | Frequently published in secondary literature (Kaminsky, Šmahel); check Documenta Mag. Joannis Hus |
 | Slovak Lutheran Agendas | `AgendySlov` | Bardejov archive (ŠA Prešov — Bardejov); Levoča archive; Rambachiana 1637 possibly at SNK |
 
-### Database Verification (Phase 2 task)
-- [ ] Hymnorum Thesaurus Bohemicus — test search for specific hymn incipits
-- [ ] Manuscriptorium — test search for kancionál manuscripts
-- [ ] Kramerius MZK/NKP — verify access to Ivančický kancionál, Confessio Bohemica digitisations
+### Database Verification (tested 2026-03-24)
+
+**Hymnorum Thesaurus Bohemicus** (http://www.clavmon.cz/htb/)
+- [x] Accessible via browser (blocks automated/programmatic requests — 403)
+- **Content:** Metadata database (not full-text scans) — **21,227 catalogue entries** covering all printed Czech kancionál production 1501–late 18th c. Converted from Antonín Škarka's handwritten catalogue cards.
+- **Search:** Two modes: (1) by textual incipit, (2) browse full contents of individual kancionáls. Cross-referencing concordances across hymnbooks.
+- **Metadata fields (10):** Incipit, Source (kancionál + year + page), Title/designation, Melody, Theme/section, Number of stanzas, Strophic form, Acrostic, Original/translation/arrangement, Author/translator
+- **Relevance:** HIGHEST — directly covers our period and sources. Use for tracing concordances across confessional boundaries (Brethren → CS). Administered by Jiří Žurek (zurek@ics.cas.cz).
+- **Limitations:** No full hymn texts (incipits + metadata only). No page scans (except Jesličky 1658 facsimile). Czech-only interface.
+
+**Manuscriptorium** (https://www.manuscriptorium.com/)
+- [x] Accessible via browser (new version since October 2025; old links redirect)
+- **Content:** 400,000 descriptive records, 110,000 digitised documents (manuscripts, incunabula, early prints to c. 1800). 139 content partners across 24 countries.
+- **Search:** Keyword search, advanced filters, personal digital library (save searches, create collections, annotations). Czech + English interface.
+- **Specific finds:** Jistebnický kancionál has dedicated page with digitised virtual document (MS Praha, KNM, II C 7, c. 1430). Also found: Utraquist gradual + kancionál from Teplice (1560/1566) — relevant to §4; Kancionál printed in Ivančice 1572 (Brethren press).
+- **Relevance:** HIGH — essential for manuscript sources. Jistebnický kancionál directly accessible.
+- **Limitations:** October 2025 version transition may break older links in scholarship. Registration required for some features.
+
+**Kramerius MZK** (https://kramerius.mzk.cz/)
+- [x] Accessible via browser. 50M+ scanned pages, 199,000+ documents.
+- **Content:** Digitised page scans with OCR full text. Books, newspapers, archival docs, manuscripts, maps, music.
+- **Search:** Main search with autocomplete, filters (type, author, keywords, geography, collections, language), full-text search *within* documents, sorting by relevance/date.
+- **Specific finds:** Cithara Sanctorum digitised copy exists (UUID: 48fe9d67-5625-11e1-1726-001143e3f55c). Access to full scans may require Czech library registration.
+- **Relevance:** MODERATE-HIGH — CS scans for §5; in-document full-text search useful for theological terms.
+- **Limitations:** Out-of-commerce works require library registration; remote registration only for Czech residents/students. On-premises access at participating libraries otherwise.
+
+**Kramerius NKP** (https://kramerius.nkp.cz/)
+- [x] Accessible via browser. 8M+ scanned pages. Two interfaces: v.3 (frozen 2012, periodicals/monographs 19th–20th c.) and v.5 (modern, National Digital Library).
+- **Content:** Primarily post-1800 bohemical production. Pre-1800 materials routed to Manuscriptorium.
+- **Specific finds:** Confessio Bohemica (1579/1609) catalogued in NKP collections but direct Kramerius links not confirmed — check Manuscriptorium instead.
+- **Relevance:** MODERATE — mainly 19th c. secondary literature and later reprints.
+- **Limitations:** Same access restrictions as MZK. v.3/v.5 split can be confusing.
+
+**Practical note:** All four databases block programmatic access (403). All research must be done manually via browser. If based in Slovakia, consider whether your institution participates in Czech library network, or plan research visits to MZK Brno / NKP Prague.
 
 ### Notes
 - Luther WA volumes: available via Archive.org (scanned Weimar Ausgabe) and Luther Seminary digital collections
