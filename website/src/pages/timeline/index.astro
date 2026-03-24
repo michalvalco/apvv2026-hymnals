@@ -1,0 +1,415 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { sortedEvents, YEAR_MIN, YEAR_MAX } from "../../data/timeline-events";
+
+const base = import.meta.env.BASE_URL;
+
+const categoryIcons: Record<string, string> = {
+  DOCUMENT: "&#x1F4DC;",
+  HYMNAL: "&#x1F3B5;",
+  LITURGICAL: "&#x26EA;",
+  POLITICAL: "&#x2694;",
+};
+
+const categoryLabels: Record<string, { sk: string; en: string }> = {
+  DOCUMENT: { sk: "Dokument", en: "Document" },
+  HYMNAL: { sk: "Kancionál", en: "Hymnal" },
+  LITURGICAL: { sk: "Liturgický poriadok", en: "Liturgical order" },
+  POLITICAL: { sk: "Politická udalosť", en: "Political event" },
+};
+---
+
+<BaseLayout
+  title="Chronológia — Konfesionálne prúdy"
+  description="Interaktívna časová os troch konfesionálnych tradícií — dokumenty, kancionály, liturgické poriadky a politické medzníky od husitských vojen po Bielu horu."
+  lang="sk"
+>
+  <!-- Header -->
+  <section class="bg-ink-800 px-6 py-16 text-parchment">
+    <div class="mx-auto max-w-content text-center">
+      <p class="font-sans text-xs font-medium uppercase tracking-[0.2em] text-gold">
+        Konfesionálne prúdy · Confessional Streams
+      </p>
+      <h1 class="mt-3 text-section-title font-display font-bold text-parchment-100">
+        Chronológia
+      </h1>
+      <p class="mx-auto mt-4 max-w-prose text-parchment-400">
+        Tri konfesionálne tradície v prúde času — od husitských artikulov po Citharu Sanctorum.
+        Dokumenty, kancionály, liturgické poriadky a politické medzníky.
+      </p>
+      <p class="mx-auto mt-2 max-w-prose font-sans text-sm text-parchment-500">
+        Three confessional traditions across time — from the Hussite Articles to the Cithara Sanctorum
+      </p>
+    </div>
+  </section>
+
+  <!-- Legend -->
+  <div class="mx-auto max-w-wide px-6 pt-8">
+    <div class="flex flex-wrap items-center justify-center gap-6">
+      <!-- Traditions -->
+      <div class="flex items-center gap-2">
+        <span class="h-3 w-3 rounded-full bg-lutheran" aria-hidden="true"></span>
+        <span class="font-sans text-xs text-ink-400">Luteránska</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="h-3 w-3 rounded-full bg-utraquist" aria-hidden="true"></span>
+        <span class="font-sans text-xs text-ink-400">Utrakvistická</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="h-3 w-3 rounded-full bg-unity" aria-hidden="true"></span>
+        <span class="font-sans text-xs text-ink-400">Jednota bratská</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="h-3 w-3 rounded-full bg-parchment-500" aria-hidden="true"></span>
+        <span class="font-sans text-xs text-ink-400">Transkonfesionálne</span>
+      </div>
+      <span class="text-ink-200">|</span>
+      <!-- Categories -->
+      {Object.entries(categoryLabels).map(([code, label]) => (
+        <div class="flex items-center gap-1.5">
+          <span class="text-sm" aria-hidden="true" set:html={categoryIcons[code]} />
+          <span class="font-sans text-xs text-ink-400">{label.sk}</span>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <!-- Timeline container -->
+  <div class="mx-auto max-w-wide px-6 py-8">
+    <div
+      id="timeline-chart"
+      class="relative w-full overflow-x-auto rounded-xl border border-parchment-300/50 bg-parchment-50"
+      style="min-height: 500px;"
+      role="img"
+      aria-label="Chronológia konfesionálnych prúdov / Confessional Streams Timeline"
+    >
+      <!-- D3 renders here -->
+    </div>
+
+    <p class="mt-3 text-center font-sans text-xs text-ink-300">
+      Posúvajte a priblížte kolieskom myši · Scroll and zoom with mouse wheel
+    </p>
+  </div>
+
+  <!-- Event detail panel (populated by JS) -->
+  <div
+    id="event-detail"
+    class="mx-auto max-w-content px-6 pb-12 hidden"
+  >
+    <div class="card border-l-4" id="event-detail-card">
+      <div class="flex items-center gap-3">
+        <span id="event-detail-icon" class="text-2xl" aria-hidden="true"></span>
+        <div>
+          <h3 id="event-detail-title" class="font-display text-lg font-semibold text-ink"></h3>
+          <p id="event-detail-subtitle" class="font-sans text-xs text-ink-300"></p>
+        </div>
+        <span id="event-detail-year" class="ml-auto font-mono text-lg font-bold text-ink-300"></span>
+      </div>
+      <p id="event-detail-desc" class="mt-3 text-sm text-ink-400 leading-relaxed"></p>
+      <p id="event-detail-source" class="mt-2 font-sans text-xs text-ink-300 hidden">
+        <strong class="text-ink-400">Prameň (Source):</strong>
+        <code id="event-detail-source-id" class="font-mono text-burgundy"></code>
+      </p>
+    </div>
+  </div>
+
+  <!-- Full event list (accessible, no-JS fallback) -->
+  <details class="mx-auto max-w-content px-6 pb-16">
+    <summary class="cursor-pointer font-sans text-sm font-medium text-ink-300 hover:text-ink">
+      Zobraziť zoznam udalostí · Show event list ({sortedEvents.length} udalostí)
+    </summary>
+    <div class="mt-4 space-y-3">
+      {sortedEvents.map((ev) => {
+        const traditionClass =
+          ev.tradition === "LUTHERAN" ? "border-l-lutheran" :
+          ev.tradition === "UTRAQUIST" ? "border-l-utraquist" :
+          ev.tradition === "UNITY" ? "border-l-unity" :
+          "border-l-parchment-500";
+        return (
+          <div class={`border-l-4 ${traditionClass} rounded-r-lg bg-parchment-100/60 p-4`}>
+            <div class="flex items-baseline gap-3">
+              <span class="font-mono text-sm font-bold text-ink-300">
+                {ev.year}{ev.yearEnd ? `–${ev.yearEnd}` : ""}
+              </span>
+              <span class="text-sm" aria-hidden="true" set:html={categoryIcons[ev.category]} />
+              <h3 class="font-display text-sm font-semibold text-ink">{ev.titleSk}</h3>
+              <span class="font-sans text-xs text-ink-300">/ {ev.titleEn}</span>
+            </div>
+            <p class="mt-1 text-xs text-ink-400">{ev.description}</p>
+            {ev.sourceId && (
+              <p class="mt-1 font-sans text-xs text-ink-300">
+                <code class="font-mono text-burgundy">{ev.sourceId}</code>
+              </p>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  </details>
+</BaseLayout>
+
+<script define:vars={{ events: sortedEvents, YEAR_MIN, YEAR_MAX }}>
+  // ── Timeline D3 visualisation ──
+  // Renders inline without importing D3 — uses vanilla JS + SVG for zero-dependency build.
+
+  const container = document.getElementById("timeline-chart");
+  if (!container) throw new Error("Timeline container not found");
+
+  const TRADITION_COLORS = {
+    LUTHERAN: "#D4A843",
+    UTRAQUIST: "#8B2332",
+    UNITY: "#2E8B8B",
+    TRANS: "#8B7E8B",
+  };
+
+  const TRADITION_LANES = {
+    UTRAQUIST: 0,
+    UNITY: 1,
+    LUTHERAN: 2,
+    TRANS: 3,
+  };
+
+  const TRADITION_LABELS = {
+    UTRAQUIST: "Utrakvizmus",
+    UNITY: "Jednota bratská",
+    LUTHERAN: "Luteranizmus",
+    TRANS: "Transkonfesionálne",
+  };
+
+  const CATEGORY_SHAPES = {
+    DOCUMENT: "circle",
+    HYMNAL: "diamond",
+    LITURGICAL: "square",
+    POLITICAL: "triangle",
+  };
+
+  const CATEGORY_ICONS = {
+    DOCUMENT: "\uD83D\uDCDC",
+    HYMNAL: "\uD83C\uDFB5",
+    LITURGICAL: "\u26EA",
+    POLITICAL: "\u2694",
+  };
+
+  // ── Dimensions ──
+  const margin = { top: 40, right: 30, bottom: 40, left: 140 };
+  const width = Math.max(container.clientWidth, 800);
+  const laneHeight = 100;
+  const laneCount = 4;
+  const height = margin.top + margin.bottom + laneCount * laneHeight;
+
+  container.style.minHeight = height + "px";
+
+  // ── Create SVG ──
+  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.setAttribute("width", String(width));
+  svg.setAttribute("height", String(height));
+  svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
+  svg.style.display = "block";
+  svg.style.width = "100%";
+  svg.style.height = "auto";
+  container.appendChild(svg);
+
+  // ── Scale: year → x position ──
+  const xMin = margin.left;
+  const xMax = width - margin.right;
+  function xScale(year) {
+    return xMin + ((year - YEAR_MIN) / (YEAR_MAX - YEAR_MIN)) * (xMax - xMin);
+  }
+
+  function yLane(tradition) {
+    const lane = TRADITION_LANES[tradition] ?? 3;
+    return margin.top + lane * laneHeight + laneHeight / 2;
+  }
+
+  // ── Draw lane backgrounds ──
+  const laneOrder = ["UTRAQUIST", "UNITY", "LUTHERAN", "TRANS"];
+  laneOrder.forEach((trad, i) => {
+    // Lane background
+    const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+    rect.setAttribute("x", String(margin.left));
+    rect.setAttribute("y", String(margin.top + i * laneHeight));
+    rect.setAttribute("width", String(xMax - xMin));
+    rect.setAttribute("height", String(laneHeight));
+    rect.setAttribute("fill", i % 2 === 0 ? "rgba(0,0,0,0.02)" : "transparent");
+    svg.appendChild(rect);
+
+    // Lane label
+    const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    label.setAttribute("x", String(margin.left - 10));
+    label.setAttribute("y", String(margin.top + i * laneHeight + laneHeight / 2));
+    label.setAttribute("text-anchor", "end");
+    label.setAttribute("dominant-baseline", "middle");
+    label.setAttribute("fill", TRADITION_COLORS[trad]);
+    label.setAttribute("font-size", "12");
+    label.setAttribute("font-family", "Inter, system-ui, sans-serif");
+    label.setAttribute("font-weight", "600");
+    label.textContent = TRADITION_LABELS[trad];
+    svg.appendChild(label);
+
+    // Lane line
+    const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+    line.setAttribute("x1", String(margin.left));
+    line.setAttribute("y1", String(margin.top + i * laneHeight + laneHeight / 2));
+    line.setAttribute("x2", String(xMax));
+    line.setAttribute("y2", String(margin.top + i * laneHeight + laneHeight / 2));
+    line.setAttribute("stroke", TRADITION_COLORS[trad]);
+    line.setAttribute("stroke-opacity", "0.2");
+    line.setAttribute("stroke-width", "1");
+    svg.appendChild(line);
+  });
+
+  // ── Draw year ticks ──
+  const tickInterval = 25;
+  for (let y = Math.ceil(YEAR_MIN / tickInterval) * tickInterval; y <= YEAR_MAX; y += tickInterval) {
+    const x = xScale(y);
+
+    const tick = document.createElementNS("http://www.w3.org/2000/svg", "line");
+    tick.setAttribute("x1", String(x));
+    tick.setAttribute("y1", String(margin.top));
+    tick.setAttribute("x2", String(x));
+    tick.setAttribute("y2", String(margin.top + laneCount * laneHeight));
+    tick.setAttribute("stroke", "#c4b89a");
+    tick.setAttribute("stroke-opacity", "0.3");
+    tick.setAttribute("stroke-dasharray", "4,4");
+    svg.appendChild(tick);
+
+    const tickLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    tickLabel.setAttribute("x", String(x));
+    tickLabel.setAttribute("y", String(margin.top + laneCount * laneHeight + 20));
+    tickLabel.setAttribute("text-anchor", "middle");
+    tickLabel.setAttribute("fill", "#8a7f70");
+    tickLabel.setAttribute("font-size", "11");
+    tickLabel.setAttribute("font-family", "JetBrains Mono, monospace");
+    tickLabel.textContent = String(y);
+    svg.appendChild(tickLabel);
+
+    const topLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    topLabel.setAttribute("x", String(x));
+    topLabel.setAttribute("y", String(margin.top - 8));
+    topLabel.setAttribute("text-anchor", "middle");
+    topLabel.setAttribute("fill", "#8a7f70");
+    topLabel.setAttribute("font-size", "11");
+    topLabel.setAttribute("font-family", "JetBrains Mono, monospace");
+    topLabel.textContent = String(y);
+    svg.appendChild(topLabel);
+  }
+
+  // ── Collision avoidance: offset overlapping events in same lane ──
+  const offsets = {};
+  events.forEach((ev) => {
+    const key = `${ev.tradition}-${ev.year}`;
+    if (!offsets[key]) offsets[key] = [];
+    offsets[key].push(ev.id);
+  });
+
+  function getYOffset(ev) {
+    const key = `${ev.tradition}-${ev.year}`;
+    const group = offsets[key];
+    if (!group || group.length <= 1) return 0;
+    const idx = group.indexOf(ev.id);
+    const spacing = 18;
+    return (idx - (group.length - 1) / 2) * spacing;
+  }
+
+  // ── Draw events ──
+  events.forEach((ev) => {
+    const x = xScale(ev.year);
+    const y = yLane(ev.tradition) + getYOffset(ev);
+    const color = TRADITION_COLORS[ev.tradition] || "#666";
+    const r = 7;
+
+    const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+    g.setAttribute("class", "timeline-event");
+    g.setAttribute("data-id", ev.id);
+    g.style.cursor = "pointer";
+
+    // Shape based on category
+    const shape = CATEGORY_SHAPES[ev.category] || "circle";
+    if (shape === "circle") {
+      const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+      circle.setAttribute("cx", String(x));
+      circle.setAttribute("cy", String(y));
+      circle.setAttribute("r", String(r));
+      circle.setAttribute("fill", color);
+      circle.setAttribute("stroke", "#fffdf5");
+      circle.setAttribute("stroke-width", "2");
+      g.appendChild(circle);
+    } else if (shape === "diamond") {
+      const diamond = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+      diamond.setAttribute("points", `${x},${y-r} ${x+r},${y} ${x},${y+r} ${x-r},${y}`);
+      diamond.setAttribute("fill", color);
+      diamond.setAttribute("stroke", "#fffdf5");
+      diamond.setAttribute("stroke-width", "2");
+      g.appendChild(diamond);
+    } else if (shape === "square") {
+      const sq = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+      sq.setAttribute("x", String(x - r + 1));
+      sq.setAttribute("y", String(y - r + 1));
+      sq.setAttribute("width", String((r - 1) * 2));
+      sq.setAttribute("height", String((r - 1) * 2));
+      sq.setAttribute("fill", color);
+      sq.setAttribute("stroke", "#fffdf5");
+      sq.setAttribute("stroke-width", "2");
+      g.appendChild(sq);
+    } else if (shape === "triangle") {
+      const tri = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+      tri.setAttribute("points", `${x},${y-r} ${x+r},${y+r} ${x-r},${y+r}`);
+      tri.setAttribute("fill", color);
+      tri.setAttribute("stroke", "#fffdf5");
+      tri.setAttribute("stroke-width", "2");
+      g.appendChild(tri);
+    }
+
+    // Tooltip (native SVG title)
+    const title = document.createElementNS("http://www.w3.org/2000/svg", "title");
+    title.textContent = `${ev.year} — ${ev.titleSk}`;
+    g.appendChild(title);
+
+    // Click handler
+    g.addEventListener("click", () => showDetail(ev, color));
+
+    // Hover effect
+    g.addEventListener("mouseenter", () => {
+      g.querySelector("circle,polygon,rect")?.setAttribute("stroke", color);
+      g.querySelector("circle,polygon,rect")?.setAttribute("stroke-width", "3");
+    });
+    g.addEventListener("mouseleave", () => {
+      g.querySelector("circle,polygon,rect")?.setAttribute("stroke", "#fffdf5");
+      g.querySelector("circle,polygon,rect")?.setAttribute("stroke-width", "2");
+    });
+
+    svg.appendChild(g);
+  });
+
+  // ── Event detail panel ──
+  function showDetail(ev, color) {
+    const panel = document.getElementById("event-detail");
+    const card = document.getElementById("event-detail-card");
+    const icon = document.getElementById("event-detail-icon");
+    const title = document.getElementById("event-detail-title");
+    const subtitle = document.getElementById("event-detail-subtitle");
+    const year = document.getElementById("event-detail-year");
+    const desc = document.getElementById("event-detail-desc");
+    const srcContainer = document.getElementById("event-detail-source");
+    const srcId = document.getElementById("event-detail-source-id");
+
+    if (!panel || !card || !icon || !title || !subtitle || !year || !desc || !srcContainer || !srcId) return;
+
+    panel.classList.remove("hidden");
+    card.style.borderLeftColor = color;
+    icon.innerHTML = CATEGORY_ICONS[ev.category] || "";
+    title.textContent = ev.titleSk;
+    subtitle.textContent = ev.titleEn;
+    year.textContent = ev.year + (ev.yearEnd ? "–" + ev.yearEnd : "");
+    desc.textContent = ev.description;
+
+    if (ev.sourceId) {
+      srcContainer.classList.remove("hidden");
+      srcId.textContent = ev.sourceId;
+    } else {
+      srcContainer.classList.add("hidden");
+    }
+
+    panel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }
+</script>
