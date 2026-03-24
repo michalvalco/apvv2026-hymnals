@@ -143,12 +143,57 @@ function loadCSV(filename: string): Record<string, string>[] {
   return parseCSV(content);
 }
 
+// ── Validation helpers ──
+
+const VALID_PRIORITIES = new Set<Locus["priority"]>(["HIGHEST", "HIGH", "MEDIUM", "LOW"]);
+const VALID_EPISTEMIC = new Set(["FACTUAL", "INTERPRETIVE", "DEFERRED"]);
+const VALID_TRADITIONS = new Set(["LUTHERAN", "UTRAQUIST", "UNITY"]);
+
+function validateLocus(row: Record<string, string>, index: number): Locus {
+  const required: (keyof Locus)[] = [
+    "locus_code", "locus_name_la", "locus_name_sk", "locus_name_en",
+    "description_en", "chapter_section", "priority",
+  ];
+  for (const key of required) {
+    if (!row[key]?.trim()) {
+      throw new Error(`loci_hierarchy.csv row ${index + 1}: missing required column "${key}"`);
+    }
+  }
+  const priority = row.priority.trim().toUpperCase();
+  if (!VALID_PRIORITIES.has(priority as Locus["priority"])) {
+    throw new Error(`loci_hierarchy.csv row ${index + 1}: invalid priority "${row.priority}"`);
+  }
+  return {
+    locus_code: row.locus_code.trim(),
+    locus_name_la: row.locus_name_la.trim(),
+    locus_name_sk: row.locus_name_sk.trim(),
+    locus_name_en: row.locus_name_en.trim(),
+    parent_locus: (row.parent_locus ?? "").trim(),
+    description_en: row.description_en.trim(),
+    chapter_section: row.chapter_section.trim(),
+    priority: priority as Locus["priority"],
+  };
+}
+
+function validatePosition(row: Record<string, string>, index: number): ConfessionalPosition {
+  if (!row.locus_code?.trim()) {
+    throw new Error(`confessional_positions.csv row ${index + 1}: missing locus_code`);
+  }
+  if (!VALID_TRADITIONS.has(row.tradition?.trim())) {
+    throw new Error(`confessional_positions.csv row ${index + 1}: invalid tradition "${row.tradition}"`);
+  }
+  if (!VALID_EPISTEMIC.has(row.epistemic_status?.trim())) {
+    throw new Error(`confessional_positions.csv row ${index + 1}: invalid epistemic_status "${row.epistemic_status}"`);
+  }
+  return row as unknown as ConfessionalPosition;
+}
+
 // ── Public API ──
 
 let _loci: Locus[] | null = null;
 export function getLoci(): Locus[] {
   if (!_loci) {
-    _loci = loadCSV("loci_hierarchy.csv") as unknown as Locus[];
+    _loci = loadCSV("loci_hierarchy.csv").map((row, i) => validateLocus(row, i));
   }
   return _loci;
 }
@@ -168,9 +213,9 @@ export function getLocusByCode(code: string): Locus | undefined {
 let _positions: ConfessionalPosition[] | null = null;
 export function getPositions(): ConfessionalPosition[] {
   if (!_positions) {
-    _positions = loadCSV(
-      "confessional_positions.csv",
-    ) as unknown as ConfessionalPosition[];
+    _positions = loadCSV("confessional_positions.csv").map((row, i) =>
+      validatePosition(row, i),
+    );
   }
   return _positions;
 }

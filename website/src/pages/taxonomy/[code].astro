@@ -24,9 +24,19 @@ export function getStaticPaths() {
 }
 
 const { locusCode } = Astro.props;
-const locus = getLocusByCode(locusCode)!;
-const parent = getLocusByCode(locus.parent_locus)!;
-const siblings = getSubLoci(locus.parent_locus);
+const locus = getLocusByCode(locusCode);
+
+if (!locus) {
+  return new Response(null, { status: 404 });
+}
+
+const parent = locus.parent_locus ? getLocusByCode(locus.parent_locus) : null;
+
+if (locus.parent_locus && !parent) {
+  return new Response(null, { status: 404 });
+}
+
+const siblings = locus.parent_locus ? getSubLoci(locus.parent_locus) : [];
 const positions = getPositionsForLocus(locusCode);
 const terms = getTermsForLocus(locusCode);
 const evidence = getEvidenceForLocus(locusCode);
@@ -67,6 +77,7 @@ const epistemicStyles: Record<string, { dot: string; border: string; label: stri
     label: "Deferred",
   },
 };
+const defaultEpistemic = epistemicStyles.DEFERRED;
 ---
 
 <BaseLayout
@@ -81,7 +92,7 @@ const epistemicStyles: Record<string, { dot: string; border: string; label: stri
       <nav class="mb-4 font-sans text-xs text-parchment-500" aria-label="Breadcrumb">
         <a href={`${base}/taxonomy/`} class="text-parchment-400 hover:text-parchment-200">Taxonómia</a>
         <span class="mx-1.5">/</span>
-        <span class="text-parchment-500">{parent.locus_name_sk}</span>
+        <span class="text-parchment-500">{parent?.locus_name_sk}</span>
         <span class="mx-1.5">/</span>
         <span class="text-parchment-300">{locus.locus_code}</span>
       </nav>
@@ -153,7 +164,7 @@ const epistemicStyles: Record<string, { dot: string; border: string; label: stri
 
                 <div class="mt-3 space-y-3">
                   {tradPositions.map((pos) => {
-                    const ep = epistemicStyles[pos.epistemic_status];
+                    const ep = epistemicStyles[pos.epistemic_status] ?? defaultEpistemic;
                     return (
                       <div class={`border-l-4 ${ep.border} rounded-r-lg bg-parchment-100/60 p-4`}>
                         <div class="flex flex-wrap items-center gap-2">
@@ -319,7 +330,7 @@ const epistemicStyles: Record<string, { dot: string; border: string; label: stri
                 </p>
                 {ev.theological_modification && (
                   <p class="mt-2 font-sans text-xs text-ink-400">
-                    <strong>Modification:</strong> {ev.theological_modification}
+                    <strong>Modifikácia (Modification):</strong> {ev.theological_modification}
                   </p>
                 )}
                 {ev.notes && (
