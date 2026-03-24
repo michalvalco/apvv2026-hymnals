@@ -1,0 +1,359 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import EpistemicLegend from "../../components/EpistemicLegend.astro";
+import {
+  getLoci,
+  getLocusByCode,
+  getSubLoci,
+  getPositionsForLocus,
+  getTermsForLocus,
+  getEvidenceForLocus,
+  TRADITION_META,
+  PHASE_LABELS,
+} from "../../data/taxonomy";
+
+export function getStaticPaths() {
+  const loci = getLoci();
+  // Generate pages for sub-loci (L1.1 → l1-1)
+  return loci
+    .filter((l) => l.parent_locus)
+    .map((l) => ({
+      params: { code: l.locus_code.toLowerCase().replace(".", "-") },
+      props: { locusCode: l.locus_code },
+    }));
+}
+
+const { locusCode } = Astro.props;
+const locus = getLocusByCode(locusCode)!;
+const parent = getLocusByCode(locus.parent_locus)!;
+const siblings = getSubLoci(locus.parent_locus);
+const positions = getPositionsForLocus(locusCode);
+const terms = getTermsForLocus(locusCode);
+const evidence = getEvidenceForLocus(locusCode);
+const base = import.meta.env.BASE_URL;
+
+// Group positions by tradition
+const traditions = ["LUTHERAN", "UTRAQUIST", "UNITY"] as const;
+const positionsByTradition = Object.fromEntries(
+  traditions.map((t) => [t, positions.filter((p) => p.tradition === t)]),
+);
+
+// Group terms by semantic field
+const termsByField = terms.reduce<Record<string, typeof terms>>(
+  (acc, t) => {
+    const field = t.semantic_field;
+    if (!acc[field]) acc[field] = [];
+    acc[field].push(t);
+    return acc;
+  },
+  {},
+);
+
+// Epistemic status styling
+const epistemicStyles: Record<string, { dot: string; border: string; label: string }> = {
+  FACTUAL: {
+    dot: "bg-epistemic-factual",
+    border: "border-l-epistemic-factual",
+    label: "Factual",
+  },
+  INTERPRETIVE: {
+    dot: "bg-epistemic-interpretive opacity-80",
+    border: "border-l-epistemic-interpretive",
+    label: "Interpretive",
+  },
+  DEFERRED: {
+    dot: "border-2 border-dashed border-epistemic-deferred opacity-60",
+    border: "border-l-epistemic-deferred border-dashed",
+    label: "Deferred",
+  },
+};
+---
+
+<BaseLayout
+  title={`${locus.locus_code} ${locus.locus_name_sk}`}
+  description={locus.description_en}
+  lang="sk"
+>
+  <!-- Header -->
+  <section class="bg-ink-800 px-6 py-12 text-parchment">
+    <div class="mx-auto max-w-content">
+      <!-- Breadcrumb -->
+      <nav class="mb-4 font-sans text-xs text-parchment-500" aria-label="Breadcrumb">
+        <a href={`${base}/taxonomy/`} class="text-parchment-400 hover:text-parchment-200">Taxonómia</a>
+        <span class="mx-1.5">/</span>
+        <span class="text-parchment-500">{parent.locus_name_sk}</span>
+        <span class="mx-1.5">/</span>
+        <span class="text-parchment-300">{locus.locus_code}</span>
+      </nav>
+
+      <div class="flex flex-wrap items-baseline gap-3">
+        <span class="font-mono text-lg text-gold">{locus.locus_code}</span>
+        <h1 class="font-display text-2xl font-bold text-parchment-100 md:text-3xl">
+          {locus.locus_name_sk}
+        </h1>
+      </div>
+      <p class="mt-1 text-latin text-parchment-400">{locus.locus_name_la}</p>
+      <p class="mt-1 font-sans text-sm text-parchment-500">{locus.locus_name_en}</p>
+      <p class="mt-4 max-w-prose text-parchment-400">{locus.description_en}</p>
+
+      <!-- Sibling navigation -->
+      <nav class="mt-6 flex flex-wrap gap-2" aria-label="Sibling loci">
+        {siblings.map((s) => (
+          <a
+            href={`${base}/taxonomy/${s.locus_code.toLowerCase().replace(".", "-")}/`}
+            class:list={[
+              "rounded-md px-3 py-1 font-sans text-xs no-underline transition-colors",
+              s.locus_code === locusCode
+                ? "bg-gold/20 text-gold"
+                : "bg-parchment/10 text-parchment-500 hover:bg-parchment/20 hover:text-parchment-300",
+            ]}
+          >
+            {s.locus_code}
+          </a>
+        ))}
+      </nav>
+    </div>
+  </section>
+
+  <div class="mx-auto max-w-content px-6 py-10">
+    <EpistemicLegend compact />
+
+    <!-- ═══════════ CONFESSIONAL POSITIONS ═══════════ -->
+    {positions.length > 0 && (
+      <section class="mt-10">
+        <h2 class="font-display text-xl font-semibold text-ink">
+          Konfesionálne pozície
+          <span class="ml-2 font-sans text-sm font-normal text-ink-300">
+            / Confessional Positions
+          </span>
+        </h2>
+        <p class="mt-1 font-sans text-xs text-ink-300">
+          {positions.length} documented positions across {
+            new Set(positions.map((p) => p.tradition)).size
+          } traditions
+        </p>
+
+        <div class="mt-6 space-y-8">
+          {traditions.map((tradition) => {
+            const tradPositions = positionsByTradition[tradition];
+            if (!tradPositions || tradPositions.length === 0) return null;
+            const meta = TRADITION_META[tradition];
+
+            return (
+              <div>
+                <h3 class={`flex items-center gap-2 font-sans text-sm font-semibold`}>
+                  <span
+                    class="inline-block h-3 w-3 rounded-full"
+                    style={`background-color: ${meta.color}`}
+                    aria-hidden="true"
+                  />
+                  {meta.sk}
+                  <span class="font-normal text-ink-300">/ {meta.en}</span>
+                </h3>
+
+                <div class="mt-3 space-y-3">
+                  {tradPositions.map((pos) => {
+                    const ep = epistemicStyles[pos.epistemic_status];
+                    return (
+                      <div class={`border-l-4 ${ep.border} rounded-r-lg bg-parchment-100/60 p-4`}>
+                        <div class="flex flex-wrap items-center gap-2">
+                          <span class={`inline-block h-2 w-2 rounded-full ${ep.dot}`} aria-hidden="true" />
+                          <span class="font-sans text-xs text-ink-300">{ep.label}</span>
+                          <span class="font-sans text-xs text-ink-200">|</span>
+                          <span class="font-sans text-xs text-ink-300">
+                            {PHASE_LABELS[pos.tradition_phase] ?? pos.tradition_phase}
+                          </span>
+                          <code class="ml-auto font-mono text-xs text-ink-200">
+                            {pos.position_label}
+                          </code>
+                        </div>
+                        <p class="mt-2 text-sm leading-relaxed text-ink-500">
+                          {pos.position_description}
+                        </p>
+                        <div class="mt-3 flex flex-wrap gap-x-4 gap-y-1 font-sans text-xs text-ink-300">
+                          <span>
+                            <strong class="text-ink-400">Prameň:</strong>{" "}
+                            {pos.primary_source_id}
+                            {pos.source_reference && (
+                              <span class="text-ink-200"> — {pos.source_reference}</span>
+                            )}
+                          </span>
+                          {pos.secondary_source_id && (
+                            <span>
+                              <strong class="text-ink-400">Sekundárny:</strong>{" "}
+                              {pos.secondary_source_id}
+                            </span>
+                          )}
+                        </div>
+                        {pos.notes && (
+                          <p class="mt-2 font-sans text-xs italic text-ink-300">
+                            {pos.notes}
+                          </p>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+    )}
+
+    {positions.length === 0 && (
+      <section class="mt-10">
+        <h2 class="font-display text-xl font-semibold text-ink">
+          Konfesionálne pozície
+        </h2>
+        <p class="mt-3 rounded-lg bg-parchment-100 p-6 text-center font-sans text-sm text-ink-300">
+          Pozície pre tento sub-locus ešte nie sú zdokumentované.
+          <br />
+          <span class="text-xs">Positions for this sub-locus are not yet documented.</span>
+        </p>
+      </section>
+    )}
+
+    <div class="ornament-rule"></div>
+
+    <!-- ═══════════ TERM VARIANTS ═══════════ -->
+    <section>
+      <h2 class="font-display text-xl font-semibold text-ink">
+        Terminologický aparát
+        <span class="ml-2 font-sans text-sm font-normal text-ink-300">
+          / Theological Vocabulary
+        </span>
+      </h2>
+      {terms.length > 0 ? (
+        <>
+          <p class="mt-1 font-sans text-xs text-ink-300">
+            {terms.length} terms across 4 languages (Latin, Czech 16c, German 16c, Slovak)
+          </p>
+
+          {Object.entries(termsByField).map(([field, fieldTerms]) => (
+            <div class="mt-6">
+              <h3 class="font-sans text-xs font-semibold uppercase tracking-wider text-ink-300">
+                {field.replace(/_/g, " ")}
+              </h3>
+              <div class="mt-3 overflow-x-auto">
+                <table class="w-full text-sm">
+                  <thead>
+                    <tr class="border-b border-parchment-400 text-left font-sans text-xs text-ink-300">
+                      <th class="py-2 pr-3 font-medium">Term</th>
+                      <th class="py-2 pr-3 font-medium text-latin">Latin</th>
+                      <th class="py-2 pr-3 font-medium">Čeština 16. st.</th>
+                      <th class="py-2 pr-3 font-medium">Deutsch 16. Jh.</th>
+                      <th class="py-2 pr-3 font-medium">Slovenčina (CS)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {fieldTerms.map((t) => (
+                      <tr class="border-b border-parchment-200/50">
+                        <td class="py-2.5 pr-3 font-mono text-xs font-medium text-burgundy">
+                          {t.canonical_term}
+                        </td>
+                        <td class="py-2.5 pr-3 text-latin text-xs text-ink-400">
+                          {t.latin}
+                        </td>
+                        <td class="py-2.5 pr-3 text-xs text-ink-400">
+                          {t.czech_16c}
+                        </td>
+                        <td class="py-2.5 pr-3 text-xs text-ink-400">
+                          {t.german_16c}
+                        </td>
+                        <td class="py-2.5 pr-3 text-xs text-ink-400">
+                          {t.slovak_cs}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          ))}
+        </>
+      ) : (
+        <p class="mt-3 rounded-lg bg-parchment-100 p-6 text-center font-sans text-sm text-ink-300">
+          Terminológia pre tento sub-locus ešte nie je zdokumentovaná.
+          <br />
+          <span class="text-xs">Terminology for this sub-locus is not yet documented.</span>
+        </p>
+      )}
+    </section>
+
+    <div class="ornament-rule"></div>
+
+    <!-- ═══════════ HYMNIC EVIDENCE ═══════════ -->
+    <section>
+      <h2 class="font-display text-xl font-semibold text-ink">
+        Hymnicko-liturgické dôkazy
+        <span class="ml-2 font-sans text-sm font-normal text-ink-300">
+          / <span class="text-latin">Lex Orandi</span> Evidence
+        </span>
+      </h2>
+
+      {evidence.length > 0 && !evidence.every((e) => e.text_id.startsWith("EXAMPLE")) ? (
+        <div class="mt-4 space-y-4">
+          {evidence.map((ev) => {
+            const ep = epistemicStyles[ev.epistemic_status] ?? epistemicStyles.DEFERRED;
+            const tradMeta = TRADITION_META[ev.tradition];
+            return (
+              <div class={`border-l-4 ${ep.border} rounded-r-lg bg-parchment-100/60 p-4`}>
+                <div class="flex flex-wrap items-center gap-2">
+                  <span
+                    class="inline-block h-2.5 w-2.5 rounded-full"
+                    style={`background-color: ${tradMeta?.color ?? '#666'}`}
+                    aria-hidden="true"
+                  />
+                  <span class="font-sans text-xs font-medium" style={`color: ${tradMeta?.color ?? '#666'}`}>
+                    {tradMeta?.sk ?? ev.tradition}
+                  </span>
+                  <code class="font-mono text-xs text-ink-200">{ev.text_id}</code>
+                  <span class={`ml-auto inline-block h-2 w-2 rounded-full ${ep.dot}`} />
+                </div>
+                <p class="mt-2 font-serif text-sm italic text-ink-500">
+                  "{ev.incipit}"
+                  {ev.stanza_or_section && (
+                    <span class="not-italic text-ink-300"> — {ev.stanza_or_section}</span>
+                  )}
+                </p>
+                {ev.theological_modification && (
+                  <p class="mt-2 font-sans text-xs text-ink-400">
+                    <strong>Modification:</strong> {ev.theological_modification}
+                  </p>
+                )}
+                {ev.notes && (
+                  <p class="mt-1 font-sans text-xs italic text-ink-300">{ev.notes}</p>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      ) : (
+        <div class="mt-3 rounded-lg bg-parchment-100 p-6 text-center">
+          <p class="font-sans text-sm text-ink-300">
+            Korpusové dôkazy budú doplnené v Fáze 3 výskumu.
+          </p>
+          <p class="mt-1 font-sans text-xs text-ink-200">
+            Corpus evidence will be populated during Phase 3 research.
+          </p>
+          {evidence.length > 0 && (
+            <p class="mt-3 font-sans text-xs text-ink-200">
+              ({evidence.length} example {evidence.length === 1 ? "entry" : "entries"} present as templates)
+            </p>
+          )}
+        </div>
+      )}
+    </section>
+
+    <!-- Back link -->
+    <div class="mt-12 text-center">
+      <a
+        href={`${base}/taxonomy/`}
+        class="inline-flex items-center gap-2 font-sans text-sm text-ink-300 hover:text-burgundy"
+      >
+        &larr; Späť na taxonómiu
+      </a>
+    </div>
+  </div>
+</BaseLayout>

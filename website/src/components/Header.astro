@@ -6,7 +6,7 @@ const navItems = [
   { href: "/synoptikon/", label: "Synoptikon", labelEn: "Synoptikon" },
   { href: "/network/", label: "Sieť", labelEn: "Network" },
   { href: "/chapter/", label: "Kapitola", labelEn: "Chapter" },
-];
+] as const;
 const base = import.meta.env.BASE_URL;
 ---
 
@@ -25,6 +25,7 @@ const base = import.meta.env.BASE_URL;
       {navItems.map((item) => (
         <a
           href={base + item.href}
+          title={item.labelEn}
           class="rounded-md px-3 py-1.5 font-sans text-sm font-medium text-ink-400
                  no-underline transition-colors hover:bg-parchment-300/50 hover:text-ink"
         >
@@ -39,6 +40,7 @@ const base = import.meta.env.BASE_URL;
       class="rounded-md p-2 text-ink-400 transition-colors hover:bg-parchment-300/50 md:hidden"
       aria-label="Open menu"
       aria-expanded="false"
+      aria-controls="mobile-menu"
     >
       <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
         <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
@@ -55,6 +57,7 @@ const base = import.meta.env.BASE_URL;
     {navItems.map((item) => (
       <a
         href={base + item.href}
+        title={item.labelEn}
         class="block rounded-md px-3 py-2 font-sans text-sm font-medium text-ink-400
                no-underline transition-colors hover:bg-parchment-300/50 hover:text-ink"
       >
@@ -71,6 +74,7 @@ const base = import.meta.env.BASE_URL;
     btn.addEventListener("click", () => {
       const expanded = btn.getAttribute("aria-expanded") === "true";
       btn.setAttribute("aria-expanded", String(!expanded));
+      btn.setAttribute("aria-label", expanded ? "Open menu" : "Close menu");
       menu.classList.toggle("hidden");
     });
   }
