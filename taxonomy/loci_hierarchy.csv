@@ -1,0 +1,25 @@
+locus_code,locus_name_la,locus_name_sk,locus_name_en,parent_locus,description_en,chapter_section,priority
+L1,De Sacramentis: Eucharistia,Sviatostná náuka — Eucharistia,Sacramental Theology: Eucharist,,The Lord's Supper as the central contested locus among all three traditions,§4.1,HIGHEST
+L1.1,Modus Praesentiae,Spôsob prítomnosti,Mode of Presence,L1,"How Christ is present in/with/under the elements: real presence, spiritual presence, memorial, figurative",§4.1,HIGHEST
+L1.2,Communio Laicorum,Prijímanie veriacich,Communion Practice,L1,"Who receives and in what form: sub utraque specie, infant communion, preparation requirements",§4.1,HIGH
+L1.3,Character Sacrificialis,Obetný charakter,Sacrificial Character,L1,"Whether the Eucharist is a sacrifice (oblatio) or thanksgiving (eucharistia); Mass as re-presentation vs. memorial",§4.1,HIGH
+L1.4,Pietas Eucharistica,Eucharistická zbožnosť,Eucharistic Piety,L1,"Devotional practices: adoration, elevation, reservation, procession — and their theological implications",§4.1,MEDIUM
+L1.5,Verba Institutionis,Slová ustanovenia,Words of Institution,L1,"Role and effect of Christ's words in the celebration; consecration theology; relationship between Word and element",§4.1,HIGH
+L2,De Ecclesia,Ekleziológia,Ecclesiology,,The nature of the church and its ministry — the locus where institutional differences are sharpest,§4.2,HIGH
+L2.1,Natura Ecclesiae,Povaha cirkvi,Nature of the Church,L2,"What the church IS: visible/invisible distinction, body of Christ, congregation of saints, marks of the church",§4.2,HIGH
+L2.2,Ministerium et Ordines,Služba a úrady,Ministry and Orders,L2,"Who leads and by what authority: ordained ministry, universal priesthood, episcopal vs. presbyterial polity",§4.2,HIGH
+L2.3,Successio Apostolica,Apoštolská postupnosť,Apostolic Succession,L2,"Legitimacy of ministerial authority: succession of doctrine vs. succession of office; Waldensian ordination (Unity); Venice ordinations (Utraquist)",§4.2,HIGHEST
+L2.4,Disciplina Ecclesiae,Cirkevná disciplína,Church Discipline,L2,"Internal governance: excommunication, fraternal admonition, moral supervision — esp. distinctive in Unity practice",§4.2,MEDIUM
+L2.5,Ecclesia et Magistratus,Cirkev a svetská moc,Church–State Relations,L2,"Political authority and church autonomy: two kingdoms doctrine, cuius regio, religious liberty",§4.2,LOW
+L3,De Salute et Ethica,Soteriológia a etika,Soteriology and Ethics,,Justification and its ethical consequences — where Lutheran and Czech Reformation accents diverge most,§4.3,HIGH
+L3.1,Iustificatio,Ospravedlnenie,Justification,L3,"How salvation is received: sola fide, imputation of alien righteousness, forensic vs. effective justification",§4.3,HIGHEST
+L3.2,Sanctificatio,Posvätenie,Sanctification,L3,"How the justified life is lived: regeneration, new obedience, fruits of faith — Unity's distinctive emphasis",§4.3,HIGH
+L3.3,Fides et Opera,Viera a skutky,Faith and Works,L3,"Relationship between belief and practice: merit, charity, disciplina vitae — the practical divergence point",§4.3,HIGH
+L3.4,Poenitentia,Pokánie,Repentance,L3,"Process of reconciliation: contrition, confession, absolution — different penitential practices across traditions",§4.3,MEDIUM
+L3.5,Spes Eschatologica,Eschatologická nádej,Eschatological Hope,L3,"Final destiny and present hope: resurrection, eternal life, judgment, kingdom of God — as expressed in hymns",§4.3,LOW
+L4,De Scriptura et Traditione,Autorita Písma a tradície,Scripture and Tradition,,Approaches to biblical authority and the role of non-scriptural sources,§4.4,MEDIUM
+L4.1,Auctoritas Biblica,Autorita Biblie,Biblical Authority,L4,"Status and sufficiency of Scripture: sola scriptura, verbum Dei, inspiration, perspicuity",§4.4,HIGH
+L4.2,Receptio Patristica,Recepcia cirkevných otcov,Patristic Reception,L4,"Role of Church Fathers: consensus patrum, tradition as interpretive guide vs. as binding authority",§4.4,MEDIUM
+L4.3,Auctoritas Confessionalis,Konfesionálna autorita,Confessional Authority,L4,"Status of confessional documents: norma normata, binding force, relationship to Scripture",§4.4,MEDIUM
+L4.4,Principium Hermeneuticum,Hermeneutický princíp,Hermeneutical Principle,L4,"How Scripture is to be interpreted: sensus literalis, analogia fidei, scriptura sui interpres, Christological centre",§4.4,LOW
+L4.5,Lingua Liturgica,Liturgický jazyk,Liturgical Language,L4,"Language as theological medium: bibličtina, vernacular principle, Latin persistence, Slovak emergence through CS",§4.4,MEDIUM
