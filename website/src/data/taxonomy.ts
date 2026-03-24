@@ -176,16 +176,53 @@ function validateLocus(row: Record<string, string>, index: number): Locus {
 }
 
 function validatePosition(row: Record<string, string>, index: number): ConfessionalPosition {
-  if (!row.locus_code?.trim()) {
-    throw new Error(`confessional_positions.csv row ${index + 1}: missing locus_code`);
+  const required: (keyof ConfessionalPosition)[] = [
+    "locus_code", "tradition", "tradition_phase", "position_label",
+    "position_description", "primary_source_id",
+    "epistemic_status",
+  ];
+  for (const key of required) {
+    if (!row[key as string]?.trim()) {
+      throw new Error(`confessional_positions.csv row ${index + 1}: missing required column "${key}"`);
+    }
   }
-  if (!VALID_TRADITIONS.has(row.tradition?.trim())) {
+  const locusCode = row.locus_code.trim();
+  if (!locusCode.includes(".")) {
+    throw new Error(`confessional_positions.csv row ${index + 1}: locus_code "${locusCode}" must reference a sub-locus (contain a ".")`);
+  }
+  if (!VALID_TRADITIONS.has(row.tradition.trim())) {
     throw new Error(`confessional_positions.csv row ${index + 1}: invalid tradition "${row.tradition}"`);
   }
-  if (!VALID_EPISTEMIC.has(row.epistemic_status?.trim())) {
+  if (!VALID_EPISTEMIC.has(row.epistemic_status.trim())) {
     throw new Error(`confessional_positions.csv row ${index + 1}: invalid epistemic_status "${row.epistemic_status}"`);
   }
-  return row as unknown as ConfessionalPosition;
+  return {
+    locus_code: locusCode,
+    tradition: row.tradition.trim() as ConfessionalPosition["tradition"],
+    tradition_phase: row.tradition_phase.trim(),
+    position_label: row.position_label.trim(),
+    position_description: row.position_description.trim(),
+    primary_source_id: row.primary_source_id.trim(),
+    source_reference: row.source_reference.trim(),
+    secondary_source_id: (row.secondary_source_id ?? "").trim(),
+    epistemic_status: row.epistemic_status.trim() as ConfessionalPosition["epistemic_status"],
+    notes: (row.notes ?? "").trim(),
+  };
+}
+
+function validateLociSchema(loci: Locus[]): void {
+  const codes = new Set<string>();
+  for (let i = 0; i < loci.length; i++) {
+    if (codes.has(loci[i].locus_code)) {
+      throw new Error(`loci_hierarchy.csv row ${i + 1}: duplicate locus_code "${loci[i].locus_code}"`);
+    }
+    codes.add(loci[i].locus_code);
+  }
+  for (let i = 0; i < loci.length; i++) {
+    if (loci[i].parent_locus && !codes.has(loci[i].parent_locus)) {
+      throw new Error(`loci_hierarchy.csv row ${i + 1}: parent_locus "${loci[i].parent_locus}" does not reference any existing locus_code`);
+    }
+  }
 }
 
 // ── Public API ──
@@ -194,6 +231,7 @@ let _loci: Locus[] | null = null;
 export function getLoci(): Locus[] {
   if (!_loci) {
     _loci = loadCSV("loci_hierarchy.csv").map((row, i) => validateLocus(row, i));
+    validateLociSchema(_loci);
   }
   return _loci;
 }
