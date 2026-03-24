@@ -54,7 +54,9 @@ apvv2026-hymnals/           ← THIS REPO (working directory)
 ├── Revision_Notes.md       ← Issues for revision passes
 ├── Sources/
 │   ├── Source_Index.md     ← Master source registry
-│   └── _Source_Template.md ← Template for structured source notes
+│   ├── _Source_Template.md ← Template for structured source notes
+│   ├── Benka_2024.md       ← Agenda Česká critical edition (documented)
+│   └── GresovaSek_2023.md  ← Cithara Sanctorum study (documented)
 ├── Drafts/                 ← Versioned drafts (Draft_v1.md, etc.)
 ├── resources/              ← Large PDFs/scans (.gitignored)
 └── admin/                  ← Grant admin references
@@ -114,7 +116,7 @@ This project follows the Research Paper Protocol (five phases). Current phase no
 ### Key Databases
 - Hymnorum Thesaurus Bohemicus (http://www.clavmon.cz/htb/)
 - Manuscriptorium (https://www.manuscriptorium.com/)
-- REAL-R repository (Cithara Sanctorum 1636 first edition)
+- REAL-R repository (http://real-r.mtak.hu/) (Cithara Sanctorum 1636 first edition)
 
 ## Team Context
 

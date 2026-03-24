@@ -1,6 +1,6 @@
 # Source Index — TEPALIT Valčo Chapter
 
-**Last updated:** 2026-03-24
+**Last updated:** 2026-03-24 (source locations researched; all "—" entries resolved)
 
 Status legend: 📋 = identified, 📖 = accessed/read, 📝 = documented (Source file created), ✅ = integrated into outline
 
@@ -12,35 +12,37 @@ Status legend: 📋 = identified, 📖 = accessed/read, 📝 = documented (Sourc
 |---|---|---|---|---|
 | Book of Concord (1580) | `BookConcord_1580` | 📋 | [ECAV.sk](https://www.ecav.sk/) / BSB Digital | CA, Apology, Formula Concordiae |
 | Confessio Pentapolitana (1549) | `ConfPentapol_1549` | 📋 | [Google Books (1844 ed.)](https://books.google.com) | Regional reception of CA |
-| Confessio Heptapolitana (1559) | `ConfHeptapol_1559` | 📋 | — | |
-| Confessio Scepusiana (1569) | `ConfScepus_1569` | 📋 | — | |
-| Cithara Sanctorum (1636+) | `CitharaSanct_1636` | 📋 | [UKB Digital](https://www.ulib.sk/) (1745 ed.) / REAL-R (1636 ed.) | Central source for transfer analysis |
-| Luther: Formula Missae (1523) | `Luther_FormMissae_1523` | 📋 | WA | |
-| Luther: Deutsche Messe (1526) | `Luther_DtMesse_1526` | 📋 | WA | |
-| Luther: De captivitate Babylonica (1520) | `Luther_DeCaptiv_1520` | 📋 | WA | |
-| Slovak Lutheran Agendas | `AgendySlov` | 📋 | Archival | Bardejov, Stöckel, Rambachiana 1637 |
+| Confessio Heptapolitana (1559) | `ConfHeptapol_1559` | 📋 | **Critical ed.: Csepregi & Kónya, [*Tri lutherské vyznania viery z Uhorska*](https://docplayer.hu/46716880-Tri-lutherske-vyznania-viery-z-uhorska-harom-lutheri-hitvallas-magyarorszagon-drei-lutherische-glaubensbekenntnisse-aus-ungarn.html)** (ETF UK BA); also partial in [Reu (1930)](https://archive.org/details/augsburgconfessi0000reuj); MSS at OSzK Budapest | Editio princeps Neusohl 1578 |
+| Confessio Scepusiana (1569) | `ConfScepus_1569` | 📋 | **Critical ed.: Csepregi & Kónya, [*Tri lutherské vyznania*](https://docplayer.hu/46716880-Tri-lutherske-vyznania-viery-z-uhorska-harom-lutheri-hitvallas-magyarorszagon-drei-lutherische-glaubensbekenntnisse-aus-ungarn.html)** (same vol.); also partial in [Reu (1930)](https://archive.org/details/augsburgconfessi0000reuj); Spišský archív Levoča | Cf. Šebők, *A Humanist on the Frontier* (2023) |
+| Cithara Sanctorum (1636+) | `CitharaSanct_1636` | 📋 | [UKB Digital](https://www.ulib.sk/) (1745 ed.) / [REAL-R](http://real-r.mtak.hu/) (1636 ed.) / [Kramerius MZK](https://kramerius.mzk.cz/) (requires CZ library registration; exact UUID recorded in `Revision_Notes.md`) | Central source for transfer analysis |
+| Luther: Formula Missae (1523) | `Luther_FormMissae_1523` | 📋 | WA 12 (Weimarer Ausgabe; see WA master index below) | Latin liturgical reform |
+| Luther: Deutsche Messe (1526) | `Luther_DtMesse_1526` | 📋 | WA 19 (Weimarer Ausgabe; see WA master index below) | Vernacular liturgical reform |
+| Luther: De captivitate Babylonica (1520) | `Luther_DeCaptiv_1520` | 📋 | WA 6 (Weimarer Ausgabe; see WA master index below) | Sacramental theology, anti-sacrificial polemic |
+| Slovak Lutheran Agendas | `AgendySlov` | 📋 | [Cantus.sk — Bardejov](https://cantus.sk/archive/5) (related early music); ŠA Prešov — Archív Bardejov (fond MMB); ECAV ústredný archív Bratislava; Lyceálna knižnica BA | Stöckel-era items; Rambachiana 1637 undigitised |
+
+**Shared index for WA volumes:** [Luther's Works, *Weimarer Ausgabe* (WA) — master index](http://www.lutherdansk.dk/WA/D.%20Martin%20Luthers%20Werke,%20Weimarer%20Ausgabe%20-%20WA.htm) (links onward to Archive.org scans of individual volumes, including WA 6, 12, 19).
 
 ## II. Primary Sources — Utraquist
 
 | Source | Short ID | Status | Location | Notes |
 |---|---|---|---|---|
-| Four Articles of Prague (1420) | `ArtPrag_1420` | 📋 | — | |
+| Four Articles of Prague (1420) | `ArtPrag_1420` | 📋 | [Czech text at husitstvi.cz](https://husitstvi.cz/historie/dobove-dokumenty/ctyri-artikuly-prazske-1420/); [PDF (Charles Univ.)](https://pages.pedf.cuni.cz/kddd/files/2015/03/Ctyri-artikuly-prazske-text.pdf); Latin in Palacký, [*Archiv český* III](https://ndk.cz/view/uuid:94221e80-8dd3-11e8-9588-5ef3fc9bb22f) | Veverková & Franklin (2021) for EN |
 | Basel Compacts (1436) | `CompBasil_1436` | 📋 | [Archive.org](https://archive.org) | |
 | Agenda Česká (1581) + Bystrická agenda (1585) | `AgCeska_1581` | 📝 | **Critical edition: Benka 2024 (MLS X)** in `resources/`; also raw scans (229 pp.) in `Monografia/Resources/Agenda Ceska 1581/` | Neo-Utraquist liturgical order. Full scholarly transcription with apparatus now available. See `Benka_2024.md`. Mass rite: ed. pp. 131–150. |
-| Jistebnický kancionál (c. 1420) | `KancJisteb_1420` | 📋 | [Manuscriptorium](https://www.manuscriptorium.com/) | |
-| Jan Hus: De ecclesia (1413) | `Hus_DeEccl_1413` | 📋 | — | |
-| Jakoubek ze Stříbra: Eucharistic writings | `Jakoubek_Euch` | 📋 | — | |
+| Jistebnický kancionál (c. 1420) | `KancJisteb_1420` | 📋 | [Manuscriptorium](https://www.manuscriptorium.com/cs/node/755) (MS Praha, KNM, II C 7, c. 1430 — digitised) | Hussite hymns + liturgical texts |
+| Jan Hus: De ecclesia (1413) | `Hus_DeEccl_1413` | 📋 | [Latin critical ed.](https://archive.org/details/tractatusdeeccle0000husj) on Archive.org; [EN trans. (Schaff 1915)](https://archive.org/details/deecclesiachurch00husjuoft); also [Wikisource EN](https://en.wikisource.org/wiki/De_Ecclesia._The_Church) | Fully accessible — Latin + English |
+| Jakoubek ze Stříbra: Eucharistic writings | `Jakoubek_Euch` | 📋 | [Manuscriptorium author page](https://www.manuscriptorium.com/cs/taxonomy/term/81); [MS collection V-M 017 Tábor](https://www.manuscriptorium.com/en/node/38063) (sermons/treatises); MS Wrocław BU I Q 278 fol. 462r–472r ([antihus.eu](https://www.antihus.eu/search.php)); secondary: [Holeton (BRRP 1)](http://brrp.org/proceedings/brrp1/holeton.pdf), [Burnett (BRRP 11)](https://brrp.org/proceedings/brrp11/burnett.pdf) | *Sub utraque* defence (c. 1414); *De Remanentia*; de Vooght monograph (1972) |
 
 ## III. Primary Sources — Unity of Brethren
 
 | Source | Short ID | Status | Location | Notes |
 |---|---|---|---|---|
 | Confessio Fidei (1535) | `ConfFidei_1535` | 📋 | [Google Books (1538 DE)](https://books.google.com) | Mature Unity theology |
-| Acta Unitatis Fratrum | `ActaUF` | 📋 | — | Synod records (Lhota 1467 etc.) |
+| Acta Unitatis Fratrum | `ActaUF` | 📋 | 14 vols (Lissa Folios, 10,000+ pp.) — **digitised since 2017** at [badatelna.eu/fond/1014](http://www.badatelna.eu/fond/1014/inventar/) (Národní archiv Praha); owned by [Unitätsarchiv Herrnhut](https://www.unitaetsarchiv.de/en/research-1/manuscripts-and-library); critical edition in progress ([hiu.cas.cz](https://www.hiu.cas.cz/aktuality/mezinarodni-edicni-projekt-acta-unitatis-fratrum-akta-jednoty-bratrske)) | Synod records 1460–1589, Czech + Latin; cf. Mai, *JMH* 15/1 (2015) |
 | Šamotulský kancionál (1561) | `KancSamotul_1561` | 📋 | HTB indexed; 1576 ed. at Mazowiecka BCC | 735 songs, Blahoslav ed. |
 | Ivančický kancionál (1564) | `KancIvanc_1564` | 📋 | [Kramerius MZK](https://kramerius.mzk.cz/) | 745 songs, peak achievement |
 | Petr Chelčický: Sieť viery | `Chelcicky_Siet` | 📋 | [Citarny.cz](https://citarny.cz) | Ideological foundation of early Unity |
-| Lukáš Pražský: Sacramental writings | `LukasPraha_Sviat` | 📋 | — | Key Unity theologian |
+| Lukáš Pražský: Sacramental writings | `LukasPrazsky_Sviat` | 📋 | [Manuscriptorium: *O obnovení církve svaté* (NKP XVII E 31)](https://www.manuscriptorium.com/apps/index.php?direct=record&pid=AIPDIG-NKCR__XVII_E_31___4CB2T51-cs) — digitised; sacramental treatises largely undigitised (80+ works scattered) | Key Unity theologian, c. 1500–1520s; cf. Crews, *JMH* 18/1 (2018) |
 | Jan Blahoslav: Musica (1558/1569) | `Blahoslav_Musica` | 📋 | [Kramerius MZK](https://kramerius.mzk.cz/) | Hymnological theory |
 
 ## IV. Trans-confessional Sources
@@ -54,7 +56,7 @@ Status legend: 📋 = identified, 📖 = accessed/read, 📝 = documented (Sourc
 
 | Author | Short Title | Short ID | Status | Notes |
 |---|---|---|---|---|
-| Benka, Peter | Agenda Neosoliensia (MLS X, 2024) | `Benka_2024` | 📝 | **Critical edition of Agenda Česká + Bystrická agenda.** 80-pp. historical study on mining-town Reformation. Key for §4.1 (Eucharistic theology), §2 (context). CC BY-SA 4.0. PDF in `resources/`. |
+| Benka, Peter | Agenda Neosoliensia (MLS X, 2024) | `Benka_2024` | 📝 | **Critical edition of `AgCeska_1581` + Bystrická agenda.** Use this for all citations of the Agenda Česká and Bystrická agenda texts. 80-pp. historical study on mining-town Reformation. Key for §4.1 (Eucharistic theology), §2 (context). CC BY-SA 4.0. PDF in `resources/`. See `Benka_2024.md`. |
 | David, Zdeněk V. | Finding the Middle Way | `David_MiddleWay` | 📋 | Utraquist ecclesiology |
 | David, Zdeněk V. | Utraquists, Lutherans, and Bohemian Confession | `David_1999` | 📋 | Church History 68(2), 1999 |
 | Říčan, Rudolf | Dějiny Jednoty bratrské | `Rican_Dejiny` | 📋 | Standard Unity history |
@@ -70,7 +72,7 @@ Status legend: 📋 = identified, 📖 = accessed/read, 📝 = documented (Sourc
 | Hrejsa, Ferdinand | Česká konfese | `Hrejsa_CeskaKonf` | 📋 | |
 | Holeton, David R. | (Utraquist liturgy studies) | `Holeton_Lit` | 📋 | Charles University. **Flagged:** "Lex orandi – lex credendi…" article in BRRP series — directly uses our analytical framework for Utraquist liturgy. HIGH PRIORITY. |
 | Landová, Tabita | Liturgie Jednoty bratrské (1457–1620) | `Landova_2014` | 📋 | Červený Kostelec: Pavel Mervart, 2014. Monograph on Unity liturgy. Likely contains Unity communion rite needed for §4.1 comparison. Cited in Chalupský. |
-| Grešová-Sekelská, A. | Dissertation: Juraj Tranovský a jeho význam (2020) | `GresovaSek_Diss` | 📋 | Cited in GresovaSek_2023. Full CS hymn identification (incl. ~30 Bohemian melodic sources). Not yet acquired. |
+| Grešová-Sekelská, A. | Dissertation: Juraj Tranovský a jeho význam (2020) | `GresovaSek_2020` | 📋 | Cited in `GresovaSek_2023`. Full CS hymn identification (incl. ~30 Bohemian melodic sources). Not yet acquired — Michal to acquire via UK Bratislava or from author. |
 
 ---
 
