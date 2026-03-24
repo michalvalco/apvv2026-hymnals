@@ -45,20 +45,20 @@ Track issues discovered during work that need attention in later revision passes
 Sources currently lacking access/location info — prioritised by section relevance:
 
 ### High Priority (needed for §3–§4 core analysis)
-| Source | Short ID | Acquisition Path |
-|---|---|---|
-| Confessio Heptapolitana (1559) | `ConfHeptapol_1559` | Check ECAV archives; Ribini's *Memorabilia* may contain text; Slovak National Library (SNK) |
-| Confessio Scepusiana (1569) | `ConfScepus_1569` | Levoča/Kežmarok archives; SNK; possible edition in *Monumenta evangelicorum* |
-| Jan Hus: De ecclesia (1413) | `Hus_DeEccl_1413` | S. Harrison Thomson critical ed. (1956); check Archive.org and Kramerius NKP |
-| Jakoubek ze Stříbra: Eucharistic writings | `Jakoubek_Euch` | Manuscriptorium for MSS; Bartoš bibliographies for printed editions |
-| Lukáš Pražský: Sacramental writings | `LukasPrazsky_Sviat` | Müller's *Geschichte der böhm. Brüder* (vol. 1); Říčan references; MZK Kramerius |
-| Acta Unitatis Fratrum | `ActaUF` | Herrnhut Moravian Archives (Unitätsarchiv); Müller editions; Manuscriptorium |
+| Source | Short ID | Acquisition Path | Status |
+|---|---|---|---|
+| Confessio Heptapolitana (1559) | `ConfHeptapol_1559` | Partial text in [Reu (1930)](https://archive.org/details/augsburgconfessi0000reuj) on Archive.org; original MSS at OSzK Budapest; check Ribini's *Memorabilia* | **Located** (partial) |
+| Confessio Scepusiana (1569) | `ConfScepus_1569` | Partial text in [Reu (1930)](https://archive.org/details/augsburgconfessi0000reuj); Spišský archív Levoča; Ribini's *Memorabilia* | **Located** (partial) |
+| Jan Hus: De ecclesia (1413) | `Hus_DeEccl_1413` | [Latin critical ed.](https://archive.org/details/tractatusdeeccle0000husj) + [EN trans.](https://archive.org/details/deecclesiachurch00husjuoft) on Archive.org; [Wikisource EN](https://en.wikisource.org/wiki/De_Ecclesia._The_Church) | **Fully accessible** |
+| Jakoubek ze Stříbra: Eucharistic writings | `Jakoubek_Euch` | [Manuscriptorium author page](https://www.manuscriptorium.com/cs/taxonomy/term/81); MS Wrocław BU I Q 278; BRRP open-access proceedings: [Holeton](http://brrp.org/proceedings/brrp1/holeton.pdf), [Burnett](https://brrp.org/proceedings/brrp11/burnett.pdf) | **Located** (MSS + secondary) |
+| Lukáš Pražský: Sacramental writings | `LukasPrazsky_Sviat` | [*O obnovení* digitised on Manuscriptorium](https://www.manuscriptorium.com/apps/index.php?direct=record&pid=AIPDIG-NKCR__XVII_E_31___4CB2T51-cs); sacramental treatises undigitised; cf. Crews, *JMH* 18/1 (2018) | **Partial** (one MS digitised) |
+| Acta Unitatis Fratrum | `ActaUF` | 14 vols at Národní archiv Praha — [finding aid](http://www.badatelna.eu/fond/1014/inventar/); [Unitätsarchiv Herrnhut](https://www.unitaetsarchiv.de/en/research-1/manuscripts-and-library); critical edition in progress at [hiu.cas.cz](https://www.hiu.cas.cz/aktuality/mezinarodni-edicni-projekt-acta-unitatis-fratrum-akta-jednoty-bratrske) | **Located** (archival) |
 
 ### Medium Priority (needed for §2 context, §5 transfer)
-| Source | Short ID | Acquisition Path |
-|---|---|---|
-| Four Articles of Prague (1420) | `ArtPrag_1420` | Frequently published in secondary literature (Kaminsky, Šmahel); check Documenta Mag. Joannis Hus |
-| Slovak Lutheran Agendas | `AgendySlov` | Bardejov archive (ŠA Prešov — Bardejov); Levoča archive; Rambachiana 1637 possibly at SNK |
+| Source | Short ID | Acquisition Path | Status |
+|---|---|---|---|
+| Four Articles of Prague (1420) | `ArtPrag_1420` | Czech/Latin text in [Palacký, *Archiv český* III (1844)](https://ndk.cz/view/uuid:94221e80-8dd3-11e8-9588-5ef3fc9bb22f); EN: Veverková & Franklin (2021) | **Located** |
+| Slovak Lutheran Agendas | `AgendySlov` | [Cantus.sk — Bardejov](https://cantus.sk/archive/5); ŠA Prešov — Archív Bardejov; ECAV ústredný archív; Lyceálna knižnica BA | **Archival** (undigitised) |
 
 ### Database Verification (tested 2026-03-24)
 
@@ -96,7 +96,7 @@ Sources currently lacking access/location info — prioritised by section releva
 **Practical note:** All four databases block programmatic access (403). All research must be done manually via browser. If based in Slovakia, consider whether your institution participates in Czech library network, or plan research visits to MZK Brno / NKP Prague.
 
 ### Notes
-- Luther WA volumes: available via Archive.org (scanned Weimar Ausgabe) and Luther Seminary digital collections
+- Luther WA volumes: [master index with links to all volumes](http://www.lutherdansk.dk/WA/D.%20Martin%20Luthers%20Werke,%20Weimarer%20Ausgabe%20-%20WA.htm) on Archive.org. Formula Missae = WA 12, Deutsche Messe = WA 19, De captivitate = WA 6. Also: [Project Wittenberg](https://www.projectwittenberg.org/pub/resources/text/wittenberg/wittenberg-luther.html) for selected EN translations.
 - `GresovaSek_2020` dissertation: Michal to acquire via UK Bratislava library or request from author directly
 
 ---
