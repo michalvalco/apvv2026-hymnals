@@ -36,7 +36,38 @@ Track issues discovered during work that need attention in later revision passes
 | 2026-03-24 | §5 | GresovaSek_2023 is musicological, not theological — we need to do the textual-theological analysis of CS hymns ourselves. Her dissertation (2020) may have more source identifications. | Medium | Open |
 | 2026-03-24 | §5 | Třanovský used Calvinist metric melodies (French psalm tunes) for his new texts — interesting tension: confessionally "foreign" melodies with Lutheran texts. Worth a paragraph in §5. | Low | Open |
 | 2026-03-24 | General | Grešová-Sekelská's dissertation (FiF UK 2020) — full CS hymn inventory with ~30 Bohemian melodic source identifications. Try to acquire via UK Bratislava library or request from author. | Medium | Open |
-| 2026-03-24 | General | Benka 2024 is CC BY-SA 4.0 — freely citable. Confirm licence status for all other sources. | Low | Open |
+| 2026-03-24 | General | ~~Benka 2024 is CC BY-SA 4.0 — freely citable. Confirm licence status for all other sources.~~ | ~~Low~~ | **Resolved** — CC BY-SA 4.0 confirmed in `Benka_2024.md`. Licence review for other sources remains a standing task. |
+
+---
+
+## Source Acquisition Strategy (Phase 2)
+
+Sources currently lacking access/location info — prioritised by section relevance:
+
+### High Priority (needed for §3–§4 core analysis)
+| Source | Short ID | Acquisition Path |
+|---|---|---|
+| Confessio Heptapolitana (1559) | `ConfHeptapol_1559` | Check ECAV archives; Ribini's *Memorabilia* may contain text; Slovak National Library (SNK) |
+| Confessio Scepusiana (1569) | `ConfScepus_1569` | Levoča/Kežmarok archives; SNK; possible edition in *Monumenta evangelicorum* |
+| Jan Hus: De ecclesia (1413) | `Hus_DeEccl_1413` | S. Harrison Thomson critical ed. (1956); check Archive.org and Kramerius NKP |
+| Jakoubek ze Stříbra: Eucharistic writings | `Jakoubek_Euch` | Manuscriptorium for MSS; Bartoš bibliographies for printed editions |
+| Lukáš Pražský: Sacramental writings | `LukasPrazsky_Sviat` | Müller's *Geschichte der böhm. Brüder* (vol. 1); Říčan references; MZK Kramerius |
+| Acta Unitatis Fratrum | `ActaUF` | Herrnhut Moravian Archives (Unitätsarchiv); Müller editions; Manuscriptorium |
+
+### Medium Priority (needed for §2 context, §5 transfer)
+| Source | Short ID | Acquisition Path |
+|---|---|---|
+| Four Articles of Prague (1420) | `ArtPrag_1420` | Frequently published in secondary literature (Kaminsky, Šmahel); check Documenta Mag. Joannis Hus |
+| Slovak Lutheran Agendas | `AgendySlov` | Bardejov archive (ŠA Prešov — Bardejov); Levoča archive; Rambachiana 1637 possibly at SNK |
+
+### Database Verification (Phase 2 task)
+- [ ] Hymnorum Thesaurus Bohemicus — test search for specific hymn incipits
+- [ ] Manuscriptorium — test search for kancionál manuscripts
+- [ ] Kramerius MZK/NKP — verify access to Ivančický kancionál, Confessio Bohemica digitisations
+
+### Notes
+- Luther WA volumes: available via Archive.org (scanned Weimar Ausgabe) and Luther Seminary digital collections
+- `GresovaSek_2020` dissertation: Michal to acquire via UK Bratislava library or request from author directly
 
 ---
 

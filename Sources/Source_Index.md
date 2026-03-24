@@ -29,7 +29,7 @@ Status legend: 📋 = identified, 📖 = accessed/read, 📝 = documented (Sourc
 | Agenda Česká (1581) + Bystrická agenda (1585) | `AgCeska_1581` | 📝 | **Critical edition: Benka 2024 (MLS X)** in `resources/`; also raw scans (229 pp.) in `Monografia/Resources/Agenda Ceska 1581/` | Neo-Utraquist liturgical order. Full scholarly transcription with apparatus now available. See `Benka_2024.md`. Mass rite: ed. pp. 131–150. |
 | Jistebnický kancionál (c. 1420) | `KancJisteb_1420` | 📋 | [Manuscriptorium](https://www.manuscriptorium.com/) | |
 | Jan Hus: De ecclesia (1413) | `Hus_DeEccl_1413` | 📋 | — | |
-| Jakoubek ze Stříbra: Eucharistic writings | `Jakoubek_Euch` | 📋 | — | |
+| Jakoubek ze Stříbra: Eucharistic writings | `Jakoubek_Euch` | 📋 | — | Defence of communion *sub utraque* (c. 1414) |
 
 ## III. Primary Sources — Unity of Brethren
 
@@ -40,7 +40,7 @@ Status legend: 📋 = identified, 📖 = accessed/read, 📝 = documented (Sourc
 | Šamotulský kancionál (1561) | `KancSamotul_1561` | 📋 | HTB indexed; 1576 ed. at Mazowiecka BCC | 735 songs, Blahoslav ed. |
 | Ivančický kancionál (1564) | `KancIvanc_1564` | 📋 | [Kramerius MZK](https://kramerius.mzk.cz/) | 745 songs, peak achievement |
 | Petr Chelčický: Sieť viery | `Chelcicky_Siet` | 📋 | [Citarny.cz](https://citarny.cz) | Ideological foundation of early Unity |
-| Lukáš Pražský: Sacramental writings | `LukasPraha_Sviat` | 📋 | — | Key Unity theologian |
+| Lukáš Pražský: Sacramental writings | `LukasPrazsky_Sviat` | 📋 | — | Key Unity theologian, c. 1500–1520s |
 | Jan Blahoslav: Musica (1558/1569) | `Blahoslav_Musica` | 📋 | [Kramerius MZK](https://kramerius.mzk.cz/) | Hymnological theory |
 
 ## IV. Trans-confessional Sources
@@ -54,7 +54,7 @@ Status legend: 📋 = identified, 📖 = accessed/read, 📝 = documented (Sourc
 
 | Author | Short Title | Short ID | Status | Notes |
 |---|---|---|---|---|
-| Benka, Peter | Agenda Neosoliensia (MLS X, 2024) | `Benka_2024` | 📝 | **Critical edition of Agenda Česká + Bystrická agenda.** 80-pp. historical study on mining-town Reformation. Key for §4.1 (Eucharistic theology), §2 (context). CC BY-SA 4.0. PDF in `resources/`. |
+| Benka, Peter | Agenda Neosoliensia (MLS X, 2024) | `Benka_2024` | 📝 | **Critical edition of `AgCeska_1581` + Bystrická agenda.** Use this for all citations of the Agenda Česká and Bystrická agenda texts. 80-pp. historical study on mining-town Reformation. Key for §4.1 (Eucharistic theology), §2 (context). CC BY-SA 4.0. PDF in `resources/`. See `Benka_2024.md`. |
 | David, Zdeněk V. | Finding the Middle Way | `David_MiddleWay` | 📋 | Utraquist ecclesiology |
 | David, Zdeněk V. | Utraquists, Lutherans, and Bohemian Confession | `David_1999` | 📋 | Church History 68(2), 1999 |
 | Říčan, Rudolf | Dějiny Jednoty bratrské | `Rican_Dejiny` | 📋 | Standard Unity history |
@@ -70,7 +70,7 @@ Status legend: 📋 = identified, 📖 = accessed/read, 📝 = documented (Sourc
 | Hrejsa, Ferdinand | Česká konfese | `Hrejsa_CeskaKonf` | 📋 | |
 | Holeton, David R. | (Utraquist liturgy studies) | `Holeton_Lit` | 📋 | Charles University. **Flagged:** "Lex orandi – lex credendi…" article in BRRP series — directly uses our analytical framework for Utraquist liturgy. HIGH PRIORITY. |
 | Landová, Tabita | Liturgie Jednoty bratrské (1457–1620) | `Landova_2014` | 📋 | Červený Kostelec: Pavel Mervart, 2014. Monograph on Unity liturgy. Likely contains Unity communion rite needed for §4.1 comparison. Cited in Chalupský. |
-| Grešová-Sekelská, A. | Dissertation: Juraj Tranovský a jeho význam (2020) | `GresovaSek_Diss` | 📋 | Cited in GresovaSek_2023. Full CS hymn identification (incl. ~30 Bohemian melodic sources). Not yet acquired. |
+| Grešová-Sekelská, A. | Dissertation: Juraj Tranovský a jeho význam (2020) | `GresovaSek_2020` | 📋 | Cited in `GresovaSek_2023`. Full CS hymn identification (incl. ~30 Bohemian melodic sources). Not yet acquired — Michal to acquire via UK Bratislava or from author. |
 
 ---
 

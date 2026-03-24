@@ -29,7 +29,7 @@
 - Political context: Habsburg pressures, Confessio Bohemica as convergence attempt
 - Post-White Mountain suppression and its long shadow
 
-**Sources:** Říčan, David (Finding the Middle Way), Fudge, Daniel, Haberkern
+**Sources:** `Rican_Dejiny`, `David_MiddleWay`, `Fudge`, `Haberkern_2023`; primary: `ArtPrag_1420`, `ConfBohem_1575`
 
 ---
 
@@ -53,7 +53,7 @@
 - Sacramental evolution: from early radicalism to mature Confessio Fidei (1535)
 - Blahoslav generation: hymnological peak (Šamotulský, Ivančický kancionáls)
 
-**Sources:** Primary confessional documents; Atwood, David, Říčan
+**Sources:** `BookConcord_1580` (CA, FC), `ConfPentapol_1549`, `ConfHeptapol_1559`, `ConfScepus_1569`, `AgCeska_1581`, `ConfFidei_1535`; secondary: `Atwood_CzBrethren`, `David_MiddleWay`, `Rican_Dejiny`
 
 ---
 
@@ -66,7 +66,7 @@
 - *Sub utraque specie*: shared practice, different theological grounding
 - Sacrificial character of liturgy: how each tradition handled the Mass/Lord's Supper
 - **Hymn evidence:** Eucharistic hymns in CS vs. Brethren kancionáls — textual comparison
-- **Liturgical evidence:** Agenda Česká 1581 Eucharistic rite vs. Lutheran agendas
+- **Liturgical evidence:** Agenda Česká 1581 Eucharistic rite (Benka 2024 critical ed., pp. 131–150) vs. Lutheran agendas; Bystrická agenda (1585) as witness to harder Eucharistic formulations — exploit moderate↔hard spectrum for *lex orandi* argument
 
 ### 4.2 Ekleziológia
 - Church, ministry, apostolic succession
@@ -82,7 +82,7 @@
 - Approaches to biblical authority and patristic sources across confessions
 - Role of *bibličtina* (Kralice Bible language) as shared medium
 
-**Sources:** Primary confessional documents, liturgical orders, kancionáls; David 1999, Holeton, Grešová-Sekelská
+**Sources:** `BookConcord_1580`, `AgCeska_1581`, `Benka_2024`, `KancSamotul_1561`, `KancIvanc_1564`, `KancJisteb_1420`, `CitharaSanct_1636`; secondary: `David_1999`, `Holeton_Lit`, `GresovaSek_2023`
 
 ---
 
@@ -98,7 +98,7 @@
 - The *bibličtina* medium: linguistic proximity as both enabler and concealer of theological difference
 - What the adaptations reveal about boundaries of acceptable theological diversity
 
-**Sources:** Grešová-Sekelská 2023, Vajda 1944, Mladějovská 2008, HTB database comparisons
+**Sources:** `GresovaSek_2023`, `Vajda_1944`, `Mladejovska_2008`, `CitharaSanct_1636`, `KancSamotul_1561`, `KancIvanc_1564`; database: HTB (http://www.clavmon.cz/htb/)
 
 ---
 
@@ -114,11 +114,43 @@
 
 ---
 
-## Source-to-Section Mapping (to be populated in Phase 3)
+## Source-to-Section Mapping (Phase 2 — in progress)
 
 | Source | §1 | §2 | §3 | §4.1 | §4.2 | §4.3 | §4.4 | §5 | §6 |
 |---|---|---|---|---|---|---|---|---|---|
-| *To be filled as source documentation progresses* | | | | | | | | | |
+| `BookConcord_1580` | | | ✓ | ✓ | ✓ | ✓ | ✓ | | |
+| `ConfPentapol_1549` | | | ✓ | | | | | | |
+| `ConfHeptapol_1559` | | | ✓ | | | | | | |
+| `ConfScepus_1569` | | | ✓ | | | | | | |
+| `CitharaSanct_1636` | | | | ✓ | | ✓ | | ✓ | |
+| `Luther_FormMissae_1523` | | | | ✓ | | | | | |
+| `Luther_DtMesse_1526` | | | | ✓ | | | | | |
+| `Luther_DeCaptiv_1520` | | | | ✓ | | | | | |
+| `ArtPrag_1420` | | ✓ | | | | | | | |
+| `CompBasil_1436` | | ✓ | | | | | | | |
+| `AgCeska_1581` / `Benka_2024` | | ✓ | ✓ | ✓ | ✓ | | | ✓ | |
+| `KancJisteb_1420` | | | | ✓ | | | | | |
+| `Hus_DeEccl_1413` | | | | | ✓ | | | | |
+| `Jakoubek_Euch` | | | | ✓ | | | | | |
+| `ConfFidei_1535` | | | ✓ | ✓ | ✓ | ✓ | ✓ | | |
+| `KancSamotul_1561` | | | | ✓ | | ✓ | | ✓ | |
+| `KancIvanc_1564` | | | | ✓ | | ✓ | | ✓ | |
+| `Chelcicky_Siet` | | | ✓ | | | ✓ | | | |
+| `LukasPrazsky_Sviat` | | | ✓ | ✓ | | | | | |
+| `Blahoslav_Musica` | | | | | | | | ✓ | |
+| `ConfBohem_1575` | | ✓ | | | ✓ | | | | |
+| `BiblKral` | | | | | | | ✓ | ✓ | |
+| `David_MiddleWay` | | ✓ | ✓ | | ✓ | | | | |
+| `David_1999` | | ✓ | | | ✓ | | | | |
+| `Rican_Dejiny` | | ✓ | ✓ | | | | | | |
+| `GresovaSek_2023` | | | | | | | | ✓ | |
+| `Vajda_1944` | | | | | | | | ✓ | |
+| `Holeton_Lit` | | | | | ✓ | | | | |
+| `Atwood_CzBrethren` | | | ✓ | | | | | | |
+| `Haberkern_2023` | | ✓ | | | ✓ | | | | |
+| `Mladejovska_2008` | | | | | | | | ✓ | |
+
+*Legend: ✓ = source relevant to this section. Update as documentation progresses.*
 
 ---
 
