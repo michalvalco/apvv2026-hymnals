@@ -26,7 +26,7 @@ Status legend: 📋 = identified, 📖 = accessed/read, 📝 = documented (Sourc
 |---|---|---|---|---|
 | Four Articles of Prague (1420) | `ArtPrag_1420` | 📋 | — | |
 | Basel Compacts (1436) | `CompBasil_1436` | 📋 | [Archive.org](https://archive.org) | |
-| Agenda Česká (1581) | `AgCeska_1581` | 📖 | Scans in `resources/` (229 pages) | Novoutraquist liturgical order |
+| Agenda Česká (1581) + Bystrická agenda (1585) | `AgCeska_1581` | 📝 | **Critical edition: Benka 2024 (MLS X)** in `resources/`; also raw scans (229 pp.) in `Monografia/Resources/Agenda Ceska 1581/` | Neo-Utraquist liturgical order. Full scholarly transcription with apparatus now available. See `Benka_2024.md`. Mass rite: ed. pp. 131–150. |
 | Jistebnický kancionál (c. 1420) | `KancJisteb_1420` | 📋 | [Manuscriptorium](https://www.manuscriptorium.com/) | |
 | Jan Hus: De ecclesia (1413) | `Hus_DeEccl_1413` | 📋 | — | |
 | Jakoubek ze Stříbra: Eucharistic writings | `Jakoubek_Euch` | 📋 | — | |
@@ -54,12 +54,13 @@ Status legend: 📋 = identified, 📖 = accessed/read, 📝 = documented (Sourc
 
 | Author | Short Title | Short ID | Status | Notes |
 |---|---|---|---|---|
+| Benka, Peter | Agenda Neosoliensia (MLS X, 2024) | `Benka_2024` | 📝 | **Critical edition of Agenda Česká + Bystrická agenda.** 80-pp. historical study on mining-town Reformation. Key for §4.1 (Eucharistic theology), §2 (context). CC BY-SA 4.0. PDF in `resources/`. |
 | David, Zdeněk V. | Finding the Middle Way | `David_MiddleWay` | 📋 | Utraquist ecclesiology |
 | David, Zdeněk V. | Utraquists, Lutherans, and Bohemian Confession | `David_1999` | 📋 | Church History 68(2), 1999 |
 | Říčan, Rudolf | Dějiny Jednoty bratrské | `Rican_Dejiny` | 📋 | Standard Unity history |
-| Grešová-Sekelská, A. | Georgius Tranoscius Teschiniensis (2023) | `GresovaSek_2023` | 📖 | PDF in admin resources |
-| Grešová-Sekelská, A. | Príspevok k vzniku a obsahu CS | `GresovaSek_Prispevok` | 📖 | PDF in admin resources |
-| Vajda, Jaroslav | A History of the Cithara Sanctorum (1944) | `Vajda_1944` | 📖 | PDF in admin resources |
+| Grešová-Sekelská, A. | Georgius Tranoscius Teschiniensis (2023) | `GresovaSek_2023` | 📝 | Critical ed. of 8 CS hymns + study on Třanovský's method. Musicological, not theological. PDF in `resources/`. |
+| Grešová-Sekelská, A. | Príspevok k vzniku a obsahu CS | `GresovaSek_Prispevok` | 📖 | PDF in `resources/`. Needs documentation. |
+| Vajda, Jaroslav | A History of the Cithara Sanctorum (1944) | `Vajda_1944` | 📖 | PDF in admin resources. Next priority for documentation. |
 | Žurek, Jiří | Utraquist sanctoral in 16th c. Czech Graduals | `Zurek_Utrsanct` | 📖 | PDF in admin resources |
 | Chalupský, Michal | Obrad Krstu podľa Agendy Českej | `Chalupsky_Krst` | 📖 | PDF in admin resources |
 | Atwood, Craig D. | Theology of the Czech Brethren | `Atwood_CzBrethren` | 📋 | Penn State UP, 2009 |
@@ -68,6 +69,7 @@ Status legend: 📋 = identified, 📖 = accessed/read, 📝 = documented (Sourc
 | Fudge, Thomas A. | (Czech Reformation studies) | `Fudge` | 📋 | |
 | Hrejsa, Ferdinand | Česká konfese | `Hrejsa_CeskaKonf` | 📋 | |
 | Holeton, David R. | (Utraquist liturgy studies) | `Holeton_Lit` | 📋 | Charles University |
+| Grešová-Sekelská, A. | Dissertation: Juraj Tranovský a jeho význam (2020) | `GresovaSek_Diss` | 📋 | Cited in GresovaSek_2023. Full CS hymn identification (incl. ~30 Bohemian melodic sources). Not yet acquired. |
 
 ---
 
