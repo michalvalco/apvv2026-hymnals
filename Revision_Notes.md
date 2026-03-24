@@ -102,3 +102,37 @@ Sources currently lacking access/location info — prioritised by section releva
 ---
 
 *Updated during revision passes (Pass A: argument, Pass B: citations, Pass C: prose/voice, Pass D: structure).*
+
+
+---
+
+## Literature Search Results (2026-03-24, Claude Desktop session)
+
+Full report: `resources/literature-search-2026-03-24.md` — 37 sources across 5 categories.
+
+### Key additions to secondary literature
+| Source | Priority | Status |
+|---|---|---|
+| Schoen 2022 (*QuFRG 100*) — Utraquist Konfessionsbildung | **CRITICAL** | Identified; €168; **must acquire** |
+| Brown 2005 (*Singing the Gospel*) — methodological model | HIGH | Available (Harvard UP, widely in print) |
+| Wandel 2014 (*Companion to Eucharist*) — Eucharistic framework | HIGH | Check institutional Brill access |
+| Kouba 2017 (*Slovník staročeských hymnografů*) — hymn provenance | HIGH | Etnologický ústav AV ČR; check availability |
+| GresovaSek 2016 ("Inšpiračné zdroje") | HIGH | Acquire from Muzikologické fórum |
+| GresovaSek 2019 ("De Cultu Sanctorum") | DONE | PDF acquired, processed, notes written |
+| Graham 2006 (Utraquist Mass evolution) | HIGH | JSTOR |
+| Malura 2019 (German Ref. & Czech hymnbooks) | HIGH | De Gruyter (DOI available) |
+| Haberkern 2023 (Confessio Bohemica archaeology) | HIGH | Taylor & Francis |
+| Just/Rothkegel 2012 (CB critical edition) | HIGH | Paywalled (Neukirchener) |
+
+### Challenges to thesis identified in literature search
+See `resources/literature-search-2026-03-24.md` §"Synthesis: Challenges to the Thesis" for full analysis. Three counter-pressures:
+1. **Irenic counter-narrative** (Haberkern, David): CB 1575 as genuine compromise, not Lutheran takeover
+2. **Liturgical persistence** (Graham, Holeton): No Lutheran influence on Utraquist Mass even into 17th c.
+3. **Schoen's confessionalisation model**: Utraquism as active agent, not passive recipient
+
+### Schoen 2022 — repositioning effect
+Detailed reference file: `resources/notes-Schoen-2022-Utraquismus.md`. Key implication: David becomes one strand, not the whole story. Schoen's periodisation (Vorphase → Phase I → Phase II → 1609) provides the conceptual grid for our §2 and §3.2.
+
+
+### File organisation note
+The `resources/notes-*.md` files (Schoen, Sekelská 2019) use a briefing-document format, while `Sources/*.md` files use the project source-note template. Both are functional. The `resources/` notes serve as detailed reference files; `Sources/` entries are the canonical documentation. When time allows, key data from `resources/notes-*` should be migrated into `Sources/` template entries. Not urgent — the information is captured and cross-referenced in Source_Index.
