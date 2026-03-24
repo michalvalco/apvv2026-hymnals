@@ -1,0 +1,57 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-parchment-400/50 bg-ink-800 text-parchment-400">
+  <div class="mx-auto max-w-wide px-6 py-10">
+    <div class="grid gap-8 md:grid-cols-3">
+      <!-- Grant acknowledgment -->
+      <div>
+        <p class="font-sans text-xs leading-relaxed">
+          This work was supported by the Slovak Research and Development Agency
+          under the Contract no. APVV-24-0484.
+        </p>
+        <p class="mt-2 font-sans text-xs leading-relaxed text-parchment-500">
+          TEPALIT — Teologická paradigma liturgických a hymnologických prameňov
+          v protestantskom prostredí strednej Európy
+        </p>
+      </div>
+
+      <!-- Team -->
+      <div>
+        <h3 class="font-sans text-xs font-semibold uppercase tracking-wider text-parchment-300">
+          Riešiteľský tím
+        </h3>
+        <ul class="mt-2 space-y-1 font-sans text-xs text-parchment-500">
+          <li>doc. PhDr. Miloš Klátik, PhD. — PI</li>
+          <li>doc. PhDr. Michal Valčo, PhD. — dogmatická komparácia</li>
+          <li>Mgr. Adriana Sekelská, PhD. — hymnológia</li>
+        </ul>
+      </div>
+
+      <!-- Licences & links -->
+      <div>
+        <h3 class="font-sans text-xs font-semibold uppercase tracking-wider text-parchment-300">
+          Licencie
+        </h3>
+        <ul class="mt-2 space-y-1 font-sans text-xs text-parchment-500">
+          <li>Kód: MIT</li>
+          <li>Obsah: CC BY 4.0</li>
+          <li>
+            <a
+              href="https://github.com/michalvalco/apvv2026-hymnals"
+              class="text-parchment-400 underline decoration-parchment-600/40 hover:text-parchment-200"
+            >
+              GitHub
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="mt-8 border-t border-parchment-800 pt-4 text-center font-sans text-xs text-parchment-600">
+      &copy; {year} TEPALIT. <span class="text-latin">Lex orandi, lex credendi.</span>
+    </div>
+  </div>
+</footer>

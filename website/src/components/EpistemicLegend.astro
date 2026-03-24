@@ -1,0 +1,49 @@
+---
+/**
+ * Epistemic status legend — reusable across all visualisation pages.
+ * Non-negotiable per WEBSITE_BRIEFING: every visualisation must display this.
+ */
+interface Props {
+  compact?: boolean;
+}
+
+const { compact = false } = Astro.props;
+---
+
+<aside
+  class:list={[
+    "rounded-lg border border-parchment-400/50 bg-parchment-100/60 font-sans",
+    compact ? "px-3 py-2 text-xs" : "px-5 py-4 text-sm",
+  ]}
+  aria-label="Epistemic status legend"
+>
+  <h4 class:list={["font-semibold text-ink-400", compact ? "mb-1.5" : "mb-3"]}>
+    {compact ? "Epistemický status" : "Epistemický status / Epistemic Status"}
+  </h4>
+  <div class:list={["flex flex-wrap", compact ? "gap-3" : "gap-5"]}>
+    <!-- FACTUAL -->
+    <div class="flex items-center gap-2">
+      <span class="inline-block h-3 w-3 rounded-full bg-epistemic-factual" aria-hidden="true"></span>
+      <span class="text-ink-400">
+        <strong class="text-ink">Factual</strong>
+        {!compact && <span class="text-ink-300"> — overiteľné z prameňa</span>}
+      </span>
+    </div>
+    <!-- INTERPRETIVE -->
+    <div class="flex items-center gap-2">
+      <span class="inline-block h-3 w-3 rounded-full bg-epistemic-interpretive opacity-80" aria-hidden="true"></span>
+      <span class="text-ink-400">
+        <strong class="text-ink">Interpretive</strong>
+        {!compact && <span class="text-ink-300"> — odborný úsudok</span>}
+      </span>
+    </div>
+    <!-- DEFERRED -->
+    <div class="flex items-center gap-2">
+      <span class="inline-block h-3 w-3 rounded-full border-2 border-dashed border-epistemic-deferred opacity-60" aria-hidden="true"></span>
+      <span class="text-ink-400">
+        <strong class="text-ink">Deferred</strong>
+        {!compact && <span class="text-ink-300"> — vyžaduje expertné posúdenie</span>}
+      </span>
+    </div>
+  </div>
+</aside>
