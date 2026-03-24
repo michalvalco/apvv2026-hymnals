@@ -74,7 +74,7 @@ Sources currently lacking access/location info — prioritised by section releva
 - [x] Accessible via browser (new version since October 2025; old links redirect)
 - **Content:** 400,000 descriptive records, 110,000 digitised documents (manuscripts, incunabula, early prints to c. 1800). 139 content partners across 24 countries.
 - **Search:** Keyword search, advanced filters, personal digital library (save searches, create collections, annotations). Czech + English interface.
-- **Specific finds:** Jistebnický kancionál has dedicated page with digitised virtual document (MS Praha, KNM, II C 7, c. 1430). Also found: Utraquist gradual + kancionál from Teplice (1560/1566) — relevant to §4; Kancionál printed in Ivančice 1572 (Brethren press).
+- **Specific finds:** Jistebnický kancionál has dedicated page with digitised virtual document (MS Praha, KNM, II C 7, c. 1430). Also found: Utraquist gradual + kancionál from Teplice (1560/1566) — relevant to §4; [*Písně duchovní evangelistské* (1572, Ivančice Brethren press)](https://www.manuscriptorium.com/en/node/5216) at Městské muzeum Polička — illuminated, relevant to §3.3/§5.
 - **Relevance:** HIGH — essential for manuscript sources. Jistebnický kancionál directly accessible.
 - **Limitations:** October 2025 version transition may break older links in scholarship. Registration required for some features.
 
@@ -93,7 +93,7 @@ Sources currently lacking access/location info — prioritised by section releva
 - **Relevance:** MODERATE — mainly 19th c. secondary literature and later reprints.
 - **Limitations:** Same access restrictions as MZK. v.3/v.5 split can be confusing.
 
-**Practical note:** All four databases block programmatic access (403). All research must be done manually via browser. If based in Slovakia, consider whether your institution participates in Czech library network, or plan research visits to MZK Brno / NKP Prague.
+**Practical note:** All four databases block programmatic access (403). All research must be done manually via browser. If based in Slovakia, consider whether your institution participates in Czech library network, or plan research visits to MZK Brno / NKP Prague. **Tip:** Use [digitalniknihovna.cz](https://www.digitalniknihovna.cz/) as a federated search across all Czech Kramerius instances simultaneously — better discoverability than searching MZK/NKP individually (Kramerius internal pages are poorly indexed by external search engines).
 
 ### Notes
 - Luther WA volumes: [master index with links to all volumes](http://www.lutherdansk.dk/WA/D.%20Martin%20Luthers%20Werke,%20Weimarer%20Ausgabe%20-%20WA.htm) on Archive.org. Formula Missae = WA 12, Deutsche Messe = WA 19, De captivitate = WA 6. Also: [Project Wittenberg](https://www.projectwittenberg.org/pub/resources/text/wittenberg/wittenberg-luther.html) for selected EN translations.
