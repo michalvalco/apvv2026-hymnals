@@ -67,7 +67,7 @@ Sources currently lacking access/location info — prioritised by section releva
 - **Content:** Metadata database (not full-text scans) — **21,227 catalogue entries** covering all printed Czech kancionál production 1501–late 18th c. Converted from Antonín Škarka's handwritten catalogue cards.
 - **Search:** Two modes: (1) by textual incipit, (2) browse full contents of individual kancionáls. Cross-referencing concordances across hymnbooks.
 - **Metadata fields (10):** Incipit, Source (kancionál + year + page), Title/designation, Melody, Theme/section, Number of stanzas, Strophic form, Acrostic, Original/translation/arrangement, Author/translator
-- **Relevance:** HIGHEST — directly covers our period and sources. Use for tracing concordances across confessional boundaries (Brethren → CS). Administered by Jiří Žurek (zurek@ics.cas.cz).
+- **Relevance:** HIGHEST — directly covers our period and sources. Use for tracing concordances across confessional boundaries (Brethren → CS). Administered by Jiří Žurek (see official contact information on the database website).
 - **Limitations:** No full hymn texts (incipits + metadata only). No page scans (except Jesličky 1658 facsimile). Czech-only interface.
 
 **Manuscriptorium** (https://www.manuscriptorium.com/)
@@ -96,7 +96,7 @@ Sources currently lacking access/location info — prioritised by section releva
 **Practical note:** All four databases block programmatic access (403). All research must be done manually via browser. If based in Slovakia, consider whether your institution participates in Czech library network, or plan research visits to MZK Brno / NKP Prague. **Tip:** Use [digitalniknihovna.cz](https://www.digitalniknihovna.cz/) as a federated search across all Czech Kramerius instances simultaneously — better discoverability than searching MZK/NKP individually (Kramerius internal pages are poorly indexed by external search engines).
 
 ### Notes
-- Luther WA volumes: [master index with links to all volumes](http://www.lutherdansk.dk/WA/D.%20Martin%20Luthers%20Werke,%20Weimarer%20Ausgabe%20-%20WA.htm) on Archive.org. Formula Missae = WA 12, Deutsche Messe = WA 19, De captivitate = WA 6. Also: [Project Wittenberg](https://www.projectwittenberg.org/pub/resources/text/wittenberg/wittenberg-luther.html) for selected EN translations.
+- Luther WA volumes: [external master index with links to Archive.org scans of all volumes](http://www.lutherdansk.dk/WA/D.%20Martin%20Luthers%20Werke,%20Weimarer%20Ausgabe%20-%20WA.htm). Formula Missae = WA 12, Deutsche Messe = WA 19, De captivitate = WA 6. Also: [Project Wittenberg](https://www.projectwittenberg.org/pub/resources/text/wittenberg/wittenberg-luther.html) for selected EN translations.
 - `GresovaSek_2020` dissertation: Michal to acquire via UK Bratislava library or request from author directly
 
 ---

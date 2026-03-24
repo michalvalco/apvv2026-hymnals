@@ -14,11 +14,13 @@ Status legend: 📋 = identified, 📖 = accessed/read, 📝 = documented (Sourc
 | Confessio Pentapolitana (1549) | `ConfPentapol_1549` | 📋 | [Google Books (1844 ed.)](https://books.google.com) | Regional reception of CA |
 | Confessio Heptapolitana (1559) | `ConfHeptapol_1559` | 📋 | **Critical ed.: Csepregi & Kónya, [*Tri lutherské vyznania viery z Uhorska*](https://docplayer.hu/46716880-Tri-lutherske-vyznania-viery-z-uhorska-harom-lutheri-hitvallas-magyarorszagon-drei-lutherische-glaubensbekenntnisse-aus-ungarn.html)** (ETF UK BA); also partial in [Reu (1930)](https://archive.org/details/augsburgconfessi0000reuj); MSS at OSzK Budapest | Editio princeps Neusohl 1578 |
 | Confessio Scepusiana (1569) | `ConfScepus_1569` | 📋 | **Critical ed.: Csepregi & Kónya, [*Tri lutherské vyznania*](https://docplayer.hu/46716880-Tri-lutherske-vyznania-viery-z-uhorska-harom-lutheri-hitvallas-magyarorszagon-drei-lutherische-glaubensbekenntnisse-aus-ungarn.html)** (same vol.); also partial in [Reu (1930)](https://archive.org/details/augsburgconfessi0000reuj); Spišský archív Levoča | Cf. Šebők, *A Humanist on the Frontier* (2023) |
-| Cithara Sanctorum (1636+) | `CitharaSanct_1636` | 📋 | [UKB Digital](https://www.ulib.sk/) (1745 ed.) / [REAL-R](http://real-r.mtak.hu/) (1636 ed.) / [Kramerius MZK](https://kramerius.mzk.cz/) (UUID: 48fe9d67…; may require CZ library registration) | Central source for transfer analysis |
-| Luther: Formula Missae (1523) | `Luther_FormMissae_1523` | 📋 | [WA 12](http://www.lutherdansk.dk/WA/D.%20Martin%20Luthers%20Werke,%20Weimarer%20Ausgabe%20-%20WA.htm) on Archive.org | Latin liturgical reform |
-| Luther: Deutsche Messe (1526) | `Luther_DtMesse_1526` | 📋 | [WA 19](http://www.lutherdansk.dk/WA/D.%20Martin%20Luthers%20Werke,%20Weimarer%20Ausgabe%20-%20WA.htm) on Archive.org | Vernacular liturgical reform |
-| Luther: De captivitate Babylonica (1520) | `Luther_DeCaptiv_1520` | 📋 | [WA 6](http://www.lutherdansk.dk/WA/D.%20Martin%20Luthers%20Werke,%20Weimarer%20Ausgabe%20-%20WA.htm) on Archive.org | Sacramental theology, anti-sacrificial polemic |
+| Cithara Sanctorum (1636+) | `CitharaSanct_1636` | 📋 | [UKB Digital](https://www.ulib.sk/) (1745 ed.) / [REAL-R](http://real-r.mtak.hu/) (1636 ed.) / [Kramerius MZK](https://kramerius.mzk.cz/) (requires CZ library registration; exact UUID recorded in `Revision_Notes.md`) | Central source for transfer analysis |
+| Luther: Formula Missae (1523) | `Luther_FormMissae_1523` | 📋 | WA 12 (Weimarer Ausgabe; see WA master index below) | Latin liturgical reform |
+| Luther: Deutsche Messe (1526) | `Luther_DtMesse_1526` | 📋 | WA 19 (Weimarer Ausgabe; see WA master index below) | Vernacular liturgical reform |
+| Luther: De captivitate Babylonica (1520) | `Luther_DeCaptiv_1520` | 📋 | WA 6 (Weimarer Ausgabe; see WA master index below) | Sacramental theology, anti-sacrificial polemic |
 | Slovak Lutheran Agendas | `AgendySlov` | 📋 | [Cantus.sk — Bardejov](https://cantus.sk/archive/5) (related early music); ŠA Prešov — Archív Bardejov (fond MMB); ECAV ústredný archív Bratislava; Lyceálna knižnica BA | Stöckel-era items; Rambachiana 1637 undigitised |
+
+**Shared index for WA volumes:** [Luther's Works, *Weimarer Ausgabe* (WA) — master index](http://www.lutherdansk.dk/WA/D.%20Martin%20Luthers%20Werke,%20Weimarer%20Ausgabe%20-%20WA.htm) (links onward to Archive.org scans of individual volumes, including WA 6, 12, 19).
 
 ## II. Primary Sources — Utraquist
 
