@@ -1,0 +1,20 @@
+# Large resource files (PDFs, scans, images)
+resources/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor files
+*.swp
+*.swo
+*~
+.vscode/
+
+# Claude Code local state
+.claude/
+
+# Temporary files
+*.tmp
+*.bak
