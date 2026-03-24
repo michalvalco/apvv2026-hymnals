@@ -92,3 +92,49 @@ Status legend: 📋 = identified, 📖 = accessed/read, 📝 = documented (Sourc
 | Graham, Barry F.H. | The Evolution of the Utraquist Mass, 1420–1620 | `Graham_2006` | 📋 | *Catholic Historical Review* 92/4 (2006): 550–574. Finds NO Lutheran influence on Utraquist Mass. Key for *lex orandi* argument: liturgical practice persisted even where documents converged. |
 | Grešová-Sekelská, A. | "Cithara Svätých" / De Cultu Sanctorum (2019) | `GresovaSek_2019` | 📝 | *Testimonia Theologica* XIII/1, pp. 17–39. Saints in CS hymns; traces Utraquist + Brethren sources. Detailed note: `resources/notes-Sekelska-2019-DeCultuSanctorum.md`. PDF in `resources/`. |
 | Grešová-Sekelská, A. | Inšpiračné zdroje Tranovského (2016) | `GresovaSek_2016` | 📋 | *Muzikologické fórum* 5/1–2, pp. 221–242. Tranovský's source material for CS. **HIGH PRIORITY** — acquire. |
+
+
+## VI. Primary Sources — Added from Legacy Audit (2026-03-24)
+
+| Source | Short ID | Status | Location | Notes |
+|---|---|---|---|---|
+| Missale Pragense (Utraquist use) | `MissalePrag` | 📋 | Check Manuscriptorium. No known digital exemplar. | Old Utraquists used pre-Tridentine Roman missals (retained Roman Canon). Key for showing conservative Eucharistic theology. |
+| Prvý kancionál Jednoty (1501) | `KancPrvy_1501` | 📋 | Check Kramerius, Manuscriptorium. Extremely rare. | First Protestant hymnal ever published. Text-only (no notation). |
+| Rohov kancionál (1541) | `KancRoh_1541` | 📋 | Check HTB, Manuscriptorium. MUNI thesis (Mladějovská) for catalogue data: [is.muni.cz](https://is.muni.cz/th/lb9bi/) | Jan Roh editor. Pre-Blahoslav Brethren hymnody. |
+| Kunvaldský kancionál (1576) | `KancKunv_1576` | 📋 | Check HTB, Manuscriptorium. | Sekelská 2019 uses it extensively for saint hymn tracing. |
+| Závorkov kancionál (1602) | `KancZav_1602` | 📋 | Check HTB, Manuscriptorium. | Sekelská 2019 uses it extensively. Late Brethren production. |
+| Bratská agenda (1580/1585/1612) | `AgBratska_1585` | 📋 | Annotation gives Kramerius VKOL link for 1585 ed. — **verify**. | Official Unity liturgical orders. Distinct from neo-Utraquist Agenda Česká 1581. |
+| Lukáš Pražský: Jednoduchá zpráva o Večeři Páně | `LukasPr_Zprava` | 📋 | Likely undigitised. Secondary: Atwood 2009, Crews 2018. | Early Unity Lord's Supper rite + theological rationale. |
+| Michael Weiße: Ein New Gesengbuchlein (1531) | `Weisse_1531` | 📋 | Check Archive.org, BSB, Google Books. | First German-language Brethren hymnal. 157 hymns. Luther knew and used it. Important for DE→CZ→SK transmission chain. |
+
+## VII. Secondary Literature — Added from Legacy Audit (2026-03-24)
+
+| Author | Short Title | Short ID | Status | Notes |
+|---|---|---|---|---|
+| Daniel, David P. | Highlights of the Lutheran Reformation in Slovakia | `Daniel_HLR` | 📋 | [**Free PDF**](https://ctsfw.net/media/pdfs/danielreformationinslovakia.pdf). CTSFW. Key for §2 (Slovak Lutheran confessionalisation context). |
+| Haan, Ľudovít | *Cithara Sanctorum, její historia* (1873) | `Haan_1873` | 📋 | Foundational 19th-c. CS source study. First systematic identification of CS hymn sources. Check Google Books, Archive.org. |
+| Mocko, [Karol?] | *Historia posvätnej piesne slovenskej* | `Mocko_Hist` | 📋 | [Zlatý fond SME](https://zlatyfond.sme.sk/dielo/1812/Mocko_Historia-posvatnej-piesne-slovenskej-a-historia-kancionalu/10). Slovak hymn history. Free online. |
+| Basicova, Susanne | *Juraj Tranovský und sein Kantional CS* (diss., 2009) | `Basicova_2009` | 📋 | University of Vienna. German-language dissertation. Check Univ. Vienna repository (u:theses). |
+
+
+---
+
+## Digital Source Hunt Updates (2026-03-24)
+
+**Weiße 1531 (`Weisse_1531`):** 1544 Nuremberg edition digitised on [e-rara.ch](https://www.e-rara.ch/) (Swiss ETH library). Exact URL to be confirmed via browser. 1957 Ameln facsimile reprint also exists.
+
+**Mladějovská 2008 (`Mladejovska_2008`):** Full dissertation freely accessible at [is.muni.cz/th/lb9bi/](https://is.muni.cz/th/lb9bi/). Contains complete catalogue of all 745 Ivančický kancionál songs — **essential for concordance work**.
+
+**Mocko (`Mocko_Hist`):** Full text freely accessible at [zlatyfond.sme.sk](https://zlatyfond.sme.sk/dielo/1812/Mocko_Historia-posvatnej-piesne-slovenskej-a-historia-kancionalu/10).
+
+**Daniel (`Daniel_HLR`):** Free PDF at [ctsfw.net](https://ctsfw.net/media/pdfs/danielreformationinslovakia.pdf).
+
+**Haan 1873 (`Haan_1873`):** Google Books metadata only (id=YrOCMwAACAAJ), no digitised text. Not on Archive.org. Physical copy needed.
+
+**Bratská agenda 1585 (`AgBratska_1585`):** Annotation lists Kramerius VKOL link — needs browser verification.
+
+**Šamotulský kancionál (`KancSamotul_1561`):** Confirmed NOT digitised. HTB indexes all 735 songs (metadata). EOD service via NKP possible but unconfirmed.
+
+**Ivančický kancionál (`KancIvanc_1564`):** 1572 ed. confirmed at [Manuscriptorium/Polička](https://www.manuscriptorium.com/en/node/5216) — open access. MZK UUID needs browser verification.
+
+**Prvý kancionál 1501 (`KancPrvy_1501`):** Possibly lost ("verschollen" per German Wikipedia). No scan anywhere.

@@ -169,3 +169,58 @@ The `resources/notes-*.md` files (Schoen, Sekelská 2019) use a briefing-documen
 2. **Acquire Schoen 2022** (€168) — interlibrary loan or institutional purchase.
 3. **First hymn-pair comparison:** Pick one hymn Sekelská identified as Brethren-origin in CS and compare the two versions. This is the make-or-break evidence for the thesis.
 4. **Complete CB 1575 column** in the three-column analysis — verify "duchovně i podstatně" against Just/Rothkegel 2012 if acquired.
+
+
+---
+
+## Session Log: 2026-03-24 (Claude Desktop, Phase 2 Audit + Source Hunt)
+
+### Completed
+
+1. **Legacy materials audit** — full report at `resources/audit-legacy-materials-2026-03-24.md`. Read and processed:
+   - All 9 AI reports (ChatGPT/Claude/Gemini × 3 topics + 2 generals)
+   - Annotation document (v02) with complete source list
+   - Comparative hymnological strategy document
+   - Compass artifact (ecclesiology)
+   
+   **Key findings:**
+   - 8 new primary sources identified for Source_Index (§VI)
+   - 4 high-priority secondary sources identified (Daniel, Haan, Mocko, Basicova)
+   - 4 specific hymn leads extracted for verification (incl. "Jezu Kriste, jenž zajisté" as potential Eucharistic test case)
+   - 10 analytical angles catalogued from AI reports, with reliability assessments
+   - ChatGPT Report 03's fabricated "Table 1" and Gemini Report 03's "reconstructed" stanza texts flagged as hallucinated
+   - "Brabcová (2016)" flagged as likely non-existent scholar
+
+2. **Digital source hunt** — full report at `resources/digital-source-hunt-2026-03-24.md`. Searched Kramerius, Manuscriptorium, Archive.org, Google Books, e-rara, REAL-R.
+   
+   **Confirmed accessible:**
+   - Weiße 1531/1544 on e-rara.ch (German Brethren hymnal)
+   - Ivančický kancionál 1572 ed. on Manuscriptorium (Polička)
+   - Mladějovská 2008 dissertation (745-song catalogue) on MUNI
+   - Daniel (Slovak Reformation) and Mocko (Slovak hymn history) — free PDFs
+   - All previously confirmed sources remain accessible (Moravian Archives EN translations, Book of Concord, WA, etc.)
+   
+   **Confirmed NOT digitised:**
+   - Šamotulský kancionál 1561 (HTB metadata only)
+   - Prvý kancionál 1501 (possibly lost entirely)
+   - Rohov kancionál 1541
+   - Agenda Rambachiana 1637
+   - Haan 1873 (Google Books metadata only)
+   
+   **Needs browser verification:**
+   - Kramerius MZK CS UUID and REAL-R CS entry
+   - Kramerius VKOL Bratská agenda 1585
+   - Kramerius MZK Ivančický kancionál 1564
+
+3. **Source_Index.md updated** with 8 new primary sources (§VI) and 4 new secondary sources (§VII), plus digital access notes.
+
+### New files created this session
+- `resources/audit-legacy-materials-2026-03-24.md` (~8 KB)
+- `resources/digital-source-hunt-2026-03-24.md` (~7 KB)
+
+### Next session priorities
+1. **Browser verification** of Kramerius/REAL-R/Manuscriptorium links (Michal must do this manually)
+2. **HTB concordance work:** Begin matching CS incipits against Brethren kancionál entries via HTB browser interface
+3. **First hymn-pair comparison:** Use "Jezu Kriste, jenž zajisté" lead from ChatGPT R03 — verify in HTB, locate in 1572 Polička digitisation
+4. **Acquire** Schoen 2022 (€168), GresovaSek 2016, GresovaSek 2020 dissertation
+5. **Download** Mladějovská 2008 dissertation for concordance reference
