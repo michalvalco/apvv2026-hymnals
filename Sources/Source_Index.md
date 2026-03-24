@@ -59,16 +59,17 @@ Status legend: 📋 = identified, 📖 = accessed/read, 📝 = documented (Sourc
 | David, Zdeněk V. | Utraquists, Lutherans, and Bohemian Confession | `David_1999` | 📋 | Church History 68(2), 1999 |
 | Říčan, Rudolf | Dějiny Jednoty bratrské | `Rican_Dejiny` | 📋 | Standard Unity history |
 | Grešová-Sekelská, A. | Georgius Tranoscius Teschiniensis (2023) | `GresovaSek_2023` | 📝 | Critical ed. of 8 CS hymns + study on Třanovský's method. Musicological, not theological. PDF in `resources/`. |
-| Grešová-Sekelská, A. | Príspevok k vzniku a obsahu CS | `GresovaSek_Prispevok` | 📖 | PDF in `resources/`. Needs documentation. |
+| Grešová-Sekelská, A. | Príspevok k vzniku a obsahu CS (2021) | `GresovaSek_Prispevok` | 📝 | *Clavibus unitis* 10/4. **Key data:** 49% of older Czech repertoire is Utraquist; confessionally sensitive rubrics (Lord's Supper, articles of faith) show heavy Tranovský intervention. Concrete example of theological editing (*Ay Panna*). PDF in `resources/`. |
 | Vajda, Jaroslav | A History of the Cithara Sanctorum (1944) | `Vajda_1944` | 📝 | B.Div. thesis, Concordia Seminary. Standard English-language CS history. Key for §5 (Tranovsky's editorial principles, hymn source attributions), §2 (historical context). PDF in admin resources. |
-| Žurek, Jiří | Utraquist sanctoral in 16th c. Czech Graduals | `Zurek_Utrsanct` | 📖 | PDF in admin resources |
-| Chalupský, Michal | Obrad Krstu podľa Agendy Českej | `Chalupsky_Krst` | 📖 | PDF in admin resources |
+| Žurek, Jiří | Utraquist sanctoral in 16th c. Czech Graduals | `Zurek_2016` | 📝 | BRRP 10, 2016. **Critical finding:** Agenda Česká's reduced sanctoral NOT adopted in any gradual — gap between Lutheran programme and Utraquist practice. PDF in admin resources. |
+| Chalupský, Michal | Obřad křtu podľa Agendy Českej (2024) | `Chalupsky_2024` | 📝 | *Teologická reflexe* 30/1. Baptismal rite comparison: Ag. Česká vs. Wittenberg 1540 vs. Luther. Editors were "creatively" independent. CC BY 4.0. PDF in admin resources. |
 | Atwood, Craig D. | Theology of the Czech Brethren | `Atwood_CzBrethren` | 📋 | Penn State UP, 2009 |
 | Haberkern, Phillip | Bohemian Confession: Archaeology of Czech Ref. | `Haberkern_2023` | 📋 | 2023 |
 | Mladějovská, Aneta | Literární analýza Ivančického kancionálu | `Mladejovska_2008` | 📋 | Dissertation, 2008 |
 | Fudge, Thomas A. | (Czech Reformation studies) | `Fudge` | 📋 | |
 | Hrejsa, Ferdinand | Česká konfese | `Hrejsa_CeskaKonf` | 📋 | |
-| Holeton, David R. | (Utraquist liturgy studies) | `Holeton_Lit` | 📋 | Charles University |
+| Holeton, David R. | (Utraquist liturgy studies) | `Holeton_Lit` | 📋 | Charles University. **Flagged:** "Lex orandi – lex credendi…" article in BRRP series — directly uses our analytical framework for Utraquist liturgy. HIGH PRIORITY. |
+| Landová, Tabita | Liturgie Jednoty bratrské (1457–1620) | `Landova_2014` | 📋 | Červený Kostelec: Pavel Mervart, 2014. Monograph on Unity liturgy. Likely contains Unity communion rite needed for §4.1 comparison. Cited in Chalupský. |
 | Grešová-Sekelská, A. | Dissertation: Juraj Tranovský a jeho význam (2020) | `GresovaSek_Diss` | 📋 | Cited in GresovaSek_2023. Full CS hymn identification (incl. ~30 Bohemian melodic sources). Not yet acquired. |
 
 ---
