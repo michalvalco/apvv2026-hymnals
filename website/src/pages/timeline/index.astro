@@ -79,13 +79,14 @@ const categoryLabels: Record<string, { sk: string; en: string }> = {
       class="relative w-full overflow-x-auto rounded-xl border border-parchment-300/50 bg-parchment-50"
       style="min-height: 500px;"
       role="region"
+      tabindex="0"
       aria-label="Chronológia konfesionálnych prúdov / Confessional Streams Timeline"
     >
       <!-- Timeline visualization is rendered here via client-side SVG/JS -->
     </div>
 
     <p class="mt-3 text-center font-sans text-xs text-ink-300">
-      Kliknite na udalosť pre detail · Click an event for details
+      Kliknite alebo stlačte Enter na udalosť pre detail · Click or press Enter on an event for details
     </p>
   </div>
 
@@ -321,6 +322,9 @@ const categoryLabels: Record<string, { sk: string; en: string }> = {
     const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
     g.setAttribute("class", "timeline-event");
     g.setAttribute("data-id", ev.id);
+    g.setAttribute("tabindex", "0");
+    g.setAttribute("role", "button");
+    g.setAttribute("aria-label", `${ev.year} — ${ev.titleSk} / ${ev.titleEn}`);
     g.style.cursor = "pointer";
 
     // Shape based on category
@@ -365,15 +369,29 @@ const categoryLabels: Record<string, { sk: string; en: string }> = {
     title.textContent = `${ev.year} — ${ev.titleSk}`;
     g.appendChild(title);
 
-    // Click handler
+    // Click + keyboard handler
     g.addEventListener("click", () => showDetail(ev, color));
+    g.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        showDetail(ev, color);
+      }
+    });
 
-    // Hover effect
+    // Hover/focus effect
     g.addEventListener("mouseenter", () => {
       g.querySelector("circle,polygon,rect")?.setAttribute("stroke", color);
       g.querySelector("circle,polygon,rect")?.setAttribute("stroke-width", "3");
     });
     g.addEventListener("mouseleave", () => {
+      g.querySelector("circle,polygon,rect")?.setAttribute("stroke", "#fffdf5");
+      g.querySelector("circle,polygon,rect")?.setAttribute("stroke-width", "2");
+    });
+    g.addEventListener("focus", () => {
+      g.querySelector("circle,polygon,rect")?.setAttribute("stroke", color);
+      g.querySelector("circle,polygon,rect")?.setAttribute("stroke-width", "3");
+    });
+    g.addEventListener("blur", () => {
       g.querySelector("circle,polygon,rect")?.setAttribute("stroke", "#fffdf5");
       g.querySelector("circle,polygon,rect")?.setAttribute("stroke-width", "2");
     });
