@@ -60,7 +60,7 @@ Status legend: 📋 = identified, 📖 = accessed/read, 📝 = documented (Sourc
 | Říčan, Rudolf | Dějiny Jednoty bratrské | `Rican_Dejiny` | 📋 | Standard Unity history |
 | Grešová-Sekelská, A. | Georgius Tranoscius Teschiniensis (2023) | `GresovaSek_2023` | 📝 | Critical ed. of 8 CS hymns + study on Třanovský's method. Musicological, not theological. PDF in `resources/`. |
 | Grešová-Sekelská, A. | Príspevok k vzniku a obsahu CS | `GresovaSek_Prispevok` | 📖 | PDF in `resources/`. Needs documentation. |
-| Vajda, Jaroslav | A History of the Cithara Sanctorum (1944) | `Vajda_1944` | 📖 | PDF in admin resources. Next priority for documentation. |
+| Vajda, Jaroslav | A History of the Cithara Sanctorum (1944) | `Vajda_1944` | 📝 | B.Div. thesis, Concordia Seminary. Standard English-language CS history. Key for §5 (Tranovsky's editorial principles, hymn source attributions), §2 (historical context). PDF in admin resources. |
 | Žurek, Jiří | Utraquist sanctoral in 16th c. Czech Graduals | `Zurek_Utrsanct` | 📖 | PDF in admin resources |
 | Chalupský, Michal | Obrad Krstu podľa Agendy Českej | `Chalupsky_Krst` | 📖 | PDF in admin resources |
 | Atwood, Craig D. | Theology of the Czech Brethren | `Atwood_CzBrethren` | 📋 | Penn State UP, 2009 |
