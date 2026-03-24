@@ -128,3 +128,44 @@ Michal is a participant, not PI. The broader TEPALIT team:
 - Ivan Debnár (IT/database)
 
 Michal's chapter contributes the dogmatic-comparative dimension. Sekelská handles hymnological reconstruction. Coordinate, don't duplicate.
+
+
+---
+
+## Theological Taxonomy (Created March 24, 2026)
+
+A structured data model in `taxonomy/` that serves as the intellectual backbone for the chapter, the companion website, and the corpus annotation. **Read `taxonomy/README.md` and `taxonomy/SCHEMA.md` before modifying any taxonomy files.**
+
+| File | Purpose |
+|---|---|
+| `loci_hierarchy.csv` | 4 loci × 5 sub-loci = 20 theological categories (LA, SK, EN) |
+| `confessional_positions.csv` | Attested positions per tradition per locus (26+ entries) |
+| `hymnic_evidence.csv` | Tagged text fragments — the *lex orandi* data layer |
+| `hymnic_functions.csv` | 10 function types (how theology manifests in hymns) |
+| `term_variants.csv` | 34+ terms × 4 languages (LA, CZ 16c, DE 16c, SK) |
+
+### Key Design Principles
+- **Epistemic classification** at every node: `FACTUAL`, `INTERPRETIVE`, `DEFERRED`
+- **Domain data in CSV**, processing logic in scripts — scholars can edit without touching code
+- **Multi-tradition with developmental phases** — not monolithic (e.g., `UNITY_EARLY` vs. `UNITY_MATURE`)
+- Adapted from ITSERR-RESILIENCE entity resolution and epistemic modesty patterns
+
+## Companion Website
+
+A DH companion website planned for `website/`. Full specification in `WEBSITE_BRIEFING.md`.
+
+- **Stack:** Astro + Tailwind + D3.js, hosted on GitHub Pages (static, no server)
+- **Data source:** All taxonomy CSVs → build script → JSON for each visualisation
+- **Build in tiers:** Tier 1 (scaffold, timeline, parallel viewer, modest network graph, monograph viewer) → Tier 2 (Lutheranisation Diff, confessional fingerprinting, dashboards) → Tier 3 (scriptural root system, map, IIIF, annotation)
+- **Three tradition colours:** Lutheran gold (#D4A843), Utraquist crimson (#8B2332), Unity teal (#2E8B8B)
+
+## ITSERR Cross-Reference
+
+The ITSERR-RESILIENCE project (`../ITSERR-RESILIENCE-Project/`) contains reusable patterns:
+- Entity resolution: CSV domain data + Python logic (adapt for theological term mapping)
+- Epistemic modesty framework: FACTUAL/INTERPRETIVE/DEFERRED (already adopted in taxonomy)
+- Proximity weighting: same stanza > same hymn > same kancionál section
+- Build pipeline: `build_corpus_json.py` pattern → adapt as `build_site_data.py`
+- MkDocs + GitHub Pages CI/CD
+
+See `WEBSITE_BRIEFING.md` §"Patterns to Adapt from ITSERR" for full mapping.
