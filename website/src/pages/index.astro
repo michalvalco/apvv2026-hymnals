@@ -214,28 +214,34 @@ const sections = [
     </p>
 
     <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {sections.map((s) => (
-        <a
-          href={s.status === "coming-soon" ? undefined : base + s.href}
-          class:list={[
-            "card group relative no-underline",
-            s.status === "coming-soon" && "cursor-default opacity-70",
-          ]}
-        >
-          {s.status === "coming-soon" && (
+      {sections.map((s) =>
+        s.status === "coming-soon" ? (
+          <div class="card relative cursor-default opacity-70">
             <span class="absolute right-4 top-4 rounded-full bg-parchment-300 px-2 py-0.5
                          font-sans text-xs text-ink-300">
               Pripravujeme
             </span>
-          )}
-          <div class="text-3xl" aria-hidden="true" set:html={s.icon} />
-          <h3 class="mt-3 font-display text-lg font-semibold text-ink group-hover:text-burgundy">
-            {s.titleSk}
-          </h3>
-          <p class="mt-0.5 font-sans text-xs text-ink-300">{s.titleEn}</p>
-          <p class="mt-3 text-sm text-ink-400">{s.description}</p>
-        </a>
-      ))}
+            <div class="text-3xl" aria-hidden="true" set:html={s.icon} />
+            <h3 class="mt-3 font-display text-lg font-semibold text-ink">
+              {s.titleSk}
+            </h3>
+            <p class="mt-0.5 font-sans text-xs text-ink-300">{s.titleEn}</p>
+            <p class="mt-3 text-sm text-ink-400">{s.description}</p>
+          </div>
+        ) : (
+          <a
+            href={base + s.href}
+            class="card group relative no-underline"
+          >
+            <div class="text-3xl" aria-hidden="true" set:html={s.icon} />
+            <h3 class="mt-3 font-display text-lg font-semibold text-ink group-hover:text-burgundy">
+              {s.titleSk}
+            </h3>
+            <p class="mt-0.5 font-sans text-xs text-ink-300">{s.titleEn}</p>
+            <p class="mt-3 text-sm text-ink-400">{s.description}</p>
+          </a>
+        ),
+      )}
     </div>
   </section>
 

@@ -10,7 +10,7 @@ interface Props {
 
 const { tradition, size = "sm" } = Astro.props;
 
-const labels: Record<string, { sk: string; en: string; css: string }> = {
+const labels: Record<Props["tradition"], { sk: string; en: string; css: string }> = {
   LUTHERAN: { sk: "Luteránska", en: "Lutheran", css: "badge-lutheran" },
   UTRAQUIST: { sk: "Utrakvistická", en: "Utraquist", css: "badge-utraquist" },
   UNITY: { sk: "Jednota bratská", en: "Unity", css: "badge-unity" },
