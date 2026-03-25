@@ -1,0 +1,386 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import EpistemicLegend from "../../components/EpistemicLegend.astro";
+import TraditionBadge from "../../components/TraditionBadge.astro";
+import {
+  comparisons,
+  MODIFICATION_LABELS,
+} from "../../data/synoptikon-comparisons";
+import { TRADITION_META, PHASE_LABELS } from "../../data/taxonomy";
+
+const base = import.meta.env.BASE_URL;
+
+const epistemicClasses: Record<string, string> = {
+  FACTUAL: "epistemic-factual",
+  INTERPRETIVE: "epistemic-interpretive",
+  DEFERRED: "epistemic-deferred",
+};
+
+const traditionBorder: Record<string, string> = {
+  LUTHERAN: "border-lutheran",
+  UTRAQUIST: "border-utraquist",
+  UNITY: "border-unity",
+};
+
+const traditionBg: Record<string, string> = {
+  LUTHERAN: "bg-lutheran/5",
+  UTRAQUIST: "bg-utraquist/5",
+  UNITY: "bg-unity/5",
+};
+---
+
+<BaseLayout
+  title="Synoptikon — Paralelné čítanie"
+  description="Paralelné porovnanie kľúčových textov: konfesijné dokumenty, hymny a liturgické poriadky vedľa seba s farebne zvýraznenými teologickými rozdielmi."
+  lang="sk"
+>
+  <!-- ═══════════ HEADER ═══════════ -->
+  <section class="bg-ink-800 px-6 py-16 text-parchment">
+    <div class="mx-auto max-w-content text-center">
+      <p class="font-sans text-xs font-medium uppercase tracking-[0.2em] text-gold">
+        Lex orandi, lex credendi · Parallel Text Viewer
+      </p>
+      <h1 class="mt-3 text-section-title font-display font-bold text-parchment-100">
+        Synoptikon
+      </h1>
+      <p class="mx-auto mt-4 max-w-prose text-parchment-400">
+        Paralelné čítanie kľúčových textov — konfesijné dokumenty, hymny a liturgické poriadky
+        vedľa seba s farebne zvýraznenými teologickými rozdielmi.
+      </p>
+      <p class="mx-auto mt-2 max-w-prose font-sans text-sm text-parchment-500">
+        Side-by-side reading of confessional documents, hymns, and liturgical orders
+        with colour-highlighted theological differences
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══════════ LEGEND ═══════════ -->
+  <div class="mx-auto max-w-wide px-6 pt-8">
+    <div class="flex flex-wrap items-center justify-center gap-6">
+      <!-- Traditions -->
+      <div class="flex items-center gap-2">
+        <span class="h-3 w-3 rounded-full bg-lutheran" aria-hidden="true"></span>
+        <span class="font-sans text-xs text-ink-400">Luteránska</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="h-3 w-3 rounded-full bg-utraquist" aria-hidden="true"></span>
+        <span class="font-sans text-xs text-ink-400">Utrakvistická</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="h-3 w-3 rounded-full bg-unity" aria-hidden="true"></span>
+        <span class="font-sans text-xs text-ink-400">Jednota bratská</span>
+      </div>
+      <span class="text-ink-200">|</span>
+      <!-- Modification types -->
+      {Object.entries(MODIFICATION_LABELS).map(([code, label]) => (
+        <div class="flex items-center gap-1.5">
+          <span class="inline-flex h-5 w-5 items-center justify-center rounded bg-gold/15 font-mono text-xs font-bold text-gold-dark">
+            {label.icon}
+          </span>
+          <span class="font-sans text-xs text-ink-400">{label.sk}</span>
+        </div>
+      ))}
+    </div>
+
+    <div class="mx-auto mt-4 max-w-2xl">
+      <EpistemicLegend compact />
+    </div>
+  </div>
+
+  <!-- ═══════════ COMPARISONS ═══════════ -->
+  <div class="mx-auto max-w-wide px-6 py-8">
+    <div class="space-y-6">
+      {comparisons.map((comp, compIndex) => (
+        <article
+          class:list={["card overflow-hidden", epistemicClasses[comp.epistemicStatus]]}
+          id={`comparison-${comp.id}`}
+        >
+          <!-- Comparison header (clickable to expand) -->
+          <button
+            class="synoptikon-toggle flex w-full items-start gap-4 text-left"
+            aria-expanded={compIndex === 0 ? "true" : "false"}
+            aria-controls={`panel-${comp.id}`}
+            data-comparison-id={comp.id}
+          >
+            <span
+              class="synoptikon-chevron mt-1 inline-block text-ink-300 transition-transform duration-200"
+              aria-hidden="true"
+            >
+              &#x25B6;
+            </span>
+            <div class="flex-1">
+              <div class="flex flex-wrap items-center gap-2">
+                <h2 class="font-display text-lg font-semibold text-ink">
+                  {comp.titleSk}
+                </h2>
+                <span class="rounded-full bg-parchment-300/50 px-2 py-0.5 font-mono text-[10px] font-medium text-ink-300">
+                  {comp.locusCodes.join(" · ")}
+                </span>
+              </div>
+              <p class="mt-0.5 font-sans text-xs text-ink-300">{comp.titleEn}</p>
+              <div class="mt-2 flex flex-wrap gap-2">
+                {comp.columns.map((col) => (
+                  <TraditionBadge tradition={col.tradition} size="sm" />
+                ))}
+                <span class="inline-flex items-center rounded-full bg-parchment-200 px-2 py-0.5 font-sans text-[10px] text-ink-300">
+                  {comp.hymnicFunction}
+                </span>
+              </div>
+            </div>
+          </button>
+
+          <!-- Expandable panel -->
+          <div
+            id={`panel-${comp.id}`}
+            class:list={["synoptikon-panel mt-6", compIndex === 0 ? "" : "hidden"]}
+          >
+            <!-- Toggle: original / translation -->
+            <div class="mb-4 flex items-center gap-3 border-b border-parchment-300/50 pb-3">
+              <span class="font-sans text-xs font-medium text-ink-400">Zobrazenie:</span>
+              <label class="flex cursor-pointer items-center gap-1.5">
+                <input
+                  type="radio"
+                  name={`lang-${comp.id}`}
+                  value="original"
+                  checked
+                  class="synoptikon-lang-radio accent-gold"
+                  data-comparison={comp.id}
+                />
+                <span class="font-sans text-xs text-ink-400">Originál</span>
+              </label>
+              <label class="flex cursor-pointer items-center gap-1.5">
+                <input
+                  type="radio"
+                  name={`lang-${comp.id}`}
+                  value="translation"
+                  class="synoptikon-lang-radio accent-gold"
+                  data-comparison={comp.id}
+                />
+                <span class="font-sans text-xs text-ink-400">English</span>
+              </label>
+              <label class="flex cursor-pointer items-center gap-1.5">
+                <input
+                  type="radio"
+                  name={`lang-${comp.id}`}
+                  value="both"
+                  class="synoptikon-lang-radio accent-gold"
+                  data-comparison={comp.id}
+                />
+                <span class="font-sans text-xs text-ink-400">Oba / Both</span>
+              </label>
+            </div>
+
+            <!-- Parallel columns -->
+            <div
+              class="synoptikon-columns grid gap-4"
+              style={`grid-template-columns: repeat(${comp.columns.length}, 1fr);`}
+              data-comparison={comp.id}
+            >
+              {comp.columns.map((col) => (
+                <div class:list={["rounded-lg border-t-4 p-4", traditionBorder[col.tradition], traditionBg[col.tradition]]}>
+                  <!-- Column header -->
+                  <div class="mb-3 border-b border-parchment-300/30 pb-2">
+                    <h3 class="font-display text-sm font-semibold text-ink">
+                      {col.label}
+                    </h3>
+                    <div class="mt-1 flex items-center gap-2">
+                      <TraditionBadge tradition={col.tradition} size="sm" />
+                      <span class="font-mono text-[10px] text-ink-300">
+                        {PHASE_LABELS[col.phase] ?? col.phase}
+                      </span>
+                      <span class="font-mono text-[10px] text-ink-300">
+                        {col.originalLanguage}
+                      </span>
+                    </div>
+                  </div>
+
+                  <!-- Segments -->
+                  <div class="space-y-3">
+                    {col.segments.map((seg) => (
+                      <div
+                        class:list={[
+                          "synoptikon-segment rounded-md p-2.5 transition-colors duration-150",
+                          seg.modification
+                            ? "border border-gold/30 bg-gold/5"
+                            : "border border-transparent",
+                        ]}
+                        data-segment-id={seg.id}
+                        data-comparison={comp.id}
+                      >
+                        {/* Original text */}
+                        <p class="synoptikon-original font-serif text-sm leading-relaxed text-ink">
+                          {seg.text}
+                        </p>
+                        {/* Translation */}
+                        <p class="synoptikon-translation mt-1 font-sans text-xs italic leading-relaxed text-ink-300">
+                          {seg.translation}
+                        </p>
+                        {/* Modification badge */}
+                        {seg.modification && (
+                          <div class="mt-2 flex items-start gap-1.5 rounded bg-gold/10 px-2 py-1.5">
+                            <span class="inline-flex h-4 w-4 flex-shrink-0 items-center justify-center rounded bg-gold/20 font-mono text-[10px] font-bold text-gold-dark">
+                              {MODIFICATION_LABELS[seg.modification.type]?.icon ?? "?"}
+                            </span>
+                            <span class="font-sans text-[11px] leading-snug text-ink-400">
+                              {seg.modification.note}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <!-- Scholarly notes -->
+            <div class="mt-4 rounded-lg bg-parchment-100 p-4">
+              <h4 class="font-sans text-xs font-semibold uppercase tracking-wider text-ink-300">
+                Poznámka / Note
+              </h4>
+              <p class="mt-2 font-serif text-sm leading-relaxed text-ink-400">
+                {comp.notesSk}
+              </p>
+              <p class="mt-2 font-sans text-xs italic leading-relaxed text-ink-300">
+                {comp.notesEn}
+              </p>
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+
+  <div class="ornament-rule"></div>
+
+  <!-- ═══════════ HOW TO READ ═══════════ -->
+  <section class="mx-auto max-w-content px-6 py-8 pb-20">
+    <h2 class="text-center text-section-title text-ink">Ako čítať Synoptikon</h2>
+    <p class="mx-auto mt-3 max-w-prose text-center font-sans text-sm text-ink-300">
+      How to read the parallel viewer
+    </p>
+    <div class="mx-auto mt-8 grid max-w-3xl gap-6 sm:grid-cols-3">
+      <div class="text-center">
+        <div class="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-gold/15 font-mono text-sm font-bold text-gold-dark">
+          1
+        </div>
+        <p class="text-sm text-ink-400">
+          Kliknite na porovnanie — otvorí sa paralelný pohľad so zarovnanými segmentmi.
+        </p>
+        <p class="mt-1 font-sans text-xs text-ink-300">
+          Click a comparison to open the parallel view with aligned segments.
+        </p>
+      </div>
+      <div class="text-center">
+        <div class="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-gold/15 font-mono text-sm font-bold text-gold-dark">
+          2
+        </div>
+        <p class="text-sm text-ink-400">
+          Zvýraznené segmenty obsahujú teologické zmeny — pozrite si ikonu a poznámku.
+        </p>
+        <p class="mt-1 font-sans text-xs text-ink-300">
+          Highlighted segments contain theological changes — check the icon and note.
+        </p>
+      </div>
+      <div class="text-center">
+        <div class="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-gold/15 font-mono text-sm font-bold text-gold-dark">
+          3
+        </div>
+        <p class="text-sm text-ink-400">
+          Prepínajte medzi originálom, prekladom a oboma zobrazeniami.
+        </p>
+        <p class="mt-1 font-sans text-xs text-ink-300">
+          Toggle between original language, translation, and both views.
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* Chevron rotation for expanded panels */
+  .synoptikon-chevron {
+    display: inline-block;
+    font-size: 0.75rem;
+    line-height: 1;
+  }
+  button[aria-expanded="true"] .synoptikon-chevron {
+    transform: rotate(90deg);
+  }
+
+  /* Segment hover highlight */
+  .synoptikon-segment:hover {
+    background-color: rgba(212, 168, 67, 0.08);
+  }
+
+  /* Responsive: stack columns on mobile */
+  @media (max-width: 768px) {
+    .synoptikon-columns {
+      grid-template-columns: 1fr !important;
+    }
+  }
+</style>
+
+<script>
+  // ── Expand/Collapse ──
+  document.querySelectorAll<HTMLButtonElement>(".synoptikon-toggle").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const id = btn.dataset.comparisonId;
+      const panel = document.getElementById(`panel-${id}`);
+      if (!panel) return;
+      const expanded = btn.getAttribute("aria-expanded") === "true";
+      btn.setAttribute("aria-expanded", String(!expanded));
+      panel.classList.toggle("hidden");
+    });
+  });
+
+  // ── Language Toggle ──
+  document.querySelectorAll<HTMLInputElement>(".synoptikon-lang-radio").forEach((radio) => {
+    radio.addEventListener("change", () => {
+      const compId = radio.dataset.comparison;
+      const value = radio.value;
+      const container = document.querySelector(
+        `.synoptikon-columns[data-comparison="${compId}"]`
+      );
+      if (!container) return;
+
+      container.querySelectorAll(".synoptikon-original").forEach((el) => {
+        (el as HTMLElement).style.display = value === "translation" ? "none" : "";
+      });
+      container.querySelectorAll(".synoptikon-translation").forEach((el) => {
+        (el as HTMLElement).style.display = value === "original" ? "none" : "";
+      });
+    });
+  });
+
+  // ── Segment Highlight (click-to-highlight across columns) ──
+  document.querySelectorAll<HTMLElement>(".synoptikon-segment").forEach((seg) => {
+    seg.addEventListener("click", () => {
+      const compId = seg.dataset.comparison;
+      const segId = seg.dataset.segmentId;
+      if (!compId || !segId) return;
+
+      // Extract row index from segment ID (last part after last "-")
+      const rowIndex = segId.replace(/^.*?(\d+)$/, "$1");
+
+      const container = document.querySelector(
+        `.synoptikon-columns[data-comparison="${compId}"]`
+      );
+      if (!container) return;
+
+      // Clear all highlights in this comparison
+      container.querySelectorAll(".synoptikon-segment").forEach((s) => {
+        s.classList.remove("ring-2", "ring-gold/60");
+      });
+
+      // Highlight all segments with the same row index
+      container.querySelectorAll<HTMLElement>(".synoptikon-segment").forEach((s) => {
+        const sId = s.dataset.segmentId ?? "";
+        const sRow = sId.replace(/^.*?(\d+)$/, "$1");
+        if (sRow === rowIndex) {
+          s.classList.add("ring-2", "ring-gold/60");
+        }
+      });
+    });
+  });
+</script>
