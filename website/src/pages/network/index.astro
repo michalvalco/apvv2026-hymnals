@@ -6,9 +6,9 @@ import { TRADITION_META } from "../../data/taxonomy";
 
 const nodeTypes = [
   { code: "DOCUMENT", sk: "Dokument", icon: "\u{1F4DC}" },
-  { code: "HYMNAL", sk: "Kancional", icon: "\u{1F3B5}" },
-  { code: "LITURGICAL", sk: "Liturgicky poriadok", icon: "\u26EA" },
-  { code: "POLITICAL", sk: "Politicka udalost", icon: "\u2694" },
+  { code: "HYMNAL", sk: "Kancionál", icon: "\u{1F3B5}" },
+  { code: "LITURGICAL", sk: "Liturgický poriadok", icon: "\u26EA" },
+  { code: "POLITICAL", sk: "Politická udalosť", icon: "\u2694" },
 ];
 
 // Serialize data for client-side script
@@ -19,22 +19,22 @@ const clientTraditionMeta = JSON.stringify(TRADITION_META);
 ---
 
 <BaseLayout
-  title="Intertextualna siet — Network Graph"
-  description="Sietovy graf vztahov medzi textami — vypozicky, polemiky, zdielane biblicke citacie a liturgicke paralely napriec tradiciami."
+  title="Intertextuálna sieť — Network Graph"
+  description="Sieťový graf vzťahov medzi textami — výpožičky, polemiky, zdieľané biblické citácie a liturgické paralely naprieč tradíciami."
   lang="sk"
 >
   <!-- ═══════════ HEADER ═══════════ -->
   <section class="bg-ink-800 px-6 py-16 text-parchment">
     <div class="mx-auto max-w-content text-center">
       <p class="font-sans text-xs font-medium uppercase tracking-[0.2em] text-gold">
-        Intertextualne vztahy · Intertextual Network
+        Intertextuálne vzťahy · Intertextual Network
       </p>
       <h1 class="mt-3 text-section-title font-display font-bold text-parchment-100">
-        Intertextualna siet
+        Intertextuálna sieť
       </h1>
       <p class="mx-auto mt-4 max-w-prose text-parchment-400">
-        Sietovy graf vztahov medzi textami — vypozicky, polemiky, zdielane biblicke citacie
-        a liturgicke paralely napriec tradiciami.
+        Sieťový graf vzťahov medzi textami — výpožičky, polemiky, zdieľané biblické citácie
+        a liturgické paralely naprieč tradíciami.
       </p>
       <p class="mx-auto mt-2 max-w-prose font-sans text-sm text-parchment-500">
         Network graph of intertextual relationships — borrowing, polemic, shared scripture,
@@ -49,19 +49,19 @@ const clientTraditionMeta = JSON.stringify(TRADITION_META);
       <!-- Traditions -->
       <div class="flex items-center gap-2">
         <span class="h-3 w-3 rounded-full bg-lutheran" aria-hidden="true"></span>
-        <span class="font-sans text-xs text-ink-400">Luteranska</span>
+        <span class="font-sans text-xs text-ink-400">Luteránska</span>
       </div>
       <div class="flex items-center gap-2">
         <span class="h-3 w-3 rounded-full bg-utraquist" aria-hidden="true"></span>
-        <span class="font-sans text-xs text-ink-400">Utrakvisticks</span>
+        <span class="font-sans text-xs text-ink-400">Utrakvistická</span>
       </div>
       <div class="flex items-center gap-2">
         <span class="h-3 w-3 rounded-full bg-unity" aria-hidden="true"></span>
-        <span class="font-sans text-xs text-ink-400">Jednota bratska</span>
+        <span class="font-sans text-xs text-ink-400">Jednota bratská</span>
       </div>
       <div class="flex items-center gap-2">
         <span class="h-3 w-3 rounded-full bg-parchment-500" aria-hidden="true"></span>
-        <span class="font-sans text-xs text-ink-400">Transkonfesionalne</span>
+        <span class="font-sans text-xs text-ink-400">Transkonfesionálne</span>
       </div>
       <span class="text-ink-200">|</span>
       <!-- Node types -->
@@ -88,34 +88,34 @@ const clientTraditionMeta = JSON.stringify(TRADITION_META);
 
           <!-- Tradition filter -->
           <fieldset>
-            <legend class="mb-1.5 font-sans text-xs font-medium text-ink-400">Tradicia</legend>
+            <legend class="mb-1.5 font-sans text-xs font-medium text-ink-400">Tradícia</legend>
             <div class="space-y-1">
               <label class="flex cursor-pointer items-center gap-2">
                 <input type="checkbox" class="network-filter-tradition accent-lutheran" value="LUTHERAN" checked />
                 <span class="h-2.5 w-2.5 rounded-full bg-lutheran" aria-hidden="true"></span>
-                <span class="font-sans text-xs text-ink-400">Luteranska</span>
+                <span class="font-sans text-xs text-ink-400">Luteránska</span>
               </label>
               <label class="flex cursor-pointer items-center gap-2">
                 <input type="checkbox" class="network-filter-tradition accent-utraquist" value="UTRAQUIST" checked />
                 <span class="h-2.5 w-2.5 rounded-full bg-utraquist" aria-hidden="true"></span>
-                <span class="font-sans text-xs text-ink-400">Utrakvisticks</span>
+                <span class="font-sans text-xs text-ink-400">Utrakvistická</span>
               </label>
               <label class="flex cursor-pointer items-center gap-2">
                 <input type="checkbox" class="network-filter-tradition accent-unity" value="UNITY" checked />
                 <span class="h-2.5 w-2.5 rounded-full bg-unity" aria-hidden="true"></span>
-                <span class="font-sans text-xs text-ink-400">Jednota bratska</span>
+                <span class="font-sans text-xs text-ink-400">Jednota bratská</span>
               </label>
               <label class="flex cursor-pointer items-center gap-2">
                 <input type="checkbox" class="network-filter-tradition accent-parchment-500" value="TRANS" checked />
                 <span class="h-2.5 w-2.5 rounded-full bg-parchment-500" aria-hidden="true"></span>
-                <span class="font-sans text-xs text-ink-400">Transkonfesionalne</span>
+                <span class="font-sans text-xs text-ink-400">Transkonfesionálne</span>
               </label>
             </div>
           </fieldset>
 
           <!-- Edge type filter -->
           <fieldset>
-            <legend class="mb-1.5 font-sans text-xs font-medium text-ink-400">Typ vztahu</legend>
+            <legend class="mb-1.5 font-sans text-xs font-medium text-ink-400">Typ vzťahu</legend>
             <div class="space-y-1">
               {Object.entries(EDGE_TYPE_META).map(([code, meta]) => (
                 <label class="flex cursor-pointer items-center gap-2">
@@ -133,7 +133,7 @@ const clientTraditionMeta = JSON.stringify(TRADITION_META);
 
           <!-- Date range -->
           <fieldset>
-            <legend class="mb-1.5 font-sans text-xs font-medium text-ink-400">Obdobie</legend>
+            <legend class="mb-1.5 font-sans text-xs font-medium text-ink-400">Obdobie / Period</legend>
             <div class="flex items-center gap-2">
               <span id="date-range-label" class="font-mono text-xs text-ink-300">1400 – 1650</span>
             </div>
@@ -175,7 +175,7 @@ const clientTraditionMeta = JSON.stringify(TRADITION_META);
           id="network-graph"
           class="relative w-full overflow-hidden rounded-xl border border-parchment-300/50 bg-parchment-50"
           style="min-height: 600px;"
-          role="img"
+          role="region"
           aria-label="Intertextual network graph showing relationships between confessional documents, hymnals, and liturgical orders"
         >
           <!-- SVG injected by JS -->
@@ -211,7 +211,7 @@ const clientTraditionMeta = JSON.stringify(TRADITION_META);
 
   <!-- ═══════════ EDGE TYPE REFERENCE ═══════════ -->
   <section class="mx-auto max-w-content px-6 py-8 pb-20">
-    <h2 class="text-center text-section-title text-ink">Typy vztahov</h2>
+    <h2 class="text-center text-section-title text-ink">Typy vzťahov</h2>
     <p class="mx-auto mt-3 max-w-prose text-center font-sans text-sm text-ink-300">
       Relationship types in the network
     </p>
@@ -233,13 +233,13 @@ const clientTraditionMeta = JSON.stringify(TRADITION_META);
   <!-- ═══════════ ACCESSIBLE FALLBACK ═══════════ -->
   <noscript>
     <section class="mx-auto max-w-content px-6 py-8">
-      <h2 class="text-section-title text-ink">Zoznam uzlov / Node List</h2>
+      <h2 class="text-section-title text-ink">Zoznam uzlov / Node list</h2>
       <div class="mt-4 overflow-x-auto">
         <table class="w-full text-sm">
           <thead>
             <tr class="border-b border-parchment-300">
-              <th class="py-2 text-left font-sans font-medium text-ink-400">Nazov</th>
-              <th class="py-2 text-left font-sans font-medium text-ink-400">Tradicia</th>
+              <th class="py-2 text-left font-sans font-medium text-ink-400">Názov</th>
+              <th class="py-2 text-left font-sans font-medium text-ink-400">Tradícia</th>
               <th class="py-2 text-left font-sans font-medium text-ink-400">Typ</th>
               <th class="py-2 text-left font-sans font-medium text-ink-400">Rok</th>
             </tr>
@@ -476,8 +476,13 @@ const clientTraditionMeta = JSON.stringify(TRADITION_META);
     line.setAttribute("y2", String(e.target.y));
     line.setAttribute("stroke", meta.color);
     line.setAttribute("stroke-width", String(e.weight));
-    line.setAttribute("stroke-opacity", e.epistemicStatus === "FACTUAL" ? "0.7" : e.epistemicStatus === "INTERPRETIVE" ? "0.45" : "0.25");
-    if (meta.dash) line.setAttribute("stroke-dasharray", meta.dash);
+    var epistemicOpacity = e.epistemicStatus === "FACTUAL" ? "1" : e.epistemicStatus === "INTERPRETIVE" ? "0.8" : "0.6";
+    line.setAttribute("stroke-opacity", epistemicOpacity);
+    if (e.epistemicStatus === "DEFERRED") {
+      line.setAttribute("stroke-dasharray", meta.dash || "4 2");
+    } else if (meta.dash) {
+      line.setAttribute("stroke-dasharray", meta.dash);
+    }
     line.setAttribute("marker-end", "url(#arrow-" + e.type + ")");
     line.setAttribute("class", "network-edge");
     line.dataset.type = e.type;
@@ -551,32 +556,69 @@ const clientTraditionMeta = JSON.stringify(TRADITION_META);
     const tradLabel = traditionMeta[nodeData.tradition]
       ? traditionMeta[nodeData.tradition].sk
       : nodeData.tradition;
-    detailMeta.innerHTML =
-      '<span class="inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-medium" style="background:' + color + '22; color:' + color + ';">' +
-        '<span class="h-2 w-2 rounded-full" style="background:' + color + ';"></span>' +
-        tradLabel +
-      '</span>' +
-      '<span class="rounded-full bg-parchment-200 px-2 py-0.5 font-mono text-[10px] text-ink-300">' + nodeData.type + '</span>' +
-      '<span class="rounded-full bg-parchment-200 px-2 py-0.5 font-mono text-[10px] text-ink-300">' + nodeData.year + '</span>' +
-      (nodeData.locusCodes.length > 0
-        ? '<span class="rounded-full bg-parchment-200 px-2 py-0.5 font-mono text-[10px] text-ink-300">' + nodeData.locusCodes.join(" · ") + '</span>'
-        : '');
+    // Build meta badges via DOM API (no innerHTML)
+    while (detailMeta.firstChild) detailMeta.removeChild(detailMeta.firstChild);
 
-    // Connected edges
+    var tradSpan = document.createElement("span");
+    tradSpan.className = "inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-medium";
+    tradSpan.style.background = color + "22";
+    tradSpan.style.color = color;
+    var tradDot = document.createElement("span");
+    tradDot.className = "h-2 w-2 rounded-full";
+    tradDot.style.background = color;
+    tradSpan.appendChild(tradDot);
+    tradSpan.appendChild(document.createTextNode(tradLabel));
+    detailMeta.appendChild(tradSpan);
+
+    var typeSpan = document.createElement("span");
+    typeSpan.className = "rounded-full bg-parchment-200 px-2 py-0.5 font-mono text-[10px] text-ink-300";
+    typeSpan.textContent = nodeData.type;
+    detailMeta.appendChild(typeSpan);
+
+    var yearSpan = document.createElement("span");
+    yearSpan.className = "rounded-full bg-parchment-200 px-2 py-0.5 font-mono text-[10px] text-ink-300";
+    yearSpan.textContent = String(nodeData.year);
+    detailMeta.appendChild(yearSpan);
+
+    if (nodeData.locusCodes.length > 0) {
+      var locusSpan = document.createElement("span");
+      locusSpan.className = "rounded-full bg-parchment-200 px-2 py-0.5 font-mono text-[10px] text-ink-300";
+      locusSpan.textContent = nodeData.locusCodes.join(" \u00B7 ");
+      detailMeta.appendChild(locusSpan);
+    }
+
+    // Connected edges — build via DOM API
     const connected = simEdges.filter(function (e) {
       return e.source.id === nodeData.id || e.target.id === nodeData.id;
     });
-    detailEdges.innerHTML = connected.map(function (e) {
+    while (detailEdges.firstChild) detailEdges.removeChild(detailEdges.firstChild);
+
+    connected.forEach(function (e) {
       const meta = edgeMeta[e.type] || { sk: e.type, color: "#999" };
       const other = e.source.id === nodeData.id ? e.target : e.source;
       const direction = e.source.id === nodeData.id ? "\u2192" : "\u2190";
       const opacityClass = e.epistemicStatus === "FACTUAL" ? "opacity-100" : e.epistemicStatus === "INTERPRETIVE" ? "opacity-80" : "opacity-60";
-      return '<div class="flex items-center gap-2 rounded bg-parchment-100 px-2 py-1 ' + opacityClass + '">' +
-        '<span class="inline-block h-0.5 w-3 rounded" style="background:' + meta.color + ';"></span>' +
-        '<span class="font-sans text-xs text-ink-400">' + direction + ' ' + other.label + '</span>' +
-        '<span class="ml-auto font-sans text-[10px] text-ink-300">' + meta.sk + '</span>' +
-      '</div>';
-    }).join("");
+
+      var edgeDiv = document.createElement("div");
+      edgeDiv.className = "flex items-center gap-2 rounded bg-parchment-100 px-2 py-1 " + opacityClass;
+
+      var lineSpan = document.createElement("span");
+      lineSpan.className = "inline-block h-0.5 w-3 rounded";
+      lineSpan.style.background = meta.color;
+      edgeDiv.appendChild(lineSpan);
+
+      var labelSpan = document.createElement("span");
+      labelSpan.className = "font-sans text-xs text-ink-400";
+      labelSpan.textContent = direction + " " + other.label;
+      edgeDiv.appendChild(labelSpan);
+
+      var metaSpan = document.createElement("span");
+      metaSpan.className = "ml-auto font-sans text-[10px] text-ink-300";
+      metaSpan.textContent = meta.sk;
+      edgeDiv.appendChild(metaSpan);
+
+      detailEdges.appendChild(edgeDiv);
+    });
 
     detailPanel.classList.remove("hidden");
 
@@ -599,10 +641,9 @@ const clientTraditionMeta = JSON.stringify(TRADITION_META);
     selectedNodeId = null;
     // Reset opacity
     edgeElements.forEach(function (ee) {
-      const meta = edgeMeta[ee.data.type];
       ee.el.setAttribute("stroke-opacity",
-        ee.data.epistemicStatus === "FACTUAL" ? "0.7" :
-        ee.data.epistemicStatus === "INTERPRETIVE" ? "0.45" : "0.25"
+        ee.data.epistemicStatus === "FACTUAL" ? "1" :
+        ee.data.epistemicStatus === "INTERPRETIVE" ? "0.8" : "0.6"
       );
     });
     nodeElements.forEach(function (ne) { ne.el.style.opacity = "1"; });
@@ -635,8 +676,9 @@ const clientTraditionMeta = JSON.stringify(TRADITION_META);
       activeEdgeTypes.add(cb.value);
     });
 
-    const minYear = parseInt(document.getElementById("date-range-min").value);
-    const maxYear = parseInt(document.getElementById("date-range-max").value);
+    var minYear = parseInt(document.getElementById("date-range-min").value, 10);
+    var maxYear = parseInt(document.getElementById("date-range-max").value, 10);
+    if (minYear > maxYear) { var tmp = minYear; minYear = maxYear; maxYear = tmp; }
     document.getElementById("date-range-label").textContent = minYear + " \u2013 " + maxYear;
 
     let visibleNodes = 0;
