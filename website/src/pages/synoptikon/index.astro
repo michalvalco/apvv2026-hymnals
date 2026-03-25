@@ -325,8 +325,14 @@ const traditionBg: Record<string, string> = {
 <noscript>
   <style>
     .synoptikon-panel.hidden { display: block !important; }
-    /* Hide toggle controls when JS is disabled to avoid ARIA state mismatch */
-    .synoptikon-toggle { display: none !important; }
+    /* In no-JS mode, show headers but disable toggle behavior and icon */
+    .synoptikon-toggle {
+      pointer-events: none !important;
+      cursor: default !important;
+    }
+    .synoptikon-toggle .synoptikon-chevron {
+      display: none !important;
+    }
   </style>
 </noscript>
 
