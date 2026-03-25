@@ -174,7 +174,7 @@ export const comparisons: Comparison[] = [
         label: "Formula Missae (Luther, 1523)",
         tradition: "LUTHERAN",
         phase: "CONFESSIONAL",
-        sourceId: "Luther_FormulaMissae_1523",
+        sourceId: "Luther_FormMissae_1523",
         year: 1523,
         originalLanguage: "LA",
         segments: [
@@ -370,7 +370,7 @@ export const comparisons: Comparison[] = [
         label: "Štyri pražské artikuly (1420)",
         tradition: "UTRAQUIST",
         phase: "OLD",
-        sourceId: "FourArticles_1420",
+        sourceId: "ArtPrag_1420",
         year: 1420,
         originalLanguage: "LA",
         segments: [
@@ -390,7 +390,7 @@ export const comparisons: Comparison[] = [
         label: "Confessio Bohemica (1575)",
         tradition: "UTRAQUIST",
         phase: "NEO",
-        sourceId: "ConfBohemica_1575",
+        sourceId: "ConfBohem_1575",
         year: 1575,
         originalLanguage: "LA",
         segments: [
@@ -435,7 +435,7 @@ export const comparisons: Comparison[] = [
         label: "Štyri pražské artikuly (1420)",
         tradition: "UTRAQUIST",
         phase: "OLD",
-        sourceId: "FourArticles_1420",
+        sourceId: "ArtPrag_1420",
         year: 1420,
         originalLanguage: "LA",
         segments: [
