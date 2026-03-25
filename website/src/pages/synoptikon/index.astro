@@ -99,6 +99,7 @@ const traditionBg: Record<string, string> = {
             aria-expanded={compIndex === 0 ? "true" : "false"}
             aria-controls={`panel-${comp.id}`}
             data-comparison-id={comp.id}
+            disabled
           >
             <span
               class="synoptikon-chevron mt-1 inline-block text-ink-300 transition-transform duration-200"
@@ -326,9 +327,11 @@ const traditionBg: Record<string, string> = {
   <style>
     .synoptikon-panel.hidden { display: block !important; }
     /* In no-JS mode, show headers but disable toggle behavior and icon */
-    .synoptikon-toggle {
-      pointer-events: none !important;
-      cursor: default !important;
+    /* Disabled buttons: remove browser's greyed-out styling */
+    .synoptikon-toggle:disabled {
+      color: inherit;
+      opacity: 1;
+      cursor: default;
     }
     .synoptikon-toggle .synoptikon-chevron {
       display: none !important;
@@ -337,6 +340,11 @@ const traditionBg: Record<string, string> = {
 </noscript>
 
 <script is:inline>
+  // ── Enable toggle buttons (disabled by default for no-JS accessibility) ──
+  document.querySelectorAll(".synoptikon-toggle").forEach(function (btn) {
+    btn.removeAttribute("disabled");
+  });
+
   // ── Expand/Collapse ──
   document.querySelectorAll(".synoptikon-toggle").forEach(function (btn) {
     btn.addEventListener("click", function () {
