@@ -206,7 +206,6 @@ const traditionBg: Record<string, string> = {
                         data-comparison={comp.id}
                         role="button"
                         tabindex="0"
-                        aria-label={`Segment: ${seg.text.substring(0, 40)}...`}
                       >
                         {/* Original text */}
                         <p class="synoptikon-original font-serif text-sm leading-relaxed text-ink">
@@ -326,6 +325,8 @@ const traditionBg: Record<string, string> = {
 <noscript>
   <style>
     .synoptikon-panel.hidden { display: block !important; }
+    /* Hide toggle controls when JS is disabled to avoid ARIA state mismatch */
+    .synoptikon-toggle { display: none !important; }
   </style>
 </noscript>
 
@@ -333,10 +334,10 @@ const traditionBg: Record<string, string> = {
   // ── Expand/Collapse ──
   document.querySelectorAll(".synoptikon-toggle").forEach(function (btn) {
     btn.addEventListener("click", function () {
-      var id = btn.dataset.comparisonId;
-      var panel = document.getElementById("panel-" + id);
+      const id = btn.dataset.comparisonId;
+      const panel = document.getElementById("panel-" + id);
       if (!panel) return;
-      var expanded = btn.getAttribute("aria-expanded") === "true";
+      const expanded = btn.getAttribute("aria-expanded") === "true";
       btn.setAttribute("aria-expanded", String(!expanded));
       panel.classList.toggle("hidden");
     });
@@ -344,7 +345,7 @@ const traditionBg: Record<string, string> = {
 
   // ── Language Toggle ──
   function applyLang(compId, value) {
-    var container = document.querySelector(
+    const container = document.querySelector(
       '.synoptikon-columns[data-comparison="' + compId + '"]'
     );
     if (!container) return;
@@ -362,14 +363,32 @@ const traditionBg: Record<string, string> = {
     });
   });
 
+  // Initialize language visibility to match checked radios (handles BFCache/back nav)
+  function initLang() {
+    const groups = {};
+    document.querySelectorAll(".synoptikon-lang-radio").forEach(function (radio) {
+      const compId = radio.dataset.comparison;
+      if (!compId) return;
+      if (!groups[compId]) groups[compId] = [];
+      groups[compId].push(radio);
+    });
+    Object.keys(groups).forEach(function (compId) {
+      const radios = groups[compId];
+      const selected = radios.find(function (r) { return r.checked; }) || radios[0];
+      applyLang(compId, selected.value);
+    });
+  }
+  initLang();
+  window.addEventListener("pageshow", initLang);
+
   // ── Segment Highlight (click + keyboard) ──
   function highlightSegment(seg) {
-    var compId = seg.dataset.comparison;
-    var segId = seg.dataset.segmentId;
+    const compId = seg.dataset.comparison;
+    const segId = seg.dataset.segmentId;
     if (!compId || !segId) return;
 
-    var rowIndex = segId.replace(/^.*?(\d+)$/, "$1");
-    var container = document.querySelector(
+    const rowIndex = segId.replace(/^.*?(\d+)$/, "$1");
+    const container = document.querySelector(
       '.synoptikon-columns[data-comparison="' + compId + '"]'
     );
     if (!container) return;
@@ -379,8 +398,8 @@ const traditionBg: Record<string, string> = {
     });
 
     container.querySelectorAll(".synoptikon-segment").forEach(function (s) {
-      var sId = s.dataset.segmentId || "";
-      var sRow = sId.replace(/^.*?(\d+)$/, "$1");
+      const sId = s.dataset.segmentId || "";
+      const sRow = sId.replace(/^.*?(\d+)$/, "$1");
       if (sRow === rowIndex) {
         s.classList.add("ring-2", "ring-gold/60");
       }
