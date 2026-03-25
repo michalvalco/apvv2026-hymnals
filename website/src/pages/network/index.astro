@@ -1,0 +1,680 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import EpistemicLegend from "../../components/EpistemicLegend.astro";
+import { nodes, edges, EDGE_TYPE_META } from "../../data/network-graph";
+import { TRADITION_META } from "../../data/taxonomy";
+
+const nodeTypes = [
+  { code: "DOCUMENT", sk: "Dokument", icon: "\u{1F4DC}" },
+  { code: "HYMNAL", sk: "Kancional", icon: "\u{1F3B5}" },
+  { code: "LITURGICAL", sk: "Liturgicky poriadok", icon: "\u26EA" },
+  { code: "POLITICAL", sk: "Politicka udalost", icon: "\u2694" },
+];
+
+// Serialize data for client-side script
+const clientNodes = JSON.stringify(nodes);
+const clientEdges = JSON.stringify(edges);
+const clientEdgeMeta = JSON.stringify(EDGE_TYPE_META);
+const clientTraditionMeta = JSON.stringify(TRADITION_META);
+---
+
+<BaseLayout
+  title="Intertextualna siet — Network Graph"
+  description="Sietovy graf vztahov medzi textami — vypozicky, polemiky, zdielane biblicke citacie a liturgicke paralely napriec tradiciami."
+  lang="sk"
+>
+  <!-- ═══════════ HEADER ═══════════ -->
+  <section class="bg-ink-800 px-6 py-16 text-parchment">
+    <div class="mx-auto max-w-content text-center">
+      <p class="font-sans text-xs font-medium uppercase tracking-[0.2em] text-gold">
+        Intertextualne vztahy · Intertextual Network
+      </p>
+      <h1 class="mt-3 text-section-title font-display font-bold text-parchment-100">
+        Intertextualna siet
+      </h1>
+      <p class="mx-auto mt-4 max-w-prose text-parchment-400">
+        Sietovy graf vztahov medzi textami — vypozicky, polemiky, zdielane biblicke citacie
+        a liturgicke paralely napriec tradiciami.
+      </p>
+      <p class="mx-auto mt-2 max-w-prose font-sans text-sm text-parchment-500">
+        Network graph of intertextual relationships — borrowing, polemic, shared scripture,
+        and liturgical parallels across traditions
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══════════ LEGEND ═══════════ -->
+  <div class="mx-auto max-w-wide px-6 pt-8">
+    <div class="flex flex-wrap items-center justify-center gap-6">
+      <!-- Traditions -->
+      <div class="flex items-center gap-2">
+        <span class="h-3 w-3 rounded-full bg-lutheran" aria-hidden="true"></span>
+        <span class="font-sans text-xs text-ink-400">Luteranska</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="h-3 w-3 rounded-full bg-utraquist" aria-hidden="true"></span>
+        <span class="font-sans text-xs text-ink-400">Utrakvisticks</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="h-3 w-3 rounded-full bg-unity" aria-hidden="true"></span>
+        <span class="font-sans text-xs text-ink-400">Jednota bratska</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="h-3 w-3 rounded-full bg-parchment-500" aria-hidden="true"></span>
+        <span class="font-sans text-xs text-ink-400">Transkonfesionalne</span>
+      </div>
+      <span class="text-ink-200">|</span>
+      <!-- Node types -->
+      {nodeTypes.map((nt) => (
+        <div class="flex items-center gap-1.5">
+          <span class="text-sm" aria-hidden="true">{nt.icon}</span>
+          <span class="font-sans text-xs text-ink-400">{nt.sk}</span>
+        </div>
+      ))}
+    </div>
+    <div class="mx-auto mt-4 max-w-2xl">
+      <EpistemicLegend compact />
+    </div>
+  </div>
+
+  <!-- ═══════════ CONTROLS + GRAPH ═══════════ -->
+  <div class="mx-auto max-w-wide px-6 py-6">
+    <div class="flex flex-col gap-4 lg:flex-row">
+
+      <!-- Filter sidebar -->
+      <aside class="w-full shrink-0 lg:w-64" aria-label="Graph filters">
+        <div class="card space-y-4">
+          <h3 class="font-display text-sm font-semibold text-ink">Filtre / Filters</h3>
+
+          <!-- Tradition filter -->
+          <fieldset>
+            <legend class="mb-1.5 font-sans text-xs font-medium text-ink-400">Tradicia</legend>
+            <div class="space-y-1">
+              <label class="flex cursor-pointer items-center gap-2">
+                <input type="checkbox" class="network-filter-tradition accent-lutheran" value="LUTHERAN" checked />
+                <span class="h-2.5 w-2.5 rounded-full bg-lutheran" aria-hidden="true"></span>
+                <span class="font-sans text-xs text-ink-400">Luteranska</span>
+              </label>
+              <label class="flex cursor-pointer items-center gap-2">
+                <input type="checkbox" class="network-filter-tradition accent-utraquist" value="UTRAQUIST" checked />
+                <span class="h-2.5 w-2.5 rounded-full bg-utraquist" aria-hidden="true"></span>
+                <span class="font-sans text-xs text-ink-400">Utrakvisticks</span>
+              </label>
+              <label class="flex cursor-pointer items-center gap-2">
+                <input type="checkbox" class="network-filter-tradition accent-unity" value="UNITY" checked />
+                <span class="h-2.5 w-2.5 rounded-full bg-unity" aria-hidden="true"></span>
+                <span class="font-sans text-xs text-ink-400">Jednota bratska</span>
+              </label>
+              <label class="flex cursor-pointer items-center gap-2">
+                <input type="checkbox" class="network-filter-tradition accent-parchment-500" value="TRANS" checked />
+                <span class="h-2.5 w-2.5 rounded-full bg-parchment-500" aria-hidden="true"></span>
+                <span class="font-sans text-xs text-ink-400">Transkonfesionalne</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <!-- Edge type filter -->
+          <fieldset>
+            <legend class="mb-1.5 font-sans text-xs font-medium text-ink-400">Typ vztahu</legend>
+            <div class="space-y-1">
+              {Object.entries(EDGE_TYPE_META).map(([code, meta]) => (
+                <label class="flex cursor-pointer items-center gap-2">
+                  <input type="checkbox" class="network-filter-edge" value={code} checked />
+                  <span
+                    class="inline-block h-0.5 w-4"
+                    style={`background: ${meta.color};`}
+                    aria-hidden="true"
+                  ></span>
+                  <span class="font-sans text-xs text-ink-400">{meta.sk}</span>
+                </label>
+              ))}
+            </div>
+          </fieldset>
+
+          <!-- Date range -->
+          <fieldset>
+            <legend class="mb-1.5 font-sans text-xs font-medium text-ink-400">Obdobie</legend>
+            <div class="flex items-center gap-2">
+              <span id="date-range-label" class="font-mono text-xs text-ink-300">1400 – 1650</span>
+            </div>
+            <input
+              type="range"
+              id="date-range-min"
+              min="1400"
+              max="1650"
+              value="1400"
+              step="10"
+              class="mt-1 w-full accent-gold"
+              aria-label="Minimum year"
+            />
+            <input
+              type="range"
+              id="date-range-max"
+              min="1400"
+              max="1650"
+              value="1650"
+              step="10"
+              class="mt-1 w-full accent-gold"
+              aria-label="Maximum year"
+            />
+          </fieldset>
+
+          <!-- Stats -->
+          <div class="border-t border-parchment-300/50 pt-3">
+            <p class="font-sans text-xs text-ink-300">
+              <span id="stats-nodes">0</span> uzlov ·
+              <span id="stats-edges">0</span> hran
+            </p>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Graph container -->
+      <div class="flex-1">
+        <div
+          id="network-graph"
+          class="relative w-full overflow-hidden rounded-xl border border-parchment-300/50 bg-parchment-50"
+          style="min-height: 600px;"
+          role="img"
+          aria-label="Intertextual network graph showing relationships between confessional documents, hymnals, and liturgical orders"
+        >
+          <!-- SVG injected by JS -->
+        </div>
+
+        <!-- Detail panel (shown on node click) -->
+        <div id="node-detail" class="mt-4 hidden">
+          <div class="card">
+            <div class="flex items-start justify-between">
+              <div>
+                <h3 id="detail-label" class="font-display text-lg font-semibold text-ink"></h3>
+                <p id="detail-label-en" class="font-sans text-xs text-ink-300"></p>
+              </div>
+              <button
+                id="detail-close"
+                class="rounded-md p-1 text-ink-300 transition-colors hover:bg-parchment-300/50 hover:text-ink"
+                aria-label="Close detail panel"
+              >
+                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <div id="detail-meta" class="mt-2 flex flex-wrap gap-2"></div>
+            <div id="detail-edges" class="mt-3 space-y-1.5"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ornament-rule"></div>
+
+  <!-- ═══════════ EDGE TYPE REFERENCE ═══════════ -->
+  <section class="mx-auto max-w-content px-6 py-8 pb-20">
+    <h2 class="text-center text-section-title text-ink">Typy vztahov</h2>
+    <p class="mx-auto mt-3 max-w-prose text-center font-sans text-sm text-ink-300">
+      Relationship types in the network
+    </p>
+    <div class="mx-auto mt-8 grid max-w-3xl gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {Object.entries(EDGE_TYPE_META).map(([code, meta]) => (
+        <div class="rounded-lg border border-parchment-300/50 bg-parchment-50 p-3 text-center">
+          <div
+            class="mx-auto mb-2 h-1 w-12 rounded"
+            style={`background: ${meta.color};`}
+            aria-hidden="true"
+          ></div>
+          <p class="font-sans text-sm font-medium text-ink">{meta.sk}</p>
+          <p class="font-sans text-[10px] text-ink-300">{meta.en}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- ═══════════ ACCESSIBLE FALLBACK ═══════════ -->
+  <noscript>
+    <section class="mx-auto max-w-content px-6 py-8">
+      <h2 class="text-section-title text-ink">Zoznam uzlov / Node List</h2>
+      <div class="mt-4 overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="border-b border-parchment-300">
+              <th class="py-2 text-left font-sans font-medium text-ink-400">Nazov</th>
+              <th class="py-2 text-left font-sans font-medium text-ink-400">Tradicia</th>
+              <th class="py-2 text-left font-sans font-medium text-ink-400">Typ</th>
+              <th class="py-2 text-left font-sans font-medium text-ink-400">Rok</th>
+            </tr>
+          </thead>
+          <tbody>
+            {nodes.map((n) => (
+              <tr class="border-b border-parchment-200/50">
+                <td class="py-1.5 text-ink">{n.label}</td>
+                <td class="py-1.5 text-ink-400">{n.tradition}</td>
+                <td class="py-1.5 text-ink-400">{n.type}</td>
+                <td class="py-1.5 font-mono text-ink-400">{n.year}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </noscript>
+</BaseLayout>
+
+<style>
+  /* Graph node hover */
+  .network-node { cursor: pointer; }
+  .network-node:hover circle { filter: brightness(1.2); }
+
+  /* Edge hover */
+  .network-edge:hover { stroke-opacity: 1 !important; stroke-width: 3px !important; }
+
+  /* Range inputs */
+  input[type="range"] {
+    height: 4px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: rgba(212, 168, 67, 0.2);
+    border-radius: 2px;
+    outline: none;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #D4A843;
+    cursor: pointer;
+  }
+</style>
+
+<script is:inline define:vars={{ clientNodes, clientEdges, clientEdgeMeta, clientTraditionMeta }}>
+  // ── Parse serialized data ──
+  const graphNodes = JSON.parse(clientNodes);
+  const graphEdges = JSON.parse(clientEdges);
+  const edgeMeta = JSON.parse(clientEdgeMeta);
+  const traditionMeta = JSON.parse(clientTraditionMeta);
+
+  const traditionColors = {
+    LUTHERAN: "#D4A843",
+    UTRAQUIST: "#8B2332",
+    UNITY: "#2E8B8B",
+    TRANS: "#9CA3AF",
+  };
+
+  const nodeTypeRadius = {
+    DOCUMENT: 8,
+    HYMNAL: 10,
+    LITURGICAL: 9,
+    POLITICAL: 6,
+    PERSON: 7,
+  };
+
+  // ── SVG setup ──
+  const container = document.getElementById("network-graph");
+  if (!container) throw new Error("Missing #network-graph");
+
+  const width = container.clientWidth;
+  const height = Math.max(600, container.clientHeight);
+
+  const svgNs = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(svgNs, "svg");
+  svg.setAttribute("width", String(width));
+  svg.setAttribute("height", String(height));
+  svg.setAttribute("viewBox", "0 0 " + width + " " + height);
+  svg.style.width = "100%";
+  svg.style.height = "100%";
+  container.appendChild(svg);
+
+  // Defs for arrow markers
+  const defs = document.createElementNS(svgNs, "defs");
+  Object.entries(edgeMeta).forEach(function (entry) {
+    const code = entry[0];
+    const meta = entry[1];
+    const marker = document.createElementNS(svgNs, "marker");
+    marker.setAttribute("id", "arrow-" + code);
+    marker.setAttribute("viewBox", "0 0 10 6");
+    marker.setAttribute("refX", "10");
+    marker.setAttribute("refY", "3");
+    marker.setAttribute("markerWidth", "8");
+    marker.setAttribute("markerHeight", "6");
+    marker.setAttribute("orient", "auto-start-reverse");
+    const path = document.createElementNS(svgNs, "path");
+    path.setAttribute("d", "M0,0 L10,3 L0,6 Z");
+    path.setAttribute("fill", meta.color);
+    path.setAttribute("fill-opacity", "0.6");
+    marker.appendChild(path);
+    defs.appendChild(marker);
+  });
+  svg.appendChild(defs);
+
+  // Groups for layering: edges below nodes
+  const edgeGroup = document.createElementNS(svgNs, "g");
+  edgeGroup.setAttribute("class", "edges");
+  svg.appendChild(edgeGroup);
+
+  const nodeGroup = document.createElementNS(svgNs, "g");
+  nodeGroup.setAttribute("class", "nodes");
+  svg.appendChild(nodeGroup);
+
+  // ── Build simulation data ──
+  const simNodes = graphNodes.map(function (n) {
+    return {
+      id: n.id,
+      label: n.label,
+      labelEn: n.labelEn,
+      tradition: n.tradition,
+      type: n.type,
+      year: n.year,
+      locusCodes: n.locusCodes,
+      sourceId: n.sourceId,
+      x: width / 2 + (Math.random() - 0.5) * width * 0.6,
+      y: height / 2 + (Math.random() - 0.5) * height * 0.6,
+      vx: 0,
+      vy: 0,
+    };
+  });
+
+  const nodeMap = {};
+  simNodes.forEach(function (n) { nodeMap[n.id] = n; });
+
+  const simEdges = graphEdges.map(function (e) {
+    return {
+      source: nodeMap[e.source],
+      target: nodeMap[e.target],
+      type: e.type,
+      labelSk: e.labelSk,
+      labelEn: e.labelEn,
+      locusCodes: e.locusCodes,
+      epistemicStatus: e.epistemicStatus,
+      weight: e.weight,
+    };
+  }).filter(function (e) { return e.source && e.target; });
+
+  // ── Simple force simulation (no d3-force import — pure JS) ──
+  // We implement a basic force layout: repulsion + link spring + centering + collision
+
+  const ITERATIONS = 300;
+  const REPULSION = 8000;
+  const LINK_STRENGTH = 0.03;
+  const LINK_DISTANCE = 100;
+  const CENTER_GRAVITY = 0.01;
+  const DAMPING = 0.92;
+
+  function runSimulation() {
+    for (let iter = 0; iter < ITERATIONS; iter++) {
+      const alpha = 1 - iter / ITERATIONS;
+
+      // Repulsion (all pairs)
+      for (let i = 0; i < simNodes.length; i++) {
+        for (let j = i + 1; j < simNodes.length; j++) {
+          const a = simNodes[i];
+          const b = simNodes[j];
+          let dx = b.x - a.x;
+          let dy = b.y - a.y;
+          let dist = Math.sqrt(dx * dx + dy * dy) || 1;
+          const force = REPULSION * alpha / (dist * dist);
+          const fx = dx / dist * force;
+          const fy = dy / dist * force;
+          a.vx -= fx;
+          a.vy -= fy;
+          b.vx += fx;
+          b.vy += fy;
+        }
+      }
+
+      // Link spring
+      for (let i = 0; i < simEdges.length; i++) {
+        const e = simEdges[i];
+        let dx = e.target.x - e.source.x;
+        let dy = e.target.y - e.source.y;
+        let dist = Math.sqrt(dx * dx + dy * dy) || 1;
+        const displacement = (dist - LINK_DISTANCE) * LINK_STRENGTH * alpha;
+        const fx = dx / dist * displacement;
+        const fy = dy / dist * displacement;
+        e.source.vx += fx;
+        e.source.vy += fy;
+        e.target.vx -= fx;
+        e.target.vy -= fy;
+      }
+
+      // Center gravity
+      for (let i = 0; i < simNodes.length; i++) {
+        const n = simNodes[i];
+        n.vx += (width / 2 - n.x) * CENTER_GRAVITY * alpha;
+        n.vy += (height / 2 - n.y) * CENTER_GRAVITY * alpha;
+      }
+
+      // Apply velocity + damping
+      for (let i = 0; i < simNodes.length; i++) {
+        const n = simNodes[i];
+        n.vx *= DAMPING;
+        n.vy *= DAMPING;
+        n.x += n.vx;
+        n.y += n.vy;
+        // Bound to viewport
+        const r = nodeTypeRadius[n.type] || 8;
+        n.x = Math.max(r + 20, Math.min(width - r - 20, n.x));
+        n.y = Math.max(r + 20, Math.min(height - r - 20, n.y));
+      }
+    }
+  }
+
+  runSimulation();
+
+  // ── Render ──
+  const edgeElements = [];
+  const nodeElements = [];
+
+  // Draw edges
+  simEdges.forEach(function (e) {
+    const meta = edgeMeta[e.type] || { color: "#999", dash: "" };
+    const line = document.createElementNS(svgNs, "line");
+    line.setAttribute("x1", String(e.source.x));
+    line.setAttribute("y1", String(e.source.y));
+    line.setAttribute("x2", String(e.target.x));
+    line.setAttribute("y2", String(e.target.y));
+    line.setAttribute("stroke", meta.color);
+    line.setAttribute("stroke-width", String(e.weight));
+    line.setAttribute("stroke-opacity", e.epistemicStatus === "FACTUAL" ? "0.7" : e.epistemicStatus === "INTERPRETIVE" ? "0.45" : "0.25");
+    if (meta.dash) line.setAttribute("stroke-dasharray", meta.dash);
+    line.setAttribute("marker-end", "url(#arrow-" + e.type + ")");
+    line.setAttribute("class", "network-edge");
+    line.dataset.type = e.type;
+    line.dataset.source = e.source.id;
+    line.dataset.target = e.target.id;
+    // Tooltip
+    const title = document.createElementNS(svgNs, "title");
+    title.textContent = e.labelSk + " (" + e.type + ")";
+    line.appendChild(title);
+    edgeGroup.appendChild(line);
+    edgeElements.push({ el: line, data: e });
+  });
+
+  // Draw nodes
+  simNodes.forEach(function (n) {
+    const g = document.createElementNS(svgNs, "g");
+    g.setAttribute("class", "network-node");
+    g.setAttribute("transform", "translate(" + n.x + "," + n.y + ")");
+    g.dataset.id = n.id;
+    g.dataset.tradition = n.tradition;
+    g.dataset.type = n.type;
+    g.dataset.year = String(n.year);
+    g.setAttribute("role", "button");
+    g.setAttribute("tabindex", "0");
+    g.setAttribute("aria-label", n.label);
+
+    const r = nodeTypeRadius[n.type] || 8;
+    const circle = document.createElementNS(svgNs, "circle");
+    circle.setAttribute("r", String(r));
+    circle.setAttribute("fill", traditionColors[n.tradition] || "#999");
+    circle.setAttribute("stroke", "#F5F0E8");
+    circle.setAttribute("stroke-width", "1.5");
+    g.appendChild(circle);
+
+    // Label
+    const text = document.createElementNS(svgNs, "text");
+    text.setAttribute("dy", String(r + 12));
+    text.setAttribute("text-anchor", "middle");
+    text.setAttribute("class", "network-label");
+    text.setAttribute("fill", "#5A5047");
+    text.setAttribute("font-size", "9");
+    text.setAttribute("font-family", "Inter, sans-serif");
+    // Short label: just year + abbreviated name
+    const shortLabel = n.label.length > 25 ? n.label.substring(0, 22) + "..." : n.label;
+    text.textContent = shortLabel;
+    g.appendChild(text);
+
+    nodeGroup.appendChild(g);
+    nodeElements.push({ el: g, data: n });
+  });
+
+  // ── Detail panel ──
+  const detailPanel = document.getElementById("node-detail");
+  const detailLabel = document.getElementById("detail-label");
+  const detailLabelEn = document.getElementById("detail-label-en");
+  const detailMeta = document.getElementById("detail-meta");
+  const detailEdges = document.getElementById("detail-edges");
+  const detailClose = document.getElementById("detail-close");
+
+  let selectedNodeId = null;
+
+  function showDetail(nodeData) {
+    if (!detailPanel || !detailLabel || !detailLabelEn || !detailMeta || !detailEdges) return;
+    selectedNodeId = nodeData.id;
+
+    detailLabel.textContent = nodeData.label;
+    detailLabelEn.textContent = nodeData.labelEn;
+
+    // Meta badges
+    const color = traditionColors[nodeData.tradition] || "#999";
+    const tradLabel = traditionMeta[nodeData.tradition]
+      ? traditionMeta[nodeData.tradition].sk
+      : nodeData.tradition;
+    detailMeta.innerHTML =
+      '<span class="inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-medium" style="background:' + color + '22; color:' + color + ';">' +
+        '<span class="h-2 w-2 rounded-full" style="background:' + color + ';"></span>' +
+        tradLabel +
+      '</span>' +
+      '<span class="rounded-full bg-parchment-200 px-2 py-0.5 font-mono text-[10px] text-ink-300">' + nodeData.type + '</span>' +
+      '<span class="rounded-full bg-parchment-200 px-2 py-0.5 font-mono text-[10px] text-ink-300">' + nodeData.year + '</span>' +
+      (nodeData.locusCodes.length > 0
+        ? '<span class="rounded-full bg-parchment-200 px-2 py-0.5 font-mono text-[10px] text-ink-300">' + nodeData.locusCodes.join(" · ") + '</span>'
+        : '');
+
+    // Connected edges
+    const connected = simEdges.filter(function (e) {
+      return e.source.id === nodeData.id || e.target.id === nodeData.id;
+    });
+    detailEdges.innerHTML = connected.map(function (e) {
+      const meta = edgeMeta[e.type] || { sk: e.type, color: "#999" };
+      const other = e.source.id === nodeData.id ? e.target : e.source;
+      const direction = e.source.id === nodeData.id ? "\u2192" : "\u2190";
+      const opacityClass = e.epistemicStatus === "FACTUAL" ? "opacity-100" : e.epistemicStatus === "INTERPRETIVE" ? "opacity-80" : "opacity-60";
+      return '<div class="flex items-center gap-2 rounded bg-parchment-100 px-2 py-1 ' + opacityClass + '">' +
+        '<span class="inline-block h-0.5 w-3 rounded" style="background:' + meta.color + ';"></span>' +
+        '<span class="font-sans text-xs text-ink-400">' + direction + ' ' + other.label + '</span>' +
+        '<span class="ml-auto font-sans text-[10px] text-ink-300">' + meta.sk + '</span>' +
+      '</div>';
+    }).join("");
+
+    detailPanel.classList.remove("hidden");
+
+    // Highlight connected edges in graph
+    edgeElements.forEach(function (ee) {
+      const isConnected = ee.data.source.id === nodeData.id || ee.data.target.id === nodeData.id;
+      ee.el.setAttribute("stroke-opacity", isConnected ? "1" : "0.1");
+    });
+    nodeElements.forEach(function (ne) {
+      const isThis = ne.data.id === nodeData.id;
+      const isConnected = connected.some(function (e) {
+        return e.source.id === ne.data.id || e.target.id === ne.data.id;
+      });
+      ne.el.style.opacity = isThis || isConnected ? "1" : "0.2";
+    });
+  }
+
+  function hideDetail() {
+    if (detailPanel) detailPanel.classList.add("hidden");
+    selectedNodeId = null;
+    // Reset opacity
+    edgeElements.forEach(function (ee) {
+      const meta = edgeMeta[ee.data.type];
+      ee.el.setAttribute("stroke-opacity",
+        ee.data.epistemicStatus === "FACTUAL" ? "0.7" :
+        ee.data.epistemicStatus === "INTERPRETIVE" ? "0.45" : "0.25"
+      );
+    });
+    nodeElements.forEach(function (ne) { ne.el.style.opacity = "1"; });
+  }
+
+  // Node click/keyboard
+  nodeElements.forEach(function (ne) {
+    ne.el.addEventListener("click", function () { showDetail(ne.data); });
+    ne.el.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        showDetail(ne.data);
+      }
+    });
+  });
+
+  if (detailClose) {
+    detailClose.addEventListener("click", hideDetail);
+  }
+
+  // ── Filtering ──
+  function applyFilters() {
+    const activeTraditions = new Set();
+    document.querySelectorAll(".network-filter-tradition:checked").forEach(function (cb) {
+      activeTraditions.add(cb.value);
+    });
+
+    const activeEdgeTypes = new Set();
+    document.querySelectorAll(".network-filter-edge:checked").forEach(function (cb) {
+      activeEdgeTypes.add(cb.value);
+    });
+
+    const minYear = parseInt(document.getElementById("date-range-min").value);
+    const maxYear = parseInt(document.getElementById("date-range-max").value);
+    document.getElementById("date-range-label").textContent = minYear + " \u2013 " + maxYear;
+
+    let visibleNodes = 0;
+    let visibleEdges = 0;
+
+    // Filter nodes
+    const visibleNodeIds = new Set();
+    nodeElements.forEach(function (ne) {
+      const n = ne.data;
+      const visible = activeTraditions.has(n.tradition) && n.year >= minYear && n.year <= maxYear;
+      ne.el.style.display = visible ? "" : "none";
+      if (visible) {
+        visibleNodeIds.add(n.id);
+        visibleNodes++;
+      }
+    });
+
+    // Filter edges
+    edgeElements.forEach(function (ee) {
+      const e = ee.data;
+      const visible = activeEdgeTypes.has(e.type) &&
+        visibleNodeIds.has(e.source.id) &&
+        visibleNodeIds.has(e.target.id);
+      ee.el.style.display = visible ? "" : "none";
+      if (visible) visibleEdges++;
+    });
+
+    document.getElementById("stats-nodes").textContent = String(visibleNodes);
+    document.getElementById("stats-edges").textContent = String(visibleEdges);
+  }
+
+  // Bind filter listeners
+  document.querySelectorAll(".network-filter-tradition, .network-filter-edge").forEach(function (cb) {
+    cb.addEventListener("change", applyFilters);
+  });
+  document.getElementById("date-range-min").addEventListener("input", applyFilters);
+  document.getElementById("date-range-max").addEventListener("input", applyFilters);
+
+  // Initial render
+  applyFilters();
+</script>
