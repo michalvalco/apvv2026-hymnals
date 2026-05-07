@@ -1,0 +1,70 @@
+cff-version: 1.2.0
+title: "TEPALIT Digital Companion: Theological Taxonomy and Hymn-Pair Dossier for the Lutheranisation Thesis"
+message: "If you use this dataset, taxonomy, or any individual hymn-pair dossier, please cite it as below."
+type: dataset
+authors:
+  - family-names: Valčo
+    given-names: Michal
+    affiliation: "Evangelical Theological Faculty, Comenius University in Bratislava"
+    orcid: "https://orcid.org/0000-0000-0000-0000"
+  - name: "TEPALIT Project"
+    affiliation: "APVV-24-0484"
+repository-code: "https://github.com/michalvalco/apvv2026-hymnals"
+url: "https://michalvalco.github.io/apvv2026-hymnals/"
+abstract: >
+  Open digital companion to the monograph chapter "Dogmatická komparácia
+  luteranizmu a českých konfesií (utrakvizmus, Jednota bratská) v zrkadle
+  liturgických a hymnologických prameňov (16.–18. storočie)."
+  Includes a four-layer theological taxonomy (loci, confessional positions,
+  hymnic evidence, hymn-pair dossiers) released as versioned CSV data, a
+  parallel-text viewer (Synoptikon), an intertextual network graph, and a
+  bilingual (Slovak/English) case-study evidence layer for the Lutheranisation
+  thesis. Distinguished by a three-axis epistemic transparency framework:
+  epistemic status (claim type), evidentiary strength (textual evidence
+  quality), and verification status (whether the project has personally
+  collated primary witnesses).
+keywords:
+  - Reformation
+  - hymnology
+  - liturgical theology
+  - lex orandi lex credendi
+  - Cithara Sanctorum
+  - Tranovský
+  - Czech Reformation
+  - Unity of Brethren
+  - Utraquism
+  - Lutheranisation
+  - digital humanities
+  - confessional comparison
+  - Central European Reformation
+license: CC-BY-4.0
+license-url: "https://creativecommons.org/licenses/by/4.0/"
+identifiers:
+  - type: other
+    value: "APVV-24-0484"
+    description: "Slovak Research and Development Agency grant identifier"
+preferred-citation:
+  type: dataset
+  authors:
+    - family-names: Valčo
+      given-names: Michal
+    - name: "TEPALIT Project"
+  title: "TEPALIT Digital Companion: Theological Taxonomy and Hymn-Pair Dossier for the Lutheranisation Thesis"
+  year: 2026
+  url: "https://michalvalco.github.io/apvv2026-hymnals/"
+  notes: >
+    This work was supported by the Slovak Research and Development Agency
+    under the Contract no. APVV-24-0484.
+references:
+  - type: article
+    authors:
+      - family-names: Grešová-Sekelská
+        given-names: Adriana
+    title: "Príspevok k vzniku a obsahu Cithary sanctorum (1636) Juraja Tranovského"
+    journal: "Clavibus unitis"
+    volume: "10"
+    issue: "4"
+    year: 2021
+    start: 1
+    end: 10
+    notes: "Documented anchor for PAIR_001_AY_PANNA"

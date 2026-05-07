@@ -1,0 +1,263 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import {
+  getHymnPairs,
+  getHymnicEvidence,
+} from "../../data/taxonomy";
+
+const base = import.meta.env.BASE_URL;
+const REPO_BLOB = "https://github.com/michalvalco/apvv2026-hymnals/blob/main";
+
+// ── Collect every source ID referenced by the data layer ──
+const referencedIds = new Set<string>();
+
+for (const pair of getHymnPairs()) {
+  if (pair.citation_chain) {
+    pair.citation_chain
+      .split(";")
+      .map((s) => s.trim())
+      .filter(Boolean)
+      .forEach((id) => referencedIds.add(id));
+  }
+}
+
+for (const ev of getHymnicEvidence()) {
+  if (ev.source_collection_id) referencedIds.add(ev.source_collection_id);
+}
+
+// ── Curated bilingual entries for sources in active scholarly use ──
+// All other referenced IDs render with a basic stub linking to Source_Index.md.
+interface CuratedSource {
+  full_citation: string;
+  description_sk: string;
+  description_en: string;
+  url?: string;
+  type: "primary" | "secondary" | "edition";
+}
+
+const curated: Record<string, CuratedSource> = {
+  GresovaSek_Prispevok: {
+    full_citation:
+      "Grešová-Sekelská, Adriana. \"Príspevok k vzniku a obsahu Cithary sanctorum (1636) Juraja Tranovského.\" Clavibus unitis 10/4 (2021): 1–10.",
+    description_sk:
+      "Recenzovaná štúdia rekonštruujúca prvé vydanie CS zo štyroch defektných exemplárov; kvantifikuje konfesionálne zloženie repertoáru (49 % staršieho českého repertoáru utrakvistického pôvodu) a dokumentuje konkrétne editorské zásahy Tranovského.",
+    description_en:
+      "Peer-reviewed study reconstructing the first CS edition from four defective copies; quantifies confessional composition of the repertoire (49% of older Czech repertoire of Utraquist origin) and documents specific editorial interventions by Tranovský.",
+    url: "https://clavibus.cz",
+    type: "secondary",
+  },
+  GresovaSek_2023: {
+    full_citation:
+      "Grešová-Sekelská, Adriana. Georgius Tranoscius Teschiniensis / Jiří Třanovský (1592–1637): Duchovné piesne zo spevníka Cithara Sanctorum (1636) – výber. Musicalia Istropolitana 4/2. Bratislava: Stimul, 2023.",
+    description_sk:
+      "Bilingválna kritická edícia 8 hymnov zo CS, ktorých melódie sa pripisujú samotnému Tranovskému; obsahuje rozsiahlu úvodnú štúdiu o pôvode CS a editorskej metóde.",
+    description_en:
+      "Bilingual critical edition of 8 CS hymns whose melodies are attributed to Tranovský himself; includes a substantial introductory study of CS origins and editorial method.",
+    type: "edition",
+  },
+  Vajda_1944: {
+    full_citation:
+      "Vajda, Jaroslav. A History of the Cithara Sanctorum (Tranoscius): The Slovak Lutheran Hymnal of George Tranovsky. B.Div. Thesis, Concordia Seminary, St. Louis, 1944.",
+    description_sk:
+      "Prvá komplexná anglická štúdia o CS; obsahuje súpis 36 hymnov z Bystrickej agendy 1585 s ich CS ekvivalentmi (s. 16–21) — východisko pre PAIR_003_BA_CS_TARGET.",
+    description_en:
+      "First comprehensive English-language study of CS; includes a list of 36 hymns from the Bystrická agenda 1585 with their CS equivalents (pp. 16–21) — the starting point for PAIR_003_BA_CS_TARGET.",
+    url: "https://scholar.csl.edu/bdiv/110",
+    type: "secondary",
+  },
+  Benka_2024: {
+    full_citation:
+      "Benka, Pavol (ed.). Agenda Česká 1581 a Bystrická agenda 1585. Monumenta Linguae Slovacae X. 2024.",
+    description_sk:
+      "Kritická edícia neo-utrakvistickej Agendy Českej (1581) a luteránskej Bystrickej agendy (1585). Eucharistický rítus AC: s. 131–150. Nevyhnutný prameň pre §4.1.",
+    description_en:
+      "Critical edition of the neo-Utraquist Czech Agenda (1581) and the Lutheran Bystrická agenda (1585). AC Eucharistic rite: pp. 131–150. Essential source for §4.1.",
+    type: "edition",
+  },
+  CitharaSanct_1636: {
+    full_citation:
+      "[Tranovský, Jiří.] Cithara Sanctorum. Levoča: Vavrinec Brewer, 1636.",
+    description_sk:
+      "Prvé vydanie luteránskeho spevníka v bibličtine. Žiaden úplný exemplár sa nedochoval — fragmenty: EČCB Praha (II.T.31), Széchényi Library Budapest (RMK II.505b). Centrálny prameň pre tézu luteranizácie.",
+    description_en:
+      "First edition of the Lutheran hymnal in bibličtina. No complete copy survives — fragments: EČCB Prague (II.T.31), Széchényi Library Budapest (RMK II.505b). Central source for the Lutheranisation thesis.",
+    type: "primary",
+  },
+  KancKolinsky_1517: {
+    full_citation:
+      "Kancionál Kolínský. 1517.",
+    description_sk:
+      "Utrakvistický tlačený kancionál; podľa Grešovej-Sekelskej 2021 (s. 6) najväčší jednotlivý melodický prameň pre staršiu časť českého repertoáru pohlteného CS. Zdroj pre PAIR_001_AY_PANNA mariánsku rubriku.",
+    description_en:
+      "Utraquist printed hymnal; per Grešová-Sekelská 2021 (p. 6), the single largest melodic source for older Czech repertoire absorbed into CS. Source for the PAIR_001_AY_PANNA Marian rubric.",
+    type: "primary",
+  },
+  KancIvanc_1564: {
+    full_citation:
+      "Kancionál Ivančický. Ivančice, 1564.",
+    description_sk:
+      "Bratrský kancionál (745 piesní), revízia Šamotulského 1561. Dostupný v Kramerius MZK (UUID 776edc45-…). Mladějovská 2008 katalogizuje všetky piesne.",
+    description_en:
+      "Brethren kancionál (745 hymns), revision of Šamotulský 1561. Available via Kramerius MZK (UUID 776edc45-…). Mladějovská 2008 catalogues all songs.",
+    type: "primary",
+  },
+  AgCeska_1581: {
+    full_citation:
+      "Agenda Česká. 1581.",
+    description_sk:
+      "Neo-utrakvistický liturgický poriadok. Plná kritická edícia: Benka 2024 (MLS X). 229 stranových obrazov v projektových resources.",
+    description_en:
+      "Neo-Utraquist liturgical order. Full critical edition: Benka 2024 (MLS X). 229 page-images in project resources.",
+    type: "primary",
+  },
+};
+
+// Sources order: primary → editions → secondary, then alphabetical
+const typeOrder: Record<CuratedSource["type"], number> = {
+  primary: 0,
+  edition: 1,
+  secondary: 2,
+};
+
+const allReferenced = Array.from(referencedIds).sort();
+const curatedReferenced = allReferenced
+  .filter((id) => curated[id])
+  .sort((a, b) => {
+    const ta = typeOrder[curated[a].type];
+    const tb = typeOrder[curated[b].type];
+    return ta !== tb ? ta - tb : a.localeCompare(b);
+  });
+const stubReferenced = allReferenced.filter((id) => !curated[id]).sort();
+
+const typeLabels: Record<CuratedSource["type"], { sk: string; en: string }> = {
+  primary: { sk: "Primárny prameň", en: "Primary source" },
+  edition: { sk: "Kritická edícia", en: "Critical edition" },
+  secondary: { sk: "Sekundárna literatúra", en: "Secondary literature" },
+};
+---
+
+<BaseLayout
+  title="Pramene — register"
+  description="Source register for the TEPALIT digital companion. Anchored entries for every source ID referenced by the hymn-pair dossier and evidence layer."
+  lang="sk"
+>
+  <!-- Header -->
+  <section class="bg-ink-800 px-6 py-16 text-parchment">
+    <div class="mx-auto max-w-content text-center">
+      <p class="font-sans text-xs font-medium uppercase tracking-[0.2em] text-gold">
+        Source Register · Citation Targets
+      </p>
+      <h1 class="mt-3 text-section-title font-display font-bold text-parchment-100">
+        Pramene
+      </h1>
+      <p class="mx-auto mt-2 max-w-prose font-sans text-sm uppercase tracking-wider text-parchment-500" lang="en">
+        Sources
+      </p>
+      <p class="mx-auto mt-6 max-w-prose text-parchment-400">
+        Register kotviacich identifikátorov pre každý prameň, na ktorý odkazuje
+        hymno-párový dossier alebo dôkazová vrstva. Pre úplnú bibliografickú
+        evidenciu so statusmi prístupnosti pozrite Source_Index.md v repozitári.
+      </p>
+      <p class="mx-auto mt-3 max-w-prose font-sans text-sm italic text-parchment-500" lang="en">
+        Anchored register for every source the hymn-pair dossier or evidence layer
+        references. For full bibliographic data with accessibility status, see
+        Source_Index.md in the repository.
+      </p>
+      <a
+        href={`${REPO_BLOB}/Sources/Source_Index.md`}
+        class="mt-6 inline-flex items-center gap-2 rounded-md bg-gold/15 px-4 py-2 font-sans text-sm font-medium text-gold no-underline hover:bg-gold/25"
+      >
+        Source_Index.md &#x2192; GitHub
+      </a>
+    </div>
+  </section>
+
+  <!-- Curated entries -->
+  <section class="mx-auto max-w-content px-6 py-10">
+    <h2 class="text-section-title text-ink">Aktívne používané pramene</h2>
+    <p class="mt-1 font-sans text-sm italic text-ink-300" lang="en">
+      Sources in active scholarly use
+    </p>
+    <p class="mt-3 text-sm text-ink-400">
+      Pramene s vlastným popisom, na ktoré sa priamo odvoláva hymno-párový
+      argument. Stabilné kotvy ako <code class="font-mono text-xs">/sources/#&lt;ID&gt;</code>.
+    </p>
+
+    <div class="mt-8 space-y-5">
+      {
+        curatedReferenced.map((id) => {
+          const c = curated[id];
+          const tl = typeLabels[c.type];
+          return (
+            <article
+              class="card scroll-mt-24"
+              id={id}
+            >
+              <div class="flex flex-wrap items-start justify-between gap-2">
+                <div>
+                  <code class="font-mono text-xs font-semibold text-burgundy">
+                    {id}
+                  </code>
+                  <span class="ml-2 rounded-full bg-parchment-300/50 px-2 py-0.5 font-sans text-[10px] text-ink-400">
+                    {tl.sk} · <span class="italic" lang="en">{tl.en}</span>
+                  </span>
+                </div>
+                {c.url && (
+                  <a
+                    href={c.url}
+                    class="font-sans text-xs text-burgundy hover:underline"
+                    rel="noopener"
+                  >
+                    Online &#x2197;
+                  </a>
+                )}
+              </div>
+              <p class="mt-2 font-serif text-sm text-ink">{c.full_citation}</p>
+              <p class="mt-3 text-sm text-ink-400">{c.description_sk}</p>
+              <p class="mt-2 font-sans text-xs italic text-ink-300" lang="en">
+                {c.description_en}
+              </p>
+              <p class="mt-3 font-sans text-[10px] uppercase tracking-wider text-ink-300">
+                <a
+                  href={`${base}/hymn-pairs/`}
+                  class="hover:text-burgundy"
+                >
+                  Used in hymn-pair dossier &#x2192;
+                </a>
+              </p>
+            </article>
+          );
+        })
+      }
+    </div>
+  </section>
+
+  <!-- Stub entries -->
+  {stubReferenced.length > 0 && (
+    <section class="mx-auto max-w-content px-6 py-8 pb-20">
+      <h2 class="text-section-title text-ink">Ostatné odkazy</h2>
+      <p class="mt-1 font-sans text-sm italic text-ink-300" lang="en">
+        Other referenced IDs
+      </p>
+      <p class="mt-3 text-sm text-ink-400">
+        Identifikátory prameňov, na ktoré sa data vrstva odvoláva, no zatiaľ
+        nemajú vlastný popis. Pre plnú bibliografiu pozrite Source_Index.md.
+      </p>
+      <ul class="mt-6 grid gap-2 sm:grid-cols-2">
+        {
+          stubReferenced.map((id) => (
+            <li id={id} class="scroll-mt-24 rounded-md border border-parchment-300/50 bg-parchment-50 px-3 py-2">
+              <code class="font-mono text-xs font-semibold text-ink">{id}</code>
+              <a
+                href={`${REPO_BLOB}/Sources/Source_Index.md`}
+                class="ml-2 font-sans text-[11px] text-ink-300 hover:text-burgundy"
+              >
+                see Source_Index.md &#x2197;
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+  )}
+</BaseLayout>

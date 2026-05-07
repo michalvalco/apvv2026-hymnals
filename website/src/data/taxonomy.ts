@@ -70,6 +70,35 @@ export interface HymnicEvidence {
   notes: string;
 }
 
+export type EvidentiaryStrength = "DOCUMENTED" | "INFERRED" | "CONJECTURED";
+export type VerificationStatus =
+  | "VERIFIED"
+  | "SECONDARY_ONLY"
+  | "PRIMARY_PENDING"
+  | "UNVERIFIED";
+
+export interface HymnPair {
+  pair_id: string;
+  pair_label_sk: string;
+  pair_label_en: string;
+  source_text_id: string;
+  receptor_text_id: string;
+  transfer_direction: string;
+  primary_locus_code: string;
+  all_locus_codes: string;
+  modification_typology: string;
+  theological_argument_sk: string;
+  theological_argument_en: string;
+  epistemic_status: "FACTUAL" | "INTERPRETIVE" | "DEFERRED";
+  evidentiary_strength: EvidentiaryStrength;
+  verification_status: VerificationStatus;
+  citation_chain: string;
+  chapter_section: string;
+  synoptikon_id: string;
+  notes_sk: string;
+  notes_en: string;
+}
+
 // ── CSV Parser ──
 
 /**
@@ -298,6 +327,222 @@ export function getEvidenceForLocus(code: string): HymnicEvidence[] {
     e.locus_codes.split(";").map((c) => c.trim()).includes(code),
   );
 }
+
+export function getEvidenceById(textId: string): HymnicEvidence | undefined {
+  if (!textId) return undefined;
+  return getHymnicEvidence().find((e) => e.text_id === textId);
+}
+
+const VALID_EVIDENTIARY = new Set(["DOCUMENTED", "INFERRED", "CONJECTURED"]);
+const VALID_VERIFICATION = new Set([
+  "VERIFIED",
+  "SECONDARY_ONLY",
+  "PRIMARY_PENDING",
+  "UNVERIFIED",
+]);
+
+function validatePair(row: Record<string, string>, index: number): HymnPair {
+  const required = [
+    "pair_id",
+    "pair_label_sk",
+    "pair_label_en",
+    "primary_locus_code",
+    "all_locus_codes",
+    "theological_argument_sk",
+    "theological_argument_en",
+    "epistemic_status",
+    "evidentiary_strength",
+    "verification_status",
+  ];
+  for (const key of required) {
+    if (!row[key]?.trim()) {
+      throw new Error(
+        `hymn_pairs.csv row ${index + 1}: missing required column "${key}"`,
+      );
+    }
+  }
+  if (!VALID_EPISTEMIC.has(row.epistemic_status.trim())) {
+    throw new Error(
+      `hymn_pairs.csv row ${index + 1}: invalid epistemic_status "${row.epistemic_status}"`,
+    );
+  }
+  if (!VALID_EVIDENTIARY.has(row.evidentiary_strength.trim())) {
+    throw new Error(
+      `hymn_pairs.csv row ${index + 1}: invalid evidentiary_strength "${row.evidentiary_strength}"`,
+    );
+  }
+  if (!VALID_VERIFICATION.has(row.verification_status.trim())) {
+    throw new Error(
+      `hymn_pairs.csv row ${index + 1}: invalid verification_status "${row.verification_status}"`,
+    );
+  }
+  return {
+    pair_id: row.pair_id.trim(),
+    pair_label_sk: row.pair_label_sk.trim(),
+    pair_label_en: row.pair_label_en.trim(),
+    source_text_id: (row.source_text_id ?? "").trim(),
+    receptor_text_id: (row.receptor_text_id ?? "").trim(),
+    transfer_direction: (row.transfer_direction ?? "").trim(),
+    primary_locus_code: row.primary_locus_code.trim(),
+    all_locus_codes: row.all_locus_codes.trim(),
+    modification_typology: (row.modification_typology ?? "").trim(),
+    theological_argument_sk: row.theological_argument_sk.trim(),
+    theological_argument_en: row.theological_argument_en.trim(),
+    epistemic_status: row.epistemic_status.trim() as HymnPair["epistemic_status"],
+    evidentiary_strength:
+      row.evidentiary_strength.trim() as EvidentiaryStrength,
+    verification_status:
+      row.verification_status.trim() as VerificationStatus,
+    citation_chain: (row.citation_chain ?? "").trim(),
+    chapter_section: (row.chapter_section ?? "").trim(),
+    synoptikon_id: (row.synoptikon_id ?? "").trim(),
+    notes_sk: (row.notes_sk ?? "").trim(),
+    notes_en: (row.notes_en ?? "").trim(),
+  };
+}
+
+let _pairs: HymnPair[] | null = null;
+export function getHymnPairs(): HymnPair[] {
+  if (!_pairs) {
+    _pairs = loadCSV("hymn_pairs.csv").map((row, i) => validatePair(row, i));
+    const ids = new Set<string>();
+    for (let i = 0; i < _pairs.length; i++) {
+      if (ids.has(_pairs[i].pair_id)) {
+        throw new Error(
+          `hymn_pairs.csv row ${i + 1}: duplicate pair_id "${_pairs[i].pair_id}"`,
+        );
+      }
+      ids.add(_pairs[i].pair_id);
+    }
+    // Cross-file integrity: locus codes, evidence text_ids
+    const locusCodes = new Set(getLoci().map((l) => l.locus_code));
+    const evidenceIds = new Set(getHymnicEvidence().map((e) => e.text_id));
+    for (let i = 0; i < _pairs.length; i++) {
+      const p = _pairs[i];
+      if (!locusCodes.has(p.primary_locus_code)) {
+        throw new Error(
+          `hymn_pairs.csv row ${i + 1}: primary_locus_code "${p.primary_locus_code}" not found in loci_hierarchy.csv`,
+        );
+      }
+      const allCodes = p.all_locus_codes
+        .split(";")
+        .map((c) => c.trim())
+        .filter(Boolean);
+      for (const c of allCodes) {
+        if (!locusCodes.has(c)) {
+          throw new Error(
+            `hymn_pairs.csv row ${i + 1}: all_locus_codes contains "${c}", not found in loci_hierarchy.csv`,
+          );
+        }
+      }
+      if (p.source_text_id && !evidenceIds.has(p.source_text_id)) {
+        throw new Error(
+          `hymn_pairs.csv row ${i + 1}: source_text_id "${p.source_text_id}" not found in hymnic_evidence.csv`,
+        );
+      }
+      if (p.receptor_text_id && !evidenceIds.has(p.receptor_text_id)) {
+        throw new Error(
+          `hymn_pairs.csv row ${i + 1}: receptor_text_id "${p.receptor_text_id}" not found in hymnic_evidence.csv`,
+        );
+      }
+    }
+  }
+  return _pairs;
+}
+
+export const TRANSFER_DIRECTION_LABELS: Record<
+  string,
+  { sk: string; en: string }
+> = {
+  UTRAQUIST_TO_LUTHERAN: {
+    sk: "Z utrakvistických prameňov do luteránskych",
+    en: "From Utraquist sources to Lutheran",
+  },
+  UNITY_TO_LUTHERAN: {
+    sk: "Z bratrských prameňov do luteránskych",
+    en: "From Brethren sources to Lutheran",
+  },
+  HUSSITE_TO_LUTHERAN: {
+    sk: "Z husitských prameňov do luteránskych",
+    en: "From Hussite sources to Lutheran",
+  },
+  LATIN_TO_VERNACULAR: {
+    sk: "Z latinčiny do národného jazyka",
+    en: "From Latin to vernacular",
+  },
+  GERMAN_TO_CZECH: {
+    sk: "Z nemčiny do češtiny",
+    en: "From German to Czech",
+  },
+};
+
+export const EVIDENTIARY_LABELS: Record<
+  EvidentiaryStrength,
+  { sk: string; en: string; description_sk: string; description_en: string }
+> = {
+  DOCUMENTED: {
+    sk: "Doložené",
+    en: "Documented",
+    description_sk:
+      "Recenzovaný odborný prameň výslovne identifikuje tento pár a jeho úpravu.",
+    description_en:
+      "A peer-reviewed scholarly source explicitly identifies this pair and its modification.",
+  },
+  INFERRED: {
+    sk: "Odvodené",
+    en: "Inferred",
+    description_sk:
+      "Máme priamy prístup k obom svedkom; tvrdenie o úprave je vlastná analýza projektu.",
+    description_en:
+      "We have direct access to both witnesses; the modification claim is the project's own analysis.",
+  },
+  CONJECTURED: {
+    sk: "Hypotéza",
+    en: "Conjectured",
+    description_sk:
+      "Pracovná hypotéza alebo výskumný cieľ — nemáme zatiaľ ani sekundárnu dokumentáciu, ani overený textový prístup.",
+    description_en:
+      "Working hypothesis or research target — we lack both secondary documentation and verified textual access.",
+  },
+};
+
+export const VERIFICATION_LABELS: Record<
+  VerificationStatus,
+  { sk: string; en: string; description_sk: string; description_en: string }
+> = {
+  VERIFIED: {
+    sk: "Overené",
+    en: "Verified",
+    description_sk:
+      "Členovia projektu osobne porovnali primárne texty (alebo ich kritické vydania) oboch svedkov.",
+    description_en:
+      "Project members have personally collated the primary texts (or critical editions) of both witnesses.",
+  },
+  SECONDARY_ONLY: {
+    sk: "Iba sekundárny prameň",
+    en: "Secondary source only",
+    description_sk:
+      "Spoliehame sa výlučne na transkripciu/popis v sekundárnom prameni. Primárne svedectvá projektom zatiaľ nepreverené.",
+    description_en:
+      "We rely entirely on a secondary source's transcription/description. Primary witnesses not yet inspected by project members.",
+  },
+  PRIMARY_PENDING: {
+    sk: "Primárne prístupné, kolacia čaká",
+    en: "Primary accessible, collation pending",
+    description_sk:
+      "Primárne svedectvá sú nám prístupné (digitalizované), no zatiaľ neboli začlenené do dátového modelu.",
+    description_en:
+      "Primary witnesses are available to us (digitised, accessible) but have not been collated into the data model yet.",
+  },
+  UNVERIFIED: {
+    sk: "Neoverené",
+    en: "Unverified",
+    description_sk:
+      "Ani sekundárna dokumentácia, ani primárny prístup neboli získané.",
+    description_en:
+      "Neither secondary documentation nor primary access has been obtained.",
+  },
+};
 
 // ── Tradition display helpers ──
 

@@ -1,0 +1,775 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import EpistemicLegend from "../../components/EpistemicLegend.astro";
+import TraditionBadge from "../../components/TraditionBadge.astro";
+import {
+  getHymnPairs,
+  getEvidenceById,
+  getLocusByCode,
+  TRANSFER_DIRECTION_LABELS,
+  EVIDENTIARY_LABELS,
+  VERIFICATION_LABELS,
+  type HymnPair,
+  type HymnicEvidence,
+} from "../../data/taxonomy";
+
+const pairs = getHymnPairs();
+const base = import.meta.env.BASE_URL;
+const SITE_ORIGIN = "https://michalvalco.github.io";
+
+const epistemicClasses: Record<string, string> = {
+  FACTUAL: "epistemic-factual",
+  INTERPRETIVE: "epistemic-interpretive",
+  DEFERRED: "epistemic-deferred",
+};
+
+const epistemicLabels: Record<string, { sk: string; en: string }> = {
+  FACTUAL: { sk: "Doložené tvrdenie", en: "Factual claim" },
+  INTERPRETIVE: { sk: "Odborná interpretácia", en: "Scholarly interpretation" },
+  DEFERRED: { sk: "Otvorená otázka", en: "Open question" },
+};
+
+const evidentiaryRing: Record<string, string> = {
+  DOCUMENTED: "ring-2 ring-epistemic-factual/40",
+  INFERRED: "ring-2 ring-epistemic-interpretive/40",
+  // Tailwind has no ring-dashed utility; use a dashed border for CONJECTURED.
+  CONJECTURED: "border-2 border-dashed border-epistemic-deferred/60",
+};
+
+const verificationBadge: Record<string, string> = {
+  VERIFIED: "bg-epistemic-factual/15 text-epistemic-factual",
+  SECONDARY_ONLY: "bg-epistemic-interpretive/15 text-epistemic-interpretive",
+  PRIMARY_PENDING: "bg-gold/15 text-gold-dark",
+  UNVERIFIED: "bg-burgundy/10 text-burgundy",
+};
+
+interface PairView {
+  pair: HymnPair;
+  source?: HymnicEvidence;
+  receptor?: HymnicEvidence;
+  primaryLocusName: string;
+  primaryLocusEn: string;
+  citationIds: string[];
+  modificationTypes: string[];
+  bibtex: string;
+  apa: string;
+  permalink: string;
+}
+
+const isPlaceholderText = (s: string) =>
+  /^\[.*pending|^\[text to be filled/i.test(s.trim());
+
+const buildBibtex = (p: HymnPair): string =>
+  `@misc{TEPALIT_${p.pair_id},\n  title        = {{${p.pair_label_en}}},\n  author       = {Val\\v{c}o, Michal and TEPALIT Project},\n  year         = {2026},\n  note         = {Hymn-pair dossier ${p.pair_id}, epistemic status: ${p.epistemic_status}},\n  howpublished = {APVV-24-0484 (TEPALIT) digital companion},\n  url          = {${SITE_ORIGIN}${base}/hymn-pairs/#${p.pair_id}}\n}`;
+
+const buildApa = (p: HymnPair): string =>
+  `Valčo, M., & TEPALIT Project. (2026). ${p.pair_label_en} [Hymn-pair dossier ${p.pair_id}]. APVV-24-0484 (TEPALIT) Digital Companion. ${SITE_ORIGIN}${base}/hymn-pairs/#${p.pair_id}`;
+
+const pairViews: PairView[] = pairs.map((pair) => {
+  const source = getEvidenceById(pair.source_text_id);
+  const receptor = getEvidenceById(pair.receptor_text_id);
+  const locus = getLocusByCode(pair.primary_locus_code);
+  return {
+    pair,
+    source,
+    receptor,
+    primaryLocusName: locus
+      ? `${locus.locus_code} · ${locus.locus_name_sk}`
+      : pair.primary_locus_code,
+    primaryLocusEn: locus ? locus.locus_name_en : "",
+    citationIds: pair.citation_chain
+      ? pair.citation_chain.split(";").map((s) => s.trim()).filter(Boolean)
+      : [],
+    modificationTypes: pair.modification_typology
+      ? pair.modification_typology
+          .split(";")
+          .map((s) => s.trim())
+          .filter(Boolean)
+      : [],
+    bibtex: buildBibtex(pair),
+    apa: buildApa(pair),
+    permalink: `${SITE_ORIGIN}${base}/hymn-pairs/#${pair.pair_id}`,
+  };
+});
+
+// Sort: FACTUAL first, then INTERPRETIVE, then DEFERRED
+const epistemicOrder: Record<string, number> = {
+  FACTUAL: 0,
+  INTERPRETIVE: 1,
+  DEFERRED: 2,
+};
+pairViews.sort(
+  (a, b) =>
+    epistemicOrder[a.pair.epistemic_status] -
+    epistemicOrder[b.pair.epistemic_status],
+);
+
+const counts = {
+  total: pairs.length,
+  factual: pairs.filter((p) => p.epistemic_status === "FACTUAL").length,
+  interpretive: pairs.filter((p) => p.epistemic_status === "INTERPRETIVE")
+    .length,
+  deferred: pairs.filter((p) => p.epistemic_status === "DEFERRED").length,
+  documented: pairs.filter((p) => p.evidentiary_strength === "DOCUMENTED")
+    .length,
+  verified: pairs.filter((p) => p.verification_status === "VERIFIED").length,
+};
+
+// JSON-LD: emit a Dataset record describing the dossier as a citable scholarly resource
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  name: "TEPALIT Hymn-Pair Dossier",
+  alternateName: "Hymno-páry — dôkazové dossier",
+  description:
+    "Case-study evidence layer for the Lutheranisation thesis: comparative dossiers per hymn pair with three orthogonal trust axes (epistemic, evidentiary, verification).",
+  url: `${SITE_ORIGIN}${base}/hymn-pairs/`,
+  isPartOf: {
+    "@type": "ResearchProject",
+    name: "TEPALIT (APVV-24-0484)",
+    funder: {
+      "@type": "Organization",
+      name: "Slovak Research and Development Agency",
+      identifier: "APVV-24-0484",
+    },
+  },
+  creator: {
+    "@type": "Person",
+    name: "Michal Valčo",
+    affiliation: { "@type": "Organization", name: "ETF UK Bratislava" },
+  },
+  keywords: [
+    "Reformation hymnology",
+    "Cithara Sanctorum",
+    "Lutheranisation",
+    "Tranovský",
+    "Czech Reformation",
+    "Unity of Brethren",
+    "Utraquism",
+    "lex orandi lex credendi",
+  ],
+  license: "https://creativecommons.org/licenses/by/4.0/",
+  hasPart: pairViews.map((v) => ({
+    "@type": "CreativeWork",
+    "@id": `${SITE_ORIGIN}${base}/hymn-pairs/#${v.pair.pair_id}`,
+    name: v.pair.pair_label_en,
+    description: v.pair.theological_argument_en.slice(0, 280),
+    additionalType: "ScholarlyArticle",
+    inLanguage: ["sk", "en"],
+  })),
+};
+---
+
+<BaseLayout
+  title="Hymno-páry — dôkazové dossier"
+  description="Hymn-pair dossier: case-study evidence layer for the Lutheranisation thesis. Each pair is an analytical record with epistemic flags, citation chain, and verification status."
+  lang="sk"
+>
+  <!-- JSON-LD structured data for Scholar / search indexing -->
+  <script
+    is:inline
+    type="application/ld+json"
+    set:html={JSON.stringify(jsonLd)}
+  />
+
+  <!-- ═══════════ HEADER ═══════════ -->
+  <section class="bg-ink-800 px-6 py-16 text-parchment">
+    <div class="mx-auto max-w-content text-center">
+      <p class="font-sans text-xs font-medium uppercase tracking-[0.2em] text-gold">
+        Lex orandi, lex credendi · Hymn-Pair Dossier
+      </p>
+      <h1 class="mt-3 text-section-title font-display font-bold text-parchment-100">
+        Hymno-páry
+      </h1>
+      <p class="mx-auto mt-2 max-w-prose font-sans text-sm uppercase tracking-wider text-parchment-500" lang="en">
+        Hymn-Pair Dossier
+      </p>
+      <p class="mx-auto mt-6 max-w-prose text-parchment-400">
+        Empirické jadro tézy o luteranizácii. Každý záznam je samostatný
+        výskumný dossier — porovnávaný pár s argumentom, citačným reťazcom
+        a tromi nezávislými osami dôvery: epistemický status, sila dôkazu
+        a stav vlastnej verifikácie.
+      </p>
+      <p class="mx-auto mt-3 max-w-prose font-sans text-sm italic text-parchment-500" lang="en">
+        The empirical core of the Lutheranisation thesis. Each record is a
+        self-contained research dossier — a paired comparison with prose argument,
+        citation chain, and three independent trust axes: epistemic status,
+        evidentiary strength, and the project's own verification status.
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══════════ SUMMARY STATS ═══════════ -->
+  <div class="mx-auto max-w-wide px-6 pt-8">
+    <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5">
+      <div class="card text-center">
+        <p class="font-display text-3xl font-bold text-ink">{counts.total}</p>
+        <p class="mt-1 font-sans text-xs text-ink-400">
+          Spolu / <span lang="en">Total</span>
+        </p>
+      </div>
+      <div class="card text-center epistemic-factual">
+        <p class="font-display text-3xl font-bold text-ink">{counts.factual}</p>
+        <p class="mt-1 font-sans text-xs text-ink-400">
+          Doložené / <span lang="en">Factual</span>
+        </p>
+      </div>
+      <div class="card text-center epistemic-interpretive">
+        <p class="font-display text-3xl font-bold text-ink">
+          {counts.interpretive}
+        </p>
+        <p class="mt-1 font-sans text-xs text-ink-400">
+          Interpret. / <span lang="en">Interpretive</span>
+        </p>
+      </div>
+      <div class="card text-center epistemic-deferred">
+        <p class="font-display text-3xl font-bold text-ink">
+          {counts.deferred}
+        </p>
+        <p class="mt-1 font-sans text-xs text-ink-400">
+          Otvorené / <span lang="en">Deferred</span>
+        </p>
+      </div>
+      <div class="card text-center">
+        <p class="font-display text-3xl font-bold text-burgundy">
+          {counts.verified}
+        </p>
+        <p class="mt-1 font-sans text-xs text-ink-400">
+          Vlastná verif. / <span lang="en">Verified</span>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════ TRUST AXES LEGEND ═══════════ -->
+  <div class="mx-auto max-w-wide px-6 pt-6">
+    <div class="rounded-lg bg-parchment-100/60 p-4">
+      <h2 class="mb-3 font-sans text-xs font-semibold uppercase tracking-wider text-ink-400">
+        Tri osi dôvery / <span lang="en">Three trust axes</span>
+      </h2>
+      <div class="grid gap-4 md:grid-cols-3">
+        <div>
+          <h3 class="font-sans text-sm font-semibold text-ink">
+            1. Epistemický status
+          </h3>
+          <p class="mt-0.5 font-sans text-[11px] italic text-ink-300" lang="en">
+            Type of claim
+          </p>
+          <p class="mt-2 text-xs text-ink-400">
+            <strong>Factual</strong> · overiteľné /
+            <strong>Interpretive</strong> · odborný úsudok /
+            <strong>Deferred</strong> · vyžaduje expertné posúdenie
+          </p>
+        </div>
+        <div>
+          <h3 class="font-sans text-sm font-semibold text-ink">
+            2. Sila textového dôkazu
+          </h3>
+          <p class="mt-0.5 font-sans text-[11px] italic text-ink-300" lang="en">
+            Quality of textual evidence
+          </p>
+          <p class="mt-2 text-xs text-ink-400">
+            <strong>Documented</strong> · v recenz. literatúre /
+            <strong>Inferred</strong> · vlastná analýza textov /
+            <strong>Conjectured</strong> · pracovná hypotéza
+          </p>
+        </div>
+        <div>
+          <h3 class="font-sans text-sm font-semibold text-ink">
+            3. Stav vlastnej verifikácie
+          </h3>
+          <p class="mt-0.5 font-sans text-[11px] italic text-ink-300" lang="en">
+            Project's own collation
+          </p>
+          <p class="mt-2 text-xs text-ink-400">
+            <strong>Verified</strong> · skolacionované /
+            <strong>Secondary only</strong> · iba podľa lit. /
+            <strong>Primary pending</strong> · prístupné, kolacia čaká /
+            <strong>Unverified</strong> · žiadny prístup
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════ FILTER BAR ═══════════ -->
+  <div class="mx-auto max-w-wide px-6 pt-6">
+    <div class="rounded-lg border border-parchment-300/60 bg-parchment-50 p-4">
+      <div class="flex flex-wrap items-center gap-3">
+        <span class="font-sans text-xs font-semibold uppercase tracking-wider text-ink-400">
+          Filter:
+        </span>
+        <label class="flex items-center gap-1.5 text-xs">
+          <span class="text-ink-400">Epistemika</span>
+          <select
+            id="filter-epistemic"
+            class="rounded border border-parchment-300 bg-parchment-50 px-2 py-1 font-sans text-xs"
+          >
+            <option value="">Všetky / All</option>
+            <option value="FACTUAL">Factual</option>
+            <option value="INTERPRETIVE">Interpretive</option>
+            <option value="DEFERRED">Deferred</option>
+          </select>
+        </label>
+        <label class="flex items-center gap-1.5 text-xs">
+          <span class="text-ink-400">Sila dôkazu</span>
+          <select
+            id="filter-evidentiary"
+            class="rounded border border-parchment-300 bg-parchment-50 px-2 py-1 font-sans text-xs"
+          >
+            <option value="">Všetky / All</option>
+            <option value="DOCUMENTED">Documented</option>
+            <option value="INFERRED">Inferred</option>
+            <option value="CONJECTURED">Conjectured</option>
+          </select>
+        </label>
+        <label class="flex items-center gap-1.5 text-xs">
+          <span class="text-ink-400">Verifikácia</span>
+          <select
+            id="filter-verification"
+            class="rounded border border-parchment-300 bg-parchment-50 px-2 py-1 font-sans text-xs"
+          >
+            <option value="">Všetky / All</option>
+            <option value="VERIFIED">Verified</option>
+            <option value="SECONDARY_ONLY">Secondary only</option>
+            <option value="PRIMARY_PENDING">Primary pending</option>
+            <option value="UNVERIFIED">Unverified</option>
+          </select>
+        </label>
+        <label class="flex items-center gap-1.5 text-xs">
+          <span class="text-ink-400">Smer prenosu</span>
+          <select
+            id="filter-direction"
+            class="rounded border border-parchment-300 bg-parchment-50 px-2 py-1 font-sans text-xs"
+          >
+            <option value="">Všetky / All</option>
+            <option value="UTRAQUIST_TO_LUTHERAN">Utraquist → Lutheran</option>
+            <option value="UNITY_TO_LUTHERAN">Unity → Lutheran</option>
+            <option value="HUSSITE_TO_LUTHERAN">Hussite → Lutheran</option>
+            <option value="LATIN_TO_VERNACULAR">Latin → vernacular</option>
+            <option value="GERMAN_TO_CZECH">German → Czech</option>
+          </select>
+        </label>
+        <button
+          id="filter-reset"
+          type="button"
+          class="ml-auto rounded-md bg-parchment-300/50 px-3 py-1 font-sans text-xs text-ink-400 hover:bg-parchment-300"
+        >
+          Reset
+        </button>
+      </div>
+      <p
+        id="filter-status"
+        class="mt-2 font-sans text-[11px] text-ink-300"
+        aria-live="polite"
+      >
+        Zobrazené: {counts.total} z {counts.total}
+      </p>
+    </div>
+  </div>
+
+  <!-- ═══════════ DOSSIERS ═══════════ -->
+  <div class="mx-auto max-w-wide px-6 py-8">
+    <div class="space-y-6" id="pairs-list">
+      {
+        pairViews.map((view) => {
+          const p = view.pair;
+          const transferLabel = TRANSFER_DIRECTION_LABELS[p.transfer_direction];
+          const evidLabel = EVIDENTIARY_LABELS[p.evidentiary_strength];
+          const verifLabel = VERIFICATION_LABELS[p.verification_status];
+          const eLabel = epistemicLabels[p.epistemic_status];
+          const isFlagged =
+            p.evidentiary_strength === "CONJECTURED" ||
+            p.verification_status === "UNVERIFIED";
+          const sourcePending = view.source && isPlaceholderText(view.source.text_snippet ?? "");
+          const receptorPending = view.receptor && isPlaceholderText(view.receptor.text_snippet ?? "");
+          return (
+            <article
+              class:list={[
+                "card scroll-mt-24",
+                epistemicClasses[p.epistemic_status],
+                isFlagged && "relative",
+              ]}
+              id={p.pair_id}
+              data-epistemic={p.epistemic_status}
+              data-evidentiary={p.evidentiary_strength}
+              data-verification={p.verification_status}
+              data-direction={p.transfer_direction}
+            >
+              {/* Flag banner for unverified/conjectured pairs */}
+              {isFlagged && (
+                <div class="-mx-6 -mt-6 mb-4 rounded-t-lg bg-burgundy/10 px-6 py-2">
+                  <p class="font-sans text-xs font-semibold uppercase tracking-wider text-burgundy">
+                    &#x26A0;&#xFE0F; Výskumný cieľ — verifikácia v procese / <span lang="en">Research target — verification in progress</span>
+                  </p>
+                </div>
+              )}
+
+              {/* Header */}
+              <header class="border-b border-parchment-300/40 pb-4">
+                <div class="flex flex-wrap items-start justify-between gap-3">
+                  <div class="flex-1">
+                    <p class="font-mono text-[10px] font-medium tracking-wider text-ink-300">
+                      {p.pair_id}
+                      {p.chapter_section && ` · ${p.chapter_section}`}
+                    </p>
+                    <h2 class="mt-1 font-display text-lg font-semibold text-ink">
+                      {p.pair_label_sk}
+                    </h2>
+                    <p class="mt-0.5 font-sans text-xs italic text-ink-300" lang="en">
+                      {p.pair_label_en}
+                    </p>
+                  </div>
+                  {/* Trust axes */}
+                  <div class="flex flex-col items-end gap-1.5">
+                    <span class="rounded-full bg-parchment-200 px-2 py-0.5 font-sans text-[10px] text-ink-400">
+                      {eLabel.sk} / <span class="italic" lang="en">{eLabel.en}</span>
+                    </span>
+                    <span
+                      class:list={[
+                        "rounded-full px-2 py-0.5 font-sans text-[10px] font-medium",
+                        evidentiaryRing[p.evidentiary_strength],
+                      ]}
+                    >
+                      {evidLabel.sk} / <span class="italic" lang="en">{evidLabel.en}</span>
+                    </span>
+                    <span
+                      class:list={[
+                        "rounded-full px-2 py-0.5 font-sans text-[10px] font-semibold",
+                        verificationBadge[p.verification_status],
+                      ]}
+                    >
+                      {verifLabel.sk} / <span class="italic" lang="en">{verifLabel.en}</span>
+                    </span>
+                  </div>
+                </div>
+
+                {/* Locus + transfer + modifications */}
+                <div class="mt-3 flex flex-wrap items-center gap-2">
+                  <span
+                    class="rounded-full bg-gold/15 px-2 py-0.5 font-mono text-[10px] font-medium text-gold-dark"
+                    title={view.primaryLocusEn}
+                  >
+                    {view.primaryLocusName}
+                    {view.primaryLocusEn && (
+                      <span class="ml-1 italic opacity-80" lang="en">
+                        / {view.primaryLocusEn}
+                      </span>
+                    )}
+                  </span>
+                  {transferLabel && (
+                    <span class="rounded-full bg-parchment-300/50 px-2 py-0.5 font-sans text-[10px] text-ink-400">
+                      &#x2192; {transferLabel.sk} / <span class="italic" lang="en">{transferLabel.en}</span>
+                    </span>
+                  )}
+                  {view.modificationTypes.map((m) => (
+                    <span class="rounded-full bg-burgundy/10 px-2 py-0.5 font-mono text-[10px] text-burgundy">
+                      {m}
+                    </span>
+                  ))}
+                </div>
+              </header>
+
+              {/* Source ↔ Receptor strip */}
+              {(view.source || view.receptor) && (
+                <div class="my-4 grid gap-3 md:grid-cols-2">
+                  {view.source && (
+                    <div class:list={[
+                      "rounded-md border-l-4 p-3",
+                      view.source.tradition === "UTRAQUIST" && "border-utraquist bg-utraquist/5",
+                      view.source.tradition === "UNITY" && "border-unity bg-unity/5",
+                      view.source.tradition === "LUTHERAN" && "border-lutheran bg-lutheran/5",
+                    ]}>
+                      <p class="font-sans text-[10px] uppercase tracking-wider text-ink-300">
+                        Zdroj / <span lang="en">Source</span>
+                      </p>
+                      <p class="mt-1 font-display font-semibold text-ink">
+                        {view.source.incipit}
+                      </p>
+                      <p class="mt-0.5 font-sans text-xs text-ink-400">
+                        <a
+                          href={`${base}/sources/#${view.source.source_collection_id}`}
+                          class="hover:text-burgundy"
+                        >
+                          {view.source.source_collection_id}
+                        </a>
+                        {view.source.source_number && ` · ${view.source.source_number}`}
+                      </p>
+                      {sourcePending && (
+                        <p class="mt-2 rounded bg-burgundy/5 px-2 py-1 font-sans text-[10px] italic text-burgundy/80">
+                          &#x231A; Plný text čaká na priamu kolaciu / <span lang="en">Full text pending direct collation</span>
+                        </p>
+                      )}
+                      <div class="mt-2">
+                        <TraditionBadge tradition={view.source.tradition} size="sm" />
+                      </div>
+                    </div>
+                  )}
+                  {view.receptor && (
+                    <div class:list={[
+                      "rounded-md border-l-4 p-3",
+                      view.receptor.tradition === "UTRAQUIST" && "border-utraquist bg-utraquist/5",
+                      view.receptor.tradition === "UNITY" && "border-unity bg-unity/5",
+                      view.receptor.tradition === "LUTHERAN" && "border-lutheran bg-lutheran/5",
+                    ]}>
+                      <p class="font-sans text-[10px] uppercase tracking-wider text-ink-300">
+                        Recepcia / <span lang="en">Receptor</span>
+                      </p>
+                      <p class="mt-1 font-display font-semibold text-ink">
+                        {view.receptor.incipit}
+                      </p>
+                      <p class="mt-0.5 font-sans text-xs text-ink-400">
+                        <a
+                          href={`${base}/sources/#${view.receptor.source_collection_id}`}
+                          class="hover:text-burgundy"
+                        >
+                          {view.receptor.source_collection_id}
+                        </a>
+                        {view.receptor.source_number && ` · ${view.receptor.source_number}`}
+                      </p>
+                      {receptorPending && (
+                        <p class="mt-2 rounded bg-burgundy/5 px-2 py-1 font-sans text-[10px] italic text-burgundy/80">
+                          &#x231A; Plný text čaká na priamu kolaciu / <span lang="en">Full text pending direct collation</span>
+                        </p>
+                      )}
+                      <div class="mt-2">
+                        <TraditionBadge tradition={view.receptor.tradition} size="sm" />
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Theological argument */}
+              <div class="mt-4">
+                <h3 class="font-sans text-xs font-semibold uppercase tracking-wider text-ink-300">
+                  Teologický argument / <span lang="en">Theological Argument</span>
+                </h3>
+                <p class="mt-2 font-serif text-sm leading-relaxed text-ink-400">
+                  {p.theological_argument_sk}
+                </p>
+                <p class="mt-3 font-sans text-xs italic leading-relaxed text-ink-300" lang="en">
+                  {p.theological_argument_en}
+                </p>
+              </div>
+
+              {/* Citation chain */}
+              {view.citationIds.length > 0 && (
+                <div class="mt-4 rounded-md bg-parchment-100/70 p-3">
+                  <h3 class="font-sans text-xs font-semibold uppercase tracking-wider text-ink-300">
+                    Citačný reťazec / <span lang="en">Citation Chain</span>
+                  </h3>
+                  <ul class="mt-2 list-disc space-y-1 pl-5 font-mono text-xs text-ink-400">
+                    {view.citationIds.map((id) => (
+                      <li>
+                        <a
+                          href={`${base}/sources/#${id}`}
+                          class="hover:text-burgundy"
+                        >
+                          {id}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {/* Methodological notes */}
+              {(p.notes_sk || p.notes_en) && (
+                <details class="group mt-4">
+                  <summary class="cursor-pointer font-sans text-xs font-semibold uppercase tracking-wider text-ink-400 hover:text-burgundy">
+                    Metodologické poznámky / <span lang="en">Methodological Notes</span>
+                    <span class="ml-1 inline-block transition-transform group-open:rotate-90">
+                      &#x25B8;
+                    </span>
+                  </summary>
+                  <div class="mt-2 rounded-md border border-parchment-300/50 bg-parchment-50 p-3">
+                    {p.notes_sk && (
+                      <p class="font-serif text-sm leading-relaxed text-ink-400">
+                        {p.notes_sk}
+                      </p>
+                    )}
+                    {p.notes_en && (
+                      <p class="mt-2 font-sans text-xs italic leading-relaxed text-ink-300" lang="en">
+                        {p.notes_en}
+                      </p>
+                    )}
+                  </div>
+                </details>
+              )}
+
+              {/* How to cite this pair */}
+              <details class="group mt-3">
+                <summary class="cursor-pointer font-sans text-xs font-semibold uppercase tracking-wider text-ink-400 hover:text-burgundy">
+                  Ako citovať / <span lang="en">How to cite this pair</span>
+                  <span class="ml-1 inline-block transition-transform group-open:rotate-90">
+                    &#x25B8;
+                  </span>
+                </summary>
+                <div class="mt-2 space-y-3 rounded-md border border-parchment-300/50 bg-parchment-50 p-3">
+                  <div>
+                    <p class="font-sans text-[10px] uppercase tracking-wider text-ink-300">
+                      APA
+                    </p>
+                    <p class="mt-1 font-serif text-xs leading-relaxed text-ink-400" lang="en">
+                      {view.apa}
+                    </p>
+                  </div>
+                  <div>
+                    <p class="font-sans text-[10px] uppercase tracking-wider text-ink-300">
+                      BibTeX
+                    </p>
+                    <pre class="mt-1 overflow-x-auto rounded bg-ink/5 p-2 font-mono text-[10px] text-ink"><code>{view.bibtex}</code></pre>
+                  </div>
+                  <div>
+                    <p class="font-sans text-[10px] uppercase tracking-wider text-ink-300">
+                      Permalink
+                    </p>
+                    <p class="mt-1 break-all font-mono text-[10px] text-ink-400">
+                      <a href={`#${p.pair_id}`} class="hover:text-burgundy">
+                        {view.permalink}
+                      </a>
+                    </p>
+                  </div>
+                </div>
+              </details>
+
+              {/* Cross-links */}
+              <footer class="mt-4 flex flex-wrap gap-2 border-t border-parchment-300/40 pt-3">
+                {p.synoptikon_id && (
+                  <a
+                    href={`${base}/synoptikon/#comparison-${p.synoptikon_id}`}
+                    class="inline-flex items-center gap-1 rounded-md bg-gold/15 px-2.5 py-1 font-sans text-xs font-medium text-gold-dark no-underline transition-colors hover:bg-gold/25"
+                  >
+                    Synoptikon &#x2192;
+                  </a>
+                )}
+                {(p.source_text_id || p.receptor_text_id) && (
+                  <span class="inline-flex items-center gap-1 rounded-md bg-parchment-300/50 px-2.5 py-1 font-mono text-[10px] text-ink-400">
+                    Evidence rows:
+                    {p.source_text_id && ` ${p.source_text_id}`}
+                    {p.source_text_id && p.receptor_text_id && " · "}
+                    {p.receptor_text_id && ` ${p.receptor_text_id}`}
+                  </span>
+                )}
+              </footer>
+            </article>
+          );
+        })
+      }
+      <p
+        id="pairs-empty"
+        class="hidden rounded-md border border-dashed border-parchment-400 bg-parchment-100/50 p-6 text-center font-sans text-sm text-ink-400"
+      >
+        Žiadne hymno-páry nezodpovedajú filtrom. /
+        <span lang="en">No hymn pairs match the current filters.</span>
+      </p>
+    </div>
+  </div>
+
+  <div class="ornament-rule"></div>
+
+  <!-- ═══════════ EPISTEMIC LEGEND ═══════════ -->
+  <section class="mx-auto max-w-content px-6 py-8">
+    <div class="mx-auto max-w-2xl">
+      <EpistemicLegend />
+    </div>
+  </section>
+
+  <!-- ═══════════ HOW THIS WORKS ═══════════ -->
+  <section class="mx-auto max-w-content px-6 py-8 pb-20">
+    <h2 class="text-center text-section-title text-ink">Ako sa tento dossier čítá</h2>
+    <p class="mx-auto mt-3 max-w-prose text-center font-sans text-sm italic text-ink-300" lang="en">
+      How this dossier reads
+    </p>
+
+    <div class="mt-10 grid gap-6 md:grid-cols-2">
+      <div class="card">
+        <h3 class="font-display text-base font-semibold text-ink">
+          Tri nezávislé osi dôvery
+        </h3>
+        <p class="mt-1 font-sans text-xs italic text-ink-300" lang="en">
+          Three independent trust axes
+        </p>
+        <p class="mt-3 text-sm text-ink-400">
+          Tvrdenie môže byť <em>doložené</em> v literatúre (Documented), no projekt
+          ho ešte sám neskolacionoval (Secondary only). Naopak, môže byť <em>vlastná</em>
+          analýza (Inferred) podporená priamym overením textov (Verified). Tri osi
+          umožňujú toto rozlíšiť — netradičné, ale nutné pre digitálnu humanistiku.
+        </p>
+        <p class="mt-3 font-sans text-xs italic text-ink-300" lang="en">
+          A claim may be <em>documented</em> in the literature yet not <em>verified</em> by
+          our own collation. Conversely, an own-analysis claim may be supported by
+          direct textual verification. Three axes let us distinguish — uncommon, but
+          essential for digital humanities.
+        </p>
+      </div>
+      <div class="card">
+        <h3 class="font-display text-base font-semibold text-ink">
+          Vzťah k Synoptikonu
+        </h3>
+        <p class="mt-1 font-sans text-xs italic text-ink-300" lang="en">
+          Relationship to the Synoptikon
+        </p>
+        <p class="mt-3 text-sm text-ink-400">
+          Synoptikon zobrazuje paralelné texty bok po boku — je vizuálnou stránkou
+          dôkazu. Hymno-páry sú jeho katalogizačná stránka: každý záznam má citačný
+          reťazec, epistemické flagy a odkaz na zodpovedajúci Synoptikon (ak existuje).
+        </p>
+        <p class="mt-3 font-sans text-xs italic text-ink-300" lang="en">
+          The Synoptikon displays parallel texts side by side — the visual face of the
+          evidence. Hymn-Pairs is its catalogue face: each record carries a citation
+          chain, epistemic flags, and a link to the corresponding Synoptikon view (if any).
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script is:inline>
+  // ── Filter bar ──
+  const filters = {
+    epistemic: document.getElementById("filter-epistemic"),
+    evidentiary: document.getElementById("filter-evidentiary"),
+    verification: document.getElementById("filter-verification"),
+    direction: document.getElementById("filter-direction"),
+  };
+  const reset = document.getElementById("filter-reset");
+  const status = document.getElementById("filter-status");
+  const empty = document.getElementById("pairs-empty");
+  const list = document.getElementById("pairs-list");
+  const articles = list ? Array.from(list.querySelectorAll("article[data-epistemic]")) : [];
+  const total = articles.length;
+
+  function applyFilters() {
+    if (!status) return;
+    const e = filters.epistemic && filters.epistemic.value;
+    const ev = filters.evidentiary && filters.evidentiary.value;
+    const v = filters.verification && filters.verification.value;
+    const d = filters.direction && filters.direction.value;
+    let visible = 0;
+    articles.forEach(function (a) {
+      const ok =
+        (!e || a.dataset.epistemic === e) &&
+        (!ev || a.dataset.evidentiary === ev) &&
+        (!v || a.dataset.verification === v) &&
+        (!d || a.dataset.direction === d);
+      a.classList.toggle("hidden", !ok);
+      if (ok) visible++;
+    });
+    status.textContent = "Zobrazené: " + visible + " z " + total;
+    if (empty) empty.classList.toggle("hidden", visible !== 0);
+  }
+
+  Object.values(filters).forEach(function (el) {
+    if (el) el.addEventListener("change", applyFilters);
+  });
+  if (reset) {
+    reset.addEventListener("click", function () {
+      Object.values(filters).forEach(function (el) {
+        if (el) el.value = "";
+      });
+      applyFilters();
+    });
+  }
+</script>
