@@ -117,6 +117,61 @@ Tagged text fragments from hymns, prayers, and liturgical orders. This is the *l
 
 ---
 
+## File: `hymn_pairs.csv`
+
+The case-study layer that sits *above* `hymnic_evidence.csv`. Each row is a complete analytical dossier for one hymn pair (or multi-witness comparison) — the unit of evidence at which the chapter's §5 argument operates. While `hymnic_evidence.csv` records text fragments and `paired_text_id` links them, `hymn_pairs.csv` records the *pair as a scholarly claim*: who documented it, with what confidence, on what evidentiary basis, and whether it has been verified against primary sources by this project.
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `pair_id` | String | YES | Unique identifier. Format: `PAIR_{n}_{short_label}` (e.g., `PAIR_001_AY_PANNA`). |
+| `pair_label_sk` | String | YES | Display label in Slovak. |
+| `pair_label_en` | String | YES | Display label in English. |
+| `source_text_id` | String | NO | `text_id` from `hymnic_evidence.csv` for the source (earlier) text. May be empty for research-target entries. |
+| `receptor_text_id` | String | NO | `text_id` from `hymnic_evidence.csv` for the receptor (later) text. May be empty for research-target entries. |
+| `transfer_direction` | Enum | NO | `UTRAQUIST_TO_LUTHERAN`, `UNITY_TO_LUTHERAN`, `LATIN_TO_VERNACULAR`, `GERMAN_TO_CZECH`, `HUSSITE_TO_LUTHERAN`. Empty for non-directional comparisons. |
+| `primary_locus_code` | String | YES | The single locus most theologically at stake in this pair. References `loci_hierarchy.csv`. |
+| `all_locus_codes` | String | YES | Semicolon-separated full set of relevant locus codes. |
+| `modification_typology` | String | NO | Semicolon-separated modification types from `hymnic_evidence.csv` schema (`ADDITION;DELETION;SUBSTITUTION;REFRAMING;STRUCTURAL`). Empty for research-target entries. |
+| `theological_argument_sk` | String | YES | 1–4 sentence prose argument (Slovak). What does this pair show, theologically? |
+| `theological_argument_en` | String | YES | 1–4 sentence prose argument (English). |
+| `epistemic_status` | Enum | YES | `FACTUAL`, `INTERPRETIVE`, `DEFERRED`. Same semantics as elsewhere. |
+| `evidentiary_strength` | Enum | YES | Quality of textual evidence — see definitions below. |
+| `verification_status` | Enum | YES | Whether *this project* has personally verified the primary witnesses — see definitions below. |
+| `citation_chain` | String | NO | Semicolon-separated `Short ID`s of secondary sources documenting this pair. |
+| `chapter_section` | String | NO | Where this pair will be discussed in the monograph chapter (e.g., `§5`, `§4.1`). |
+| `synoptikon_id` | String | NO | If the pair has a corresponding Synoptikon comparison, the comparison `id`. |
+| `notes_sk` | String | NO | Methodological notes, verification roadmap, related observations (Slovak). |
+| `notes_en` | String | NO | Same (English). |
+
+**`evidentiary_strength` values:**
+
+| Value | Meaning |
+|---|---|
+| `DOCUMENTED` | A peer-reviewed scholarly source explicitly identifies this pair and its modification. We are reporting what the literature has established. |
+| `INFERRED` | We have direct access to both witnesses and have made the comparison ourselves; the modification claim is the project's own analysis. |
+| `CONJECTURED` | We have neither secondary documentation nor verified textual access; the pair is a research target or working hypothesis. Must be flagged in the public surface. |
+
+**`verification_status` values:**
+
+| Value | Meaning |
+|---|---|
+| `VERIFIED` | Project members have personally collated the primary texts (or a critical edition) of both witnesses. |
+| `SECONDARY_ONLY` | We rely entirely on a secondary source's transcription/description. Primary witnesses not yet inspected by project members. |
+| `PRIMARY_PENDING` | Primary witnesses are available to us (digitised, accessible) but have not been collated into the data model yet. |
+| `UNVERIFIED` | Neither secondary documentation nor primary access has been obtained. |
+
+**Validation rules:**
+- `pair_id` must be unique across the file.
+- `primary_locus_code` and every code in `all_locus_codes` must exist in `loci_hierarchy.csv`.
+- `source_text_id` and `receptor_text_id`, if non-empty, must reference existing `text_id` values in `hymnic_evidence.csv`.
+- `synoptikon_id`, if non-empty, must reference an existing comparison `id` in `website/src/data/synoptikon-comparisons.ts`.
+- For non-target entries (where `source_text_id` and `receptor_text_id` are both populated), `modification_typology` must also be populated.
+- `epistemic_status`, `evidentiary_strength`, and `verification_status` are all required — no exceptions.
+
+**Display rule for the public website:** any pair with `evidentiary_strength = CONJECTURED` or `verification_status = UNVERIFIED` MUST be visually marked as such on the public surface. Concealing research-in-progress as established fact violates the project's epistemic-transparency commitment.
+
+---
+
 ## File: `hymnic_functions.csv`
 
 Definitions of how theology manifests in hymns and liturgical texts.
@@ -164,6 +219,8 @@ Multilingual theological vocabulary mapping.
 3. Every `hymnic_function` used in `hymnic_evidence.csv` must exist in `hymnic_functions.csv`.
 4. Every `paired_text_id` in `hymnic_evidence.csv` must reference another existing `text_id` in the same file.
 5. Every `canonical_term` in `term_variants.csv` should be associable with at least one `confessional_positions.csv` entry via shared `locus_code`.
+6. Every `source_text_id` and `receptor_text_id` in `hymn_pairs.csv` must reference an existing `text_id` in `hymnic_evidence.csv` (when populated).
+7. Every `synoptikon_id` in `hymn_pairs.csv` must reference an existing comparison id in the website data layer.
 
 ---
 

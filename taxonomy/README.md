@@ -64,14 +64,15 @@ Traditions are not monolithic. The taxonomy distinguishes phases:
 |---|---|---|
 | `loci_hierarchy.csv` | Layer 1: 4 *loci* × 20 sub-loci with descriptions | Complete (structure) |
 | `confessional_positions.csv` | Layer 2: Attested positions per tradition per sub-locus | Eucharist complete; others in progress |
-| `hymnic_evidence.csv` | Layer 3: Tagged text fragments from hymns and liturgies | Template ready; populated during Phase 3 |
+| `hymnic_evidence.csv` | Layer 3: Tagged text fragments from hymns and liturgies | Template ready; first FACTUAL pair populated |
+| `hymn_pairs.csv` | Layer 4: Analytical dossiers per hymn pair (case-study layer) | First FACTUAL anchor, one PLACEHOLDER, one DEFERRED target |
 | `hymnic_functions.csv` | Function-type definitions (how theology appears in hymns) | Complete |
 | `term_variants.csv` | Multilingual theological vocabulary (LA, CZ, DE, SK) | Eucharist complete; others in progress |
 | `SCHEMA.md` | Field definitions, validation rules, data types | Complete |
 
 ---
 
-## Three-Layer Architecture
+## Four-Layer Architecture
 
 ### Layer 1: Theological Loci (`loci_hierarchy.csv`)
 
@@ -89,13 +90,23 @@ This is the data that feeds the radar/spider charts and the confessional profile
 
 ### Layer 3: Hymnic/Liturgical Evidence (`hymnic_evidence.csv`)
 
-The *lex orandi* layer — where the chapter's argument lives. Tagged text fragments from hymns, prayers, and liturgical orders, annotated with:
+The *lex orandi* layer — tagged text fragments from hymns, prayers, and liturgical orders, annotated with:
 - Which *locus* they express
 - Which tradition they belong to
 - What hymnic function they serve (confessional, doxological, polemical, etc.)
 - What theological modifications occurred during transfer (the "Lutheranisation" evidence)
 
-This layer feeds the network graph, the parallel text viewer, and the Sankey diagrams.
+This layer feeds the network graph and the parallel text viewer.
+
+### Layer 4: Hymn-Pair Dossiers (`hymn_pairs.csv`)
+
+The case-study layer where the chapter's §5 argument lives. Each row is a complete analytical record for one hymn pair:
+- Bilingual prose argument (SK / EN)
+- Citation chain documenting *who* established the pair
+- Three orthogonal trust axes: epistemic status (claim type), evidentiary strength (textual evidence quality), and verification status (whether the project has personally collated the primary witnesses)
+- Modification typology, transfer direction, chapter section anchor
+
+This is the "scholarly evidence dossier" — the unit of evidence at peer-review scale. While Layer 3 records text fragments, Layer 4 records *the pair as a scholarly claim*. Pairs marked `CONJECTURED` or `UNVERIFIED` are flagged on the public website so research-in-progress is never displayed as established fact.
 
 ---
 
@@ -123,8 +134,9 @@ When writing §4 (Komparatívna analýza), each sub-section corresponds to a `lo
 
 - **Network graph nodes** = entries in `hymnic_evidence.csv` + `confessional_positions.csv`
 - **Network graph edges** = shared `locus_code` values, cross-references, source/adaptation pairs
-- **Parallel text viewer** = pairs identified in `hymnic_evidence.csv` via `theological_modification` field
-- **Filtering controls** = `locus_code`, `tradition`, `hymnic_function`, `epistemic_status`
+- **Parallel text viewer (Synoptikon)** = pairs identified in `hymnic_evidence.csv` via `theological_modification` field
+- **Hymn-pair dossier (`/hymn-pairs/`)** = each row of `hymn_pairs.csv` rendered as a research record with epistemic flags, citation chain, and link to the underlying evidence rows / Synoptikon comparison
+- **Filtering controls** = `locus_code`, `tradition`, `hymnic_function`, `epistemic_status`, `evidentiary_strength`, `verification_status`
 - **Radar charts** = aggregated from `confessional_positions.csv`
 
 ### For Team Collaboration
