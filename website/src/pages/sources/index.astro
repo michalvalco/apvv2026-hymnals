@@ -110,6 +110,15 @@ const curated: Record<string, CuratedSource> = {
       "Neo-Utraquist liturgical order. Full critical edition: Benka 2024 (MLS X). 229 page-images in project resources.",
     type: "primary",
   },
+  AgBratska_1585: {
+    full_citation:
+      "Bystrická agenda. 1585. Manuscript supplement to Agenda Česká 1581.",
+    description_sk:
+      "Hungarsko-luteránsky doplnok k neo-utrakvistickej Agende Českej. Vajda 1944 ho označuje za „najstarší známy rukopis slovenských hymnov pred Tranovským\" so 36 hymnami, ktoré sa dostali do CS 1636 (s. 16–21). Kritická edícia: Benka 2024. Zdroj pre PAIR_004_OTCE_NEBESKY a PAIR_005_NEYSWETEGSIJ.",
+    description_en:
+      "Hungarian-Lutheran supplement to the neo-Utraquist Agenda Česká. Vajda 1944 calls it 'the oldest known ms. of Slovak hymns before Tranovsky' with 36 hymns traced into CS 1636 (pp. 16–21). Critical edition: Benka 2024. Source for PAIR_004_OTCE_NEBESKY and PAIR_005_NEYSWETEGSIJ.",
+    type: "primary",
+  },
 };
 
 // Sources order: primary → editions → secondary, then alphabetical
@@ -219,7 +228,7 @@ const typeLabels: Record<CuratedSource["type"], { sk: string; en: string }> = {
               </p>
               <p class="mt-3 font-sans text-[10px] uppercase tracking-wider text-ink-300">
                 <a
-                  href={`${base}/hymn-pairs/`}
+                  href={`${base.replace(/\/$/, "")}/hymn-pairs/`}
                   class="hover:text-burgundy"
                 >
                   Used in hymn-pair dossier &#x2192;

@@ -1,9 +1,37 @@
 # APVV TEPALIT — Valčo Monograph Chapter
 
+<!--
+  DOI badge will be activated once Zenodo↔GitHub integration is enabled
+  (zenodo.org/account/settings/github/) and a release is tagged. Replace
+  TODO with the concept-DOI Zenodo issues, e.g. 10.5281/zenodo.1234567.
+-->
+[![License: MIT (code)](https://img.shields.io/badge/license--code-MIT-blue.svg)](LICENSE)
+[![License: CC BY 4.0 (content)](https://img.shields.io/badge/license--content-CC%20BY%204.0-lightgrey.svg)](LICENSE-CONTENT.md)
+<!-- [![DOI](https://zenodo.org/badge/DOI/TODO.svg)](https://doi.org/TODO) -->
+
 **Grant:** APVV-24-0484 (TEPALIT — Teologická paradigma liturgických a hymnologických prameňov v protestantskom prostredí strednej Európy)  
 **Period:** September 2025 – August 2028  
 **PI:** doc. PhDr. Miloš Klátik, PhD.  
 **This repo:** Michal Valčo's participant deliverables  
+
+## Cite this dataset
+
+If you use the taxonomy CSVs, the hymn-pair dossier, or any individual pair record, please cite the dataset. GitHub renders a "Cite this repository" button from `CITATION.cff`; the canonical APA / BibTeX form:
+
+> Valčo, M., & TEPALIT Project. (2026). *TEPALIT Digital Companion: Theological Taxonomy and Hymn-Pair Dossier for the Lutheranisation Thesis* (Version 0.1.0) [Dataset]. APVV-24-0484 (TEPALIT). https://github.com/michalvalco/apvv2026-hymnals
+
+```bibtex
+@dataset{TEPALIT_companion_2026,
+  author    = {Val{\v{c}}o, Michal and {TEPALIT Project}},
+  title     = {{TEPALIT Digital Companion: Theological Taxonomy and Hymn-Pair Dossier for the Lutheranisation Thesis}},
+  version   = {0.1.0},
+  year      = {2026},
+  publisher = {APVV-24-0484 (TEPALIT)},
+  url       = {https://github.com/michalvalco/apvv2026-hymnals}
+}
+```
+
+Each individual hymn-pair dossier has its own permalink and "How to cite this pair" snippet on the companion website (`/hymn-pairs/`).
 
 ## Working Title
 

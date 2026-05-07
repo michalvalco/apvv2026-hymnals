@@ -128,7 +128,7 @@ The case-study layer that sits *above* `hymnic_evidence.csv`. Each row is a comp
 | `pair_label_en` | String | YES | Display label in English. |
 | `source_text_id` | String | NO | `text_id` from `hymnic_evidence.csv` for the source (earlier) text. May be empty for research-target entries. |
 | `receptor_text_id` | String | NO | `text_id` from `hymnic_evidence.csv` for the receptor (later) text. May be empty for research-target entries. |
-| `transfer_direction` | Enum | NO | `UTRAQUIST_TO_LUTHERAN`, `UNITY_TO_LUTHERAN`, `LATIN_TO_VERNACULAR`, `GERMAN_TO_CZECH`, `HUSSITE_TO_LUTHERAN`. Empty for non-directional comparisons. |
+| `transfer_direction` | Enum | NO | `UTRAQUIST_TO_LUTHERAN`, `UNITY_TO_LUTHERAN`, `HUSSITE_TO_LUTHERAN`, `LUTHERAN_REGIONAL_CONTINUITY`, `LATIN_TO_VERNACULAR`, `GERMAN_TO_CZECH`. Empty for non-directional comparisons. `LUTHERAN_REGIONAL_CONTINUITY` covers intra-tradition Hungarian-Lutheran → Slovak-Lutheran channels (e.g. BA 1585 → CS 1636). |
 | `primary_locus_code` | String | YES | The single locus most theologically at stake in this pair. References `loci_hierarchy.csv`. |
 | `all_locus_codes` | String | YES | Semicolon-separated full set of relevant locus codes. |
 | `modification_typology` | String | NO | Semicolon-separated modification types from `hymnic_evidence.csv` schema (`ADDITION;DELETION;SUBSTITUTION;REFRAMING;STRUCTURAL`). Empty for research-target entries. |
@@ -165,7 +165,7 @@ The case-study layer that sits *above* `hymnic_evidence.csv`. Each row is a comp
 - `primary_locus_code` and every code in `all_locus_codes` must exist in `loci_hierarchy.csv`.
 - `source_text_id` and `receptor_text_id`, if non-empty, must reference existing `text_id` values in `hymnic_evidence.csv`.
 - `synoptikon_id`, if non-empty, must reference an existing comparison `id` in `website/src/data/synoptikon-comparisons.ts`.
-- For non-target entries (where `source_text_id` and `receptor_text_id` are both populated), `modification_typology` must also be populated.
+- `modification_typology` is required when at least one underlying evidence row (referenced by `source_text_id` or `receptor_text_id`) populates `theological_modification`. It MAY remain empty for pure-continuity pairs where no textual modification is documented (e.g. `LUTHERAN_REGIONAL_CONTINUITY` pairs), provided the prose argument explains the absence.
 - `epistemic_status`, `evidentiary_strength`, and `verification_status` are all required — no exceptions.
 
 **Display rule for the public website:** any pair with `evidentiary_strength = CONJECTURED` or `verification_status = UNVERIFIED` MUST be visually marked as such on the public surface. Concealing research-in-progress as established fact violates the project's epistemic-transparency commitment.
