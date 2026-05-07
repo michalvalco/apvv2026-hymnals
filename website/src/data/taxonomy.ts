@@ -466,6 +466,10 @@ export const TRANSFER_DIRECTION_LABELS: Record<
     sk: "Z husitských prameňov do luteránskych",
     en: "From Hussite sources to Lutheran",
   },
+  LUTHERAN_REGIONAL_CONTINUITY: {
+    sk: "Regionálna luteránska kontinuita (uhorské agendy → CS)",
+    en: "Regional Lutheran continuity (Hungarian agendas → CS)",
+  },
   LATIN_TO_VERNACULAR: {
     sk: "Z latinčiny do národného jazyka",
     en: "From Latin to vernacular",

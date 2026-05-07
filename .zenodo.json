@@ -1,0 +1,56 @@
+{
+  "title": "TEPALIT Digital Companion: Theological Taxonomy and Hymn-Pair Dossier for the Lutheranisation Thesis",
+  "description": "<p>Open digital companion to the monograph chapter <em>Dogmatick&aacute; kompar&aacute;cia luteranizmu a &#269;esk&yacute;ch konfesi&iacute; (utrakvizmus, Jednota bratsk&aacute;) v zrkadle liturgick&yacute;ch a hymnologick&yacute;ch prame&#328;ov (16.&ndash;18. storo&#269;ie)</em>, produced under the APVV-24-0484 (TEPALIT) grant.</p><p>The dataset comprises a four-layer theological taxonomy released as versioned CSV files: <strong>(1)</strong> 4 loci &times; 5 sub-loci hierarchy (LA / SK / EN), <strong>(2)</strong> attested confessional positions per tradition per locus, <strong>(3)</strong> tagged hymnic-liturgical evidence with epistemic classification, and <strong>(4)</strong> case-study hymn-pair dossiers for the Lutheranisation thesis. The companion website includes a parallel-text viewer (Synoptikon), an intertextual network graph, an interactive timeline, and a bilingual (Slovak/English) hymn-pair register.</p><p>Distinguished by a <strong>three-axis epistemic transparency framework</strong>: (a) epistemic status &mdash; type of claim; (b) evidentiary strength &mdash; quality of textual evidence; (c) verification status &mdash; whether project members have personally collated primary witnesses. Pairs flagged as conjectural or unverified are visibly marked, never displayed as established fact.</p><p>This work was supported by the Slovak Research and Development Agency under the Contract no. APVV-24-0484.</p>",
+  "creators": [
+    {
+      "name": "Valčo, Michal",
+      "affiliation": "Evangelical Theological Faculty, Comenius University in Bratislava",
+      "orcid": "0000-0000-0000-0000"
+    },
+    {
+      "name": "TEPALIT Project",
+      "affiliation": "APVV-24-0484"
+    }
+  ],
+  "upload_type": "dataset",
+  "access_right": "open",
+  "license": "CC-BY-4.0",
+  "language": "slk",
+  "keywords": [
+    "Reformation",
+    "hymnology",
+    "liturgical theology",
+    "lex orandi lex credendi",
+    "Cithara Sanctorum",
+    "Tranovský",
+    "Czech Reformation",
+    "Unity of Brethren",
+    "Utraquism",
+    "Lutheranisation",
+    "digital humanities",
+    "confessional comparison",
+    "Central European Reformation",
+    "Bystrická agenda",
+    "Agenda Česká"
+  ],
+  "communities": [
+    {
+      "identifier": "humanities"
+    }
+  ],
+  "related_identifiers": [
+    {
+      "relation": "isDocumentedBy",
+      "identifier": "https://github.com/michalvalco/apvv2026-hymnals",
+      "resource_type": "software",
+      "scheme": "url"
+    },
+    {
+      "relation": "isCompiledBy",
+      "identifier": "https://michalvalco.github.io/apvv2026-hymnals/",
+      "resource_type": "publication-other",
+      "scheme": "url"
+    }
+  ],
+  "notes": "This work was supported by the Slovak Research and Development Agency under the Contract no. APVV-24-0484. The version-0.1.0 dataset comprises 5 hymn-pair dossiers (1 FACTUAL anchor on Tranovský's Marian de-Catholicising per Grešová-Sekelská 2021; 2 FACTUAL liturgical-continuity pairs per Grešová-Sekelská 2023; 1 INTERPRETIVE working-hypothesis pair; 1 DEFERRED 34-hymn target manifest)."
+}
