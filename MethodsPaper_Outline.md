@@ -4,7 +4,7 @@
 **Date:** 2026-05-07
 **Author:** Michal Valčo (provisional sole author — co-authorship with Klátik / Sekelská to be discussed at next TEPALIT working meeting)
 **Funder:** APVV-24-0484 (TEPALIT)
-**Estimated length:** 6,000–9,000 words.
+**Estimated length:** 6,500–7,500 words (target ~7,000; section budgets sum to 6,900).
 
 ---
 
@@ -24,8 +24,8 @@
 
 | # | Venue | Open access? | Fit | Notes |
 |---|---|---|---|---|
-| 1 | **Digital Humanities Quarterly (DHQ)** | Yes (gold OA, no APC) | Methods-focused, broad DH readership; previous lex-orandi-adjacent papers published. | Primary target. |
-| 2 | **Journal of Open Humanities Data (JOHD)** | Yes (gold OA, low APC) | "Data paper" companion describing the hymn-pair dataset; can be paired with the methods paper for double publication. | Secondary — submit data paper here once Zenodo DOI is minted. |
+| 1 | **Digital Humanities Quarterly (DHQ)** | Yes (gold OA, no APC) | Methods-focused, broad DH readership. Submission is *rolling, not deadline-based*; review turnaround historically 12–18 months. **TBD: confirm whether *lex-orandi*–adjacent or confessional-DH methods papers have appeared in DHQ — verify in archive search before submission.** | Primary target. |
+| 2 | **Journal of Open Humanities Data (JOHD)** | Yes (gold OA) | "Data paper" companion describing the hymn-pair dataset; can be paired with the methods paper for double publication. **TBD: confirm current APC level (free / waived / fee).** | Secondary — submit data paper here once Zenodo DOI is minted. |
 | 3 | **Journal of Religion, Media and Digital Culture (JRMDC)** | Yes (gold OA) | Religion + DH intersection; smaller readership but closer to subject matter. | Backup if DHQ rejects. |
 | 4 | **International Journal of Humanities and Arts Computing (IJHAC)** | Hybrid (closed/gold) | Methods-heavy DH; less common in religion subfield. | Lower priority — fewer readers in our subfield. |
 | 5 | *Bulletin of the Comité international d'études patristiques* / *Patristica Slavica* | Closed | Adjacent subfield reach (early Christian liturgy) but methodology paper may not fit. | Skip unless reframed. |
@@ -84,7 +84,7 @@ DH projects in confessional theology routinely conflate two distinct epistemic d
 
 - **Worked-example matrix:** every realistic combination demonstrated on PAIR_001–PAIR_006 from the TEPALIT dataset.
 
-### 4. Application: the TEPALIT hymn-pair dossier (~1,500 words)
+### 4. Application: the TEPALIT hymn-pair dossier (~1,200 words)
 
 - Project context: the APVV-24-0484 grant, the *lex orandi, lex credendi* methodology, the Cithara Sanctorum 1636 as the receptor text, the Lutheranisation thesis.
 - Schema architecture: four-layer taxonomy (loci → confessional positions → hymnic evidence → hymn pairs).
@@ -99,7 +99,7 @@ DH projects in confessional theology routinely conflate two distinct epistemic d
 - Bilingual data (Slovak / English) at every layer — argues that the data layer should match the page surface's bilingual claim.
 - Citation infrastructure: `CITATION.cff`, `.zenodo.json`, JSON-LD `Dataset` structured data, per-pair "How to cite" snippets (APA + BibTeX + permalink).
 
-### 6. Discussion: when three axes are necessary (~800 words)
+### 6. Discussion: when three axes are necessary (~1,100 words)
 
 - Confessional DH's specific peer-review failures: anecdotal review evidence from the Reformation-studies subfield.
 - Replicability for theological-historical datasets: what does it mean to "replicate" a hymn-pair claim?
@@ -131,7 +131,7 @@ DH projects in confessional theology routinely conflate two distinct epistemic d
 - Sahle, P. (2016). *Digitale Editionsformen* (3 vols.).
 - Burdick, A. et al. (2012). *Digital_Humanities*.
 - Posner, M. (2016). "What's Next: The Radical, Unrealised Potential of Digital Humanities."
-- ITSERR-RESILIENCE methodology papers (CrossLang, OpenAIRE) — TODO: identify the right citation
+- **TBD:** ITSERR-RESILIENCE project — identify whether a methodology paper has been published or is in preparation; if not, cite the project's GitHub/documentation as a software/methods reference rather than a peer-reviewed paper. Search points: ITSERR project pages, lead PI publications, recent CHR / DH / Patristics-DH conference proceedings.
 - D'Ignazio & Klein. (2020). *Data Feminism*.
 
 ### *Lex orandi, lex credendi* literature
@@ -186,6 +186,7 @@ DH projects in confessional theology routinely conflate two distinct epistemic d
 | "How does this scale?" | 5 pairs at v0.1.0 is proof-of-concept. The pattern scales linearly with annotator effort. The CSV-based domain data ensures non-developers can extend without touching code. |
 | "What about provenance metadata standards (PROV-O, etc.)?" | Three axes are a *user-facing* abstraction; PROV-O is the underlying logical model. Axis 3 (`verification_status`) maps to PROV `wasDerivedFrom` chains. Future work: emit PROV-O JSON-LD for each pair. |
 | "Do you have inter-annotator agreement data?" | Not yet — single-annotator project at v0.1.0. The methodology is designed to make annotator disagreement *visible* via the trust-cell distribution, not to suppress it. Future multi-annotator phase will report agreement statistics. |
+| "How does this interact with FAIR principles?" | The three trust axes are complementary to, not a replacement for, FAIR (Findable, Accessible, Interoperable, Reusable). FAIR addresses how a dataset is *exposed*; the trust axes address how *individual claims within the dataset* are epistemically classified. The TEPALIT companion meets FAIR via DOI (Findable), CC-BY-4.0 + GitHub (Accessible), CSV + JSON-LD + CFF (Interoperable), and per-pair permalinks + atomic citation (Reusable); the trust axes layer on top to expose the *quality* of each reusable unit. A future paper could explicitly map the three axes to PROV-O `wasDerivedFrom` chains for machine-readable provenance. |
 
 ---
 

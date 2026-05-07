@@ -91,6 +91,9 @@ This is the data that feeds the radar/spider charts and the confessional profile
 ### Layer 3: Hymnic/Liturgical Evidence (`hymnic_evidence.csv`)
 
 The *lex orandi* layer — tagged text fragments from hymns, prayers, and liturgical orders, annotated with:
+
+> **Scope note**: despite the file name, this layer covers more than hymns. Per `SCHEMA.md`, evidence rows can record *liturgical prose* (rubrics, communion-preparation formulas, agenda-of-the-mass passages) alongside hymn texts. The `hymnic_function` field carries the distinction (e.g. `LITURGICAL_PROPER` for introits, `CATECHETICAL` for didactic-rubric passages, `CONFESSIONAL` for sung-creed-style content). The file is named `hymnic_evidence.csv` for historical reasons; "lex orandi evidence" is a more accurate description.
+
 - Which *locus* they express
 - Which tradition they belong to
 - What hymnic function they serve (confessional, doxological, polemical, etc.)

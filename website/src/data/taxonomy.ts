@@ -351,6 +351,7 @@ const VALID_TRANSFER_DIRECTION = new Set([
   "UNITY_TO_LUTHERAN",
   "HUSSITE_TO_LUTHERAN",
   "LUTHERAN_REGIONAL_CONTINUITY",
+  "LUTHERAN_CONFESSIONAL_INTENSIFICATION",
   "LATIN_TO_VERNACULAR",
   "GERMAN_TO_CZECH",
 ]);
@@ -501,6 +502,10 @@ export const TRANSFER_DIRECTION_LABELS: Record<
   LUTHERAN_REGIONAL_CONTINUITY: {
     sk: "Regionálna luteránska kontinuita (uhorské agendy → CS)",
     en: "Regional Lutheran continuity (Hungarian agendas → CS)",
+  },
+  LUTHERAN_CONFESSIONAL_INTENSIFICATION: {
+    sk: "Luteránska konfesionálna intenzifikácia (mierny → tvrdý register)",
+    en: "Lutheran confessional intensification (moderate → hard register)",
   },
   LATIN_TO_VERNACULAR: {
     sk: "Z latinčiny do národného jazyka",
