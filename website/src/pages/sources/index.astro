@@ -228,7 +228,7 @@ const typeLabels: Record<CuratedSource["type"], { sk: string; en: string }> = {
               </p>
               <p class="mt-3 font-sans text-[10px] uppercase tracking-wider text-ink-300">
                 <a
-                  href={`${base}/hymn-pairs/`}
+                  href={`${base.replace(/\/$/, "")}/hymn-pairs/`}
                   class="hover:text-burgundy"
                 >
                   Used in hymn-pair dossier &#x2192;

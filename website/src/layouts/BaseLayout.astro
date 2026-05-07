@@ -17,8 +17,13 @@ const {
 
 const siteTitle = "TEPALIT Digital Companion";
 const fullTitle = title === siteTitle ? title : `${title} | ${siteTitle}`;
-const SITE_ORIGIN = "https://michalvalco.github.io";
-const canonicalUrl = SITE_ORIGIN + Astro.url.pathname;
+// Derive canonical URL from Astro.site (configured in astro.config.mjs)
+// + the request pathname. Falls back to a localhost origin in dev when
+// Astro.site is unset, so canonical/OG tags stay environment-aware.
+const fallbackOrigin = "http://localhost:4321";
+const canonicalUrl = Astro.site
+  ? new URL(Astro.url.pathname, Astro.site).toString()
+  : `${fallbackOrigin}${Astro.url.pathname}`;
 ---
 
 <!doctype html>

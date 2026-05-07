@@ -4,6 +4,12 @@
  * where we control the format (see taxonomy/SCHEMA.md).
  */
 
+// Imported for cross-file referential integrity checks (synoptikon_id).
+// synoptikon-comparisons.ts has no dependency on this file, so no cycle.
+import { comparisons as _synoptikonComparisons } from "./synoptikon-comparisons";
+
+let _synoptikonIds: Set<string> | null = null;
+
 // ── Types ──
 
 export interface Locus {
@@ -340,6 +346,14 @@ const VALID_VERIFICATION = new Set([
   "PRIMARY_PENDING",
   "UNVERIFIED",
 ]);
+const VALID_TRANSFER_DIRECTION = new Set([
+  "UTRAQUIST_TO_LUTHERAN",
+  "UNITY_TO_LUTHERAN",
+  "HUSSITE_TO_LUTHERAN",
+  "LUTHERAN_REGIONAL_CONTINUITY",
+  "LATIN_TO_VERNACULAR",
+  "GERMAN_TO_CZECH",
+]);
 
 function validatePair(row: Record<string, string>, index: number): HymnPair {
   const required = [
@@ -374,6 +388,12 @@ function validatePair(row: Record<string, string>, index: number): HymnPair {
   if (!VALID_VERIFICATION.has(row.verification_status.trim())) {
     throw new Error(
       `hymn_pairs.csv row ${index + 1}: invalid verification_status "${row.verification_status}"`,
+    );
+  }
+  const td = (row.transfer_direction ?? "").trim();
+  if (td && !VALID_TRANSFER_DIRECTION.has(td)) {
+    throw new Error(
+      `hymn_pairs.csv row ${index + 1}: invalid transfer_direction "${td}" (allowed: ${Array.from(VALID_TRANSFER_DIRECTION).join(", ")} or empty)`,
     );
   }
   return {
@@ -443,6 +463,18 @@ export function getHymnPairs(): HymnPair[] {
       if (p.receptor_text_id && !evidenceIds.has(p.receptor_text_id)) {
         throw new Error(
           `hymn_pairs.csv row ${i + 1}: receptor_text_id "${p.receptor_text_id}" not found in hymnic_evidence.csv`,
+        );
+      }
+    }
+    // Cross-file integrity: synoptikon comparison ids
+    if (_synoptikonIds === null) {
+      _synoptikonIds = new Set(_synoptikonComparisons.map((c) => c.id));
+    }
+    for (let i = 0; i < _pairs.length; i++) {
+      const sid = _pairs[i].synoptikon_id;
+      if (sid && !_synoptikonIds.has(sid)) {
+        throw new Error(
+          `hymn_pairs.csv row ${i + 1}: synoptikon_id "${sid}" not found in website/src/data/synoptikon-comparisons.ts`,
         );
       }
     }

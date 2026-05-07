@@ -1,11 +1,13 @@
 {
   "title": "TEPALIT Digital Companion: Theological Taxonomy and Hymn-Pair Dossier for the Lutheranisation Thesis",
+  "version": "0.1.0",
+  "publication_date": "2026-05-07",
   "description": "<p>Open digital companion to the monograph chapter <em>Dogmatick&aacute; kompar&aacute;cia luteranizmu a &#269;esk&yacute;ch konfesi&iacute; (utrakvizmus, Jednota bratsk&aacute;) v zrkadle liturgick&yacute;ch a hymnologick&yacute;ch prame&#328;ov (16.&ndash;18. storo&#269;ie)</em>, produced under the APVV-24-0484 (TEPALIT) grant.</p><p>The dataset comprises a four-layer theological taxonomy released as versioned CSV files: <strong>(1)</strong> 4 loci &times; 5 sub-loci hierarchy (LA / SK / EN), <strong>(2)</strong> attested confessional positions per tradition per locus, <strong>(3)</strong> tagged hymnic-liturgical evidence with epistemic classification, and <strong>(4)</strong> case-study hymn-pair dossiers for the Lutheranisation thesis. The companion website includes a parallel-text viewer (Synoptikon), an intertextual network graph, an interactive timeline, and a bilingual (Slovak/English) hymn-pair register.</p><p>Distinguished by a <strong>three-axis epistemic transparency framework</strong>: (a) epistemic status &mdash; type of claim; (b) evidentiary strength &mdash; quality of textual evidence; (c) verification status &mdash; whether project members have personally collated primary witnesses. Pairs flagged as conjectural or unverified are visibly marked, never displayed as established fact.</p><p>This work was supported by the Slovak Research and Development Agency under the Contract no. APVV-24-0484.</p>",
   "creators": [
     {
       "name": "Valčo, Michal",
       "affiliation": "Evangelical Theological Faculty, Comenius University in Bratislava",
-      "orcid": "0000-0000-0000-0000"
+      "orcid": "0000-0002-4730-5739"
     },
     {
       "name": "TEPALIT Project",
@@ -31,7 +33,9 @@
     "confessional comparison",
     "Central European Reformation",
     "Bystrická agenda",
-    "Agenda Česká"
+    "Agenda Česká",
+    "Banská Bystrica",
+    "Cithara Sanctorum 1636"
   ],
   "communities": [
     {

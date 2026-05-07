@@ -15,7 +15,16 @@ import {
 
 const pairs = getHymnPairs();
 const base = import.meta.env.BASE_URL;
-const SITE_ORIGIN = "https://michalvalco.github.io";
+// Normalised base (no trailing slash) for safe path concatenation regardless
+// of whether import.meta.env.BASE_URL ends with /. Use baseN + "/path" idiom.
+const baseN = base.replace(/\/$/, "");
+// Build absolute URLs from Astro.site (set in astro.config.mjs) for env-aware
+// canonical/JSON-LD/citation links. new URL() guarantees no double slashes.
+const baseHref = baseN.endsWith("/") ? baseN : baseN + "/";
+const dossierUrl = Astro.site
+  ? new URL("hymn-pairs/", new URL(baseHref, Astro.site)).toString()
+  : `${baseN}/hymn-pairs/`;
+const pairPermalink = (pairId: string) => `${dossierUrl}#${pairId}`;
 
 const epistemicClasses: Record<string, string> = {
   FACTUAL: "epistemic-factual",
@@ -60,10 +69,10 @@ const isPlaceholderText = (s: string) =>
   /^\[.*pending|^\[text to be filled/i.test(s.trim());
 
 const buildBibtex = (p: HymnPair): string =>
-  `@misc{TEPALIT_${p.pair_id},\n  title        = {{${p.pair_label_en}}},\n  author       = {Val\\v{c}o, Michal and TEPALIT Project},\n  year         = {2026},\n  note         = {Hymn-pair dossier ${p.pair_id}, epistemic status: ${p.epistemic_status}},\n  howpublished = {APVV-24-0484 (TEPALIT) digital companion},\n  url          = {${SITE_ORIGIN}${base}/hymn-pairs/#${p.pair_id}}\n}`;
+  `@misc{TEPALIT_${p.pair_id},\n  title        = {{${p.pair_label_en}}},\n  author       = {Val\\v{c}o, Michal and TEPALIT Project},\n  year         = {2026},\n  note         = {Hymn-pair dossier ${p.pair_id}, epistemic status: ${p.epistemic_status}},\n  howpublished = {APVV-24-0484 (TEPALIT) digital companion},\n  url          = {${pairPermalink(p.pair_id)}}\n}`;
 
 const buildApa = (p: HymnPair): string =>
-  `Valčo, M., & TEPALIT Project. (2026). ${p.pair_label_en} [Hymn-pair dossier ${p.pair_id}]. APVV-24-0484 (TEPALIT) Digital Companion. ${SITE_ORIGIN}${base}/hymn-pairs/#${p.pair_id}`;
+  `Valčo, M., & TEPALIT Project. (2026). ${p.pair_label_en} [Hymn-pair dossier ${p.pair_id}]. APVV-24-0484 (TEPALIT) Digital Companion. ${pairPermalink(p.pair_id)}`;
 
 const pairViews: PairView[] = pairs.map((pair) => {
   const source = getEvidenceById(pair.source_text_id);
@@ -88,7 +97,7 @@ const pairViews: PairView[] = pairs.map((pair) => {
       : [],
     bibtex: buildBibtex(pair),
     apa: buildApa(pair),
-    permalink: `${SITE_ORIGIN}${base}/hymn-pairs/#${pair.pair_id}`,
+    permalink: pairPermalink(pair.pair_id),
   };
 });
 
@@ -123,7 +132,7 @@ const jsonLd = {
   alternateName: "Hymno-páry — dôkazové dossier",
   description:
     "Case-study evidence layer for the Lutheranisation thesis: comparative dossiers per hymn pair with three orthogonal trust axes (epistemic, evidentiary, verification).",
-  url: `${SITE_ORIGIN}${base}/hymn-pairs/`,
+  url: dossierUrl,
   isPartOf: {
     "@type": "ResearchProject",
     name: "TEPALIT (APVV-24-0484)",
@@ -151,7 +160,7 @@ const jsonLd = {
   license: "https://creativecommons.org/licenses/by/4.0/",
   hasPart: pairViews.map((v) => ({
     "@type": "CreativeWork",
-    "@id": `${SITE_ORIGIN}${base}/hymn-pairs/#${v.pair.pair_id}`,
+    "@id": pairPermalink(v.pair.pair_id),
     name: v.pair.pair_label_en,
     description: v.pair.theological_argument_en.slice(0, 280),
     additionalType: "ScholarlyArticle",
@@ -489,7 +498,7 @@ const jsonLd = {
                       </p>
                       <p class="mt-0.5 font-sans text-xs text-ink-400">
                         <a
-                          href={`${base}/sources/#${view.source.source_collection_id}`}
+                          href={`${baseN}/sources/#${view.source.source_collection_id}`}
                           class="hover:text-burgundy"
                         >
                           {view.source.source_collection_id}
@@ -521,7 +530,7 @@ const jsonLd = {
                       </p>
                       <p class="mt-0.5 font-sans text-xs text-ink-400">
                         <a
-                          href={`${base}/sources/#${view.receptor.source_collection_id}`}
+                          href={`${baseN}/sources/#${view.receptor.source_collection_id}`}
                           class="hover:text-burgundy"
                         >
                           {view.receptor.source_collection_id}
@@ -564,7 +573,7 @@ const jsonLd = {
                     {view.citationIds.map((id) => (
                       <li>
                         <a
-                          href={`${base}/sources/#${id}`}
+                          href={`${baseN}/sources/#${id}`}
                           class="hover:text-burgundy"
                         >
                           {id}
@@ -639,7 +648,7 @@ const jsonLd = {
               <footer class="mt-4 flex flex-wrap gap-2 border-t border-parchment-300/40 pt-3">
                 {p.synoptikon_id && (
                   <a
-                    href={`${base}/synoptikon/#comparison-${p.synoptikon_id}`}
+                    href={`${baseN}/synoptikon/#comparison-${p.synoptikon_id}`}
                     class="inline-flex items-center gap-1 rounded-md bg-gold/15 px-2.5 py-1 font-sans text-xs font-medium text-gold-dark no-underline transition-colors hover:bg-gold/25"
                   >
                     Synoptikon &#x2192;

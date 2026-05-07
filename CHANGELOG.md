@@ -23,7 +23,7 @@ Lutheranisation thesis.
   - Plus `hymnic_functions.csv` (10 function types) and `term_variants.csv`
     (multilingual theological vocabulary).
 
-- **Five seed hymn-pair dossiers** with three-axis trust classification:
+- **Four seed hymn-pair dossiers + one research-target manifest**, all with three-axis trust classification:
   - `PAIR_001_AY_PANNA` — FACTUAL/DOCUMENTED. Tranovský's documented Marian
     de-Catholicising per Grešová-Sekelská 2021, p. 9. Anchor case.
   - `PAIR_002_PANE_NAS` — INTERPRETIVE/CONJECTURED. Working hypothesis flagged
@@ -33,7 +33,8 @@ Lutheranisation thesis.
   - `PAIR_004_OTCE_NEBESKY` — FACTUAL/DOCUMENTED. Liturgical continuity from
     Bystrická agenda 1585 to CS 1636 per Grešová-Sekelská 2023, pp. XV–XVI.
   - `PAIR_005_NEYSWETEGSIJ` — FACTUAL/DOCUMENTED. Introit continuity per
-    Grešová-Sekelská 2023, pp. XV–XVI; Grešová-Sekelská 2021, p. 6.
+    Grešová-Sekelská 2023, pp. XV–XVI; Grešová-Sekelská 2021, p. 6;
+    Vajda 1944, pp. 16–21 (BA→CS list).
 
 - **New transfer-direction enum**: `LUTHERAN_REGIONAL_CONTINUITY` for
   intra-tradition Hungarian-Lutheran → Slovak-Lutheran continuity (the BA→CS
