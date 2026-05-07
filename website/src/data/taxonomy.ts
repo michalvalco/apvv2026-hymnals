@@ -414,6 +414,38 @@ export function getHymnPairs(): HymnPair[] {
       }
       ids.add(_pairs[i].pair_id);
     }
+    // Cross-file integrity: locus codes, evidence text_ids
+    const locusCodes = new Set(getLoci().map((l) => l.locus_code));
+    const evidenceIds = new Set(getHymnicEvidence().map((e) => e.text_id));
+    for (let i = 0; i < _pairs.length; i++) {
+      const p = _pairs[i];
+      if (!locusCodes.has(p.primary_locus_code)) {
+        throw new Error(
+          `hymn_pairs.csv row ${i + 1}: primary_locus_code "${p.primary_locus_code}" not found in loci_hierarchy.csv`,
+        );
+      }
+      const allCodes = p.all_locus_codes
+        .split(";")
+        .map((c) => c.trim())
+        .filter(Boolean);
+      for (const c of allCodes) {
+        if (!locusCodes.has(c)) {
+          throw new Error(
+            `hymn_pairs.csv row ${i + 1}: all_locus_codes contains "${c}", not found in loci_hierarchy.csv`,
+          );
+        }
+      }
+      if (p.source_text_id && !evidenceIds.has(p.source_text_id)) {
+        throw new Error(
+          `hymn_pairs.csv row ${i + 1}: source_text_id "${p.source_text_id}" not found in hymnic_evidence.csv`,
+        );
+      }
+      if (p.receptor_text_id && !evidenceIds.has(p.receptor_text_id)) {
+        throw new Error(
+          `hymn_pairs.csv row ${i + 1}: receptor_text_id "${p.receptor_text_id}" not found in hymnic_evidence.csv`,
+        );
+      }
+    }
   }
   return _pairs;
 }

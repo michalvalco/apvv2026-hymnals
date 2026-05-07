@@ -17,6 +17,8 @@ const {
 
 const siteTitle = "TEPALIT Digital Companion";
 const fullTitle = title === siteTitle ? title : `${title} | ${siteTitle}`;
+const SITE_ORIGIN = "https://michalvalco.github.io";
+const canonicalUrl = SITE_ORIGIN + Astro.url.pathname;
 ---
 
 <!doctype html>
@@ -27,6 +29,26 @@ const fullTitle = title === siteTitle ? title : `${title} | ${siteTitle}`;
     <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
     <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}/favicon.svg`} />
+    <link rel="canonical" href={canonicalUrl} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:site_name" content={siteTitle} />
+    <meta property="og:locale" content={lang === "en" ? "en_GB" : "sk_SK"} />
+
+    <!-- Twitter / X card -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+
+    <!-- Citation / scholarship hints -->
+    <meta name="citation_publisher" content="APVV-24-0484 (TEPALIT)" />
+    <meta name="DC.publisher" content="Slovak Research and Development Agency, APVV-24-0484" />
+    <meta name="DC.rights" content="CC BY 4.0 (content); MIT (code)" />
+
     <title>{fullTitle}</title>
   </head>
   <body class="flex min-h-screen flex-col">
