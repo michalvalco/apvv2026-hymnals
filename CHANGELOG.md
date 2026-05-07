@@ -23,7 +23,7 @@ Lutheranisation thesis.
   - Plus `hymnic_functions.csv` (10 function types) and `term_variants.csv`
     (multilingual theological vocabulary).
 
-- **Four seed hymn-pair dossiers + one research-target manifest**, all with three-axis trust classification:
+- **Five seed hymn-pair dossiers + one research-target manifest**, all with three-axis trust classification:
   - `PAIR_001_AY_PANNA` — FACTUAL/DOCUMENTED. Tranovský's documented Marian
     de-Catholicising per Grešová-Sekelská 2021, p. 9. Anchor case.
   - `PAIR_002_PANE_NAS` — INTERPRETIVE/CONJECTURED. Working hypothesis flagged
@@ -35,6 +35,13 @@ Lutheranisation thesis.
   - `PAIR_005_NEYSWETEGSIJ` — FACTUAL/DOCUMENTED. Introit continuity per
     Grešová-Sekelská 2023, pp. XV–XVI; Grešová-Sekelská 2021, p. 6;
     Vajda 1944, pp. 16–21 (BA→CS list).
+  - `PAIR_006_AC_BA_EUCHARIST` — FACTUAL/DOCUMENTED/PRIMARY_PENDING. Intra-
+    codex Eucharistic stratification: Agenda Česká 1581 (printed, moderate
+    register: 'body and blood' without 'true'/'substantial' qualifiers) →
+    Bystrická agenda 1585 (manuscript supplement, hard Lutheran *manducatio
+    impiorum*: unworthy reception 'unto eternal damnation'). Both bound in
+    the same Bratislava Lyceal Library exemplar. Documented with verbatim
+    citations in Benka 2024 (pp. 78–79). Strongest §4.1 anchor to date.
 
 - **New transfer-direction enum**: `LUTHERAN_REGIONAL_CONTINUITY` for
   intra-tradition Hungarian-Lutheran → Slovak-Lutheran continuity (the BA→CS
