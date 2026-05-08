@@ -42,6 +42,9 @@ keywords:
 license: CC-BY-4.0
 license-url: "https://creativecommons.org/licenses/by/4.0/"
 identifiers:
+  - type: doi
+    value: "10.5281/zenodo.20081435"
+    description: "Zenodo concept DOI (always resolves to the latest version)"
   - type: other
     value: "APVV-24-0484"
     description: "Slovak Research and Development Agency grant identifier"

@@ -207,7 +207,7 @@ DH projects in confessional theology routinely conflate two distinct epistemic d
 3. ☐ Acquire / review Drucker, Sahle, Burdick references in full.
 4. ☐ Read at least one BRRP article systematically using *lex orandi, lex credendi* (Holeton confirmed candidate).
 5. ☐ Discuss authorship at next TEPALIT working meeting (post-merge of the v0.1.0 release).
-6. ☐ Tag v0.1.0 of the dataset → Zenodo DOI → cite in methods paper.
+6. ☑ ~~Tag v0.1.0 of the dataset → Zenodo DOI → cite in methods paper.~~ **Done 2026-05-08**: v0.1.0 tagged, GitHub Release published, Zenodo concept DOI minted: `10.5281/zenodo.20081435`. Cite as: Valčo, M., & TEPALIT Project (2026). *TEPALIT Digital Companion* (v0.1.0) [Dataset]. Zenodo. https://doi.org/10.5281/zenodo.20081435
 7. ☐ Draft §1 (Introduction) and §3 (Three-Axis Decomposition) first — these are the conceptual core. §4 (Application) is largely transcription from the existing companion site.
 
 ---
