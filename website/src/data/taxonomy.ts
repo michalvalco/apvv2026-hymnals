@@ -111,7 +111,10 @@ export interface HymnPair {
  * Parses a CSV string into an array of objects.
  * Handles quoted fields with commas and newlines.
  */
-function parseCSV(text: string): Record<string, string>[] {
+function parseCSV(
+  text: string,
+  filename = "<unknown>",
+): Record<string, string>[] {
   const rows: string[][] = [];
   let current: string[] = [];
   let field = "";
@@ -157,6 +160,24 @@ function parseCSV(text: string): Record<string, string>[] {
 
   if (rows.length < 2) return [];
   const headers = rows[0].map((h) => h.trim());
+  // Strict field-count check: every data row must have exactly the same number
+  // of fields as the header row. Catches CSV-format bugs (mismatched quotes,
+  // stray commas, missing escapes) at build time rather than letting them
+  // silently corrupt the rendered output.
+  rows.slice(1).forEach((row, idx) => {
+    if (row.length !== headers.length) {
+      const lineNo = idx + 2; // 1-based line numbering, +1 for the header row
+      const firstCol = (row[0] ?? "").slice(0, 60);
+      throw new Error(
+        `${filename} line ${lineNo}: field-count mismatch — ` +
+          `header has ${headers.length} columns, this row has ${row.length}. ` +
+          `Row starts with: "${firstCol}". ` +
+          `Common causes: an unescaped " inside a quoted field (use "" to escape), ` +
+          `a stray comma in a free-text field that wasn't wrapped in quotes, ` +
+          `or a typographic close quote (U+201C) typed where ASCII " was intended.`,
+      );
+    }
+  });
   return rows.slice(1).map((row) => {
     const obj: Record<string, string> = {};
     headers.forEach((h, i) => {
@@ -175,7 +196,7 @@ const TAXONOMY_DIR = resolve(process.cwd(), "..", "taxonomy");
 
 function loadCSV(filename: string): Record<string, string>[] {
   const content = readFileSync(resolve(TAXONOMY_DIR, filename), "utf-8");
-  return parseCSV(content);
+  return parseCSV(content, `taxonomy/${filename}`);
 }
 
 // ── Validation helpers ──
