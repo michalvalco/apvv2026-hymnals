@@ -55,11 +55,16 @@ preferred-citation:
       given-names: Michal
     - name: "TEPALIT Project"
   title: "TEPALIT Digital Companion: Theological Taxonomy and Hymn-Pair Dossier for the Lutheranisation Thesis"
+  version: 0.1.0
   year: 2026
-  url: "https://michalvalco.github.io/apvv2026-hymnals/"
+  publisher:
+    name: "Zenodo"
+  doi: "10.5281/zenodo.20081435"
+  url: "https://doi.org/10.5281/zenodo.20081435"
   notes: >
     This work was supported by the Slovak Research and Development Agency
-    under the Contract no. APVV-24-0484.
+    under the Contract no. APVV-24-0484. The companion website is hosted
+    at https://michalvalco.github.io/apvv2026-hymnals/.
 references:
   - type: article
     authors:

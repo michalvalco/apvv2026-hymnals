@@ -13,7 +13,7 @@
 
 If you use the taxonomy CSVs, the hymn-pair dossier, or any individual pair record, please cite the dataset. GitHub renders a "Cite this repository" button from `CITATION.cff`; the canonical APA / BibTeX form:
 
-> Valčo, M., & TEPALIT Project. (2026). *TEPALIT Digital Companion: Theological Taxonomy and Hymn-Pair Dossier for the Lutheranisation Thesis* (Version 0.1.0) [Dataset]. APVV-24-0484 (TEPALIT). https://doi.org/10.5281/zenodo.20081435
+> Valčo, M., & TEPALIT Project. (2026). *TEPALIT Digital Companion: Theological Taxonomy and Hymn-Pair Dossier for the Lutheranisation Thesis* (Version 0.1.0) [Dataset]. Zenodo. https://doi.org/10.5281/zenodo.20081435
 
 ```bibtex
 @dataset{TEPALIT_companion_2026,
