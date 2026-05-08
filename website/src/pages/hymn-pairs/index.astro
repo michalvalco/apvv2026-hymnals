@@ -378,6 +378,31 @@ const jsonLd = {
           Reset
         </button>
       </div>
+      <!-- Sort + search row -->
+      <div class="mt-3 flex flex-wrap items-center gap-3 border-t border-parchment-300/40 pt-3">
+        <label class="flex items-center gap-1.5 text-xs">
+          <span class="text-ink-400">Triediť / <span class="italic" lang="en">Sort</span></span>
+          <select
+            id="filter-sort"
+            class="rounded border border-parchment-300 bg-parchment-50 px-2 py-1 font-sans text-xs"
+          >
+            <option value="default">Trust (FACTUAL → INTERPRETIVE → DEFERRED)</option>
+            <option value="pair_id">Pair ID (PAIR_001 →)</option>
+            <option value="evidentiary">Evidentiary strength</option>
+            <option value="verification">Verification status</option>
+            <option value="chapter">Chapter section</option>
+          </select>
+        </label>
+        <label class="flex items-center gap-1.5 text-xs">
+          <span class="text-ink-400">Hľadať / <span class="italic" lang="en">Search</span></span>
+          <input
+            id="filter-search"
+            type="search"
+            placeholder="incipit, source ID, pair ID …"
+            class="rounded border border-parchment-300 bg-parchment-50 px-2 py-1 font-sans text-xs w-56"
+          />
+        </label>
+      </div>
       <p
         id="filter-status"
         class="mt-2 font-sans text-[11px] text-ink-300"
@@ -746,6 +771,95 @@ const jsonLd = {
   </section>
 </BaseLayout>
 
+<style>
+  /* ── Print stylesheet ──
+     Scholarly users print pair dossiers for offline review. The print version
+     should: hide site chrome (header / footer / filter bar); flatten interactive
+     elements (expand all <details>); preserve trust badges and citation chains;
+     use serif body text for readability; add a per-page header carrying the
+     dataset DOI for citation-on-paper. */
+  @media print {
+    /* Page metadata: dataset DOI on every printed page */
+    @page {
+      margin: 18mm 16mm;
+    }
+    body {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 10.5pt;
+      line-height: 1.4;
+      color: #000;
+      background: #fff;
+    }
+    /* Hide site chrome and interactive controls */
+    header,
+    footer,
+    .synoptikon-toggle,
+    nav[aria-label="Main navigation"],
+    nav[aria-label="Mobile navigation"],
+    #mobile-menu-btn,
+    /* Filter bar block */
+    .max-w-wide > .rounded-lg.border,
+    /* Stat cards row */
+    .max-w-wide > .grid.grid-cols-2,
+    /* Hero section */
+    .bg-ink-800,
+    /* Trust-axes legend */
+    .max-w-wide > .rounded-lg.bg-parchment-100\/60,
+    /* "How this dossier reads" + epistemic legend at bottom */
+    .ornament-rule,
+    .ornament-rule + section,
+    .ornament-rule ~ section {
+      display: none !important;
+    }
+    /* Expand all details so notes/citations print inline */
+    details {
+      page-break-inside: avoid;
+    }
+    details > summary {
+      list-style: none;
+      cursor: default;
+    }
+    details > summary::-webkit-details-marker {
+      display: none;
+    }
+    details[open] > * {
+      display: block !important;
+    }
+    /* Ensure all collapsed sections print as expanded */
+    details:not([open]) > *:not(summary) {
+      display: block !important;
+    }
+    /* One pair per printed page when feasible */
+    article[data-epistemic] {
+      page-break-after: always;
+      break-after: page;
+      box-shadow: none;
+      border: 1px solid #000;
+      padding: 14pt;
+    }
+    article[data-epistemic]:last-child {
+      page-break-after: auto;
+    }
+    /* Hidden filter-state items must NOT print */
+    .hidden {
+      display: none !important;
+    }
+    /* Expand BibTeX <pre> to fit page width */
+    pre {
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-size: 8pt;
+    }
+    /* Avoid breaking inside cards/sources */
+    .card {
+      page-break-inside: avoid;
+    }
+    /* Print-only attribution on every page (using @page is unreliable in
+       browsers; use a per-pair footer instead via CSS counter trick is overkill;
+       simplest approach: rely on browser's URL-in-footer setting). */
+  }
+</style>
+
 <script is:inline>
   // ── Filter bar ──
   const filters = {
@@ -754,6 +868,8 @@ const jsonLd = {
     verification: document.getElementById("filter-verification"),
     direction: document.getElementById("filter-direction"),
   };
+  const sortSel = document.getElementById("filter-sort");
+  const searchInp = document.getElementById("filter-search");
   const reset = document.getElementById("filter-reset");
   const status = document.getElementById("filter-status");
   const empty = document.getElementById("pairs-empty");
@@ -761,19 +877,61 @@ const jsonLd = {
   const articles = list ? Array.from(list.querySelectorAll("article[data-epistemic]")) : [];
   const total = articles.length;
 
+  // Pre-compute lowercase search-text for each article (id + visible text).
+  // Avoids re-reading textContent on every keystroke.
+  const articleSearchText = new Map();
+  articles.forEach(function (a) {
+    articleSearchText.set(a, ((a.id || "") + " " + (a.textContent || "")).toLowerCase());
+  });
+
+  // Sort comparators. "default" = FACTUAL → INTERPRETIVE → DEFERRED (the
+  // server-side build order). Other modes re-order DOM children.
+  const epistemicOrder = { FACTUAL: 0, INTERPRETIVE: 1, DEFERRED: 2 };
+  const evidentiaryOrder = { DOCUMENTED: 0, INFERRED: 1, CONJECTURED: 2 };
+  const verificationOrder = { VERIFIED: 0, PRIMARY_PENDING: 1, SECONDARY_ONLY: 2, UNVERIFIED: 3 };
+  const originalOrder = articles.slice();
+
+  function applySort(mode) {
+    if (!list) return;
+    let sorted;
+    if (mode === "pair_id") {
+      sorted = articles.slice().sort(function (a, b) { return (a.id || "").localeCompare(b.id || ""); });
+    } else if (mode === "evidentiary") {
+      sorted = articles.slice().sort(function (a, b) {
+        return (evidentiaryOrder[a.dataset.evidentiary] ?? 99) - (evidentiaryOrder[b.dataset.evidentiary] ?? 99);
+      });
+    } else if (mode === "verification") {
+      sorted = articles.slice().sort(function (a, b) {
+        return (verificationOrder[a.dataset.verification] ?? 99) - (verificationOrder[b.dataset.verification] ?? 99);
+      });
+    } else if (mode === "chapter") {
+      sorted = articles.slice().sort(function (a, b) {
+        // Chapter section is in the header e.g. "§4.1" or "§5"; extract from textContent
+        const aSec = (a.textContent.match(/§[0-9.]+/) || [""])[0];
+        const bSec = (b.textContent.match(/§[0-9.]+/) || [""])[0];
+        return aSec.localeCompare(bSec);
+      });
+    } else {
+      sorted = originalOrder.slice();
+    }
+    sorted.forEach(function (a) { list.appendChild(a); });
+  }
+
   function applyFilters() {
     if (!status) return;
     const e = filters.epistemic && filters.epistemic.value;
     const ev = filters.evidentiary && filters.evidentiary.value;
     const v = filters.verification && filters.verification.value;
     const d = filters.direction && filters.direction.value;
+    const q = searchInp && searchInp.value ? searchInp.value.trim().toLowerCase() : "";
     let visible = 0;
     articles.forEach(function (a) {
       const ok =
         (!e || a.dataset.epistemic === e) &&
         (!ev || a.dataset.evidentiary === ev) &&
         (!v || a.dataset.verification === v) &&
-        (!d || a.dataset.direction === d);
+        (!d || a.dataset.direction === d) &&
+        (!q || (articleSearchText.get(a) || "").indexOf(q) !== -1);
       a.classList.toggle("hidden", !ok);
       if (ok) visible++;
     });
@@ -784,11 +942,25 @@ const jsonLd = {
   Object.values(filters).forEach(function (el) {
     if (el) el.addEventListener("change", applyFilters);
   });
+  if (sortSel) {
+    sortSel.addEventListener("change", function () { applySort(sortSel.value); });
+  }
+  if (searchInp) {
+    // Debounce keystroke handling so layout doesn't thrash.
+    let t;
+    searchInp.addEventListener("input", function () {
+      clearTimeout(t);
+      t = setTimeout(applyFilters, 120);
+    });
+  }
   if (reset) {
     reset.addEventListener("click", function () {
       Object.values(filters).forEach(function (el) {
         if (el) el.value = "";
       });
+      if (sortSel) sortSel.value = "default";
+      if (searchInp) searchInp.value = "";
+      applySort("default");
       applyFilters();
     });
   }
