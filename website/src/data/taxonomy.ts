@@ -166,15 +166,20 @@ function parseCSV(
   // silently corrupt the rendered output.
   rows.slice(1).forEach((row, idx) => {
     if (row.length !== headers.length) {
-      const lineNo = idx + 2; // 1-based line numbering, +1 for the header row
+      // Use "data row N" rather than file-line number — this parser supports
+      // embedded newlines inside quoted fields, so idx doesn't necessarily
+      // map to a single physical line in the source file. N is 1-based and
+      // counts data rows only (header excluded).
+      const dataRowNo = idx + 1;
       const firstCol = (row[0] ?? "").slice(0, 60);
       throw new Error(
-        `${filename} line ${lineNo}: field-count mismatch — ` +
+        `${filename} data row ${dataRowNo}: field-count mismatch — ` +
           `header has ${headers.length} columns, this row has ${row.length}. ` +
           `Row starts with: "${firstCol}". ` +
           `Common causes: an unescaped " inside a quoted field (use "" to escape), ` +
           `a stray comma in a free-text field that wasn't wrapped in quotes, ` +
-          `or a typographic close quote (U+201C) typed where ASCII " was intended.`,
+          `or a typographic curly quote (U+201C/U+201D, sometimes paired with U+201E ` +
+          `for Slovak/German low-9 opening) typed where ASCII " was intended.`,
       );
     }
   });
