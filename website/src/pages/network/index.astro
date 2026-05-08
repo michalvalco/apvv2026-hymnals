@@ -476,7 +476,7 @@ const clientTraditionMeta = JSON.stringify(TRADITION_META);
     line.setAttribute("y2", String(e.target.y));
     line.setAttribute("stroke", meta.color);
     line.setAttribute("stroke-width", String(e.weight));
-    var epistemicOpacity = e.epistemicStatus === "FACTUAL" ? "1" : e.epistemicStatus === "INTERPRETIVE" ? "0.8" : "0.6";
+    const epistemicOpacity = e.epistemicStatus === "FACTUAL" ? "1" : e.epistemicStatus === "INTERPRETIVE" ? "0.8" : "0.6";
     line.setAttribute("stroke-opacity", epistemicOpacity);
     if (e.epistemicStatus === "DEFERRED") {
       line.setAttribute("stroke-dasharray", meta.dash || "4 2");
@@ -559,29 +559,29 @@ const clientTraditionMeta = JSON.stringify(TRADITION_META);
     // Build meta badges via DOM API (no innerHTML)
     while (detailMeta.firstChild) detailMeta.removeChild(detailMeta.firstChild);
 
-    var tradSpan = document.createElement("span");
+    const tradSpan = document.createElement("span");
     tradSpan.className = "inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-medium";
     tradSpan.style.background = color + "22";
     tradSpan.style.color = color;
-    var tradDot = document.createElement("span");
+    const tradDot = document.createElement("span");
     tradDot.className = "h-2 w-2 rounded-full";
     tradDot.style.background = color;
     tradSpan.appendChild(tradDot);
     tradSpan.appendChild(document.createTextNode(tradLabel));
     detailMeta.appendChild(tradSpan);
 
-    var typeSpan = document.createElement("span");
+    const typeSpan = document.createElement("span");
     typeSpan.className = "rounded-full bg-parchment-200 px-2 py-0.5 font-mono text-[10px] text-ink-300";
     typeSpan.textContent = nodeData.type;
     detailMeta.appendChild(typeSpan);
 
-    var yearSpan = document.createElement("span");
+    const yearSpan = document.createElement("span");
     yearSpan.className = "rounded-full bg-parchment-200 px-2 py-0.5 font-mono text-[10px] text-ink-300";
     yearSpan.textContent = String(nodeData.year);
     detailMeta.appendChild(yearSpan);
 
     if (nodeData.locusCodes.length > 0) {
-      var locusSpan = document.createElement("span");
+      const locusSpan = document.createElement("span");
       locusSpan.className = "rounded-full bg-parchment-200 px-2 py-0.5 font-mono text-[10px] text-ink-300";
       locusSpan.textContent = nodeData.locusCodes.join(" \u00B7 ");
       detailMeta.appendChild(locusSpan);
@@ -599,20 +599,20 @@ const clientTraditionMeta = JSON.stringify(TRADITION_META);
       const direction = e.source.id === nodeData.id ? "\u2192" : "\u2190";
       const opacityClass = e.epistemicStatus === "FACTUAL" ? "opacity-100" : e.epistemicStatus === "INTERPRETIVE" ? "opacity-80" : "opacity-60";
 
-      var edgeDiv = document.createElement("div");
+      const edgeDiv = document.createElement("div");
       edgeDiv.className = "flex items-center gap-2 rounded bg-parchment-100 px-2 py-1 " + opacityClass;
 
-      var lineSpan = document.createElement("span");
+      const lineSpan = document.createElement("span");
       lineSpan.className = "inline-block h-0.5 w-3 rounded";
       lineSpan.style.background = meta.color;
       edgeDiv.appendChild(lineSpan);
 
-      var labelSpan = document.createElement("span");
+      const labelSpan = document.createElement("span");
       labelSpan.className = "font-sans text-xs text-ink-400";
       labelSpan.textContent = direction + " " + other.label;
       edgeDiv.appendChild(labelSpan);
 
-      var metaSpan = document.createElement("span");
+      const metaSpan = document.createElement("span");
       metaSpan.className = "ml-auto font-sans text-[10px] text-ink-300";
       metaSpan.textContent = meta.sk;
       edgeDiv.appendChild(metaSpan);
@@ -676,9 +676,18 @@ const clientTraditionMeta = JSON.stringify(TRADITION_META);
       activeEdgeTypes.add(cb.value);
     });
 
-    var minYear = parseInt(document.getElementById("date-range-min").value, 10);
-    var maxYear = parseInt(document.getElementById("date-range-max").value, 10);
-    if (minYear > maxYear) { var tmp = minYear; minYear = maxYear; maxYear = tmp; }
+    const minInput = document.getElementById("date-range-min");
+    const maxInput = document.getElementById("date-range-max");
+    let minYear = parseInt(minInput.value, 10);
+    let maxYear = parseInt(maxInput.value, 10);
+    if (minYear > maxYear) {
+      const tmp = minYear;
+      minYear = maxYear;
+      maxYear = tmp;
+      const tmpVal = minInput.value;
+      minInput.value = maxInput.value;
+      maxInput.value = tmpVal;
+    }
     document.getElementById("date-range-label").textContent = minYear + " \u2013 " + maxYear;
 
     let visibleNodes = 0;
