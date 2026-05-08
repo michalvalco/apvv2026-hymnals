@@ -1,0 +1,166 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const base = import.meta.env.BASE_URL;
+const baseN = base.replace(/\/$/, "");
+const DOI = "10.5281/zenodo.20081435";
+const DOI_URL = `https://doi.org/${DOI}`;
+
+// Hand-curated release timeline. Mirrors CHANGELOG.md but trimmed for
+// public-facing presentation. Update each release.
+interface Release {
+  version: string;
+  date: string;
+  status: "current" | "past";
+  doi?: string;
+  highlights_sk: string[];
+  highlights_en: string[];
+  github_release_url: string;
+}
+
+const releases: Release[] = [
+  {
+    version: "v0.1.0",
+    date: "2026-05-08",
+    status: "current",
+    doi: DOI,
+    github_release_url:
+      "https://github.com/michalvalco/apvv2026-hymnals/releases/tag/v0.1.0",
+    highlights_sk: [
+      "Štvorvrstvová teologická taxonómia (4 loci × 5–6 sub-loci, vrátane novej L2.6 Communio Sanctorum et Mariologia)",
+      "Šesť hymno-párových dossierov; 2 VERIFIED (PAIR_004 + PAIR_006), 1 PRIMARY_PENDING, 1 SECONDARY_ONLY, 1 working hypothesis, 1 cieľový manifest",
+      "Trojosi rámec dôvery (epistemika / sila dôkazu / vlastná verifikácia)",
+      "Bilingválny SK/EN sprievodca: hymno-páry, synoptikon, taxonómia, sieť, časová os, register prameňov",
+      "Citovateľný cez Zenodo concept DOI; CC BY 4.0 (obsah) + MIT (kód)",
+    ],
+    highlights_en: [
+      "Four-layer theological taxonomy (4 loci × 5–6 sub-loci, including the new L2.6 Communio Sanctorum et Mariologia)",
+      "Six hymn-pair dossiers; 2 VERIFIED (PAIR_004 + PAIR_006), 1 PRIMARY_PENDING, 1 SECONDARY_ONLY, 1 working hypothesis, 1 research-target manifest",
+      "Three-axis trust framework (epistemic status / evidentiary strength / verification status)",
+      "Bilingual SK/EN companion: hymn-pairs, synoptikon, taxonomy, network, timeline, source register",
+      "Citable via Zenodo concept DOI; CC BY 4.0 (content) + MIT (code)",
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="Novinky a vydania"
+  description="Public release timeline of the TEPALIT Digital Companion. Each tagged version mints a Zenodo DOI."
+  lang="sk"
+>
+  <section class="bg-ink-800 px-6 py-16 text-parchment">
+    <div class="mx-auto max-w-content text-center">
+      <p class="font-sans text-xs font-medium uppercase tracking-[0.2em] text-gold">
+        Releases · Versioned dataset · Concept DOI
+      </p>
+      <h1 class="mt-3 text-section-title font-display font-bold text-parchment-100">
+        Novinky a vydania
+      </h1>
+      <p class="mx-auto mt-2 max-w-prose font-sans text-sm uppercase tracking-wider text-parchment-500" lang="en">
+        Releases &amp; News
+      </p>
+      <p class="mx-auto mt-6 max-w-prose text-parchment-400">
+        Každé tagované vydanie projektu razí novú verziu DOI na Zenode.
+        Concept DOI ostáva stabilný a vždy sa rieši na najnovšiu verziu.
+      </p>
+      <p class="mx-auto mt-3 max-w-prose font-sans text-sm italic text-parchment-500" lang="en">
+        Each tagged release mints a new version DOI on Zenodo. The concept DOI
+        stays stable and always resolves to the latest version.
+      </p>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-content px-6 py-12">
+    <div class="space-y-8">
+      {
+        releases.map((rel) => (
+          <article
+            class:list={[
+              "card",
+              rel.status === "current" && "border-l-4 border-gold",
+            ]}
+          >
+            <header class="flex flex-wrap items-start justify-between gap-3 border-b border-parchment-300/40 pb-4">
+              <div>
+                <h2 class="font-display text-2xl font-bold text-ink">
+                  {rel.version}
+                </h2>
+                <p class="mt-1 font-mono text-xs text-ink-300">{rel.date}</p>
+              </div>
+              <div class="flex flex-wrap items-center gap-2">
+                {rel.status === "current" && (
+                  <span class="rounded-full bg-gold/20 px-3 py-1 font-sans text-xs font-semibold text-gold-dark">
+                    Aktuálne / <span class="italic" lang="en">Current</span>
+                  </span>
+                )}
+                {rel.doi && (
+                  <a
+                    href={`https://doi.org/${rel.doi}`}
+                    rel="noopener"
+                    title={`Zenodo version DOI for ${rel.version}`}
+                  >
+                    <img
+                      src={`https://zenodo.org/badge/DOI/${rel.doi}.svg`}
+                      alt={`DOI ${rel.doi}`}
+                      class="h-5"
+                    />
+                  </a>
+                )}
+                <a
+                  href={rel.github_release_url}
+                  rel="noopener"
+                  class="rounded-md bg-parchment-300/50 px-2.5 py-1 font-sans text-xs text-ink-400 hover:bg-parchment-300"
+                >
+                  GitHub Release &#x2197;
+                </a>
+              </div>
+            </header>
+
+            <div class="mt-4 grid gap-4 md:grid-cols-2">
+              <div>
+                <h3 class="font-sans text-xs font-semibold uppercase tracking-wider text-ink-300">
+                  Hlavné body
+                </h3>
+                <ul class="mt-2 list-disc space-y-1 pl-5 font-serif text-sm text-ink-400">
+                  {rel.highlights_sk.map((h) => <li>{h}</li>)}
+                </ul>
+              </div>
+              <div lang="en">
+                <h3 class="font-sans text-xs font-semibold uppercase tracking-wider text-ink-300">
+                  Highlights
+                </h3>
+                <ul class="mt-2 list-disc space-y-1 pl-5 font-serif text-sm text-ink-400">
+                  {rel.highlights_en.map((h) => <li>{h}</li>)}
+                </ul>
+              </div>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <div class="ornament-rule"></div>
+
+  <section class="mx-auto max-w-content px-6 py-10 pb-20">
+    <h2 class="text-section-title text-ink">Ďalšie vydania</h2>
+    <p class="mt-1 font-sans text-sm italic text-ink-300" lang="en">
+      Future releases
+    </p>
+    <p class="mt-4 text-sm leading-relaxed text-ink-400">
+      Plánované patch-vydania budú obsahovať postupné povýšenia
+      verifikačného statusu zostávajúcich párov (PAIR_005 → VERIFIED po
+      kolacii CS 1636; PAIR_001 → VERIFIED po získaní Baťová 2011).
+      Citovať dataset cez <a href={`${baseN}/cite/`} class="text-burgundy">/cite/</a>;
+      podrobné poznámky cez <a href="https://github.com/michalvalco/apvv2026-hymnals/blob/main/CHANGELOG.md" class="text-burgundy" rel="noopener">CHANGELOG.md</a>.
+    </p>
+    <p class="mt-3 font-sans text-xs italic leading-relaxed text-ink-300" lang="en">
+      Planned patch releases will include incremental verification-status upgrades
+      of the remaining pairs (PAIR_005 → VERIFIED after CS 1636 collation;
+      PAIR_001 → VERIFIED after Baťová 2011 acquisition).
+      Cite the dataset via <a href={`${baseN}/cite/`} class="text-burgundy">/cite/</a>;
+      detailed release notes in <a href="https://github.com/michalvalco/apvv2026-hymnals/blob/main/CHANGELOG.md" class="text-burgundy" rel="noopener">CHANGELOG.md</a>.
+    </p>
+  </section>
+</BaseLayout>

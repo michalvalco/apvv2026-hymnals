@@ -1,0 +1,170 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const base = import.meta.env.BASE_URL;
+const baseN = base.replace(/\/$/, "");
+const DOI = "10.5281/zenodo.20081435";
+const DOI_URL = `https://doi.org/${DOI}`;
+---
+
+<BaseLayout
+  title="Citovať dataset"
+  description="How to cite the TEPALIT Digital Companion v0.1.0 — APA, BibTeX, RIS, plain-text. Concept DOI 10.5281/zenodo.20081435."
+  lang="sk"
+>
+  <section class="bg-ink-800 px-6 py-16 text-parchment">
+    <div class="mx-auto max-w-content text-center">
+      <p class="font-sans text-xs font-medium uppercase tracking-[0.2em] text-gold">
+        DOI · Zenodo · CC BY 4.0
+      </p>
+      <h1 class="mt-3 text-section-title font-display font-bold text-parchment-100">
+        Citovať dataset
+      </h1>
+      <p class="mx-auto mt-2 max-w-prose font-sans text-sm uppercase tracking-wider text-parchment-500" lang="en">
+        How to cite this dataset
+      </p>
+      <p class="mx-auto mt-6 max-w-prose text-parchment-400">
+        Dataset má perzistentný identifikátor (Zenodo concept DOI), ktorý
+        sa vždy rieši na najnovšiu verziu. Používajte tento DOI v citáciách,
+        bibliografiách a noticovkách.
+      </p>
+      <p class="mx-auto mt-3 max-w-prose font-sans text-sm italic text-parchment-500" lang="en">
+        The dataset has a persistent identifier (Zenodo concept DOI) that always
+        resolves to the latest version. Use this DOI in citations, bibliographies,
+        and footnotes.
+      </p>
+      <p class="mt-8">
+        <a
+          href={DOI_URL}
+          class="inline-block"
+          rel="noopener"
+          title="Zenodo concept DOI — always resolves to the latest version"
+        >
+          <img
+            src={`https://zenodo.org/badge/DOI/${DOI}.svg`}
+            alt={`DOI ${DOI}`}
+            class="h-7"
+          />
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <!-- Format-by-format citation block -->
+  <section class="mx-auto max-w-content px-6 py-12">
+    <h2 class="text-section-title text-ink">Citačné formáty</h2>
+    <p class="mt-1 font-sans text-sm italic text-ink-300" lang="en">
+      Citation formats
+    </p>
+
+    <!-- APA -->
+    <div class="card mt-8">
+      <h3 class="font-sans text-xs font-semibold uppercase tracking-wider text-ink-400">
+        APA (7th edition)
+      </h3>
+      <p class="mt-3 font-serif text-sm leading-relaxed text-ink" lang="en">
+        Valčo, M., &amp; TEPALIT Project. (2026). <em>TEPALIT Digital Companion: Theological Taxonomy and Hymn-Pair Dossier for the Lutheranisation Thesis</em> (Version 0.1.0) [Dataset]. Zenodo. <a href={DOI_URL} class="text-burgundy">{DOI_URL}</a>
+      </p>
+    </div>
+
+    <!-- BibTeX -->
+    <div class="card mt-6">
+      <h3 class="font-sans text-xs font-semibold uppercase tracking-wider text-ink-400">
+        BibTeX
+      </h3>
+      <pre class="mt-3 overflow-x-auto rounded bg-ink/5 p-3 font-mono text-xs text-ink"><code>{`@dataset{TEPALIT_companion_2026,
+  author    = {Val{\\v{c}}o, Michal and {TEPALIT Project}},
+  title     = {{TEPALIT Digital Companion: Theological Taxonomy and Hymn-Pair Dossier for the Lutheranisation Thesis}},
+  version   = {0.1.0},
+  year      = {2026},
+  publisher = {Zenodo},
+  doi       = {${DOI}},
+  url       = {${DOI_URL}}
+}`}</code></pre>
+    </div>
+
+    <!-- RIS -->
+    <div class="card mt-6">
+      <h3 class="font-sans text-xs font-semibold uppercase tracking-wider text-ink-400">
+        RIS (Zotero, EndNote, Mendeley)
+      </h3>
+      <pre class="mt-3 overflow-x-auto rounded bg-ink/5 p-3 font-mono text-xs text-ink"><code>{`TY  - DATA
+AU  - Valčo, Michal
+AU  - TEPALIT Project
+TI  - TEPALIT Digital Companion: Theological Taxonomy and Hymn-Pair Dossier for the Lutheranisation Thesis
+PY  - 2026
+ET  - 0.1.0
+PB  - Zenodo
+DO  - ${DOI}
+UR  - ${DOI_URL}
+ER  -`}</code></pre>
+    </div>
+
+    <!-- Chicago -->
+    <div class="card mt-6">
+      <h3 class="font-sans text-xs font-semibold uppercase tracking-wider text-ink-400">
+        Chicago (footnote, 17th edition)
+      </h3>
+      <p class="mt-3 font-serif text-sm leading-relaxed text-ink" lang="en">
+        Michal Valčo and TEPALIT Project, <em>TEPALIT Digital Companion: Theological Taxonomy and Hymn-Pair Dossier for the Lutheranisation Thesis</em>, version 0.1.0 (Zenodo, 2026), <a href={DOI_URL} class="text-burgundy">{DOI_URL}</a>.
+      </p>
+    </div>
+  </section>
+
+  <div class="ornament-rule"></div>
+
+  <!-- Per-pair citation note -->
+  <section class="mx-auto max-w-content px-6 py-10">
+    <h2 class="text-section-title text-ink">Citovať konkrétny pár</h2>
+    <p class="mt-1 font-sans text-sm italic text-ink-300" lang="en">
+      Cite a specific hymn pair
+    </p>
+    <p class="mt-4 text-sm leading-relaxed text-ink-400">
+      Každý hymno-pár (PAIR_001, PAIR_004, atď.) má svoj vlastný stabilný permalink a
+      blok „Ako citovať" priamo na <a href={`${baseN}/hymn-pairs/`} class="text-burgundy">stránke
+      hymno-párov</a>. Permalink: <code class="font-mono text-xs">https://michalvalco.github.io/apvv2026-hymnals/hymn-pairs/#PAIR_NNN</code>
+    </p>
+    <p class="mt-3 font-sans text-xs italic leading-relaxed text-ink-300" lang="en">
+      Each hymn pair (PAIR_001, PAIR_004, etc.) has its own stable permalink and a
+      "How to cite" snippet directly on the
+      <a href={`${baseN}/hymn-pairs/`} class="text-burgundy">hymn-pairs page</a>.
+    </p>
+  </section>
+
+  <!-- Funder + licence -->
+  <section class="mx-auto max-w-content px-6 py-10 pb-20">
+    <h2 class="text-section-title text-ink">Licencia a financovanie</h2>
+    <p class="mt-1 font-sans text-sm italic text-ink-300" lang="en">
+      Licence and funding
+    </p>
+    <ul class="mt-4 space-y-2 text-sm text-ink-400">
+      <li>
+        <strong>Obsah / Content:</strong>
+        <a
+          href="https://creativecommons.org/licenses/by/4.0/"
+          class="text-burgundy"
+          rel="noopener"
+        >
+          CC BY 4.0
+        </a>
+        <span lang="en"> (Creative Commons Attribution 4.0 International)</span>
+      </li>
+      <li>
+        <strong>Kód / Code:</strong>
+        <a
+          href={`https://github.com/michalvalco/apvv2026-hymnals/blob/main/LICENSE`}
+          class="text-burgundy"
+          rel="noopener"
+        >
+          MIT
+        </a>
+      </li>
+      <li>
+        <strong>Funder:</strong>
+        <span>APVV-24-0484 (Slovak Research and Development Agency, TEPALIT —
+          Teologická paradigma liturgických a hymnologických prameňov v
+          protestantskom prostredí strednej Európy)</span>
+      </li>
+    </ul>
+  </section>
+</BaseLayout>
