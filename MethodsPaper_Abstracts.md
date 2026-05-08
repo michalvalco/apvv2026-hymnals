@@ -113,41 +113,65 @@ Suitable for: 16th Century Studies Conference, BRRP (Bohemian Reformation and Re
 
 ---
 
-## 5. Venue strategy
+## 4b. Variant 4-short — substantive abstract trimmed to ~245 words
 
-Listed in priority order for the **methods abstract** (variants 1–3). Variant 4 has its own venue list at the end.
+Generic short-form trim of the variant 4 substantive abstract, fitting any CFP with a 250-word limit (e.g., AAR/SBL program units, IAH paper proposals, BRRP if applicable). Self-contained; uses no venue-specific framing.
 
-| Priority | Venue | Format / word budget | Likely fit | CFP timing (TBD: confirm) | Notes |
-|---|---|---|---|---|---|
-| 1 | **DH2027 (ADHO)** | Long paper / short paper / poster; abstracts typically 750–1,500 words for long papers | Strong methods-paper fit; broad DH readership | Call usually opens late summer 2026; deadline late autumn 2026 | Use Variant 3 (extended). The flagship DH venue for methodologies. |
-| 2 | **CHR (Computational Humanities Research)** | Full paper / short paper; ~5–10 pp. proceedings | Excellent fit — methodologically sharp, peer-reviewed proceedings | Annual cycle; CFP usually mid-year for autumn conference | Use Variant 1 or 3 expanded into a 5-pp. proceedings paper. Strong landing for the framework. |
-| 3 | **DH Benelux** | Long paper / short paper / poster; ~250–500 word abstracts | Smaller, accessible regional DH conference; ITSERR community presence | Spring CFP for autumn conference | Use Variant 1 or Variant 2 (short). |
-| 4 | **TEI Conference** | Paper / poster; abstracts ~500 words | Schema-design fit; less *lex orandi*-adjacent | Annual; usually early summer CFP for late autumn conference | Use Variant 1, reframed slightly to emphasise schema/validation. Reasonable backup. |
-| 5 | **EADH 2026/2027** | Variable; per-conference CFP | DH-broad European venue | Per cycle | Use Variant 1 if accepted by the regional cycle. |
-| 6 | **DARIAH Annual Event** | Workshops + short presentations | Infrastructure-adjacent; less methods-heavy | Per cycle | Backup; less peer-reviewed. |
-| 7 | **JOHD (data-paper companion)** | Journal not conference; data paper | Pair with the DHQ submission once Zenodo DOI exists | Rolling | Out of scope for "conference abstract" but worth noting for parallel publication. |
+> **The Cithara Sanctorum (1636) Bound In: Intra-Codex Confessional Stratification in the Bratislava Lyceal Library Exemplar of *Agenda Česká* 1581 + *Bystrická agenda* 1585**
+>
+> Recent work on the Slovak Lutheran *Cithara Sanctorum* (1636) refines the standard "Lutheranisation" account by quantifying the source mix (49 % of the older Czech repertoire absorbed into CS is Utraquist in origin; Grešová-Sekelská 2021) and mapping Tranovský's differential editorial strategy: hands-off in confessionally neutral rubrics, heavy intervention in Eucharistic, Marian, and ecclesiological sections.
+>
+> This paper offers a complementary finding at smaller scale. The Bratislava Lyceal Library exemplar of *Agenda Česká* 1581 + *Bystrická agenda* 1585 (critical edition: Benka 2024) preserves both documents bound together. Within this single physical codex, the printed Czech *Agenda* uses moderate Eucharistic phrasing — "tělo a krev" without "pravý" or "substanciálny" qualifiers — and grounds worthy reception in faith in the words of institution. The manuscript Slovak supplement, written four years later, sharpens the same theology with explicit Lutheran *manducatio impiorum*: the unworthy receive "ne k spasenij, ale k zatraczenij wěčnemu" (Benka 2024, pp. 78–79). The intensification operates not at the cross-confessional boundary — both witnesses are Lutheran-aligned — but *within the Lutheran orbit itself*, from a moderate Czech printed register with Utraquist liturgical residue to a sharper Hungarian-Lutheran manuscript register.
+>
+> The paper draws on the open *TEPALIT Digital Companion* dataset (https://doi.org/10.5281/zenodo.20081435, CC BY 4.0) where this finding is recorded as a VERIFIED hymn-pair dossier under a three-axis epistemic-transparency framework.
 
-For the **alternate-framing abstract** (variant 4):
-
-| Priority | Venue | Format / word budget | CFP timing |
-|---|---|---|---|
-| 1 | **16th Century Studies Conference** | Paper / panel; 250-word abstract | Spring 2026 deadline for fall 2026 conference; spring 2027 deadline for fall 2027 |
-| 2 | **BRRP (Bohemian Reformation and Religious Practice)** | Paper; varies | Per cycle (every ~3 years; check next cycle) |
-| 3 | **IAH (International Society for Hymnological Research)** | Paper / posters; varies | Per cycle |
-| 4 | **AAR / SBL Annual Meetings** | Religion + DH program units; 250-word abstract | March deadlines for November conference |
-| 5 | **Society for Reformation Research** | Per cycle | Per cycle |
+**Keywords:** *Cithara Sanctorum*, Tranovský, *Agenda Česká*, Bystrická agenda, Banská Bystrica, *manducatio impiorum*, Reformation hymnology, intra-codex stratification.
 
 ---
 
-## 6. Submission strategy
+## 5. Venue strategy — concrete deadlines (researched 2026-05-08)
 
-### Recommended pairing
+### For the **methods abstracts** (variants 1–3)
 
-- **Primary**: DH2027 (long paper, Variant 3) — methods-paper visibility in the flagship DH venue.
-- **Parallel**: 16th Century Studies (Variant 4) — substantive-finding visibility in the Reformation-history community.
-- **Backup**: CHR proceedings paper (expanded Variant 1) — peer-reviewed methods-paper venue with proceedings publication.
+| Priority | Venue | Format / word budget | Deadline / status | Notes |
+|---|---|---|---|---|
+| 1 | **CHR 2027** (Computational Humanities Research) | Full paper / short paper; ~5–10 pp. peer-reviewed proceedings; conference Manchester, 5–8 January 2027 | **Submission deadline: 14 August 2026, 23:59:59 AoE** ([2027.computational-humanities-research.org/cfp/](https://2027.computational-humanities-research.org/cfp/)) | **Strongest landing for the framework.** ~3 months from today; comfortable timeline. Use Variant 1 or expand toward Variant 3 for the proceedings paper. Peer-reviewed proceedings publication is a meaningful citation surface. |
+| 2 | **DH2026 (ADHO)** | Long / short paper / poster; Daejeon, 27–31 July 2026 | **MISSED** — deadline was 15 December 2025 | DH2027 host being selected; CFP expected late 2026 for ~December 2026 deadline. |
+| 3 | **DH2027 (ADHO)** | Long / short paper / poster | CFP not yet open (Call for Hosts only as of 2026-05) | Watch for announcement late 2026. |
+| 4 | **DH Benelux 2026** | Long / short paper / poster; ~250–500 word abstracts | Per cycle (check current call) | Smaller regional venue; faster turnaround; ITSERR community presence. |
+| 5 | **TEI Conference 2026** | Paper / poster; abstracts ~500 words | Per cycle | Schema-design fit; reasonable backup. |
+| 6 | **DARIAH Annual Event** | Workshops + short presentations | Per cycle | Backup; less peer-reviewed. |
+| 7 | **JOHD (data-paper companion)** | Journal data paper | Rolling | Out of conference scope but worth noting — pair with whatever methods venue lands. |
 
-Doing two complementary submissions (methods and substantive) with non-overlapping content gets the project on two distinct conference circuits without duplicate publication concerns. Both abstracts cite the open dataset; the methods paper is the schema; the history paper is the finding.
+### For the **substantive-finding abstract** (variant 4 / 4-short)
+
+Note: SCSC 2026 (Chicago, 29–31 October 2026) was researched but is **not pursued by this project** — Michal's strategic decision; not a deadline-availability issue. Removed from this table.
+
+| Priority | Venue | Format / word budget | CFP timing |
+|---|---|---|---|
+| 1 | **BRRP** (Bohemian Reformation and Religious Practice) | Paper; varies | Per cycle (~every 3 years; check next cycle status). The single best-fit venue for this finding given the BRRP series's existing engagement with Czech Reformation liturgy and *lex orandi* methodology. |
+| 2 | **IAH** (International Society for Hymnological Research) | Paper / posters; varies | Per cycle |
+| 3 | **AAR / SBL Annual Meetings** | Religion + DH program units; 250-word abstract | March deadlines for November conference. Use Variant 4-short (§4b). |
+| 4 | **Society for Reformation Research** | Per cycle | Per cycle |
+
+---
+
+## 6. Submission strategy — concrete recommendation
+
+### Primary committable submission
+
+**CHR 2027 (Manchester, 5–8 January 2027)** with **Variant 1** (or expanded toward **Variant 3** for the long-paper / proceedings format). Deadline **14 August 2026, 23:59:59 AoE** ([2027.computational-humanities-research.org/cfp/](https://2027.computational-humanities-research.org/cfp/)) — about 3 months from today, comfortable timeline. Peer-reviewed proceedings publication. **Strongest landing for the methods paper.**
+
+### Substantive-finding submission (deferred)
+
+A substantive-finding submission to a Reformation-history venue (Variant 4 or 4-short) is desirable but **not currently locked to a specific CFP**. SCSC 2026 was researched and dismissed by the project as not relevant; the strongest remaining fits are BRRP and IAH (per §5 table), both with cycles to monitor rather than imminent deadlines. Variants 4 and 4-short stay drafted and ready for whichever Reformation-history CFP emerges first.
+
+### Why two complementary submissions remain the strategy
+
+- **CHR (methods)** = methodologically focused DH audience; the finding is the three-axis trust framework.
+- **Variant 4 (substance)** = Reformation-history audience; the finding is PAIR_006's intra-codex Eucharistic stratification.
+
+Both cite the same open dataset (concept DOI `10.5281/zenodo.20081435`) but argue for different audiences with different evidence — non-overlapping content for two distinct conference circuits.
 
 ### Open decisions for Michal
 
@@ -161,11 +185,12 @@ Doing two complementary submissions (methods and substantive) with non-overlappi
 ## 7. Next concrete steps
 
 1. ☑ ~~**Mint the v0.1.0 Zenodo DOI** (precondition for all four abstracts).~~ **Done 2026-05-08**: `10.5281/zenodo.20081435`.
-2. ☐ **Identify the next concrete CFP** with a deadline within the next 6 months. Check: DH2027 CFP timeline; CHR 2026/2027 deadlines; 16th Century Studies fall-2026 deadlines.
-3. ☐ **Decide co-authorship** for variant 4 (alternate framing) — discuss with Sekelská at next TEPALIT working meeting.
-4. ☐ **Prepare a Slovak-language version** of variant 1 once a Slovak venue is identified.
-5. ☐ **Adapt the chosen variant** to the specific CFP's word budget and required structure (e.g., DH2027 typically wants problem / approach / contribution / outputs / bibliography).
-6. ☐ **Draft a 3-minute lightning-talk version** of variant 1 in case any of the above conferences offer that slot.
+2. ☑ ~~**Identify the next concrete CFP** with a deadline within the next 6 months.~~ **Done 2026-05-08**: see §5. **Primary committable submission is CHR 2027** (Manchester, January 2027; deadline **14 August 2026** — comfortable 3-month timeline). SCSC 2026 was researched but dismissed (not relevant to the project's strategic focus).
+3. ☐ **For CHR 2027** (deadline 14 August 2026): expand Variant 1 toward Variant 3 (5–10 pp. proceedings paper). Comfortable timeline allows incorporation of v0.1.1 or v0.1.2 dataset state by submission time.
+4. ☐ **Decide co-authorship** for variant 4 (substantive Reformation-history finding) — discuss with Sekelská at next TEPALIT working meeting. Not time-critical now that SCSC is off the table; venue for variant 4 is monitored rather than committed.
+5. ☐ **Monitor BRRP / IAH cycles** for the next opportunity to submit Variant 4 (or Variant 4-short) to a Reformation-history venue.
+6. ☐ **Prepare a Slovak-language version** of variant 1 once a Slovak venue is identified.
+7. ☐ **Draft a 3-minute lightning-talk version** of variant 1 in case any conference offers that slot.
 
 ---
 
