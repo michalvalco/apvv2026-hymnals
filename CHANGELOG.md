@@ -30,8 +30,12 @@ Lutheranisation thesis.
     as research-target placeholder.
   - `PAIR_003_BA_CS_TARGET` — DEFERRED. Manifest for 34 remaining hymns of
     Vajda 1944's BA→CS list.
-  - `PAIR_004_OTCE_NEBESKY` — FACTUAL/DOCUMENTED. Liturgical continuity from
-    Bystrická agenda 1585 to CS 1636 per Grešová-Sekelská 2023, pp. XV–XVI.
+  - `PAIR_004_OTCE_NEBESKY` — FACTUAL/DOCUMENTED/**VERIFIED**. Liturgical
+    continuity from Bystrická agenda 1585 to CS 1636 per Grešová-Sekelská
+    2023, pp. XV–XVI. **Second VERIFIED pair in the dataset** (after
+    PAIR_006) — the CS-side text is among the 8 hymns Grešová-Sekelská
+    2023 transcribes diplomatically (pp. 1–17), and the BA side is
+    covered by Benka 2024. Verification trail: `Sources/Verification_PAIR_004.md`.
   - `PAIR_005_NEYSWETEGSIJ` — FACTUAL/DOCUMENTED. Introit continuity per
     Grešová-Sekelská 2023, pp. XV–XVI; Grešová-Sekelská 2021, p. 6;
     Vajda 1944, pp. 16–21 (BA→CS list).

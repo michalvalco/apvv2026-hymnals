@@ -78,12 +78,12 @@ PAIR_006 is the **first VERIFIED pair**. Each remaining pair should be assessed 
 |---|---|---|
 | PAIR_001_AY_PANNA | FACTUAL / DOCUMENTED / `SECONDARY_ONLY` | Acquire Baťová 2011 (KLP); collate. See `Verification_PAIR_001.md`. |
 | PAIR_002_PANE_NAS | INTERPRETIVE / CONJECTURED / `UNVERIFIED` | Working hypothesis — needs HTB lookup of Ivančický 1564 + CS 1636. May or may not be confirmable. |
-| PAIR_003_BA_CS_TARGET | DEFERRED / CONJECTURED / `UNVERIFIED` | This is a target manifest, not a single pair; will be split into individual PAIR_xxx records as Vajda 1944's 36-hymn list is verified one by one against Benka 2024. |
-| PAIR_004_OTCE_NEBESKY | FACTUAL / DOCUMENTED / `PRIMARY_PENDING` | Same path as PAIR_006: the verification rests on Benka 2024 (BA side) + a CS 1636 facsimile (REAL-R / Kramerius). Could be upgraded once `Verification_PAIR_004.md` is drafted. |
-| PAIR_005_NEYSWETEGSIJ | FACTUAL / DOCUMENTED / `PRIMARY_PENDING` | Same path as PAIR_004. |
+| PAIR_003_BA_CS_TARGET | DEFERRED / CONJECTURED / `UNVERIFIED` | Target manifest, not a single pair; split into individual PAIR_xxx records as Vajda 1944's 36 hymns are verified. |
+| PAIR_004_OTCE_NEBESKY | FACTUAL / DOCUMENTED / **`VERIFIED`** | **`Verification_PAIR_004.md`** (added 2026-05-08). Both witnesses covered by verified critical editions: Benka 2024 (BA side) + Grešová-Sekelská 2023 critical edition (CS side, "Otče Nebeský Bože" is one of her 8 transcribed hymns). |
+| PAIR_005_NEYSWETEGSIJ | FACTUAL / DOCUMENTED / `PRIMARY_PENDING` | Upgrade attempted 2026-05-08 alongside PAIR_004 but blocked: Neyswětegsij is **not** among the 8 hymns in Grešová-Sekelská 2023's critical edition — only mentioned in her introductory study at pp. XV–XVI. Path forward: CS-side facsimile lookup via Zlatý fond SME / Kramerius MZK / REAL-R (interactive browser). See `Verification_PAIR_004.md` §5. |
 | PAIR_006_AC_BA_EUCHARIST | FACTUAL / DOCUMENTED / **`VERIFIED`** | **This dossier.** |
 
-**Next-priority upgrades:** PAIR_004 and PAIR_005. Both have the BA side covered by Benka 2024 (already verified through the same source-notes mechanism). They need only a CS 1636 facsimile lookup — which Michal can perform via Zlatý fond SME or Kramerius MZK in a browser. Estimated effort: ~30 minutes per pair.
+**Next-priority upgrade after PAIR_004**: **PAIR_005**, blocked only by the CS-side facsimile lookup. Estimated effort once a browser session is available: ~30 minutes. After that: PAIR_001 (waits on Baťová 2011 acquisition).
 
 ---
 
