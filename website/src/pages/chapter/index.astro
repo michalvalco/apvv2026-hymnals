@@ -1,0 +1,132 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const base = import.meta.env.BASE_URL;
+const baseN = base.replace(/\/$/, "");
+---
+
+<BaseLayout
+  title="Kapitola — pripravujeme"
+  description="The chapter — Phase 4 deliverable, drafting in 2028. Until then, see the hymn-pair dossier and source register for evidence and methodology."
+  lang="sk"
+>
+  <section class="bg-ink-800 px-6 py-16 text-parchment">
+    <div class="mx-auto max-w-content text-center">
+      <p class="font-sans text-xs font-medium uppercase tracking-[0.2em] text-gold">
+        Phase 4 / 2028 · Drafting deliverable
+      </p>
+      <h1 class="mt-3 text-section-title font-display font-bold text-parchment-100">
+        Kapitola
+      </h1>
+      <p class="mx-auto mt-2 max-w-prose font-sans text-sm uppercase tracking-wider text-parchment-500" lang="en">
+        Hypertext Monograph Chapter
+      </p>
+      <p class="mx-auto mt-6 max-w-prose text-parchment-400">
+        Monografická kapitola sa pripravuje v rámci grantu APVV-24-0484
+        (TEPALIT) a je naplánovaná ako výstup Fázy 4 v roku 2028.
+      </p>
+      <p class="mx-auto mt-3 max-w-prose font-sans text-sm italic text-parchment-500" lang="en">
+        The monograph chapter is in preparation under the APVV-24-0484
+        (TEPALIT) grant and is scheduled as a Phase 4 deliverable in 2028.
+      </p>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-content px-6 py-12">
+    <h2 class="text-section-title text-ink">Čo už je dostupné</h2>
+    <p class="mt-1 font-sans text-sm italic text-ink-300" lang="en">
+      What is already available
+    </p>
+    <p class="mt-4 text-sm leading-relaxed text-ink-400">
+      Kým kapitola nie je hotová, jej infraštruktúra a empirické jadro sú
+      verejne prístupné a citovateľné cez tieto sekcie:
+    </p>
+    <p class="mt-2 font-sans text-xs italic leading-relaxed text-ink-300" lang="en">
+      Until the chapter is complete, its infrastructure and empirical core
+      are publicly accessible and citable through these sections:
+    </p>
+
+    <ul class="mt-6 grid gap-4 sm:grid-cols-2">
+      <li class="card">
+        <h3 class="font-display text-base font-semibold text-ink">
+          <a href={`${baseN}/hymn-pairs/`} class="hover:text-burgundy">
+            Hymno-páry
+          </a>
+        </h3>
+        <p class="mt-1 font-sans text-xs italic text-ink-300" lang="en">
+          Hymn-Pair Dossier
+        </p>
+        <p class="mt-2 text-sm text-ink-400">
+          Empirické jadro kapitoly — päť aktívnych dossierov + jeden
+          výskumný cieľ; dva sú VERIFIED.
+        </p>
+      </li>
+      <li class="card">
+        <h3 class="font-display text-base font-semibold text-ink">
+          <a href={`${baseN}/synoptikon/`} class="hover:text-burgundy">
+            Synoptikon
+          </a>
+        </h3>
+        <p class="mt-1 font-sans text-xs italic text-ink-300" lang="en">
+          Parallel Text Viewer
+        </p>
+        <p class="mt-2 text-sm text-ink-400">
+          Paralelné porovnania konfesijných textov a hymnov.
+        </p>
+      </li>
+      <li class="card">
+        <h3 class="font-display text-base font-semibold text-ink">
+          <a href={`${baseN}/taxonomy/`} class="hover:text-burgundy">
+            Teologická taxonómia
+          </a>
+        </h3>
+        <p class="mt-1 font-sans text-xs italic text-ink-300" lang="en">
+          Theological Taxonomy
+        </p>
+        <p class="mt-2 text-sm text-ink-400">
+          Štyri teologické loci × šesť sub-loci = 24 kategórií, na ktoré
+          sa kapitola opiera.
+        </p>
+      </li>
+      <li class="card">
+        <h3 class="font-display text-base font-semibold text-ink">
+          <a href={`${baseN}/sources/`} class="hover:text-burgundy">
+            Pramene
+          </a>
+        </h3>
+        <p class="mt-1 font-sans text-xs italic text-ink-300" lang="en">
+          Source Register
+        </p>
+        <p class="mt-2 text-sm text-ink-400">
+          Register kotviacich identifikátorov pre každý prameň, na ktorý
+          sa kapitola odvoláva.
+        </p>
+      </li>
+    </ul>
+  </section>
+
+  <div class="ornament-rule"></div>
+
+  <section class="mx-auto max-w-content px-6 py-12 pb-20">
+    <h2 class="text-section-title text-ink">Citovať dataset</h2>
+    <p class="mt-1 font-sans text-sm italic text-ink-300" lang="en">
+      Cite the dataset
+    </p>
+    <p class="mt-4 text-sm text-ink-400">
+      Kým kapitola nevyšla, cituje sa aktuálna verzia datasetu cez Zenodo
+      DOI:
+    </p>
+    <p class="mt-3 font-mono text-sm">
+      <a
+        href="https://doi.org/10.5281/zenodo.20081435"
+        class="text-burgundy hover:underline"
+        rel="noopener"
+      >
+        https://doi.org/10.5281/zenodo.20081435
+      </a>
+    </p>
+    <p class="mt-4 font-sans text-xs italic text-ink-300" lang="en">
+      Each individual hymn-pair dossier on <a href={`${baseN}/hymn-pairs/`} class="text-burgundy">/hymn-pairs/</a> carries its own permalink and "How to cite this pair" snippet (APA + BibTeX).
+    </p>
+  </section>
+</BaseLayout>

@@ -15,6 +15,9 @@ const parentLoci = getParentLoci().sort(
 );
 
 const base = import.meta.env.BASE_URL;
+// Normalised base (no trailing slash) for safe path concatenation.
+// Same idiom used in /hymn-pairs/ and /sources/.
+const baseN = base.replace(/\/$/, "");
 
 const locusAccents: Record<string, string> = {
   L1: "border-gold",
@@ -53,8 +56,8 @@ const hymnicFunctions = getHymnicFunctions()
         Každý sub-locus dokumentuje konfesionálne pozície troch tradícií,
         terminologický aparát v štyroch jazykoch a hymnicko-liturgické dôkazy.
       </p>
-      <p class="mx-auto mt-2 max-w-prose font-sans text-sm text-parchment-500">
-        4 theological loci &times; 5 sub-loci = 20 categories of comparative analysis
+      <p class="mx-auto mt-2 max-w-prose font-sans text-sm text-parchment-500" lang="en">
+        4 theological loci &times; 5–6 sub-loci = 21 categories of comparative analysis
       </p>
     </div>
   </section>
@@ -104,7 +107,7 @@ const hymnicFunctions = getHymnicFunctions()
                     <tr class="border-b border-parchment-300/50 transition-colors hover:bg-parchment-100">
                       <td class="py-3 pr-4">
                         <a
-                          href={`${base}/taxonomy/${sub.locus_code.toLowerCase().replace(".", "-")}/`}
+                          href={`${baseN}/taxonomy/${sub.locus_code.toLowerCase().replace(".", "-")}/`}
                           class="font-mono text-sm font-medium text-burgundy"
                         >
                           {sub.locus_code}
@@ -112,7 +115,7 @@ const hymnicFunctions = getHymnicFunctions()
                       </td>
                       <td class="py-3 pr-4">
                         <a
-                          href={`${base}/taxonomy/${sub.locus_code.toLowerCase().replace(".", "-")}/`}
+                          href={`${baseN}/taxonomy/${sub.locus_code.toLowerCase().replace(".", "-")}/`}
                           class="font-medium text-ink no-underline hover:text-burgundy"
                         >
                           {sub.locus_name_sk}
