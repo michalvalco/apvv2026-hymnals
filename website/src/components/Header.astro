@@ -1,5 +1,5 @@
 ---
-const navItems = [
+const primaryNav = [
   { href: "/", label: "Domov", labelEn: "Home" },
   { href: "/timeline/", label: "Chronológia", labelEn: "Timeline" },
   { href: "/taxonomy/", label: "Taxonómia", labelEn: "Taxonomy" },
@@ -8,16 +8,19 @@ const navItems = [
   { href: "/network/", label: "Sieť", labelEn: "Network" },
   { href: "/sources/", label: "Pramene", labelEn: "Sources" },
   { href: "/chapter/", label: "Kapitola", labelEn: "Chapter" },
+] as const;
+const moreNav = [
   { href: "/news/", label: "Novinky", labelEn: "News" },
   { href: "/cite/", label: "Citovať", labelEn: "Cite" },
 ] as const;
 const base = import.meta.env.BASE_URL;
+const baseN = base.replace(/\/$/, "");
 ---
 
 <header class="sticky top-0 z-40 border-b border-parchment-400/50 bg-parchment-50/95 backdrop-blur-sm">
   <div class="mx-auto flex max-w-wide items-center justify-between px-6 py-3">
     <!-- Logo / title -->
-    <a href={base + "/"} class="group flex items-center gap-3 no-underline">
+    <a href={baseN + "/"} class="group flex items-center gap-3 no-underline">
       <span class="text-2xl text-gold" aria-hidden="true">&#x2720;</span>
       <span class="font-display text-lg font-semibold tracking-tight text-ink transition-colors group-hover:text-burgundy">
         TEPALIT
@@ -26,9 +29,9 @@ const base = import.meta.env.BASE_URL;
 
     <!-- Desktop nav -->
     <nav class="hidden items-center gap-1 md:flex" aria-label="Main navigation">
-      {navItems.map((item) => (
+      {primaryNav.map((item) => (
         <a
-          href={base + item.href}
+          href={baseN + item.href}
           title={item.labelEn}
           class="rounded-md px-3 py-1.5 font-sans text-sm font-medium text-ink-400
                  no-underline transition-colors hover:bg-parchment-300/50 hover:text-ink"
@@ -36,6 +39,35 @@ const base = import.meta.env.BASE_URL;
           {item.label}
         </a>
       ))}
+      <!-- "More" dropdown for secondary nav (uses native <details>; no JS) -->
+      <details class="group relative">
+        <summary
+          class="cursor-pointer list-none rounded-md px-3 py-1.5 font-sans text-sm font-medium text-ink-400
+                 transition-colors hover:bg-parchment-300/50 hover:text-ink
+                 group-open:bg-parchment-300/50"
+          aria-label="More navigation items"
+        >
+          Viac<span class="sr-only" lang="en"> / More</span>
+          <span class="ml-0.5 text-[10px] text-ink-300" aria-hidden="true">&#x25BE;</span>
+        </summary>
+        <ul
+          class="absolute right-0 top-full mt-1 min-w-[10rem] rounded-md border
+                 border-parchment-400/50 bg-parchment-50 p-1 shadow-lg"
+        >
+          {moreNav.map((item) => (
+            <li>
+              <a
+                href={baseN + item.href}
+                title={item.labelEn}
+                class="block rounded px-3 py-1.5 font-sans text-sm font-medium text-ink-400
+                       no-underline transition-colors hover:bg-parchment-300/50 hover:text-ink"
+              >
+                {item.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </details>
     </nav>
 
     <!-- Mobile menu button -->
@@ -52,15 +84,15 @@ const base = import.meta.env.BASE_URL;
     </button>
   </div>
 
-  <!-- Mobile nav (hidden by default) -->
+  <!-- Mobile nav (hidden by default; flat list — all items inline, no dropdown) -->
   <nav
     id="mobile-menu"
     class="hidden border-t border-parchment-400/30 bg-parchment-50 px-6 py-4 md:hidden"
     aria-label="Mobile navigation"
   >
-    {navItems.map((item) => (
+    {[...primaryNav, ...moreNav].map((item) => (
       <a
-        href={base + item.href}
+        href={baseN + item.href}
         title={item.labelEn}
         class="block rounded-md px-3 py-2 font-sans text-sm font-medium text-ink-400
                no-underline transition-colors hover:bg-parchment-300/50 hover:text-ink"
@@ -71,7 +103,7 @@ const base = import.meta.env.BASE_URL;
   </nav>
 </header>
 
-<script>
+<script is:inline>
   const btn = document.getElementById("mobile-menu-btn");
   const menu = document.getElementById("mobile-menu");
   if (btn && menu) {
@@ -82,4 +114,11 @@ const base = import.meta.env.BASE_URL;
       menu.classList.toggle("hidden");
     });
   }
+
+  // Close the desktop "More" <details> dropdown on click-outside
+  document.addEventListener("click", (e) => {
+    document.querySelectorAll("header details[open]").forEach((d) => {
+      if (!d.contains(e.target)) d.removeAttribute("open");
+    });
+  });
 </script>

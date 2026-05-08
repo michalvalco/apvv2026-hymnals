@@ -1,8 +1,16 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getHymnPairs } from "../../data/taxonomy";
 
 const base = import.meta.env.BASE_URL;
 const baseN = base.replace(/\/$/, "");
+
+// Compute pair-state summary at build time so counts stay current with each
+// dataset version automatically.
+const pairs = getHymnPairs();
+const verifiedCount = pairs.filter((p) => p.verification_status === "VERIFIED").length;
+const targetManifestCount = pairs.filter((p) => p.epistemic_status === "DEFERRED").length;
+const activeDossierCount = pairs.length - targetManifestCount;
 ---
 
 <BaseLayout
@@ -57,8 +65,8 @@ const baseN = base.replace(/\/$/, "");
           Hymn-Pair Dossier
         </p>
         <p class="mt-2 text-sm text-ink-400">
-          Empirické jadro kapitoly — päť aktívnych dossierov + jeden
-          výskumný cieľ; dva sú VERIFIED.
+          Empirické jadro kapitoly — {activeDossierCount} aktívnych dossierov
+          + {targetManifestCount} výskumný cieľ; {verifiedCount} {verifiedCount === 1 ? "je VERIFIED" : "sú VERIFIED"}.
         </p>
       </li>
       <li class="card">

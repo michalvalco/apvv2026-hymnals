@@ -771,13 +771,17 @@ const jsonLd = {
   </section>
 </BaseLayout>
 
-<style>
+<style is:global>
   /* ── Print stylesheet ──
      Scholarly users print pair dossiers for offline review. The print version
      should: hide site chrome (header / footer / filter bar); flatten interactive
      elements (expand all <details>); preserve trust badges and citation chains;
-     use serif body text for readability; add a per-page header carrying the
-     dataset DOI for citation-on-paper. */
+     use serif body text for readability.
+
+     `is:global` is required because we need to target elements rendered by
+     imported components (Header, Footer) which carry different Astro scope IDs.
+     The rules only activate on /hymn-pairs/ since this <style> tag is only
+     emitted for that route. */
   @media print {
     /* Page metadata: dataset DOI on every printed page */
     @page {
