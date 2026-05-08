@@ -30,18 +30,26 @@ Lutheranisation thesis.
     as research-target placeholder.
   - `PAIR_003_BA_CS_TARGET` — DEFERRED. Manifest for 34 remaining hymns of
     Vajda 1944's BA→CS list.
-  - `PAIR_004_OTCE_NEBESKY` — FACTUAL/DOCUMENTED. Liturgical continuity from
-    Bystrická agenda 1585 to CS 1636 per Grešová-Sekelská 2023, pp. XV–XVI.
+  - `PAIR_004_OTCE_NEBESKY` — FACTUAL/DOCUMENTED/**VERIFIED**. Liturgical
+    continuity from Bystrická agenda 1585 to CS 1636 per Grešová-Sekelská
+    2023, pp. XV–XVI. **Second VERIFIED pair in the dataset** (after
+    PAIR_006) — the CS-side text is among the 8 hymns Grešová-Sekelská
+    2023 transcribes diplomatically (pp. 1–17), and the BA side is
+    covered by Benka 2024. Verification trail: `Sources/Verification_PAIR_004.md`.
   - `PAIR_005_NEYSWETEGSIJ` — FACTUAL/DOCUMENTED. Introit continuity per
     Grešová-Sekelská 2023, pp. XV–XVI; Grešová-Sekelská 2021, p. 6;
     Vajda 1944, pp. 16–21 (BA→CS list).
-  - `PAIR_006_AC_BA_EUCHARIST` — FACTUAL/DOCUMENTED/PRIMARY_PENDING. Intra-
+  - `PAIR_006_AC_BA_EUCHARIST` — FACTUAL/DOCUMENTED/**VERIFIED**. Intra-
     codex Eucharistic stratification: Agenda Česká 1581 (printed, moderate
     register: 'body and blood' without 'true'/'substantial' qualifiers) →
     Bystrická agenda 1585 (manuscript supplement, hard Lutheran *manducatio
     impiorum*: unworthy reception 'unto eternal damnation'). Both bound in
     the same Bratislava Lyceal Library exemplar. Documented with verbatim
     citations in Benka 2024 (pp. 78–79). Strongest §4.1 anchor to date.
+    **First VERIFIED pair in the dataset** — verification trail in
+    `Sources/Verification_PAIR_006.md`; underlying source notes
+    (`Sources/Benka_2024.md`) carry the completed verification checklist
+    against the original PDF.
 
 - **New transfer-direction enum**: `LUTHERAN_REGIONAL_CONTINUITY` for
   intra-tradition Hungarian-Lutheran → Slovak-Lutheran continuity (the BA→CS
