@@ -56,5 +56,5 @@
       "scheme": "url"
     }
   ],
-  "notes": "This work was supported by the Slovak Research and Development Agency under the Contract no. APVV-24-0484. The version-0.1.0 dataset comprises 5 hymn-pair dossiers (1 FACTUAL anchor on Tranovský's Marian de-Catholicising per Grešová-Sekelská 2021; 2 FACTUAL liturgical-continuity pairs per Grešová-Sekelská 2023; 1 INTERPRETIVE working-hypothesis pair; 1 DEFERRED 34-hymn target manifest)."
+  "notes": "This work was supported by the Slovak Research and Development Agency under the Contract no. APVV-24-0484. The version-0.1.0 dataset comprises 5 FACTUAL/INTERPRETIVE hymn-pair dossiers + 1 DEFERRED research-target manifest: PAIR_001 (Marian de-Catholicising per Grešová-Sekelská 2021); PAIR_002 (working-hypothesis placeholder, transparently flagged); PAIR_003 (BA→CS 34-hymn target); PAIR_004 + PAIR_005 (BA→CS liturgical-continuity pairs per Grešová-Sekelská 2023); PAIR_006 (intra-codex Eucharistic stratification of AC 1581 → BA 1585 per Benka 2024 critical edition)."
 }
