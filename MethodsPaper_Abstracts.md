@@ -154,13 +154,13 @@ Doing two complementary submissions (methods and substantive) with non-overlappi
 1. **Co-authorship.** Variant 3 is currently solo-framed. If Sekelská is willing to co-author the substantive variant 4, that strengthens its hymnological grounding. Klátik's co-authorship on either is optional.
 2. **Slovak version.** A Slovak-language abstract (translation of variant 1 or 2) opens *Filozofia*, *Slavica Slovaca*, ETF UK Bratislava events, Slovak national DH conferences. Worth preparing once a primary venue is fixed.
 3. **Conference vs. workshop balance.** A workshop paper (e.g., a religion-DH workshop at DH2027) has higher acceptance odds and faster timeline than a long paper; the trade-off is reach.
-4. **Dataset DOI dependency.** All four abstracts cite the open dataset. The Zenodo DOI for v0.1.0 should be minted *before* any abstract is submitted, so the citation in the abstract is dereferenceable on day one.
+4. **Dataset DOI dependency.** ~~All four abstracts cite the open dataset. The Zenodo DOI for v0.1.0 should be minted *before* any abstract is submitted, so the citation in the abstract is dereferenceable on day one.~~ **Resolved 2026-05-08**: Zenodo concept DOI is `10.5281/zenodo.20081435` (always resolves to latest version). Cite the dataset in any abstract / paper / footnote as: *TEPALIT Digital Companion* (v0.1.0) [Dataset]. Zenodo. https://doi.org/10.5281/zenodo.20081435
 
 ---
 
 ## 7. Next concrete steps
 
-1. ☐ **Mint the v0.1.0 Zenodo DOI** (precondition for all four abstracts).
+1. ☑ ~~**Mint the v0.1.0 Zenodo DOI** (precondition for all four abstracts).~~ **Done 2026-05-08**: `10.5281/zenodo.20081435`.
 2. ☐ **Identify the next concrete CFP** with a deadline within the next 6 months. Check: DH2027 CFP timeline; CHR 2026/2027 deadlines; 16th Century Studies fall-2026 deadlines.
 3. ☐ **Decide co-authorship** for variant 4 (alternate framing) — discuss with Sekelská at next TEPALIT working meeting.
 4. ☐ **Prepare a Slovak-language version** of variant 1 once a Slovak venue is identified.
