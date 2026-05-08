@@ -1,0 +1,8 @@
+# TEPALIT Digital Companion
+# https://michalvalco.github.io/apvv2026-hymnals/
+# Open scholarly dataset (CC BY 4.0); crawling welcomed.
+
+User-agent: *
+Allow: /
+
+Sitemap: https://michalvalco.github.io/apvv2026-hymnals/sitemap-index.xml

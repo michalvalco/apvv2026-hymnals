@@ -135,7 +135,7 @@ Generic short-form trim of the variant 4 substantive abstract, fitting any CFP w
 
 | Priority | Venue | Format / word budget | Deadline / status | Notes |
 |---|---|---|---|---|
-| 1 | **CHR 2027** (Computational Humanities Research) | Full paper / short paper; ~5–10 pp. peer-reviewed proceedings; conference Manchester, 5–8 January 2027 | **Submission deadline: 14 August 2026, 23:59:59 AoE** ([2027.computational-humanities-research.org/cfp/](https://2027.computational-humanities-research.org/cfp/)) | **Strongest landing for the framework.** ~3 months from today; comfortable timeline. Use Variant 1 or expand toward Variant 3 for the proceedings paper. Peer-reviewed proceedings publication is a meaningful citation surface. |
+| 1 | **CHR 2027** (Computational Humanities Research) | Full paper / short paper; ~5–10 pp. peer-reviewed proceedings; conference Manchester, 5–8 January 2027 | **Submission deadline: 14 August 2026, 23:59:59 AoE** ([2027.computational-humanities-research.org/cfp/](https://2027.computational-humanities-research.org/cfp/)) | **Strongest landing for the framework.** ~14 weeks from the 2026-05-08 research date; comfortable timeline. Use Variant 1 or expand toward Variant 3 for the proceedings paper. Peer-reviewed proceedings publication is a meaningful citation surface. |
 | 2 | **DH2026 (ADHO)** | Long / short paper / poster; Daejeon, 27–31 July 2026 | **MISSED** — deadline was 15 December 2025 | DH2027 host being selected; CFP expected late 2026 for ~December 2026 deadline. |
 | 3 | **DH2027 (ADHO)** | Long / short paper / poster | CFP not yet open (Call for Hosts only as of 2026-05) | Watch for announcement late 2026. |
 | 4 | **DH Benelux 2026** | Long / short paper / poster; ~250–500 word abstracts | Per cycle (check current call) | Smaller regional venue; faster turnaround; ITSERR community presence. |
@@ -160,7 +160,7 @@ Note: SCSC 2026 (Chicago, 29–31 October 2026) was researched but is **not purs
 
 ### Primary committable submission
 
-**CHR 2027 (Manchester, 5–8 January 2027)** with **Variant 1** (or expanded toward **Variant 3** for the long-paper / proceedings format). Deadline **14 August 2026, 23:59:59 AoE** ([2027.computational-humanities-research.org/cfp/](https://2027.computational-humanities-research.org/cfp/)) — about 3 months from today, comfortable timeline. Peer-reviewed proceedings publication. **Strongest landing for the methods paper.**
+**CHR 2027 (Manchester, 5–8 January 2027)** with **Variant 1** (or expanded toward **Variant 3** for the long-paper / proceedings format). Deadline **14 August 2026, 23:59:59 AoE** ([2027.computational-humanities-research.org/cfp/](https://2027.computational-humanities-research.org/cfp/)) — ~14 weeks from the 2026-05-08 research date; comfortable timeline. Peer-reviewed proceedings publication. **Strongest landing for the methods paper.**
 
 ### Substantive-finding submission (deferred)
 

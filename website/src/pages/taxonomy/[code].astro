@@ -41,6 +41,8 @@ const positions = getPositionsForLocus(locusCode);
 const terms = getTermsForLocus(locusCode);
 const evidence = getEvidenceForLocus(locusCode);
 const base = import.meta.env.BASE_URL;
+// Normalised base (no trailing slash) for safe path concatenation.
+const baseN = base.replace(/\/$/, "");
 
 // Group positions by tradition
 const traditions = ["LUTHERAN", "UTRAQUIST", "UNITY"] as const;
@@ -90,7 +92,7 @@ const defaultEpistemic = epistemicStyles.DEFERRED;
     <div class="mx-auto max-w-content">
       <!-- Breadcrumb -->
       <nav class="mb-4 font-sans text-xs text-parchment-500" aria-label="Breadcrumb">
-        <a href={`${base}/taxonomy/`} class="text-parchment-400 hover:text-parchment-200">Taxonómia</a>
+        <a href={`${baseN}/taxonomy/`} class="text-parchment-400 hover:text-parchment-200">Taxonómia</a>
         <span class="mx-1.5">/</span>
         <span class="text-parchment-500">{parent?.locus_name_sk}</span>
         <span class="mx-1.5">/</span>
@@ -111,7 +113,7 @@ const defaultEpistemic = epistemicStyles.DEFERRED;
       <nav class="mt-6 flex flex-wrap gap-2" aria-label="Sibling loci">
         {siblings.map((s) => (
           <a
-            href={`${base}/taxonomy/${s.locus_code.toLowerCase().replace(".", "-")}/`}
+            href={`${baseN}/taxonomy/${s.locus_code.toLowerCase().replace(".", "-")}/`}
             class:list={[
               "rounded-md px-3 py-1 font-sans text-xs no-underline transition-colors",
               s.locus_code === locusCode
@@ -350,7 +352,7 @@ const defaultEpistemic = epistemicStyles.DEFERRED;
           </p>
           {evidence.length > 0 && (
             <p class="mt-3 font-sans text-xs text-ink-200">
-              ({evidence.length} example {evidence.length === 1 ? "entry" : "entries"} present as templates)
+              ({evidence.length} {evidence.length === 1 ? "evidence entry" : "evidence entries"} indexed for this sub-locus)
             </p>
           )}
         </div>
@@ -360,7 +362,7 @@ const defaultEpistemic = epistemicStyles.DEFERRED;
     <!-- Back link -->
     <div class="mt-12 text-center">
       <a
-        href={`${base}/taxonomy/`}
+        href={`${baseN}/taxonomy/`}
         class="inline-flex items-center gap-2 font-sans text-sm text-ink-300 hover:text-burgundy"
       >
         &larr; Späť na taxonómiu

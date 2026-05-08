@@ -1,0 +1,88 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const base = import.meta.env.BASE_URL;
+const baseN = base.replace(/\/$/, "");
+---
+
+<BaseLayout
+  title="404 — Stránka nenájdená"
+  description="The page you requested does not exist on this site. Navigate to the hymn-pair dossier, the source register, or the home page."
+  lang="sk"
+>
+  <section class="bg-ink-800 px-6 py-20 text-parchment">
+    <div class="mx-auto max-w-content text-center">
+      <p class="font-mono text-xs font-medium uppercase tracking-[0.2em] text-gold">
+        404
+      </p>
+      <h1 class="mt-3 text-section-title font-display font-bold text-parchment-100">
+        Stránka nenájdená
+      </h1>
+      <p class="mx-auto mt-2 max-w-prose font-sans text-sm uppercase tracking-wider text-parchment-500" lang="en">
+        Page not found
+      </p>
+      <p class="mx-auto mt-6 max-w-prose text-parchment-400">
+        Stránka, ktorú ste hľadali, na tomto webe neexistuje. Mohla byť
+        presunutá, alebo URL obsahuje preklep.
+      </p>
+      <p class="mx-auto mt-3 max-w-prose font-sans text-sm italic text-parchment-500" lang="en">
+        The page you requested does not exist on this site. It may have been
+        moved, or the URL may contain a typo.
+      </p>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-content px-6 py-12 pb-20">
+    <h2 class="text-section-title text-ink">Kam ďalej?</h2>
+    <p class="mt-1 font-sans text-sm italic text-ink-300" lang="en">
+      Where to next?
+    </p>
+
+    <ul class="mt-6 grid gap-4 sm:grid-cols-2">
+      <li class="card">
+        <h3 class="font-display text-base font-semibold text-ink">
+          <a href={`${baseN}/`} class="hover:text-burgundy">
+            Domov
+          </a>
+          <span class="font-sans text-xs italic text-ink-300" lang="en"> · Home</span>
+        </h3>
+        <p class="mt-2 text-sm text-ink-400">
+          TEPALIT digitálny sprievodca — úvodná stránka.
+        </p>
+      </li>
+      <li class="card">
+        <h3 class="font-display text-base font-semibold text-ink">
+          <a href={`${baseN}/hymn-pairs/`} class="hover:text-burgundy">
+            Hymno-páry
+          </a>
+          <span class="font-sans text-xs italic text-ink-300" lang="en"> · Hymn-Pair Dossier</span>
+        </h3>
+        <p class="mt-2 text-sm text-ink-400">
+          Empirické jadro tézy o luteranizácii — dossiery porovnávacích párov.
+        </p>
+      </li>
+      <li class="card">
+        <h3 class="font-display text-base font-semibold text-ink">
+          <a href={`${baseN}/synoptikon/`} class="hover:text-burgundy">
+            Synoptikon
+          </a>
+          <span class="font-sans text-xs italic text-ink-300" lang="en"> · Parallel Text Viewer</span>
+        </h3>
+        <p class="mt-2 text-sm text-ink-400">
+          Paralelné porovnania konfesijných textov a hymnov.
+        </p>
+      </li>
+      <li class="card">
+        <h3 class="font-display text-base font-semibold text-ink">
+          <a href={`${baseN}/sources/`} class="hover:text-burgundy">
+            Pramene
+          </a>
+          <span class="font-sans text-xs italic text-ink-300" lang="en"> · Sources</span>
+        </h3>
+        <p class="mt-2 text-sm text-ink-400">
+          Register prameňov, na ktoré sa projekt odvoláva.
+        </p>
+      </li>
+    </ul>
+  </section>
+</BaseLayout>
