@@ -93,6 +93,24 @@ const traditionBg: Record<string, string> = {
           class:list={["card overflow-hidden", epistemicClasses[comp.epistemicStatus]]}
           id={`comparison-${comp.id}`}
         >
+          {/* Banner for non-FACTUAL comparisons — text may be illustrative
+              rather than verified. Mirrors the research-target banner pattern
+              on /hymn-pairs/ for CONJECTURED/UNVERIFIED pairs. */}
+          {comp.epistemicStatus !== "FACTUAL" && (
+            <div class="-mx-6 -mt-6 mb-4 rounded-t-lg bg-burgundy/10 px-6 py-2">
+              <p class="font-sans text-xs font-semibold uppercase tracking-wider text-burgundy">
+                {comp.epistemicStatus === "INTERPRETIVE"
+                  ? "⚠️ Ilustratívne — texty čakajú na verifikáciu / "
+                  : "⚠️ Otvorená otázka — vyžaduje expertné posúdenie / "}
+                <span class="italic" lang="en">
+                  {comp.epistemicStatus === "INTERPRETIVE"
+                    ? "Illustrative — texts pending verification"
+                    : "Open question — requires expert judgment"}
+                </span>
+              </p>
+            </div>
+          )}
+
           <!-- Comparison header (clickable to expand) -->
           <button
             class="synoptikon-toggle flex w-full items-start gap-4 text-left"

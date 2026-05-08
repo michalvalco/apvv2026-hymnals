@@ -6,24 +6,50 @@ import {
 } from "../../data/taxonomy";
 
 const base = import.meta.env.BASE_URL;
+const baseN = base.replace(/\/$/, "");
 const REPO_BLOB = "https://github.com/michalvalco/apvv2026-hymnals/blob/main";
 
 // ── Collect every source ID referenced by the data layer ──
+// Track per-source the list of pair IDs that cite it (via citation_chain
+// or via evidence-row source_collection_id paired with a pair).
 const referencedIds = new Set<string>();
+const pairsBySource: Record<string, Set<string>> = {};
 
-for (const pair of getHymnPairs()) {
+const addPairToSource = (sourceId: string, pairId: string) => {
+  if (!pairsBySource[sourceId]) pairsBySource[sourceId] = new Set<string>();
+  pairsBySource[sourceId].add(pairId);
+};
+
+const allPairs = getHymnPairs();
+const allEvidence = getHymnicEvidence();
+const evidenceById = new Map(allEvidence.map((e) => [e.text_id, e] as const));
+
+for (const pair of allPairs) {
+  // Sources cited directly in citation_chain
   if (pair.citation_chain) {
     pair.citation_chain
       .split(";")
       .map((s) => s.trim())
       .filter(Boolean)
-      .forEach((id) => referencedIds.add(id));
+      .forEach((id) => {
+        referencedIds.add(id);
+        addPairToSource(id, pair.pair_id);
+      });
+  }
+  // Sources reached via the pair's evidence rows (source_collection_id)
+  for (const textId of [pair.source_text_id, pair.receptor_text_id]) {
+    if (!textId) continue;
+    const ev = evidenceById.get(textId);
+    if (ev?.source_collection_id) addPairToSource(ev.source_collection_id, pair.pair_id);
   }
 }
 
-for (const ev of getHymnicEvidence()) {
+for (const ev of allEvidence) {
   if (ev.source_collection_id) referencedIds.add(ev.source_collection_id);
 }
+
+const pairsForSource = (id: string): string[] =>
+  pairsBySource[id] ? Array.from(pairsBySource[id]).sort() : [];
 
 // ── Curated bilingual entries for sources in active scholarly use ──
 // All other referenced IDs render with a basic stub linking to Source_Index.md.
@@ -226,14 +252,40 @@ const typeLabels: Record<CuratedSource["type"], { sk: string; en: string }> = {
               <p class="mt-2 font-sans text-xs italic text-ink-300" lang="en">
                 {c.description_en}
               </p>
-              <p class="mt-3 font-sans text-[10px] uppercase tracking-wider text-ink-300">
-                <a
-                  href={`${base.replace(/\/$/, "")}/hymn-pairs/`}
-                  class="hover:text-burgundy"
-                >
-                  Used in hymn-pair dossier &#x2192;
-                </a>
-              </p>
+              {(() => {
+                const usedIn = pairsForSource(id);
+                if (usedIn.length === 0) {
+                  return (
+                    <p class="mt-3 font-sans text-[10px] uppercase tracking-wider text-ink-300">
+                      <a
+                        href={`${baseN}/hymn-pairs/`}
+                        class="hover:text-burgundy"
+                      >
+                        See hymn-pair dossier &#x2192;
+                      </a>
+                    </p>
+                  );
+                }
+                return (
+                  <div class="mt-3 rounded-md bg-parchment-100/70 p-3">
+                    <p class="font-sans text-[10px] uppercase tracking-wider text-ink-300">
+                      Used in {usedIn.length} {usedIn.length === 1 ? "hymn pair" : "hymn pairs"}
+                    </p>
+                    <ul class="mt-1 flex flex-wrap gap-2 font-mono text-[11px]">
+                      {usedIn.map((pid) => (
+                        <li>
+                          <a
+                            href={`${baseN}/hymn-pairs/#${pid}`}
+                            class="text-burgundy hover:underline"
+                          >
+                            {pid}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                );
+              })()}
             </article>
           );
         })
