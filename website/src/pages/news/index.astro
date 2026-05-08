@@ -3,8 +3,9 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 
 const base = import.meta.env.BASE_URL;
 const baseN = base.replace(/\/$/, "");
+// v0.1.0 concept DOI (used as the `doi` field on the v0.1.0 release entry below).
+// Future release entries carry their own `doi` directly.
 const DOI = "10.5281/zenodo.20081435";
-const DOI_URL = `https://doi.org/${DOI}`;
 
 // Hand-curated release timeline. Mirrors CHANGELOG.md but trimmed for
 // public-facing presentation. Update each release.
@@ -103,6 +104,10 @@ const releases: Release[] = [
                     <img
                       src={`https://zenodo.org/badge/DOI/${rel.doi}.svg`}
                       alt={`DOI ${rel.doi}`}
+                      width="158"
+                      height="20"
+                      loading="lazy"
+                      decoding="async"
                       class="h-5"
                     />
                   </a>

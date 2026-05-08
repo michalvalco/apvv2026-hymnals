@@ -384,6 +384,7 @@ const jsonLd = {
           <span class="text-ink-400">Triediť / <span class="italic" lang="en">Sort</span></span>
           <select
             id="filter-sort"
+            lang="en"
             class="rounded border border-parchment-300 bg-parchment-50 px-2 py-1 font-sans text-xs"
           >
             <option value="default">Trust (FACTUAL → INTERPRETIVE → DEFERRED)</option>
@@ -398,6 +399,7 @@ const jsonLd = {
           <input
             id="filter-search"
             type="search"
+            lang="en"
             placeholder="incipit, source ID, pair ID …"
             class="rounded border border-parchment-300 bg-parchment-50 px-2 py-1 font-sans text-xs w-56"
           />
@@ -888,9 +890,9 @@ const jsonLd = {
     articleSearchText.set(a, ((a.id || "") + " " + (a.textContent || "")).toLowerCase());
   });
 
-  // Sort comparators. "default" = FACTUAL → INTERPRETIVE → DEFERRED (the
-  // server-side build order). Other modes re-order DOM children.
-  const epistemicOrder = { FACTUAL: 0, INTERPRETIVE: 1, DEFERRED: 2 };
+  // Sort comparators. "default" mode preserves the server-side build order
+  // (FACTUAL → INTERPRETIVE → DEFERRED) by re-using the original DOM order.
+  // Other modes re-order children in place.
   const evidentiaryOrder = { DOCUMENTED: 0, INFERRED: 1, CONJECTURED: 2 };
   const verificationOrder = { VERIFIED: 0, PRIMARY_PENDING: 1, SECONDARY_ONLY: 2, UNVERIFIED: 3 };
   const originalOrder = articles.slice();
