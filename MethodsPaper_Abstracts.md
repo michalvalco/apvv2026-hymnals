@@ -97,7 +97,7 @@ Suitable for: extended-abstract tracks (some ADHO calls), DH2027 long-paper, rel
 
 Suitable for: 16th Century Studies Conference, BRRP (Bohemian Reformation and Religious Practice), Bohemia Society, Society for Reformation Research, IAH. Pivots from methods (DH audience) to substantive findings (history audience).
 
-> **The Cithara Sanctorum (1636) Bound In: Intra-Codex Confessional Stratification in the Banská Bystrica Lyceal Library Exemplar of *Agenda Česká* 1581 + *Bystrická agenda* 1585**
+> **The Cithara Sanctorum (1636) Bound In: Intra-Codex Confessional Stratification in the Bratislava Lyceal Library Exemplar of *Agenda Česká* 1581 + *Bystrická agenda* 1585**
 >
 > The standard scholarly account of the Slovak Lutheran *Cithara Sanctorum* (1636) treats it as the receptor of a confessional sharpening that *Tranovský* performed on Czech-Reformation hymnody. Recent work (Grešová-Sekelská 2021; Benka 2024) has refined this account by quantifying the source mix — 49 % of the older Czech repertoire absorbed into CS is Utraquist in origin — and by mapping Tranovský's differential editorial strategy (hands-off in confessionally neutral rubrics; heavy intervention in Eucharistic, Marian, and ecclesiological sections).
 >
