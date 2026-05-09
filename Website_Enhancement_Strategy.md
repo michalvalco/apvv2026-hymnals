@@ -20,7 +20,7 @@ Between the original WEBSITE_BRIEFING (24 March 2026) and today (9 May 2026) the
 
 This strategy document proposes **fourteen enhancements organised in three tiers** — five Tier A (anchor), six Tier B (substantive expansion), three Tier C (architectural). Tier A items are high-leverage and ready-to-implement against existing data. Tier B items require additional content authoring (mostly aggregation from existing markdown into the website data layer). Tier C items are longer-horizon architectural improvements (build pipeline, search, IIIF integration).
 
-**Headline recommendation:** prioritise five Tier-A items in the first implementation sprint — (A1) Companion-papers section, (A2) CB 1575 historiographical archive, (A3) Two-modes Lutheranisation framing in `/hymn-pairs/`, (A4) Chapter scaffold replacing the coming-soon placeholder, (A5) Sources expansion with lit-gap report results — because each of these directly surfaces work already completed, and together they shift the site from "MVP companion" to "publication-grade research apparatus."
+**Headline recommendation:** prioritise the five Tier-A items as the first implementation wave, split across two sprints per §7 (Sprint 1: A3 Two-modes framing, A1 Companion-papers section, A4 Chapter scaffold; Sprint 2: A5 Sources expansion, A2 CB 1575 archive). Each of these directly surfaces work already completed, and together they shift the site from "MVP companion" to "publication-grade research apparatus."
 
 ---
 
@@ -43,7 +43,7 @@ This strategy document proposes **fourteen enhancements organised in three tiers
 - **Decision logged 2026-05-09 (v0.2):** "No citation surfaced by AI-generated reconnaissance enters `Sources/*.md` without an independent verification step." This is now a first-class methodological commitment with a documented audit precedent (the 20% bibliographic-error rate in the original AI-generated reconnaissance report).
 - **Decision logged v0.1:** "The Confessio Bohemica 1575 refutation (against the Calvinist-Eucharistic mis-reading) becomes one of the chapter's substantive contributions, primarily located in §4.1." The refutation is now strongly supported because the audit confirmed *no peer-reviewed post-2010 venue* defends the older characterisation.
 - **Decision logged v0.1:** "PAIR_006 enters the chapter as a sub-component of §5, not as a stand-alone section." The Theologos paper handles the focused PAIR_006 argument; the chapter's §5 nests it within the broader *Cithara Sanctorum* reception narrative.
-- **Tier-1 / Tier-2 / Tier-3 source priority list refreshed** with eight new high-priority items: Crews 2018, Ruščin 2019, Csepregi 2003, Csepregi 2004, Hroboň 2011, Puff 2018, Hrejsa 1912, David 1999 (Tier 1, accessible without acquisition); Just/Rothkegel 2012, Haberkern 2016, Haberkern 2023, Augustínová 2011, Leaver 2024, Csepregi 2009, Grešová-Sekelská 2016 (Tier 2, requires ILL or collegial coordination).
+- **Tier-1 / Tier-2 / Tier-3 source priority list refreshed** with fifteen new high-priority items, split between Tier 1 (eight, accessible without acquisition: Crews 2018, Ruščin 2019, Csepregi 2003, Csepregi 2004, Hroboň 2011, Puff 2018, Hrejsa 1912, David 1999) and Tier 2 (seven, requiring ILL or collegial coordination: Just/Rothkegel 2012, Haberkern 2016, Haberkern 2023, Augustínová 2011, Leaver 2024, Csepregi 2009, Grešová-Sekelská 2016).
 
 ### 1.3 Theologos paper — new conceptual contribution
 
@@ -133,7 +133,7 @@ These five items leverage work already completed in `Drafts/`, `Chapter/`, and `
 
 **Why.** The Theologos paper is the project's most polished scholarly artefact. It is currently invisible on the website — a reader who arrives at `/hymn-pairs/PAIR_006` sees the dossier but no link to the paper that develops it. Adding `/papers/theologos/` closes this gap with no new research, only structural work.
 
-**Data sources.** `Drafts/Theologos_*.md` (5 files), `MethodsPaper_*.md` (2 files). All source content already audited and bibliography-clean.
+**Data sources.** `Drafts/Theologos_*.md` (7 files: draft, paper outline, bibliography, three audits, style guide), `MethodsPaper_*.md` (2 files: outline + abstracts). All source content already audited and bibliography-clean.
 
 **Effort.** Medium. Two static pages (Theologos + Methods) + one index. Mostly content transposition. Estimated 4–6 hours of focused work for the markdown-to-Astro lift, plus another 2–3 hours for the Slovak abstract translation (Michal's call whether to use existing v02 master annotation Slovak abstract or commission fresh).
 
@@ -183,7 +183,7 @@ These five items leverage work already completed in `Drafts/`, `Chapter/`, and `
 
 **Data sources.** `taxonomy/hymn_pairs.csv` (already present); `Drafts/Theologos_Draft_v0.1_Full.md` §§5–6 for the conceptual prelude; `taxonomy/SCHEMA.md` `transfer_direction` definitions for the mode labels.
 
-**Effort.** Low-medium. The filter logic already exists for tradition / locus / verification; adding one more axis is a minor extension. The page-level prelude is ~30 minutes of copy. Estimated 2–4 hours total. Strong candidate for the first sprint.
+**Effort.** Low-medium. The current filter set on `/hymn-pairs/` should be enumerated at implementation time; adding a `transfer_direction` mode filter is additive in any case. The page-level conceptual prelude (~150 words SK + EN) is ~30 minutes of copy. Estimated 2–4 hours total. Strong candidate for the first sprint.
 
 **Risks.** Minor. Care needed with the Slovak vocabulary for the modes — `intra-konfesionálna luteranizácia` vs `medzi-konfesionálna luteranizácia` — to match Slovak academic register without over-coining.
 
@@ -382,16 +382,16 @@ These three items improve the underlying engineering, not user-visible features.
 
 The following sequence is calibrated to Michal's capacity (Phase 2 of the chapter is in progress, with most cycles going to source-note creation and chapter drafting) and to where each enhancement maximally reuses already-completed material.
 
-**Sprint 1 (next 2–3 working sessions, ~10–14 hours):**
+**Sprint 1 (next 2–3 working sessions, ~12–20 hours):**
 1. **A3** Two-Modes-of-Lutheranisation framing in `/hymn-pairs/` (2–4 h). Lowest risk, highest immediate visibility.
 2. **A1** Companion-papers section `/papers/` (4–6 h). Surfaces the Theologos paper.
 3. **A4** Chapter scaffold replacing placeholder (6–10 h). Replaces the most under-served route.
 
-**Sprint 2 (next 4–6 working sessions, ~16–24 hours):**
+**Sprint 2 (next 4–6 working sessions, ~18–30 hours):**
 4. **A5** Sources expansion with lit-gap top-10 (12–20 h, parallelisable). Couples to ongoing `Sources/*.md` work.
 5. **A2** CB 1575 historiographical archive (6–10 h). Anchored once the Czech-original formula is verified.
 
-**Sprint 3 (Phase 3 of chapter; ~20–30 hours total over multiple sessions):**
+**Sprint 3 (Phase 3 of chapter; ~32–48 hours total over multiple sessions):**
 6. **B1** Lutheranisation Diff Tool with PAIR_006 anchor (12–20 h).
 7. **B6** Pagefind search (4–6 h).
 8. **B4** Glossary / Term Variants viewer (4–6 h).
