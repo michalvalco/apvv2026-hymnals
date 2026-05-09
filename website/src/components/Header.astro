@@ -1,4 +1,6 @@
 ---
+import Search from "./Search.astro";
+
 const primaryNav = [
   { href: "/", label: "Domov", labelEn: "Home" },
   { href: "/timeline/", label: "Chronológia", labelEn: "Timeline" },
@@ -72,10 +74,16 @@ const baseN = base.replace(/\/$/, "");
       </details>
     </nav>
 
+    <!-- Search trigger + dialog (visible on every breakpoint; dialog is
+         positioned in the browser's top layer regardless of DOM location) -->
+    <div class="ml-2">
+      <Search />
+    </div>
+
     <!-- Mobile menu button -->
     <button
       id="mobile-menu-btn"
-      class="rounded-md p-2 text-ink-400 transition-colors hover:bg-parchment-300/50 md:hidden"
+      class="ml-2 rounded-md p-2 text-ink-400 transition-colors hover:bg-parchment-300/50 md:hidden"
       aria-label="Open menu"
       aria-expanded="false"
       aria-controls="mobile-menu"

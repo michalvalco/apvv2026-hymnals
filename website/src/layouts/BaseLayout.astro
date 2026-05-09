@@ -67,7 +67,9 @@ const canonicalUrl = Astro.site
     </a>
 
     <Header />
-    <main id="main" class="flex-1">
+    <!-- `data-pagefind-body` scopes the Pagefind search index to page content
+         only (header, footer, and the search modal itself are excluded). -->
+    <main id="main" class="flex-1" data-pagefind-body>
       <slot />
     </main>
     <Footer />

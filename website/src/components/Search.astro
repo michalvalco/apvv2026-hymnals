@@ -1,0 +1,280 @@
+---
+// Pagefind static-site search.
+//
+// Architecture:
+//   1. Build pipeline (`npm run build`) runs `pagefind --site dist
+//      --output-subdir pagefind` after Astro builds the static site.
+//      Pagefind crawls every HTML file in `dist/`, extracts content
+//      scoped by `data-pagefind-body` (set on <main> in BaseLayout),
+//      and emits a search index plus a tiny JS runtime to
+//      `dist/pagefind/`.
+//   2. This component renders a hidden native <dialog> + a trigger
+//      button. The trigger is also bound to Cmd-K / Ctrl-K.
+//   3. On first dialog open, the inline script lazy-imports the
+//      pagefind runtime from `${BASE_URL}/pagefind/pagefind.js`.
+//      Subsequent opens reuse the cached module.
+//   4. As the user types, search queries are debounced (180 ms) and
+//      pagefind returns ranked results with sub-results per page.
+//      Results render as a list of cards, each linking to the matching
+//      URL with an excerpt highlighting the match.
+//
+// Accessibility:
+//   - Native <dialog> provides modality + Esc-to-close + focus trap.
+//   - Trigger button has aria-keyshortcuts.
+//   - Live region (aria-live="polite") announces result counts.
+//   - `data-pagefind-ignore` on this component keeps the search UI
+//     itself out of the index; otherwise search would surface its own
+//     "search" string.
+
+const baseN = import.meta.env.BASE_URL.replace(/\/$/, "");
+---
+
+<!-- Trigger button (rendered by Header.astro at the end of primary nav) -->
+<button
+  id="search-trigger"
+  type="button"
+  class="inline-flex items-center gap-1.5 rounded-md border border-parchment-300/60 bg-parchment-50 px-2.5 py-1.5
+         font-sans text-xs font-medium text-ink-400 transition-colors
+         hover:bg-parchment-300/40 hover:text-ink"
+  aria-label="Otvoriť vyhľadávanie / Open search"
+  aria-keyshortcuts="Control+K Meta+K"
+>
+  <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M10 18a8 8 0 100-16 8 8 0 000 16z" />
+  </svg>
+  <span class="hidden sm:inline">Hľadať</span>
+  <kbd class="hidden rounded border border-parchment-300/60 bg-parchment-200/60 px-1 py-px font-mono text-[10px] text-ink-300 sm:inline">
+    ⌘K
+  </kbd>
+</button>
+
+<!-- Search dialog -->
+<dialog
+  id="search-dialog"
+  data-pagefind-ignore
+  class="m-0 mt-12 w-full max-w-2xl rounded-lg border border-parchment-400/60 bg-parchment-50 p-0
+         backdrop:bg-ink/40 backdrop:backdrop-blur-sm
+         open:flex open:flex-col"
+  aria-label="Vyhľadávanie / Search"
+>
+  <header class="flex items-center gap-3 border-b border-parchment-300/40 p-4">
+    <svg class="h-4 w-4 shrink-0 text-ink-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M10 18a8 8 0 100-16 8 8 0 000 16z" />
+    </svg>
+    <input
+      id="search-input"
+      type="search"
+      autocomplete="off"
+      autocapitalize="off"
+      spellcheck="false"
+      placeholder="Hľadať na celom webe / Search across the site…"
+      class="flex-1 border-0 bg-transparent font-serif text-base text-ink placeholder:text-ink-300 focus:outline-none"
+      aria-label="Vyhľadávací reťazec / Search query"
+    />
+    <button
+      id="search-close"
+      type="button"
+      class="rounded p-1 text-ink-300 hover:bg-parchment-300/40 hover:text-ink"
+      aria-label="Zavrieť vyhľadávanie / Close search"
+    >
+      <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+  </header>
+
+  <div
+    id="search-results"
+    class="max-h-[60vh] overflow-y-auto p-2"
+    role="region"
+    aria-live="polite"
+    aria-busy="false"
+  >
+    <p class="px-3 py-4 font-sans text-sm italic text-ink-300">
+      Začnite písať pre zobrazenie výsledkov. /
+      <span lang="en">Start typing to see results.</span>
+    </p>
+  </div>
+
+  <footer class="flex items-center justify-between gap-3 border-t border-parchment-300/40 px-4 py-2 font-sans text-[10px] text-ink-300">
+    <span>
+      <kbd class="rounded border border-parchment-300/60 bg-parchment-200/60 px-1 py-px font-mono text-[9px]">↵</kbd>
+      otvoriť / <span class="italic" lang="en">open</span>
+    </span>
+    <span>
+      <kbd class="rounded border border-parchment-300/60 bg-parchment-200/60 px-1 py-px font-mono text-[9px]">esc</kbd>
+      zatvoriť / <span class="italic" lang="en">close</span>
+    </span>
+    <span>
+      Index: <a href="https://pagefind.app/" class="text-burgundy hover:underline" rel="noopener">Pagefind</a>
+    </span>
+  </footer>
+</dialog>
+
+<script is:inline define:vars={{ baseN }}>
+  const dialog = document.getElementById("search-dialog");
+  const trigger = document.getElementById("search-trigger");
+  const closeBtn = document.getElementById("search-close");
+  const input = document.getElementById("search-input");
+  const results = document.getElementById("search-results");
+
+  if (!dialog || !trigger || !input || !results) {
+    // Defensive: bail silently if the markup wasn't injected (defensive against
+    // partial hydration or unexpected DOM mutation by a parent script).
+  } else {
+    // ── Lazy-loaded pagefind module ──
+    let pagefindPromise = null;
+    function loadPagefind() {
+      if (!pagefindPromise) {
+        // Vite resolves relative imports at bundle time, but pagefind is generated
+        // post-build at a known URL (/apvv2026-hymnals/pagefind/pagefind.js).
+        // Use dynamic import with the absolute URL so Vite leaves it alone.
+        pagefindPromise = import(/* @vite-ignore */ baseN + "/pagefind/pagefind.js")
+          .then(async function (mod) {
+            // Pagefind 1.x exposes its API on the default export's namespace;
+            // call .options() before first .search() to set the bundlePath.
+            await mod.options({ bundlePath: baseN + "/pagefind/" });
+            return mod;
+          })
+          .catch(function (err) {
+            console.error("Pagefind failed to load:", err);
+            pagefindPromise = null; // allow retry on next open
+            return null;
+          });
+      }
+      return pagefindPromise;
+    }
+
+    // ── Open / close ──
+    function openSearch() {
+      if (!dialog.open) {
+        dialog.showModal();
+        // Pre-warm the index on first open so the user's first keystroke is fast.
+        loadPagefind();
+        // Focus the input after the dialog has rendered (next microtask).
+        setTimeout(function () { input.focus(); }, 0);
+      }
+    }
+    function closeSearch() {
+      if (dialog.open) {
+        dialog.close();
+      }
+    }
+
+    trigger.addEventListener("click", openSearch);
+    closeBtn.addEventListener("click", closeSearch);
+
+    // Keyboard shortcut: Cmd-K (Mac) / Ctrl-K (Win/Linux) toggles open.
+    document.addEventListener("keydown", function (e) {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        if (dialog.open) closeSearch(); else openSearch();
+      }
+    });
+
+    // Click-outside-to-close: native <dialog> backdrop clicks bubble to the
+    // dialog itself (not its children). Detect by clicking on the dialog
+    // element directly.
+    dialog.addEventListener("click", function (e) {
+      if (e.target === dialog) closeSearch();
+    });
+
+    // ── Search ──
+    let debounceTimer = null;
+    let lastQuery = "";
+
+    input.addEventListener("input", function () {
+      clearTimeout(debounceTimer);
+      const q = input.value.trim();
+      if (q === lastQuery) return;
+      debounceTimer = setTimeout(function () { runSearch(q); }, 180);
+    });
+
+    async function runSearch(query) {
+      lastQuery = query;
+      results.setAttribute("aria-busy", "true");
+
+      if (!query) {
+        results.innerHTML =
+          '<p class="px-3 py-4 font-sans text-sm italic text-ink-300">Začnite písať pre zobrazenie výsledkov. / <span lang="en">Start typing to see results.</span></p>';
+        results.setAttribute("aria-busy", "false");
+        return;
+      }
+
+      const pagefind = await loadPagefind();
+      if (!pagefind) {
+        results.innerHTML =
+          '<p class="px-3 py-4 font-sans text-sm text-burgundy">Vyhľadávací index sa nepodarilo načítať. / <span lang="en">Search index failed to load.</span></p>';
+        results.setAttribute("aria-busy", "false");
+        return;
+      }
+
+      try {
+        const search = await pagefind.search(query);
+        // Avoid race conditions: if the user typed more characters while we
+        // were awaiting, lastQuery has moved on; abandon this stale render.
+        if (lastQuery !== query) return;
+
+        if (!search.results || search.results.length === 0) {
+          results.innerHTML =
+            '<p class="px-3 py-4 font-sans text-sm italic text-ink-300">Žiadne výsledky pre <strong>' +
+            escapeHtml(query) +
+            '</strong>. / <span lang="en">No results.</span></p>';
+          results.setAttribute("aria-busy", "false");
+          return;
+        }
+
+        // Render top 8 results; each result resolves data lazily.
+        const top = search.results.slice(0, 8);
+        const datas = await Promise.all(top.map(function (r) { return r.data(); }));
+
+        // After awaiting, re-check that this query is still the current one.
+        if (lastQuery !== query) return;
+
+        const html = [
+          '<p class="px-3 pt-3 pb-2 font-sans text-[11px] uppercase tracking-wider text-ink-300">' +
+            search.results.length +
+            ' výsledkov / <span lang="en">' + search.results.length + ' results</span></p>',
+          '<ul class="divide-y divide-parchment-300/40">',
+          datas.map(renderResult).join(""),
+          '</ul>',
+        ].join("");
+        results.innerHTML = html;
+      } catch (err) {
+        console.error("Pagefind search error:", err);
+        results.innerHTML =
+          '<p class="px-3 py-4 font-sans text-sm text-burgundy">Chyba pri vyhľadávaní. / <span lang="en">Search error.</span></p>';
+      } finally {
+        results.setAttribute("aria-busy", "false");
+      }
+    }
+
+    function renderResult(d) {
+      const title = d.meta && d.meta.title ? d.meta.title : d.url;
+      const url = d.url || "#";
+      // Pagefind returns excerpts with <mark>...</mark> highlighting already
+      // sanitised; safe to set as innerHTML.
+      const excerpt = d.excerpt || "";
+      return [
+        '<li>',
+        '<a href="' + escapeAttr(url) + '" class="block px-3 py-3 no-underline transition-colors hover:bg-parchment-200/50">',
+        '<p class="font-display text-sm font-semibold text-ink">' + escapeHtml(title) + '</p>',
+        '<p class="mt-0.5 font-mono text-[10px] text-ink-300">' + escapeHtml(url) + '</p>',
+        '<p class="mt-2 font-serif text-xs leading-relaxed text-ink-400">' + excerpt + '</p>',
+        '</a>',
+        '</li>',
+      ].join("");
+    }
+
+    function escapeHtml(s) {
+      return String(s)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+    function escapeAttr(s) {
+      return escapeHtml(s);
+    }
+  }
+</script>
