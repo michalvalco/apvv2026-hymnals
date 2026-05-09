@@ -2,6 +2,7 @@
 
 **Draft v0.1** — Full draft, §§1 – 7
 **Author:** Michal Valčo
+**Affiliation:** Univerzita Komenského v Bratislave, Evanjelická bohoslovecká fakulta
 **Target:** *Theologos: Theological Revue*
 **Funder:** APVV-24-0484 (TEPALIT)[^1]
 **Language:** British English
@@ -11,11 +12,40 @@
 
 ---
 
+> **Slovak title — three options for Michal's selection.** Delete the other two before submission, then promote the chosen Slovak title to a primary heading above the English title (Theologos house style: Slovak title first, English title second).
+>
+> **Option A** — preserves the "Bound In" wordplay; *Cithara Sanctorum* at the front:
+> *Cithara Sanctorum (1636) v zviazaní: konfesionálna stratifikácia v rámci jedného kódexu na príklade bratislavského lyceálneho exemplára Agendy českej 1581 a Bystrickej agendy 1585*
+>
+> **Option B** — reorganises around *predobraz* (prefiguration); subtitle-first:
+> *Vnútorná konfesionálna stratifikácia kódexu: bratislavský lyceálny exemplár Agendy českej 1581 a Bystrickej agendy 1585 ako predobraz Cithary Sanctorum (1636)*
+>
+> **Option C** — academic-conservative; describes the paper's analytical framing without wordplay:
+> *Konfesionálna stratifikácia v rámci jedného kódexu: bratislavský lyceálny exemplár Agendy českej 1581 a Bystrickej agendy 1585 vo svetle vzniku Cithary Sanctorum (1636)*
+
+---
+
+## Abstrakt
+
+*Súčasný výskum slovenského luteránskeho spevníka* Cithara Sanctorum *(1636) spresňuje štandardný „luteranizačný" výklad Tranovského kancionála kvantifikáciou zloženia prameňov a zmapovaním jeho diferencovanej editorskej stratégie. Tento článok prináša komplementárny nález v menšom meradle. Bratislavský lyceálny exemplár* Agendy českej *1581 +* Bystrickej agendy *1585 — uchovaný zviazaný v jedinom fyzickom kódexe a po prvý raz kriticky vydaný Petrom Benkom v roku 2024 — vykazuje konfesionálnu stratifikáciu v rámci samotného luteránskeho horizontu. Tlačená* Agenda česká *používa miernejší eucharistický register — výraz „tělo a krev" bez kvalifikujúcich prívlastkov „pravý" či „substanciálny", ktoré charakterizovali polemicky vyhrotený luteránsky diskurz —, pričom hodné prijímanie zakladá na viere v slová ustanovenia. Slovenský rukopisný doplnok, napísaný o štyri roky neskôr, vyostruje tú istú teológiu explicitnou luteránskou* manducatio impiorum*: nehodní prijímajú telo a krv „ne k spasenij, ale k zatraczenij wěčnemu". Vyostrenie sa neudeje na medzikonfesionálnej hranici, ale vnútri samotného luteránskeho horizontu — od miernejšieho českého tlačeného registra s utrakvistickým liturgickým reziduom smerom k ostrejšiemu hornouhorskému luteránskemu rukopisnému registru. Pre tézu luteranizácie z toho vyplýva, že konfesionálne vyostrenie je fenoménom posunu registra pozorovateľným na úrovni jediného fyzického kódexu, a nielen fenoménom medzikonfesionálneho prenosu.*
+
+**Kľúčové slová:** *Cithara Sanctorum*, Tranovský, *Agenda česká*, Bystrická agenda, Banská Bystrica, *manducatio impiorum*, *lex orandi lex credendi*, reformačná hymnológia, vnútrokódexová stratifikácia, konfesionalizácia.
+
+---
+
 ## Abstract
 
 *Recent scholarship on the Slovak Lutheran* Cithara Sanctorum *(1636) refines the standard "Lutheranisation" account of Tranovský's hymnal by quantifying the source mix and mapping his differential editorial strategy. This paper offers a complementary finding at smaller scale. The Bratislava Lyceal Library exemplar of* Agenda Česká *1581 +* Bystrická agenda *1585 — preserved bound together in a single physical codex and edited critically for the first time by Peter Benka in 2024 — exhibits a confessional stratification within the Lutheran orbit itself. The printed Czech* Agenda Česká *uses a moderate Eucharistic register — "tělo a krev" without the qualifying "pravý" or "substanciálny" adjectives that characterised polemically sharpened Lutheran discourse, and grounds worthy reception in faith in the words of institution. The manuscript Slovak supplement, written four years later, sharpens the same theology with explicit Lutheran* manducatio impiorum*: the unworthy receive the body and blood "ne k spasenij, ale k zatraczenij wěčnemu". The intensification operates not at the cross-confessional boundary but within the Lutheran orbit itself, from a moderate Czech printed register with Utraquist liturgical residue towards a sharper Upper-Hungarian Lutheran manuscript register. The implication for the Lutheranisation thesis is that confessional sharpening is a phenomenon of register shift, observable at the granularity of a single physical codex, not exclusively a phenomenon of cross-confessional transfer.*
 
 **Keywords:** *Cithara Sanctorum*, Tranovský, *Agenda Česká*, Bystrická agenda, Banská Bystrica, *manducatio impiorum*, *lex orandi lex credendi*, Reformation hymnology, intra-codex stratification, confessionalisation.
+
+---
+
+## Zusammenfassung
+
+*Die jüngere Forschung zum slowakisch-lutherischen Gesangbuch* Cithara Sanctorum *(1636) hat das Standardbild der „Lutheranisierung" — verstanden als die konfessionelle Schärfung, die Tranoscius bei der grenzüberschreitenden Übernahme tschechisch-reformatorischen Liedguts in den slowakisch-lutherischen Gebrauch vollzog — durch zwei wesentliche Differenzierungen verfeinert: durch die Quantifizierung des Quellenmaterials, das zu etwa der Hälfte utraquistischer Provenienz ist, und durch die Kartierung von Tranoscius' differenzierter Bearbeitungsstrategie, die in konfessionell neutralen Rubriken zurückhaltend blieb und in den eucharistisch, mariologisch und ekklesiologisch gewichteten Bereichen entschieden eingriff. Der vorliegende Aufsatz fügt diesem Bild einen komplementären Befund auf kleinerem Maßstab hinzu. Das Bratislavaer Exemplar der Lyzealbibliothek der Slowakischen Akademie der Wissenschaften bewahrt die gedruckte* Agenda Česká *1581 zusammen mit der handschriftlichen* Bystrická agenda *1585 in einem einzigen Kodex, den die zeitgenössischen Benutzer beim Binden bewusst zusammengestellt haben. Peter Benkas kritische Edition von 2024 (Monumenta Linguae Slovacae X) hat beide Zeugen erstmals philologisch zugänglich gemacht. Im Vergleich gelesen weisen die beiden Zeugen eine konfessionelle Stratifikation innerhalb des lutherischen Horizonts selbst auf. Der gedruckte tschechische Agendentext arbeitet in einem mäßigen tschechisch-lutherischen Register: Er bezeichnet die eucharistischen Elemente als „tělo a krev" ohne die qualifizierenden Adjektive „pravý" und „substanciálny", die den polemisch zugespitzten lutherischen Diskurs in der Folge der Konkordienformel (1577) kennzeichneten, und gründet das würdige Empfangen im Glauben an die Einsetzungsworte. Das vier Jahre später entstandene slowakische handschriftliche Supplement schärft dieselbe Theologie durch die explizite Aufnahme der lutherischen* manducatio impiorum*: Die Unwürdigen empfangen Leib und Blut Christi „ne k spasenij, ale k zatraczenij wěčnemu". Die Verschärfung vollzieht sich nicht an der konfessionsübergreifenden Grenze, sondern innerhalb des lutherischen Horizonts selbst — vom mäßigen tschechischen Druckregister mit utraquistischem liturgischem Residuum hin zu einem schärferen oberungarisch-lutherischen Handschriftenregister. Für die Lutheranisierungsthese ergibt sich daraus, dass konfessionelle Schärfung ein Phänomen der Registerverschiebung ist, das auf der Ebene eines einzelnen physischen Kodex beobachtbar wird, und nicht ausschließlich ein Phänomen konfessionsübergreifender Übertragung.*
+
+**Schlüsselwörter:** *Cithara Sanctorum*, Tranoscius, *Agenda Česká*, Bystrická agenda, Banská Bystrica, *manducatio impiorum*, *lex orandi lex credendi*, Reformationshymnologie, intra-codiziale Stratifikation, Konfessionalisierung.
 
 ---
 
