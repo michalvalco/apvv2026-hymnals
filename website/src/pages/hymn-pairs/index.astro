@@ -63,6 +63,81 @@ interface PairView {
   bibtex: string;
   apa: string;
   permalink: string;
+  mode: ModeCode;
+}
+
+// ── Two-Modes-of-Lutheranisation framing (per Theologos paper §§5–6) ──
+// The chapter's substantive scholarly move distinguishes four operational
+// modes of confessional sharpening across the 16th-18th c. corpus. The
+// classification derives from `transfer_direction` plus the trust-state for
+// research-target placement. Slovak labels confirmed by Michal 2026-05-09.
+type ModeCode =
+  | "CROSS_CONFESSIONAL"
+  | "INTRA_LUTHERAN_INTENSIFICATION"
+  | "REGIONAL_LUTHERAN_CONTINUITY"
+  | "RESEARCH_TARGET";
+
+const MODE_ORDER: ModeCode[] = [
+  "CROSS_CONFESSIONAL",
+  "INTRA_LUTHERAN_INTENSIFICATION",
+  "REGIONAL_LUTHERAN_CONTINUITY",
+  "RESEARCH_TARGET",
+];
+
+const MODE_LABELS: Record<ModeCode, { sk: string; en: string }> = {
+  CROSS_CONFESSIONAL: {
+    sk: "Medzi-konfesionálna luteranizácia",
+    en: "Cross-confessional Lutheranisation",
+  },
+  INTRA_LUTHERAN_INTENSIFICATION: {
+    sk: "Intra-luteránska intenzifikácia registra",
+    en: "Intra-Lutheran register intensification",
+  },
+  REGIONAL_LUTHERAN_CONTINUITY: {
+    sk: "Regionálna luteránska kontinuita",
+    en: "Regional Lutheran continuity",
+  },
+  RESEARCH_TARGET: {
+    sk: "Výskumné ciele",
+    en: "Research targets",
+  },
+};
+
+const MODE_DESCRIPTIONS: Record<ModeCode, { sk: string; en: string }> = {
+  CROSS_CONFESSIONAL: {
+    sk: "Klasický príbeh: Tranovský pri preberaní materiálu z bratrských a utrakvistických prameňov vedome ostril ich teológiu na augsburský luteránsky štandard. Editorský zásah na hranici dvoch konfesií.",
+    en: "The classical account: in absorbing material from Brethren and Utraquist sources, Tranovský deliberately sharpened its theology to the Augsburg-Lutheran standard. Editorial intervention at the cross-confessional boundary.",
+  },
+  INTRA_LUTHERAN_INTENSIFICATION: {
+    sk: "Komplementárne zistenie zo štúdie Theologos (PAIR_006): konfesionálne ostrenie prebieha aj vnútri luteránskeho prostredia — od mierneho českého tlačeného registra (AC 1581) k tvrdšiemu slovenskému rukopisnému registru (BA 1585), zviazaných v jednom exemplári Lyceálnej knižnice.",
+    en: "A complementary finding from the Theologos paper (PAIR_006): confessional sharpening also operates within the Lutheran orbit itself — from a moderate Czech printed register (AC 1581) to a sharper Slovak manuscript register (BA 1585), bound together in one Lyceal Library exemplar.",
+  },
+  REGIONAL_LUTHERAN_CONTINUITY: {
+    sk: "Kontinuálny prenos: hungarsko-luteránska liturgická prax baníckych miest sa premietla do Cithary Sanctorum prostredníctvom konkrétnych textovo-melodických jednotiek, bez doložiteľnej teologickej úpravy.",
+    en: "Continuous transmission: Hungarian-Lutheran liturgical practice of the mining towns flowed into the Cithara Sanctorum through concrete text-and-melody units, without documented theological modification.",
+  },
+  RESEARCH_TARGET: {
+    sk: "Pracovné hypotézy a otvorené otázky. Páry s neoverenou bázou alebo neúplnou kolaciou — transparentne označené ako výskumné ciele, nie ako dôkaz.",
+    en: "Working hypotheses and open questions. Pairs with unverified bases or incomplete collation — transparently flagged as research targets, not as evidence.",
+  },
+};
+
+function deriveMode(pair: HymnPair): ModeCode {
+  if (pair.transfer_direction === "LUTHERAN_CONFESSIONAL_INTENSIFICATION") {
+    return "INTRA_LUTHERAN_INTENSIFICATION";
+  }
+  if (pair.transfer_direction === "LUTHERAN_REGIONAL_CONTINUITY") {
+    return "REGIONAL_LUTHERAN_CONTINUITY";
+  }
+  // PAIR_003 (research-target manifest) has empty direction + DEFERRED status.
+  // Note: PAIR_002 is a working hypothesis with UNITY_TO_LUTHERAN direction; per
+  // the strategy doc §A3 it is grouped with cross-confessional (its directional
+  // axis), with the existing "Research target — verification in progress"
+  // banner on the card itself flagging its trust-state honestly.
+  if (!pair.transfer_direction && pair.epistemic_status === "DEFERRED") {
+    return "RESEARCH_TARGET";
+  }
+  return "CROSS_CONFESSIONAL";
 }
 
 const isPlaceholderText = (s: string) =>
@@ -98,20 +173,45 @@ const pairViews: PairView[] = pairs.map((pair) => {
     bibtex: buildBibtex(pair),
     apa: buildApa(pair),
     permalink: pairPermalink(pair.pair_id),
+    mode: deriveMode(pair),
   };
 });
 
-// Sort: FACTUAL first, then INTERPRETIVE, then DEFERRED
+// Two-axis sort: mode first (per MODE_ORDER), then epistemic status within mode.
+// This produces the strategy-doc grouping while preserving FACTUAL → INTERPRETIVE
+// → DEFERRED secondary ordering inside each mode.
 const epistemicOrder: Record<string, number> = {
   FACTUAL: 0,
   INTERPRETIVE: 1,
   DEFERRED: 2,
 };
-pairViews.sort(
-  (a, b) =>
-    epistemicOrder[a.pair.epistemic_status] -
-    epistemicOrder[b.pair.epistemic_status],
+const modeIndex: Record<ModeCode, number> = MODE_ORDER.reduce(
+  (acc, m, i) => {
+    acc[m] = i;
+    return acc;
+  },
+  {} as Record<ModeCode, number>,
 );
+pairViews.sort((a, b) => {
+  const modeDelta = modeIndex[a.mode] - modeIndex[b.mode];
+  if (modeDelta !== 0) return modeDelta;
+  return (
+    epistemicOrder[a.pair.epistemic_status] -
+    epistemicOrder[b.pair.epistemic_status]
+  );
+});
+
+// Group views by mode for render-time section headers. Maintains MODE_ORDER
+// even when a mode has zero pairs (we skip empty groups in the render below).
+const pairsByMode: Record<ModeCode, PairView[]> = {
+  CROSS_CONFESSIONAL: [],
+  INTRA_LUTHERAN_INTENSIFICATION: [],
+  REGIONAL_LUTHERAN_CONTINUITY: [],
+  RESEARCH_TARGET: [],
+};
+for (const v of pairViews) {
+  pairsByMode[v.mode].push(v);
+}
 
 const counts = {
   total: pairs.length,
@@ -310,6 +410,51 @@ const jsonLd = {
     </div>
   </div>
 
+  <!-- ═══════════ TWO-MODES CONCEPTUAL PRELUDE ═══════════ -->
+  <div class="mx-auto max-w-wide px-6 pt-8">
+    <div class="rounded-lg border-l-4 border-burgundy/60 bg-parchment-100/40 p-5">
+      <h2 class="font-display text-base font-semibold text-ink">
+        Štyri spôsoby luteranizácie
+      </h2>
+      <p class="mt-0.5 font-sans text-xs italic text-ink-300" lang="en">
+        Four operational modes of Lutheranisation
+      </p>
+      <p class="mt-3 text-sm leading-relaxed text-ink-400">
+        V štúdii pripravenej pre časopis <em>Theologos</em> rozlišujeme štyri
+        operačné režimy konfesionálneho ostrenia v korpuse hymnov a liturgických
+        prameňov 16.–18. storočia. Klasický príbeh <em>Cithary Sanctorum</em> 1636
+        ako kompilácie z bratrských a utrakvistických zdrojov, ktoré Tranovský
+        editorsky adaptoval, je <strong>medzi-konfesionálna luteranizácia</strong>.
+        Komplementárne zistenie Theologos štúdie (PAIR_006) je
+        <strong>intra-luteránska intenzifikácia registra</strong> — to isté
+        ostrenie prebieha aj vnútri jedného luteránsky orientovaného kódexu, od
+        miernej českej tlačenej Agendy Českej (1581) k tvrdšej slovenskej
+        rukopisnej Bystrickej agende (1585). Tretí režim,
+        <strong>regionálna luteránska kontinuita</strong>, sleduje priame
+        textovo-melodické prevzatia z hungarsko-luteránskej liturgickej praxe
+        baníckych miest do CS. Štvrtá kategória, <strong>výskumné ciele</strong>,
+        zhromažďuje pracovné hypotézy a otvorené otázky transparentne označené
+        ako neoverené.
+      </p>
+      <p class="mt-3 font-sans text-xs italic leading-relaxed text-ink-300" lang="en">
+        The Theologos paper distinguishes four operational modes of confessional
+        sharpening across the 16th–18th century hymnal and liturgical corpus.
+        The classical account of <em>Cithara Sanctorum</em> 1636 as a compilation
+        from Brethren and Utraquist sources adapted by Tranovský is
+        <strong>cross-confessional Lutheranisation</strong>. The Theologos paper's
+        complementary finding (PAIR_006) is <strong>intra-Lutheran register
+        intensification</strong> — the same sharpening operating within a single
+        Lutheran-aligned codex, from a moderate Czech printed <em>Agenda Česká</em>
+        (1581) to a sharper Slovak manuscript <em>Bystrická agenda</em> (1585).
+        A third mode, <strong>regional Lutheran continuity</strong>, traces direct
+        text-and-melody continuities from Hungarian-Lutheran liturgical practice
+        of the mining towns into CS. The fourth category,
+        <strong>research targets</strong>, collects working hypotheses and open
+        questions transparently flagged as unverified.
+      </p>
+    </div>
+  </div>
+
   <!-- ═══════════ FILTER BAR ═══════════ -->
   <div class="mx-auto max-w-wide px-6 pt-6">
     <div class="rounded-lg border border-parchment-300/60 bg-parchment-50 p-4">
@@ -317,6 +462,18 @@ const jsonLd = {
         <span class="font-sans text-xs font-semibold uppercase tracking-wider text-ink-400">
           Filter:
         </span>
+        <label class="flex items-center gap-1.5 text-xs">
+          <span class="text-ink-400">Režim</span>
+          <select
+            id="filter-mode"
+            class="rounded border border-parchment-300 bg-parchment-50 px-2 py-1 font-sans text-xs"
+          >
+            <option value="">Všetky / All</option>
+            {MODE_ORDER.map((m) => (
+              <option value={m}>{MODE_LABELS[m].sk}</option>
+            ))}
+          </select>
+        </label>
         <label class="flex items-center gap-1.5 text-xs">
           <span class="text-ink-400">Epistemika</span>
           <select
@@ -415,34 +572,66 @@ const jsonLd = {
     </div>
   </div>
 
-  <!-- ═══════════ DOSSIERS ═══════════ -->
+  <!-- ═══════════ DOSSIERS (grouped by mode) ═══════════ -->
   <div class="mx-auto max-w-wide px-6 py-8">
-    <div class="space-y-6" id="pairs-list">
-      {
-        pairViews.map((view) => {
-          const p = view.pair;
-          const transferLabel = TRANSFER_DIRECTION_LABELS[p.transfer_direction];
-          const evidLabel = EVIDENTIARY_LABELS[p.evidentiary_strength];
-          const verifLabel = VERIFICATION_LABELS[p.verification_status];
-          const eLabel = epistemicLabels[p.epistemic_status];
-          const isFlagged =
-            p.evidentiary_strength === "CONJECTURED" ||
-            p.verification_status === "UNVERIFIED";
-          const sourcePending = view.source && isPlaceholderText(view.source.text_snippet ?? "");
-          const receptorPending = view.receptor && isPlaceholderText(view.receptor.text_snippet ?? "");
-          return (
-            <article
-              class:list={[
-                "card scroll-mt-24",
-                epistemicClasses[p.epistemic_status],
-                isFlagged && "relative",
-              ]}
-              id={p.pair_id}
-              data-epistemic={p.epistemic_status}
-              data-evidentiary={p.evidentiary_strength}
-              data-verification={p.verification_status}
-              data-direction={p.transfer_direction}
-            >
+    <div id="pairs-list">
+      {MODE_ORDER.filter((m) => pairsByMode[m].length > 0).map((mode, modeIdx) => (
+        <section
+          class:list={[
+            "mode-group",
+            modeIdx > 0 && "mt-10",
+          ]}
+          data-mode-group={mode}
+          aria-labelledby={`mode-heading-${mode}`}
+        >
+          <div class="mode-group-header mb-5 border-b-2 border-parchment-300/60 pb-3">
+            <div class="flex flex-wrap items-baseline justify-between gap-2">
+              <h2
+                id={`mode-heading-${mode}`}
+                class="font-display text-lg font-semibold text-ink"
+              >
+                {MODE_LABELS[mode].sk}
+              </h2>
+              <span class="font-sans text-[11px] uppercase tracking-wider text-ink-300">
+                {pairsByMode[mode].length} {pairsByMode[mode].length === 1 ? "pár" : pairsByMode[mode].length < 5 ? "páry" : "párov"} / <span lang="en">{pairsByMode[mode].length} pair{pairsByMode[mode].length === 1 ? "" : "s"}</span>
+              </span>
+            </div>
+            <p class="mt-0.5 font-sans text-xs italic text-ink-300" lang="en">
+              {MODE_LABELS[mode].en}
+            </p>
+            <p class="mt-2 max-w-3xl text-sm text-ink-400">
+              {MODE_DESCRIPTIONS[mode].sk}
+            </p>
+            <p class="mt-1 max-w-3xl font-sans text-xs italic text-ink-300" lang="en">
+              {MODE_DESCRIPTIONS[mode].en}
+            </p>
+          </div>
+          <div class="space-y-6">
+            {pairsByMode[mode].map((view) => {
+              const p = view.pair;
+              const transferLabel = TRANSFER_DIRECTION_LABELS[p.transfer_direction];
+              const evidLabel = EVIDENTIARY_LABELS[p.evidentiary_strength];
+              const verifLabel = VERIFICATION_LABELS[p.verification_status];
+              const eLabel = epistemicLabels[p.epistemic_status];
+              const isFlagged =
+                p.evidentiary_strength === "CONJECTURED" ||
+                p.verification_status === "UNVERIFIED";
+              const sourcePending = view.source && isPlaceholderText(view.source.text_snippet ?? "");
+              const receptorPending = view.receptor && isPlaceholderText(view.receptor.text_snippet ?? "");
+              return (
+                <article
+                  class:list={[
+                    "card scroll-mt-24",
+                    epistemicClasses[p.epistemic_status],
+                    isFlagged && "relative",
+                  ]}
+                  id={p.pair_id}
+                  data-epistemic={p.epistemic_status}
+                  data-evidentiary={p.evidentiary_strength}
+                  data-verification={p.verification_status}
+                  data-direction={p.transfer_direction}
+                  data-mode={view.mode}
+                >
               {/* Flag banner for unverified/conjectured pairs */}
               {isFlagged && (
                 <div class="-mx-6 -mt-6 mb-4 rounded-t-lg bg-burgundy/10 px-6 py-2">
@@ -700,10 +889,12 @@ const jsonLd = {
                   </span>
                 )}
               </footer>
-            </article>
-          );
-        })
-      }
+                </article>
+              );
+            })}
+          </div>
+        </section>
+      ))}
       <p
         id="pairs-empty"
         class="hidden rounded-md border border-dashed border-parchment-400 bg-parchment-100/50 p-6 text-center font-sans text-sm text-ink-400"
@@ -869,6 +1060,7 @@ const jsonLd = {
 <script is:inline>
   // ── Filter bar ──
   const filters = {
+    mode: document.getElementById("filter-mode"),
     epistemic: document.getElementById("filter-epistemic"),
     evidentiary: document.getElementById("filter-evidentiary"),
     verification: document.getElementById("filter-verification"),
@@ -881,6 +1073,7 @@ const jsonLd = {
   const empty = document.getElementById("pairs-empty");
   const list = document.getElementById("pairs-list");
   const articles = list ? Array.from(list.querySelectorAll("article[data-epistemic]")) : [];
+  const modeGroups = list ? Array.from(list.querySelectorAll("section[data-mode-group]")) : [];
   const total = articles.length;
 
   // Pre-compute lowercase search-text for each article (id + visible text).
@@ -890,41 +1083,55 @@ const jsonLd = {
     articleSearchText.set(a, ((a.id || "") + " " + (a.textContent || "")).toLowerCase());
   });
 
-  // Sort comparators. "default" mode preserves the server-side build order
-  // (FACTUAL → INTERPRETIVE → DEFERRED) by re-using the original DOM order.
-  // Other modes re-order children in place.
+  // Sort comparators. With mode-primary grouping, sorts operate WITHIN each
+  // mode group rather than flattening across groups. "default" preserves the
+  // server-side build order (FACTUAL → INTERPRETIVE → DEFERRED inside each
+  // mode). Other modes re-order siblings inside each mode group's child container.
   const evidentiaryOrder = { DOCUMENTED: 0, INFERRED: 1, CONJECTURED: 2 };
   const verificationOrder = { VERIFIED: 0, PRIMARY_PENDING: 1, SECONDARY_ONLY: 2, UNVERIFIED: 3 };
-  const originalOrder = articles.slice();
+
+  // Capture the per-group original child order at script init so we can
+  // restore it for the "default" mode without re-querying the DOM.
+  const groupOriginalOrder = new Map();
+  modeGroups.forEach(function (group) {
+    const inner = group.querySelector("div.space-y-6");
+    if (!inner) return;
+    groupOriginalOrder.set(group, Array.from(inner.children));
+  });
 
   function applySort(mode) {
-    if (!list) return;
-    let sorted;
-    if (mode === "pair_id") {
-      sorted = articles.slice().sort(function (a, b) { return (a.id || "").localeCompare(b.id || ""); });
-    } else if (mode === "evidentiary") {
-      sorted = articles.slice().sort(function (a, b) {
-        return (evidentiaryOrder[a.dataset.evidentiary] ?? 99) - (evidentiaryOrder[b.dataset.evidentiary] ?? 99);
-      });
-    } else if (mode === "verification") {
-      sorted = articles.slice().sort(function (a, b) {
-        return (verificationOrder[a.dataset.verification] ?? 99) - (verificationOrder[b.dataset.verification] ?? 99);
-      });
-    } else if (mode === "chapter") {
-      sorted = articles.slice().sort(function (a, b) {
-        // Chapter section is in the header e.g. "§4.1" or "§5"; extract from textContent
-        const aSec = (a.textContent.match(/§[0-9.]+/) || [""])[0];
-        const bSec = (b.textContent.match(/§[0-9.]+/) || [""])[0];
-        return aSec.localeCompare(bSec);
-      });
-    } else {
-      sorted = originalOrder.slice();
-    }
-    sorted.forEach(function (a) { list.appendChild(a); });
+    modeGroups.forEach(function (group) {
+      const inner = group.querySelector("div.space-y-6");
+      if (!inner) return;
+      const groupArticles = Array.from(inner.querySelectorAll("article[data-epistemic]"));
+      let sorted;
+      if (mode === "pair_id") {
+        sorted = groupArticles.slice().sort(function (a, b) { return (a.id || "").localeCompare(b.id || ""); });
+      } else if (mode === "evidentiary") {
+        sorted = groupArticles.slice().sort(function (a, b) {
+          return (evidentiaryOrder[a.dataset.evidentiary] ?? 99) - (evidentiaryOrder[b.dataset.evidentiary] ?? 99);
+        });
+      } else if (mode === "verification") {
+        sorted = groupArticles.slice().sort(function (a, b) {
+          return (verificationOrder[a.dataset.verification] ?? 99) - (verificationOrder[b.dataset.verification] ?? 99);
+        });
+      } else if (mode === "chapter") {
+        sorted = groupArticles.slice().sort(function (a, b) {
+          const aSec = (a.textContent.match(/§[0-9.]+/) || [""])[0];
+          const bSec = (b.textContent.match(/§[0-9.]+/) || [""])[0];
+          return aSec.localeCompare(bSec);
+        });
+      } else {
+        const original = groupOriginalOrder.get(group);
+        sorted = original ? original.slice() : groupArticles.slice();
+      }
+      sorted.forEach(function (a) { inner.appendChild(a); });
+    });
   }
 
   function applyFilters() {
     if (!status) return;
+    const m = filters.mode && filters.mode.value;
     const e = filters.epistemic && filters.epistemic.value;
     const ev = filters.evidentiary && filters.evidentiary.value;
     const v = filters.verification && filters.verification.value;
@@ -933,6 +1140,7 @@ const jsonLd = {
     let visible = 0;
     articles.forEach(function (a) {
       const ok =
+        (!m || a.dataset.mode === m) &&
         (!e || a.dataset.epistemic === e) &&
         (!ev || a.dataset.evidentiary === ev) &&
         (!v || a.dataset.verification === v) &&
@@ -940,6 +1148,15 @@ const jsonLd = {
         (!q || (articleSearchText.get(a) || "").indexOf(q) !== -1);
       a.classList.toggle("hidden", !ok);
       if (ok) visible++;
+    });
+    // Hide mode group sections whose articles are all filtered out, so the
+    // section header does not float over an empty space.
+    modeGroups.forEach(function (group) {
+      const groupArticles = Array.from(group.querySelectorAll("article[data-epistemic]"));
+      const anyVisible = groupArticles.some(function (a) {
+        return !a.classList.contains("hidden");
+      });
+      group.classList.toggle("hidden", !anyVisible);
     });
     status.textContent = "Zobrazené: " + visible + " z " + total;
     if (empty) empty.classList.toggle("hidden", visible !== 0);
