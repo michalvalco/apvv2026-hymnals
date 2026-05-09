@@ -1,0 +1,607 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import {
+  getPositions,
+  getLocusByCode,
+  TRADITION_META,
+  type ConfessionalPosition,
+} from "../../data/taxonomy";
+
+const base = import.meta.env.BASE_URL;
+const baseN = base.replace(/\/$/, "");
+const baseHref = baseN.endsWith("/") ? baseN : baseN + "/";
+const pageUrl = Astro.site
+  ? new URL("fingerprints/", new URL(baseHref, Astro.site)).toString()
+  : `${baseN}/fingerprints/`;
+
+// ── Build coverage matrix: rows=sub-loci, cols=traditions ──
+// Each cell is the count of distinct attested positions for that
+// (locus, tradition) pair. Multiple phases (e.g., UNITY EARLY +
+// UNITY MATURE + UNITY BLAHOSLAV) count as distinct positions because
+// they document developmental thickness, not just typological shape.
+const positions = getPositions();
+const TRADITIONS = ["LUTHERAN", "UTRAQUIST", "UNITY"] as const;
+type TradKey = typeof TRADITIONS[number];
+
+const allLoci = Array.from(
+  new Set(positions.map((p) => p.locus_code)),
+).sort();
+
+const coverage: Record<string, Record<TradKey, number>> = {};
+for (const code of allLoci) {
+  coverage[code] = { LUTHERAN: 0, UTRAQUIST: 0, UNITY: 0 };
+}
+const positionsByCell: Record<string, Record<TradKey, ConfessionalPosition[]>> = {};
+for (const code of allLoci) {
+  positionsByCell[code] = { LUTHERAN: [], UTRAQUIST: [], UNITY: [] };
+}
+for (const p of positions) {
+  if ((TRADITIONS as readonly string[]).includes(p.tradition)) {
+    const t = p.tradition as TradKey;
+    coverage[p.locus_code][t]++;
+    positionsByCell[p.locus_code][t].push(p);
+  }
+}
+
+// Per-tradition aggregate stats
+type TradStat = {
+  totalPositions: number;
+  lociCovered: number;
+  factualCount: number;
+  interpretiveCount: number;
+};
+const tradStats: Record<TradKey, TradStat> = {
+  LUTHERAN: { totalPositions: 0, lociCovered: 0, factualCount: 0, interpretiveCount: 0 },
+  UTRAQUIST: { totalPositions: 0, lociCovered: 0, factualCount: 0, interpretiveCount: 0 },
+  UNITY: { totalPositions: 0, lociCovered: 0, factualCount: 0, interpretiveCount: 0 },
+};
+for (const t of TRADITIONS) {
+  const tradPos = positions.filter((p) => p.tradition === t);
+  tradStats[t].totalPositions = tradPos.length;
+  tradStats[t].lociCovered = new Set(tradPos.map((p) => p.locus_code)).size;
+  tradStats[t].factualCount = tradPos.filter((p) => p.epistemic_status === "FACTUAL").length;
+  tradStats[t].interpretiveCount = tradPos.filter((p) => p.epistemic_status === "INTERPRETIVE").length;
+}
+
+// Find max cell value across the whole matrix to scale radar to.
+const maxCellValue = Math.max(
+  ...allLoci.map((code) =>
+    Math.max(coverage[code].LUTHERAN, coverage[code].UTRAQUIST, coverage[code].UNITY),
+  ),
+);
+
+// ── Radar geometry ──
+// Place sub-loci evenly around the circle. Axis 0 is at the top
+// (-π/2 angle). Going clockwise so the order reads naturally L1 → L4.
+const RADAR_CX = 300;
+const RADAR_CY = 300;
+const RADAR_R = 220;
+const RADAR_INNER_R = 36; // small gap at center for legibility
+
+function axisAngle(i: number): number {
+  // -π/2 puts axis 0 at the top; positive direction is clockwise.
+  return -Math.PI / 2 + (i * 2 * Math.PI) / allLoci.length;
+}
+
+function radarPoint(i: number, value: number): [number, number] {
+  // Scale value to radial distance. Empty cell → small inner offset
+  // (so the polygon vertex stays on the axis but inside the inner circle,
+  // visualising "no attested position").
+  const a = axisAngle(i);
+  const ratio = maxCellValue > 0 ? value / maxCellValue : 0;
+  const r = RADAR_INNER_R + ratio * (RADAR_R - RADAR_INNER_R);
+  return [
+    RADAR_CX + r * Math.cos(a),
+    RADAR_CY + r * Math.sin(a),
+  ];
+}
+
+function polygonForTradition(t: TradKey): string {
+  return allLoci
+    .map((code, i) => radarPoint(i, coverage[code][t]))
+    .map((pt) => `${pt[0].toFixed(1)},${pt[1].toFixed(1)}`)
+    .join(" ");
+}
+
+function axisEndpoint(i: number): [number, number] {
+  const a = axisAngle(i);
+  return [
+    RADAR_CX + RADAR_R * Math.cos(a),
+    RADAR_CY + RADAR_R * Math.sin(a),
+  ];
+}
+
+function axisLabelPoint(i: number): [number, number] {
+  // Push the label a bit past the axis tip.
+  const a = axisAngle(i);
+  const r = RADAR_R + 26;
+  return [
+    RADAR_CX + r * Math.cos(a),
+    RADAR_CY + r * Math.sin(a),
+  ];
+}
+
+// Tradition fill colours (use numeric hex so SVG fill-opacity works
+// reliably without depending on Tailwind colour names).
+const tradColor: Record<TradKey, string> = {
+  LUTHERAN: "#D4A843", // gold
+  UTRAQUIST: "#8B2332", // crimson
+  UNITY: "#2E8B8B", // teal
+};
+
+// Tradition labels for legend / table headers
+const tradLabel: Record<TradKey, { sk: string; en: string }> = {
+  LUTHERAN: { sk: "Luteránska", en: "Lutheran" },
+  UTRAQUIST: { sk: "Utrakvistická", en: "Utraquist" },
+  UNITY: { sk: "Jednota bratská", en: "Unity of Brethren" },
+};
+
+// JSON-LD: ScholarlyArticle for citability.
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ScholarlyArticle",
+  name: "Confessional Fingerprinting — Tradition Shapes Across the Theological Loci",
+  alternateName:
+    "Konfesionálne fingerprintovanie — tvary tradícií naprieč teologickými loci",
+  url: pageUrl,
+  inLanguage: ["sk", "en"],
+  publishingPrinciples:
+    "Free-standing radar visualisation of confessional position coverage. Released under CC BY 4.0.",
+  author: {
+    "@type": "Person",
+    name: "Michal Valčo",
+    affiliation: { "@type": "Organization", name: "ETF UK Bratislava" },
+  },
+  isPartOf: {
+    "@type": "ResearchProject",
+    name: "TEPALIT (APVV-24-0484)",
+    funder: {
+      "@type": "Organization",
+      name: "Slovak Research and Development Agency",
+      identifier: "APVV-24-0484",
+    },
+  },
+};
+
+// Pre-compute polygon strings to avoid re-evaluating in the template
+const polygons: Record<TradKey, string> = {
+  LUTHERAN: polygonForTradition("LUTHERAN"),
+  UTRAQUIST: polygonForTradition("UTRAQUIST"),
+  UNITY: polygonForTradition("UNITY"),
+};
+
+// Concentric grid levels: 25%, 50%, 75%, 100% of the radar radius
+const gridLevels = [0.25, 0.5, 0.75, 1.0];
+---
+
+<BaseLayout
+  title="Konfesionálne fingerprintovanie"
+  description="Confessional fingerprinting — radar visualisation of confessional position coverage across the four loci × three traditions × developmental phases. 26 attested positions."
+  lang="sk"
+>
+  <script
+    is:inline
+    type="application/ld+json"
+    set:html={JSON.stringify(jsonLd)}
+  />
+
+  <!-- ═══════════ HERO ═══════════ -->
+  <section class="bg-ink-800 px-6 py-16 text-parchment">
+    <div class="mx-auto max-w-content">
+      <p class="font-sans text-xs font-medium uppercase tracking-[0.2em] text-gold">
+        Konfesionálne fingerprinty · {positions.length} pozícií · 3 tradície
+      </p>
+      <h1 class="mt-3 font-display text-3xl font-bold leading-tight text-parchment-100 md:text-4xl">
+        Konfesionálne fingerprintovanie
+      </h1>
+      <p class="mt-3 font-display text-base font-medium text-parchment-300">
+        Tvary tradícií naprieč teologickými loci
+      </p>
+      <h2 class="mt-6 font-display text-lg font-semibold text-parchment-200" lang="en">
+        Confessional Fingerprinting — Tradition Shapes Across the Loci
+      </h2>
+
+      <p class="mt-6 max-w-prose text-sm leading-relaxed text-parchment-400">
+        Radar zobrazuje pokrytie doložených konfesionálnych pozícií pre každú
+        tradíciu naprieč {allLoci.length} sub-locami. Hodnota na osi je počet
+        zaznamenaných pozícií (vrátane vývojových fáz, napr. UNITY EARLY vs.
+        MATURE vs. BLAHOSLAV). „Tvar" tradície vzniká z hustoty doloženia,
+        nie z normatívneho hodnotenia.
+      </p>
+      <p class="mt-3 max-w-prose font-sans text-sm italic leading-relaxed text-parchment-500" lang="en">
+        The radar visualises the coverage of attested confessional positions
+        per tradition across {allLoci.length} sub-loci. Each axis value is the
+        count of recorded positions (including developmental phases — e.g.,
+        UNITY EARLY vs. MATURE vs. BLAHOSLAV). A tradition's 'shape' emerges
+        from documentation density, not normative assessment.
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══════════ TRADITION STATS ═══════════ -->
+  <section class="mx-auto max-w-wide px-6 py-12">
+    <div class="grid gap-4 md:grid-cols-3">
+      {TRADITIONS.map((t) => {
+        const stat = tradStats[t];
+        const lbl = tradLabel[t];
+        return (
+          <div class="card border-t-4" style={`border-color:${tradColor[t]}`}>
+            <p class="font-sans text-[11px] uppercase tracking-wider text-ink-300">
+              Tradícia
+            </p>
+            <h2 class="mt-1 font-display text-lg font-semibold text-ink">
+              <span style={`color:${tradColor[t]}`}>&#x25CF;</span> {lbl.sk}
+            </h2>
+            <p class="mt-0.5 font-sans text-xs italic text-ink-300" lang="en">
+              {lbl.en}
+            </p>
+            <dl class="mt-4 grid grid-cols-2 gap-x-3 gap-y-1.5 font-sans text-[11px]">
+              <dt class="text-ink-300">Pozícií</dt>
+              <dd class="text-ink-400 font-mono font-semibold">{stat.totalPositions}</dd>
+              <dt class="text-ink-300">Loci pokrytých</dt>
+              <dd class="text-ink-400 font-mono font-semibold">{stat.lociCovered} / {allLoci.length}</dd>
+              <dt class="text-ink-300">FACTUAL</dt>
+              <dd class="text-ink-400 font-mono font-semibold">{stat.factualCount}</dd>
+              <dt class="text-ink-300">INTERPRETIVE</dt>
+              <dd class="text-ink-400 font-mono font-semibold">{stat.interpretiveCount}</dd>
+            </dl>
+          </div>
+        );
+      })}
+    </div>
+  </section>
+
+  <!-- ═══════════ RADAR (overlaid) ═══════════ -->
+  <section class="mx-auto max-w-wide px-6 py-8">
+    <h2 class="text-section-title text-ink">Prekrývajúci sa radar</h2>
+    <p class="mt-1 font-sans text-sm italic text-ink-300" lang="en">
+      Overlaid radar — three traditions on the same axes
+    </p>
+    <p class="mt-3 max-w-prose text-sm text-ink-400">
+      Každá os je sub-locus. Hodnota na osi (vzdialenosť od stredu) je počet
+      doložených pozícií pre danú tradíciu na danom locus. Maximum napríč
+      všetkými bunkami: <strong>{maxCellValue}</strong>. Polygón tradície
+      kreslí jej „tvar".
+    </p>
+
+    <div class="mt-8 overflow-x-auto rounded-lg border border-parchment-300/60 bg-parchment-50 p-4">
+      <svg
+        viewBox="0 0 600 600"
+        class="mx-auto w-full max-w-[600px]"
+        role="img"
+        aria-label="Overlaid radar chart of confessional position coverage across three traditions"
+      >
+        {/* Concentric grid circles */}
+        {gridLevels.map((lvl) => (
+          <circle
+            cx={RADAR_CX}
+            cy={RADAR_CY}
+            r={RADAR_INNER_R + lvl * (RADAR_R - RADAR_INNER_R)}
+            fill="none"
+            stroke="#D6D3D1"
+            stroke-width="0.5"
+            stroke-dasharray="3 3"
+          />
+        ))}
+        {/* Inner boundary */}
+        <circle cx={RADAR_CX} cy={RADAR_CY} r={RADAR_INNER_R} fill="none" stroke="#9CA3AF" stroke-width="0.5" />
+
+        {/* Axes */}
+        {allLoci.map((code, i) => {
+          const [ex, ey] = axisEndpoint(i);
+          return (
+            <line
+              x1={RADAR_CX}
+              y1={RADAR_CY}
+              x2={ex}
+              y2={ey}
+              stroke="#9CA3AF"
+              stroke-width="0.5"
+            />
+          );
+        })}
+
+        {/* Tradition polygons (in stable order so we can rely on z-stacking) */}
+        {/* UTRAQUIST first (often largest in L1.x), then UNITY, then LUTHERAN on top */}
+        {(["UTRAQUIST", "UNITY", "LUTHERAN"] as TradKey[]).map((t) => (
+          <polygon
+            points={polygons[t]}
+            fill={tradColor[t]}
+            fill-opacity="0.20"
+            stroke={tradColor[t]}
+            stroke-width="2"
+          />
+        ))}
+
+        {/* Vertex markers per tradition */}
+        {(["UTRAQUIST", "UNITY", "LUTHERAN"] as TradKey[]).map((t) =>
+          allLoci.map((code, i) => {
+            const [px, py] = radarPoint(i, coverage[code][t]);
+            return (
+              <circle
+                cx={px}
+                cy={py}
+                r="3.5"
+                fill={tradColor[t]}
+                stroke="white"
+                stroke-width="1"
+              />
+            );
+          }),
+        )}
+
+        {/* Axis labels (sub-locus codes + short names) */}
+        {allLoci.map((code, i) => {
+          const [lx, ly] = axisLabelPoint(i);
+          const locus = getLocusByCode(code);
+          // Anchor: align text relative to position around the circle.
+          const a = axisAngle(i);
+          const ax = Math.cos(a);
+          const anchor = ax < -0.3 ? "end" : ax > 0.3 ? "start" : "middle";
+          const dy = Math.sin(a) > 0.3 ? "0.7em" : Math.sin(a) < -0.3 ? "-0.2em" : "0.35em";
+          return (
+            <g>
+              <text
+                x={lx}
+                y={ly}
+                font-family="ui-monospace,monospace"
+                font-size="13"
+                font-weight="700"
+                text-anchor={anchor}
+                dy={dy}
+                fill="#1f2937"
+              >
+                {code}
+              </text>
+              {locus && (
+                <text
+                  x={lx}
+                  y={ly + 14}
+                  font-family="ui-sans-serif,system-ui"
+                  font-size="9"
+                  font-style="italic"
+                  text-anchor={anchor}
+                  dy={dy}
+                  fill="#6b7280"
+                >
+                  {locus.locus_name_sk.length > 18
+                    ? locus.locus_name_sk.slice(0, 18) + "…"
+                    : locus.locus_name_sk}
+                </text>
+              )}
+            </g>
+          );
+        })}
+
+        {/* Center marker */}
+        <circle cx={RADAR_CX} cy={RADAR_CY} r="2" fill="#374151" />
+      </svg>
+
+      {/* Legend */}
+      <div class="mt-4 flex flex-wrap items-center justify-center gap-5 font-sans text-xs">
+        {TRADITIONS.map((t) => (
+          <span class="flex items-center gap-1.5">
+            <span
+              class="inline-block h-3 w-3 rounded-sm"
+              style={`background:${tradColor[t]};opacity:0.8`}
+              aria-hidden="true"
+            ></span>
+            <span class="text-ink-400">
+              {tradLabel[t].sk} <span class="opacity-70" lang="en">/ {tradLabel[t].en}</span>
+            </span>
+          </span>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <div class="ornament-rule"></div>
+
+  <!-- ═══════════ COVERAGE TABLE ═══════════ -->
+  <section class="mx-auto max-w-wide px-6 py-12">
+    <h2 class="text-section-title text-ink">Matica pokrytia</h2>
+    <p class="mt-1 font-sans text-sm italic text-ink-300" lang="en">
+      Coverage matrix — sub-loci × traditions
+    </p>
+    <p class="mt-3 max-w-prose text-sm text-ink-400">
+      Každá bunka uvádza počet doložených konfesionálnych pozícií + ich
+      vývojové fázy. Kliknite na locus pre podrobný rozbor v
+      <a href={`${baseN}/taxonomy/`} class="text-burgundy hover:underline">taxonómii</a>.
+    </p>
+
+    <div class="mt-6 overflow-x-auto">
+      <table class="w-full min-w-[680px] border-collapse text-sm">
+        <thead>
+          <tr class="border-b-2 border-parchment-400/60">
+            <th class="px-3 py-2 text-left font-sans text-[11px] uppercase tracking-wider text-ink-300">
+              Sub-locus
+            </th>
+            {TRADITIONS.map((t) => (
+              <th
+                class="px-3 py-2 text-center font-sans text-[11px] uppercase tracking-wider"
+                style={`color:${tradColor[t]}`}
+              >
+                {tradLabel[t].sk}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {allLoci.map((code) => {
+            const locus = getLocusByCode(code);
+            const slug = code.toLowerCase().replace(/\./g, "-");
+            return (
+              <tr class="border-b border-parchment-300/40">
+                <th class="px-3 py-3 text-left font-display text-sm font-semibold text-ink">
+                  <a
+                    href={`${baseN}/taxonomy/${slug}/`}
+                    class="text-burgundy no-underline hover:underline"
+                  >
+                    {code}
+                  </a>
+                  {locus && (
+                    <span class="block font-sans text-[10px] font-normal italic text-ink-300">
+                      {locus.locus_name_sk}
+                    </span>
+                  )}
+                </th>
+                {TRADITIONS.map((t) => {
+                  const val = coverage[code][t];
+                  const phases = positionsByCell[code][t]
+                    .map((p) => p.tradition_phase)
+                    .join(", ");
+                  return (
+                    <td class="px-3 py-3 text-center">
+                      {val > 0 ? (
+                        <div>
+                          <span
+                            class="inline-flex h-7 w-7 items-center justify-center rounded-full font-mono font-semibold"
+                            style={`background:${tradColor[t]}25; color:${tradColor[t]}; border:1px solid ${tradColor[t]}50`}
+                          >
+                            {val}
+                          </span>
+                          <p class="mt-1 font-mono text-[9px] text-ink-300">{phases}</p>
+                        </div>
+                      ) : (
+                        <span class="font-sans text-[11px] italic text-ink-300">—</span>
+                      )}
+                    </td>
+                  );
+                })}
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <div class="ornament-rule"></div>
+
+  <!-- ═══════════ METHODOLOGICAL NOTE ═══════════ -->
+  <section class="mx-auto max-w-content px-6 py-12">
+    <h2 class="text-section-title text-ink">Metodologická poznámka</h2>
+    <p class="mt-1 font-sans text-sm italic text-ink-300" lang="en">
+      Methodological note — what this radar does and does not show
+    </p>
+
+    <div class="mt-6 space-y-4 font-serif text-sm leading-relaxed text-ink-400">
+      <p>
+        Radar zobrazuje <strong>hustotu doloženia</strong>, nie teologickú
+        hĺbku. Vyšší počet na osi neznamená „pravoverejšiu" tradíciu — len
+        tradíciu, ktorá v danom locus vykazuje viac vývojových fáz alebo
+        vnútorných variantov. Napríklad UNITY na L1.1 (mode of presence)
+        vykazuje 3 distinktné pozície (EARLY, MATURE, BLAHOSLAV) — Jednota
+        bratská prešla cez tri po sebe idúce eucharistické pozície, kým
+        LUTHERAN má jednu konsolidovanú konfesionálnu pozíciu (FC SD VII).
+      </p>
+      <p>
+        Maximálna hodnota napríč všetkými bunkami je
+        <strong>{maxCellValue}</strong>; všetky polygóny sú škálované k
+        tomuto maximu. Bunky s nulovým doložením znamenajú, že projekt
+        nezachytil žiadnu pozíciu pre danú tradíciu na danom locus — môže
+        to znamenať buď absenciu pozície (tradícia sa k téme explicitne
+        nevyjadrila), alebo medzeru v dataseti, ktorá si vyžaduje ďalšiu
+        prácu. Stránka <a href={`${baseN}/sources/`} class="text-burgundy hover:underline">prameňov</a>
+        a <a href={`${baseN}/taxonomy/`} class="text-burgundy hover:underline">taxonómia</a>
+        identifikujú konkrétne medzery.
+      </p>
+      <p>
+        Z 26 doložených pozícií je <strong>{positions.filter((p) => p.epistemic_status === "FACTUAL").length}</strong> klasifikovaných ako FACTUAL
+        (priamo doložené v normatívnych dokumentoch),
+        <strong>{positions.filter((p) => p.epistemic_status === "INTERPRETIVE").length}</strong> ako INTERPRETIVE (odborné syntézy
+        bez priameho doslovného doloženia v primárnom prameni). Radar
+        nerozlišuje tieto dve úrovne — pokrytie sa počíta rovnako.
+        Pre detailný prehľad epistemických flagov pre konkrétny locus
+        kliknite na jeho kód v matici.
+      </p>
+    </div>
+    <div class="mt-4 space-y-3 font-sans text-xs italic leading-relaxed text-ink-300" lang="en">
+      <p>
+        The radar shows <strong>documentation density</strong>, not
+        theological depth. A higher axis value does not mean a 'more
+        orthodox' tradition — only a tradition that exhibits more
+        developmental phases or internal variants on that locus. For example,
+        UNITY at L1.1 (mode of presence) shows 3 distinct positions (EARLY,
+        MATURE, BLAHOSLAV) — the Unity of Brethren passed through three
+        successive Eucharistic positions, while LUTHERAN has one consolidated
+        confessional position (FC SD VII).
+      </p>
+      <p>
+        The maximum cell value across the whole matrix is
+        <strong>{maxCellValue}</strong>; all polygons are scaled to this
+        maximum. Cells with zero documentation indicate that the project
+        has not captured any position for that tradition on that locus —
+        either an actual absence (the tradition did not articulate the
+        topic), or a dataset gap that calls for further work.
+      </p>
+      <p>
+        Of the {positions.length} documented positions,
+        <strong>{positions.filter((p) => p.epistemic_status === "FACTUAL").length}</strong> are FACTUAL (directly attested in normative documents) and
+        <strong>{positions.filter((p) => p.epistemic_status === "INTERPRETIVE").length}</strong> are INTERPRETIVE (scholarly syntheses without direct
+        verbatim attestation in a primary source). The radar does not
+        distinguish these two levels — coverage counts identically.
+      </p>
+    </div>
+  </section>
+
+  <div class="ornament-rule"></div>
+
+  <!-- ═══════════ FORWARD LINKS ═══════════ -->
+  <section class="mx-auto max-w-content px-6 py-12 pb-20">
+    <h2 class="text-section-title text-ink">Pokračovanie argumentu</h2>
+    <p class="mt-1 font-sans text-sm italic text-ink-300" lang="en">
+      Where the argument continues
+    </p>
+
+    <ul class="mt-6 grid gap-4 sm:grid-cols-2">
+      <li class="card">
+        <h3 class="font-display text-base font-semibold text-ink">
+          <a href={`${baseN}/taxonomy/`} class="hover:text-burgundy">
+            Taxonómia
+          </a>
+        </h3>
+        <p class="mt-2 text-sm text-ink-400">
+          Plný popis konfesionálnych pozícií pre každý sub-locus —
+          normatívne dokumenty, vývojové fázy, primárne pramene, epistemické
+          flagy.
+        </p>
+      </li>
+      <li class="card">
+        <h3 class="font-display text-base font-semibold text-ink">
+          <a href={`${baseN}/glossary/`} class="hover:text-burgundy">
+            Glosár
+          </a>
+        </h3>
+        <p class="mt-2 text-sm text-ink-400">
+          Multi-jazyčný terminologický aparát: 34 kanonických termínov × 4
+          jazyky × 14 sémantických polí. Dopĺňa pozičnú taxonómiu lexikálnou.
+        </p>
+      </li>
+      <li class="card">
+        <h3 class="font-display text-base font-semibold text-ink">
+          <a href={`${baseN}/trajectory/`} class="hover:text-burgundy">
+            Trajektória
+          </a>
+        </h3>
+        <p class="mt-2 text-sm text-ink-400">
+          Diachrónny pohľad: CB 1575 → AC 1581 → BA 1585 → CS 1636.
+          Fingerprintovanie dáva synchrónny obraz; trajektória sleduje, ako
+          sa tvar mení v čase.
+        </p>
+      </li>
+      <li class="card">
+        <h3 class="font-display text-base font-semibold text-ink">
+          <a href={`${baseN}/chapter/`} class="hover:text-burgundy">
+            Kapitola §3 + §4
+          </a>
+        </h3>
+        <p class="mt-2 text-sm text-ink-400">
+          Dogmatické profily (§3) a komparatívna analýza (§4) sú konceptuálnym
+          jadrom, ktoré radar vizualizuje. Plný argumentačný rozvoj v texte
+          kapitoly.
+        </p>
+      </li>
+    </ul>
+  </section>
+</BaseLayout>
