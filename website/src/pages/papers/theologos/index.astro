@@ -1,0 +1,509 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+
+const base = import.meta.env.BASE_URL;
+const baseN = base.replace(/\/$/, "");
+const baseHref = baseN.endsWith("/") ? baseN : baseN + "/";
+const paperUrl = Astro.site
+  ? new URL("papers/theologos/", new URL(baseHref, Astro.site)).toString()
+  : `${baseN}/papers/theologos/`;
+
+// Bibliography (from Drafts/Theologos_Bibliography.md, all 16 entries verified
+// in the bibliography-audit pass 2026-05-08). Single alphabetical list per
+// Theologos house style. Titles preserve original orthography (e.g., the 1912
+// "konfesse" with double 's' in Hrejsa).
+const bibliography = [
+  {
+    surname: "Benka",
+    initial: "P.",
+    citation:
+      "BENKA, P. (ed.): <em>Agenda Neosoliensia: Agenda Czeská 1581 a Bystrická agenda 1585</em>. Monumenta Linguae Slovacae X. Documenta Theologico-Religionistica, Tomus 2. Bratislava: Univerzita Komenského, 2024, 388 pp. ISBN 978-80-223-5971-9 (print); 978-80-223-6072-2 (online). CC BY-SA 4.0.",
+  },
+  {
+    surname: "Bente – Dau",
+    initial: "(eds.)",
+    citation:
+      "BENTE, F. – DAU, W. H. T. (eds.): <em>Concordia Triglotta: The Symbolical Books of the Evangelical Lutheran Church, German – Latin – English</em>. St. Louis: Concordia Publishing House, 1921.",
+  },
+  {
+    surname: "Bodnárová",
+    initial: "M.",
+    citation:
+      "BODNÁROVÁ, M.: Reformácia v hornouhorských slobodných kráľovských mestách v 16. storočí. In: KÓNYOVÁ, A. – KÓNYA, P. (eds.): <em>Reformácia v strednej Európe / Reformáció Közép-Európában / Reformation in Mittel-Europa I</em>. Prešov: Vydavateľstvo Prešovskej univerzity, 2018, pp. 132 – 153.",
+  },
+  {
+    surname: "Csepregi",
+    initial: "Z.",
+    citation:
+      "CSEPREGI, Z.: Die Confessio Pentapolitana: Fragen nach Autorschaft und Datierung. In: KÓNYA, P. (ed.): <em>„Nezameniteľné je dedičstvo otcov…“ Štúdie k dejinám a súčasnosti protestantizmu v strednej Európe k osemdesiatym narodeninám biskupa Jána Midriaka</em>. Acta Collegii Evangelici Prešoviensis X. Prešov: Prešovská univerzita, 2009, pp. 73 – 85.",
+  },
+  {
+    surname: "Grešová-Sekelská",
+    initial: "A.",
+    citation:
+      "GREŠOVÁ-SEKELSKÁ, A.: Príspevok k vzniku a obsahu Cithary sanctorum. In: <em>Clavibus unitis</em>, vol. 10, no. 4 (2021), pp. 5 – 14.",
+  },
+  {
+    surname: "Grešová-Sekelská",
+    initial: "A.",
+    citation:
+      "GREŠOVÁ-SEKELSKÁ, A.: <em>Georgius Tranoscius Teschiniensis / Jiří Třanovský (1592–1637): Duchovné piesne zo spevníka Cithara Sanctorum (1636) – výber / Hymns from the Cithara Sanctorum (1636) – Selection</em>. Musicalia Istropolitana 4/2. Bratislava: Stimul, 2023.",
+  },
+  {
+    surname: "Hrejsa",
+    initial: "F.",
+    citation:
+      "HREJSA, F.: <em>Česká konfesse, její vznik, podstata a dějiny</em>. Praha: Česká akademie císaře Františka Josefa pro vědy, slovesnost a umění, 1912, 818 pp.",
+  },
+  {
+    surname: "Kolb",
+    initial: "R.",
+    citation:
+      "KOLB, R.: <em>Lutheran Ecclesiastical Culture, 1550 – 1675</em>. Brill's Companions to the Christian Tradition 11. Leiden: Brill, 2008.",
+  },
+  {
+    surname: "Kolb – Wengert",
+    initial: "(eds.)",
+    citation:
+      "KOLB, R. – WENGERT, T. J. (eds.): <em>The Book of Concord: The Confessions of the Evangelical Lutheran Church</em>. Minneapolis: Fortress Press, 2000.",
+  },
+  {
+    surname: "Kónya – Csepregi",
+    initial: "(eds.)",
+    citation:
+      "KÓNYA, P. – CSEPREGI, Z. (eds.): <em>Tri lutherské vyznania viery z Uhorska / Három lutheri hitvallás Magyarországon / Drei lutherische Glaubensbekenntnisse aus Ungarn</em>. Prešov: Vydavateľstvo Prešovskej univerzity, 2013.",
+  },
+  {
+    surname: "Luther",
+    initial: "M.",
+    citation:
+      "LUTHER, M.: <em>Formula Missae et communionis pro ecclesia Vuittembergensi</em> (1523). In: <em>D. Martin Luthers Werke. Kritische Gesamtausgabe</em> [WA], vol. 12. Weimar: Hermann Böhlau, 1891, pp. 205 – 220.",
+  },
+  {
+    surname: "Prosper of Aquitaine",
+    initial: "",
+    citation:
+      "PROSPER OF AQUITAINE: <em>Praeteritorum Sedis Apostolicae episcoporum auctoritates de gratia Dei</em> (also known as the <em>Indiculus de gratia Dei</em> or the <em>Capitula pseudo-Caelestini</em>), c. 8 (5th century). Standard edition in <em>Patrologia Latina</em>, vol. 51, col. 209.",
+  },
+  {
+    surname: "Reinhard",
+    initial: "W.",
+    citation:
+      "REINHARD, W.: Zwang zur Konfessionalisierung? Prolegomena zu einer Theorie des konfessionellen Zeitalters. In: <em>Zeitschrift für Historische Forschung</em>, vol. 10 (1983), pp. 257 – 277.",
+  },
+  {
+    surname: "Schilling",
+    initial: "H.",
+    citation:
+      "SCHILLING, H.: Die Konfessionalisierung im Reich: Religiöser und gesellschaftlicher Wandel in Deutschland zwischen 1555 und 1620. In: <em>Historische Zeitschrift</em>, vol. 246 (1988), pp. 1 – 45.",
+  },
+  {
+    surname: "Vajda",
+    initial: "J.",
+    citation:
+      "VAJDA, J.: <em>A History of the Cithara Sanctorum</em>. B.Div. thesis, Concordia Seminary, St. Louis, Missouri, 1944.",
+  },
+  {
+    surname: "Valčo",
+    initial: "M.",
+    citation:
+      "VALČO, M.: <em>TEPALIT Digital Companion: AC 1581 / BA 1585 / Cithara Sanctorum 1636 hymn-pair dossier</em>. Concept DOI: 10.5281/zenodo.20081435. Bratislava, 2026. CC BY 4.0.",
+  },
+];
+
+// JSON-LD: emit a ScholarlyArticle record so the paper landing page is
+// indexable by Google Scholar / search engines.
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ScholarlyArticle",
+  name: "The Cithara Sanctorum (1636) Bound In: Intra-Codex Confessional Stratification in the Bratislava Lyceal Library Exemplar of Agenda Česká 1581 + Bystrická agenda 1585",
+  alternateName:
+    "Cithara Sanctorum (1636) zviazaná: intra-kódexová konfesionálna stratifikácia v exemplári Lyceálnej knižnice v Bratislave",
+  url: paperUrl,
+  inLanguage: "en",
+  datePublished: "2026-05-08",
+  publishingPrinciples:
+    "Draft v0.1 — abstract and bibliography published under CC BY 4.0; full draft retained until journal submission.",
+  author: {
+    "@type": "Person",
+    name: "Michal Valčo",
+    affiliation: { "@type": "Organization", name: "ETF UK Bratislava" },
+  },
+  publisher: {
+    "@type": "Organization",
+    name: "Theologos: Theological Revue",
+    parentOrganization: {
+      "@type": "Organization",
+      name: "Faculty of Greek-Catholic Theology, University of Prešov",
+    },
+  },
+  isPartOf: {
+    "@type": "ResearchProject",
+    name: "TEPALIT (APVV-24-0484)",
+    funder: {
+      "@type": "Organization",
+      name: "Slovak Research and Development Agency",
+      identifier: "APVV-24-0484",
+    },
+  },
+  keywords: [
+    "Cithara Sanctorum",
+    "Tranovský",
+    "Agenda Česká",
+    "Bystrická agenda",
+    "Banská Bystrica",
+    "manducatio impiorum",
+    "lex orandi lex credendi",
+    "Reformation hymnology",
+    "intra-codex stratification",
+    "confessionalisation",
+  ],
+};
+---
+
+<BaseLayout
+  title="Theologos paper — Cithara Sanctorum bound in"
+  description="Theologos paper draft v0.1: intra-codex confessional stratification in the Bratislava Lyceal Library exemplar of Agenda Česká 1581 + Bystrická agenda 1585. ~7,200 words."
+  lang="sk"
+>
+  <script
+    is:inline
+    type="application/ld+json"
+    set:html={JSON.stringify(jsonLd)}
+  />
+
+  <!-- ═══════════ HERO ═══════════ -->
+  <section class="bg-ink-800 px-6 py-16 text-parchment">
+    <div class="mx-auto max-w-content">
+      <p class="font-sans text-xs font-medium uppercase tracking-[0.2em] text-gold">
+        <a href={`${baseN}/papers/`} class="hover:underline">Štúdie</a>
+        <span aria-hidden="true">·</span> Theologos · Draft v0.1
+      </p>
+      <h1 class="mt-4 font-display text-3xl font-bold leading-tight text-parchment-100 md:text-4xl">
+        Cithara Sanctorum (1636) zviazaná
+      </h1>
+      <p class="mt-3 font-display text-lg font-medium text-parchment-300">
+        Intra-kódexová konfesionálna stratifikácia v exemplári Lyceálnej knižnice
+        v Bratislave (Agenda Česká 1581 + Bystrická agenda 1585)
+      </p>
+      <h2 class="mt-6 font-display text-xl font-semibold text-parchment-200" lang="en">
+        The Cithara Sanctorum (1636) Bound In
+      </h2>
+      <p class="mt-2 font-display text-base text-parchment-400" lang="en">
+        Intra-Codex Confessional Stratification in the Bratislava Lyceal Library
+        Exemplar of <em>Agenda Česká</em> 1581 + <em>Bystrická agenda</em> 1585
+      </p>
+
+      <div class="mt-8 flex flex-wrap items-center gap-3">
+        <span class="rounded-full bg-gold/15 px-3 py-1 font-sans text-xs font-semibold text-gold">
+          Návrh v0.1 · pripravený na odoslanie
+        </span>
+        <span class="rounded-full bg-parchment-300/20 px-3 py-1 font-sans text-xs text-parchment-300" lang="en">
+          Draft v0.1 · awaiting submission
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ METADATA STRIP ═══════════ -->
+  <section class="border-b border-parchment-400/30 bg-parchment-100/40 px-6 py-6">
+    <div class="mx-auto max-w-content">
+      <dl class="grid grid-cols-1 gap-x-6 gap-y-2 font-sans text-xs sm:grid-cols-2 md:grid-cols-4">
+        <div>
+          <dt class="font-semibold uppercase tracking-wider text-ink-300">Autor</dt>
+          <dd class="mt-0.5 text-ink-400">Michal Valčo (sólo)</dd>
+        </div>
+        <div>
+          <dt class="font-semibold uppercase tracking-wider text-ink-300">Cieľové miesto</dt>
+          <dd class="mt-0.5 text-ink-400">
+            <span lang="en">Theologos: Theological Revue</span>
+            <span class="mt-0.5 block text-[10px] italic text-ink-300">
+              GTF Prešov · ERIH PLUS · ISSN 1335-5570
+            </span>
+          </dd>
+        </div>
+        <div>
+          <dt class="font-semibold uppercase tracking-wider text-ink-300">Jazyk</dt>
+          <dd class="mt-0.5 text-ink-400">British English</dd>
+        </div>
+        <div>
+          <dt class="font-semibold uppercase tracking-wider text-ink-300">Rozsah</dt>
+          <dd class="mt-0.5 text-ink-400">
+            ~7 200 slov · 36 fn. · 16 záznamov bibliografie
+          </dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ═══════════ ABSTRACT (SK) ═══════════ -->
+  <section class="mx-auto max-w-content px-6 py-12">
+    <h2 class="text-section-title text-ink">Abstrakt</h2>
+    <p class="mt-1 font-sans text-sm italic text-ink-300" lang="en">Abstract (Slovak)</p>
+    <p class="mt-3 rounded-md border border-parchment-300/40 bg-parchment-50 px-4 py-2 font-sans text-[10px] italic text-ink-300">
+      Slovenský abstrakt v pracovnej verzii — pripravený Claude pre redakciu
+      Michalom (per rozhodnutie 2026-05-09: <em>Draft-by-Claude, edit-by-Michal</em>).
+    </p>
+    <p class="mt-5 font-serif text-sm leading-relaxed text-ink-400">
+      Najnovšie štúdie o slovenskom luteránskom spevníku <em>Cithara Sanctorum</em>
+      (1636) zjemňujú štandardný „luteranizačný" obraz Tranovského hymnára
+      kvantifikáciou zloženia jeho prameňov a mapovaním jeho diferenciálnej
+      editorskej stratégie. Predkladaná štúdia ponúka komplementárny nález na
+      menšej škále. Exemplár bratislavskej Lyceálnej knižnice — <em>Agenda
+      Česká</em> 1581 + <em>Bystrická agenda</em> 1585, zachované zviazané
+      spolu v jednom fyzickom kódexe a po prvý raz kriticky vydané Petrom Benkom
+      v roku 2024 — vykazuje konfesionálnu stratifikáciu vnútri samotnej
+      luteránskej tradície. Tlačená česká <em>Agenda Česká</em> používa mierny
+      eucharistický register — „tělo a krev" bez prívlastkov „pravý" alebo
+      „substanciálny", ktoré charakterizovali polemicky vyostrený luteránsky
+      diskurz, a podmieňuje hodné prijímanie vierou v slová ustanovenia.
+      Rukopisný slovenský doplnok, napísaný o štyri roky neskôr, ostrí tú istú
+      teológiu výslovným luteránskym <em>manducatio impiorum</em>: nehodný
+      prijíma telo a krv „ne k spaseniu, ale k zatrateniu večnému".
+      Intenzifikácia neprebieha na medzikonfesionálnej hranici, ale vnútri
+      luteránskej tradície samotnej — od mierneho českého tlačeného registra
+      s utrakvistickým liturgickým reziduom k tvrdšiemu hornouhorsko-luteránskemu
+      rukopisnému registru. Pre luteranizačnú tézu z toho vyplýva, že
+      konfesionálne ostrenie je fenoménom registrovej zmeny, pozorovateľnej
+      na úrovni jedného fyzického kódexu, a nie výlučne fenoménom
+      medzikonfesionálneho prenosu.
+    </p>
+    <p class="mt-3 font-sans text-xs text-ink-300">
+      <strong>Kľúčové slová:</strong> Cithara Sanctorum, Tranovský, Agenda
+      Česká, Bystrická agenda, Banská Bystrica, manducatio impiorum, lex orandi
+      lex credendi, reformačná hymnológia, intra-kódexová stratifikácia,
+      konfesionalizácia.
+    </p>
+  </section>
+
+  <!-- ═══════════ ABSTRACT (EN) ═══════════ -->
+  <section class="mx-auto max-w-content px-6 py-8">
+    <h2 class="text-section-title text-ink" lang="en">Abstract</h2>
+    <p class="mt-1 font-sans text-sm italic text-ink-300">English (verbatim from draft)</p>
+    <p class="mt-5 font-serif text-sm leading-relaxed text-ink-400" lang="en">
+      Recent scholarship on the Slovak Lutheran <em>Cithara Sanctorum</em>
+      (1636) refines the standard "Lutheranisation" account of Tranovský's
+      hymnal by quantifying the source mix and mapping his differential
+      editorial strategy. This paper offers a complementary finding at smaller
+      scale. The Bratislava Lyceal Library exemplar of <em>Agenda Česká</em>
+      1581 + <em>Bystrická agenda</em> 1585 — preserved bound together in a
+      single physical codex and edited critically for the first time by Peter
+      Benka in 2024 — exhibits a confessional stratification within the Lutheran
+      orbit itself. The printed Czech <em>Agenda Česká</em> uses a moderate
+      Eucharistic register — "tělo a krev" without the qualifying "pravý" or
+      "substanciálny" adjectives that characterised polemically sharpened
+      Lutheran discourse, and grounds worthy reception in faith in the words
+      of institution. The manuscript Slovak supplement, written four years
+      later, sharpens the same theology with explicit Lutheran <em>manducatio
+      impiorum</em>: the unworthy receive the body and blood "ne k spasenij,
+      ale k zatraczenij wěčnemu". The intensification operates not at the
+      cross-confessional boundary but within the Lutheran orbit itself, from a
+      moderate Czech printed register with Utraquist liturgical residue towards
+      a sharper Upper-Hungarian Lutheran manuscript register. The implication
+      for the Lutheranisation thesis is that confessional sharpening is a
+      phenomenon of register shift, observable at the granularity of a single
+      physical codex, not exclusively a phenomenon of cross-confessional
+      transfer.
+    </p>
+    <p class="mt-3 font-sans text-xs text-ink-300" lang="en">
+      <strong>Keywords:</strong> Cithara Sanctorum, Tranovský, Agenda Česká,
+      Bystrická agenda, Banská Bystrica, manducatio impiorum, lex orandi lex
+      credendi, Reformation hymnology, intra-codex stratification,
+      confessionalisation.
+    </p>
+  </section>
+
+  <div class="ornament-rule"></div>
+
+  <!-- ═══════════ ARGUMENT SYNOPSIS ═══════════ -->
+  <section class="mx-auto max-w-content px-6 py-10">
+    <h2 class="text-section-title text-ink">Synopsa argumentu</h2>
+    <p class="mt-1 font-sans text-sm italic text-ink-300" lang="en">Argument synopsis</p>
+
+    <div class="mt-6 space-y-4 font-serif text-sm leading-relaxed text-ink-400">
+      <p>
+        Štandardný anglofónny obraz <em>Cithary Sanctorum</em> 1636 — Vajda 1944,
+        zjemnený Grešovou-Sekelskou v rokoch 2021 a 2023 — kladie konfesionálne
+        ostrenie na hranicu, na ktorej Tranovský preberá český reformačný materiál
+        (utrakvistický a bratrský) a editorsky ho prispôsobuje augsburskej luteránskej
+        norme. Ostrenie sa odohráva pri prenose; výsledný spevník je luteránsky.
+      </p>
+      <p>
+        Štúdia kladie na túto rozprávku komplementárny nález na menšej škále.
+        Exemplár Lyceálnej knižnice v Bratislave (dnes spravovaný Ústrednou
+        knižnicou SAV) obsahuje tlačenú <em>Agendu Českú</em> 1581 zviazanú
+        spolu s rukopisnou <em>Bystrickou agendou</em> 1585. Benkovo kritické
+        vydanie z roku 2024 — prvé, ktoré obe svedectvá predstavuje spolu —
+        umožňuje čítať ich proti sebe v ich kódikografickej koexistencii. Pri
+        takom čítaní sa ukáže konfesionálna stratifikácia <em>vnútri samotnej
+        luteránskej tradície</em>: tlačená česká agenda hovorí o „tele a krvi"
+        bez tvrdých prívlastkov a kotví hodné prijímanie vo viere v slová
+        ustanovenia. Rukopisný slovenský doplnok, napísaný o štyri roky neskôr,
+        pridáva výslovné luteránske <em>manducatio impiorum</em>: nehodný
+        prijíma telo a krv „ne k spaseniu, ale k zatrateniu večnému".
+      </p>
+      <p>
+        Implikácia pre luteranizačnú tézu: konfesionálne ostrenie nie je výlučne
+        fenoménom medzikonfesionálneho prenosu. Je tiež fenoménom registrovej
+        intenzifikácie, viditeľným na úrovni jedného fyzického kódexu, ktorý
+        pôvodní používatelia zviazali ako jednu liturgickú jednotku. Editorská
+        ruka Tranovského pri kompilácii CS v roku 1636 nadväzuje na rukopisné
+        doplnenia, ktoré už sprísňovali český tlačený luteránsky register pol
+        storočia predtým v tom istom slovenskom luteránskom liturgickom prostredí.
+        Trajektória CB 1575 → AC 1581 → BA 1585 → CS 1636 sleduje jeden smer
+        konfesionálnej konsolidácie.
+      </p>
+    </div>
+
+    <div class="mt-8 rounded-md border-l-4 border-burgundy/60 bg-parchment-100/40 p-4">
+      <p class="font-sans text-xs font-semibold uppercase tracking-wider text-ink-400">
+        Dátový anchor
+      </p>
+      <p class="mt-2 text-sm text-ink-400">
+        Centrálny pracovný príklad štúdie je zaznamenaný v
+        <a href={`${baseN}/hymn-pairs/#PAIR_006_AC_BA_EUCHARIST`} class="text-burgundy hover:underline">
+          PAIR_006 — Eucharistická stratifikácia v jednom kódexe
+        </a> (na stránke hymno-párov; epistemický status FACTUAL, sila dôkazu
+        DOCUMENTED, vlastná verifikácia VERIFIED).
+      </p>
+    </div>
+  </section>
+
+  <div class="ornament-rule"></div>
+
+  <!-- ═══════════ STRUCTURE ═══════════ -->
+  <section class="mx-auto max-w-content px-6 py-10">
+    <h2 class="text-section-title text-ink">Štruktúra štúdie</h2>
+    <p class="mt-1 font-sans text-sm italic text-ink-300" lang="en">Paper structure</p>
+    <ol class="mt-6 space-y-3 text-sm text-ink-400">
+      <li>
+        <span class="font-mono text-xs text-ink-300">§1</span>
+        <strong>Introduction</strong> · ~600 slov ·
+        štandardný obraz, komplementárny nález, mapa argumentu.
+      </li>
+      <li>
+        <span class="font-mono text-xs text-ink-300">§2</span>
+        <strong>The codex and its scholarly framing</strong> · ~900 slov ·
+        bratislavský exemplár, Benkove kritické vydanie 2024, banícke mestá v
+        70. – 80. rokoch 16. storočia, anti-krypto-kalvínska disciplína.
+      </li>
+      <li>
+        <span class="font-mono text-xs text-ink-300">§3</span>
+        <strong>The printed Czech register: Agenda Česká 1581</strong> · ~1 500 slov ·
+        verbatim citácie z Benkovho vydania, teologické čítanie, identifikácia
+        mierneho registra.
+      </li>
+      <li>
+        <span class="font-mono text-xs text-ink-300">§4</span>
+        <strong>The manuscript Slovak supplement: Bystrická agenda 1585</strong> · ~1 500 slov ·
+        verbatim citácia <em>manducatio impiorum</em> formuly, register-shift
+        analýza, prepojenie na FC SD VII (1577).
+      </li>
+      <li>
+        <span class="font-mono text-xs text-ink-300">§5</span>
+        <strong>Reading the stratification: confessional sharpening within Lutheranism</strong> · ~1 000 slov ·
+        AC→BA shift ako intra-konfesionálna luteranizácia; štyri analytické dôsledky.
+      </li>
+      <li>
+        <span class="font-mono text-xs text-ink-300">§6</span>
+        <strong>Implications for the Lutheranisation thesis</strong> · ~1 000 slov ·
+        krátka zmienka o paralele Confessio Bohemica 1575 (plne sa rozvíja v
+        kapitole TEPALIT-monografie); CS editorská metóda; PAIR_006 dataset;
+        ďalšie výskumné smery.
+      </li>
+      <li>
+        <span class="font-mono text-xs text-ink-300">§7</span>
+        <strong>Conclusion</strong> · ~300 slov ·
+        syntéza bez opakovania; otvorenie pre TEPALIT-monografiu.
+      </li>
+    </ol>
+  </section>
+
+  <div class="ornament-rule"></div>
+
+  <!-- ═══════════ BIBLIOGRAPHY ═══════════ -->
+  <section class="mx-auto max-w-content px-6 py-10">
+    <h2 class="text-section-title text-ink">Bibliografia</h2>
+    <p class="mt-1 font-sans text-sm italic text-ink-300" lang="en">
+      Bibliography (16 entries; verified in audit pass 2026-05-08)
+    </p>
+    <p class="mt-3 text-xs text-ink-300">
+      Single alphabetical list per Theologos house style. Surnames in small
+      caps. Diacritics preserved as in original.
+    </p>
+
+    <ol class="mt-6 list-decimal space-y-3 pl-6 text-sm leading-relaxed text-ink-400">
+      {bibliography.map((entry) => (
+        <li set:html={entry.citation} class="pl-1" />
+      ))}
+    </ol>
+  </section>
+
+  <div class="ornament-rule"></div>
+
+  <!-- ═══════════ HOW TO CITE ═══════════ -->
+  <section class="mx-auto max-w-content px-6 py-10">
+    <h2 class="text-section-title text-ink">Ako citovať</h2>
+    <p class="mt-1 font-sans text-sm italic text-ink-300" lang="en">
+      How to cite this paper (pre-publication reference)
+    </p>
+    <p class="mt-4 text-sm text-ink-400">
+      Pred odoslaním do <em>Theologosu</em> sa štúdia cituje ako pracovný
+      dokument projektu APVV-24-0484, kotvený na trvalom odkaze tejto stránky:
+    </p>
+
+    <div class="card mt-6">
+      <h3 class="font-sans text-xs font-semibold uppercase tracking-wider text-ink-400">
+        APA (7th edition)
+      </h3>
+      <p class="mt-3 font-serif text-sm leading-relaxed text-ink" lang="en">
+        Valčo, M. (2026). <em>The Cithara Sanctorum (1636) bound in: Intra-codex
+        confessional stratification in the Bratislava Lyceal Library exemplar of
+        Agenda Česká 1581 + Bystrická agenda 1585</em> [Pre-publication draft,
+        APVV-24-0484 TEPALIT]. <a href={paperUrl} class="text-burgundy">{paperUrl}</a>
+      </p>
+    </div>
+
+    <div class="card mt-4">
+      <h3 class="font-sans text-xs font-semibold uppercase tracking-wider text-ink-400">
+        BibTeX
+      </h3>
+      <pre
+        class="mt-3 overflow-x-auto rounded bg-ink/5 p-3 font-mono text-xs text-ink"
+      ><code>{`@unpublished{Valco_Theologos_2026,
+  author    = {Val{\\v{c}}o, Michal},
+  title     = {{The Cithara Sanctorum (1636) bound in: Intra-codex confessional stratification in the Bratislava Lyceal Library exemplar of Agenda {\\v C}esk{\\'a} 1581 + Bystrick{\\'a} agenda 1585}},
+  year      = {2026},
+  note      = {Pre-publication draft, APVV-24-0484 TEPALIT; awaiting submission to Theologos: Theological Revue},
+  url       = {${paperUrl}}
+}`}</code></pre>
+    </div>
+
+    <p class="mt-6 rounded-md bg-burgundy/5 px-4 py-3 text-xs text-burgundy">
+      <strong>Po publikácii:</strong> citácia sa nahradí oficiálnym vydaním v
+      <em>Theologos</em> (DOI / strany doplnené po prijatí). Plný text štúdie
+      ostáva v repo
+      <code class="font-mono text-[10px]">Drafts/Theologos_Draft_v0.1_Full.md</code>
+      do odoslania; po publikácii sa licencia plného textu riadi vydavateľskou
+      zmluvou. Abstrakt a bibliografia na tejto stránke sú pod CC BY 4.0.
+    </p>
+  </section>
+
+  <!-- ═══════════ NAV ═══════════ -->
+  <section class="mx-auto max-w-content px-6 py-10 pb-20">
+    <div class="flex flex-wrap items-center justify-between gap-4 border-t border-parchment-300/40 pt-6">
+      <a
+        href={`${baseN}/papers/`}
+        class="inline-flex items-center gap-1 font-sans text-sm font-medium text-burgundy no-underline hover:underline"
+      >
+        &#x2190; Späť na štúdie / <span class="italic" lang="en">Back to papers</span>
+      </a>
+      <a
+        href={`${baseN}/papers/methods/`}
+        class="inline-flex items-center gap-1 font-sans text-sm font-medium text-burgundy no-underline hover:underline"
+      >
+        Metodologická štúdia / <span class="italic" lang="en">Methods paper</span> &#x2192;
+      </a>
+    </div>
+  </section>
+</BaseLayout>

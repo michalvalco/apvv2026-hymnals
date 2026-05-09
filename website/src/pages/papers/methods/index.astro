@@ -1,0 +1,430 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+
+const base = import.meta.env.BASE_URL;
+const baseN = base.replace(/\/$/, "");
+const baseHref = baseN.endsWith("/") ? baseN : baseN + "/";
+const paperUrl = Astro.site
+  ? new URL("papers/methods/", new URL(baseHref, Astro.site)).toString()
+  : `${baseN}/papers/methods/`;
+
+// JSON-LD: ScholarlyArticle in pre-draft state.
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ScholarlyArticle",
+  name: "Three Trust Axes for Digital Confessional Hymnology: Decomposing Epistemic Status, Evidentiary Strength, and Verification in Lex Orandi Datasets",
+  alternateName:
+    "Tri osi dôvery v digitálnej konfesionálnej hymnológii: dekompozícia epistemického statusu, sily dôkazu a verifikácie v lex-orandi datasetoch",
+  url: paperUrl,
+  inLanguage: "en",
+  publishingPrinciples:
+    "Outline v0.1 — drafting target TBD. Three abstract variants published under CC BY 4.0 as pre-publication reference material.",
+  author: {
+    "@type": "Person",
+    name: "Michal Valčo",
+    affiliation: { "@type": "Organization", name: "ETF UK Bratislava" },
+  },
+  isPartOf: {
+    "@type": "ResearchProject",
+    name: "TEPALIT (APVV-24-0484)",
+    funder: {
+      "@type": "Organization",
+      name: "Slovak Research and Development Agency",
+      identifier: "APVV-24-0484",
+    },
+  },
+  keywords: [
+    "epistemic transparency",
+    "lex orandi lex credendi",
+    "Reformation hymnology",
+    "Cithara Sanctorum",
+    "dossier methodology",
+    "FAIR data",
+    "schema design",
+    "digital humanities",
+  ],
+};
+---
+
+<BaseLayout
+  title="Methods paper — Three Trust Axes for Digital Confessional Hymnology"
+  description="Methods paper outline v0.1: a three-axis trust framework (epistemic status × evidentiary strength × verification) for confessional-theology DH datasets. Worked on the TEPALIT hymn-pair dossier."
+  lang="sk"
+>
+  <script
+    is:inline
+    type="application/ld+json"
+    set:html={JSON.stringify(jsonLd)}
+  />
+
+  <!-- ═══════════ HERO ═══════════ -->
+  <section class="bg-ink-800 px-6 py-16 text-parchment">
+    <div class="mx-auto max-w-content">
+      <p class="font-sans text-xs font-medium uppercase tracking-[0.2em] text-gold">
+        <a href={`${baseN}/papers/`} class="hover:underline">Štúdie</a>
+        <span aria-hidden="true">·</span> Methods paper · Outline v0.1
+      </p>
+      <h1 class="mt-4 font-display text-3xl font-bold leading-tight text-parchment-100 md:text-4xl">
+        Tri osi dôvery v digitálnej konfesionálnej hymnológii
+      </h1>
+      <p class="mt-3 font-display text-lg font-medium text-parchment-300">
+        Dekompozícia epistemického statusu, sily dôkazu a verifikácie
+        v lex-orandi datasetoch
+      </p>
+      <h2 class="mt-6 font-display text-xl font-semibold text-parchment-200" lang="en">
+        Three Trust Axes for Digital Confessional Hymnology
+      </h2>
+      <p class="mt-2 font-display text-base text-parchment-400" lang="en">
+        Decomposing Epistemic Status, Evidentiary Strength, and Verification
+        in <em>Lex Orandi</em> Datasets
+      </p>
+
+      <div class="mt-8 flex flex-wrap items-center gap-3">
+        <span class="rounded-full bg-parchment-300/20 px-3 py-1 font-sans text-xs font-semibold text-parchment-300">
+          Osnova v0.1 · termín drafty TBD
+        </span>
+        <span class="rounded-full bg-parchment-300/10 px-3 py-1 font-sans text-xs italic text-parchment-300" lang="en">
+          Outline v0.1 · drafting target TBD
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ METADATA STRIP ═══════════ -->
+  <section class="border-b border-parchment-400/30 bg-parchment-100/40 px-6 py-6">
+    <div class="mx-auto max-w-content">
+      <dl class="grid grid-cols-1 gap-x-6 gap-y-2 font-sans text-xs sm:grid-cols-2 md:grid-cols-4">
+        <div>
+          <dt class="font-semibold uppercase tracking-wider text-ink-300">Autor</dt>
+          <dd class="mt-0.5 text-ink-400">
+            Michal Valčo (predbežne sólo)
+            <span class="mt-0.5 block text-[10px] italic text-ink-300">
+              koautorstvo s Klátikom / Sekelskou TBD
+            </span>
+          </dd>
+        </div>
+        <div>
+          <dt class="font-semibold uppercase tracking-wider text-ink-300">Cieľové miesto</dt>
+          <dd class="mt-0.5 text-ink-400">
+            <span lang="en">DHQ + JOHD</span>
+            <span class="mt-0.5 block text-[10px] italic text-ink-300">
+              koordinované dvojité odoslanie po DOI (DOI vydaný 2026-05-08)
+            </span>
+          </dd>
+        </div>
+        <div>
+          <dt class="font-semibold uppercase tracking-wider text-ink-300">Jazyk</dt>
+          <dd class="mt-0.5 text-ink-400">English</dd>
+        </div>
+        <div>
+          <dt class="font-semibold uppercase tracking-wider text-ink-300">Cieľový rozsah</dt>
+          <dd class="mt-0.5 text-ink-400">
+            ~6 500 – 7 500 slov (cieľ ~7 000)
+          </dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ═══════════ ABSTRACT (PRIMARY, ~470 words) ═══════════ -->
+  <section class="mx-auto max-w-content px-6 py-12">
+    <h2 class="text-section-title text-ink" lang="en">Abstract (CFP standard, ~470 words)</h2>
+    <p class="mt-1 font-sans text-sm italic text-ink-300">
+      Štandardný abstrakt pre DH konferencie a CFP
+    </p>
+
+    <div class="mt-6 space-y-4 font-serif text-sm leading-relaxed text-ink-400" lang="en">
+      <p>
+        Digital humanities datasets in confessional theology — Reformation
+        studies, hymnology, comparative liturgics — face a peer-review problem
+        that more mature DH subfields have already encountered: the boundary
+        between <em>what published scholarship has shown</em> and <em>what the
+        dataset is inferring from that scholarship</em> erodes when both are
+        flat-rendered as visualisations. The ITSERR-RESILIENCE project's
+        epistemic-modesty framework (FACTUAL / INTERPRETIVE / DEFERRED) is a
+        clear advance over flat-rendering, but it conflates two distinct
+        epistemic dimensions — <em>what kind of claim is being made</em> and
+        <em>how strong the textual evidence is</em> — and hides a third
+        dimension that is decisive for theological-historical datasets:
+        <em>whether the project's own members have personally collated the
+        primary witnesses</em>.
+      </p>
+      <p>
+        This paper argues that <strong>three orthogonal trust axes</strong> are
+        necessary for confessional-theology DH datasets to be honestly
+        peer-reviewable, and demonstrates the framework with a working dataset:
+        the TEPALIT hymn-pair dossier (APVV-24-0484, Slovak Research and
+        Development Agency).
+      </p>
+      <p>
+        The three axes are: (1) <strong>epistemic status</strong>
+        (FACTUAL / INTERPRETIVE / DEFERRED) — what kind of claim;
+        (2) <strong>evidentiary strength</strong>
+        (DOCUMENTED / INFERRED / CONJECTURED) — quality of textual evidence;
+        (3) <strong>verification status</strong>
+        (VERIFIED / SECONDARY_ONLY / PRIMARY_PENDING / UNVERIFIED) — whether
+        the project has personally collated primary witnesses. The cells
+        <code class="font-mono text-[11px]">(INTERPRETIVE, DOCUMENTED, SECONDARY_ONLY)</code>
+        and
+        <code class="font-mono text-[11px]">(INTERPRETIVE, INFERRED, VERIFIED)</code>
+        are routinely conflated in single-axis DH visualisations; they are
+        very different epistemic acts.
+      </p>
+      <p>
+        The TEPALIT case study comprises six hymn-pair dossiers comparing the
+        Slovak Lutheran <em>Cithara Sanctorum</em> (1636) with its
+        Czech-Reformation source kancionáls and agendas. Each pair is a
+        self-contained scholarly record with stable permalink, citation chain,
+        and trust-axis state. As of v0.1.0, two pairs are VERIFIED via
+        project-member collation of peer-reviewed critical editions (Benka 2024;
+        Grešová-Sekelská 2023), one is PRIMARY_PENDING with explicit unblock
+        paths documented, one is SECONDARY_ONLY pending print-edition acquisition,
+        one is transparently flagged as a working hypothesis, and one is a
+        research-target manifest. The trust state is exposed in CSV, JSON-LD
+        <code class="font-mono text-[11px]">Dataset</code> structured data, and
+        a bilingual (Slovak/English) companion website with a four-axis filter
+        bar.
+      </p>
+      <p>
+        The contribution is methodological, not substantive: the Reformation
+        findings are reported elsewhere. What is offered here is a schema, a
+        build-time validation pipeline, a dossier template, and a worked
+        demonstration. The schema is released under CC BY 4.0 (data) + MIT
+        (code) and is designed for adoption in adjacent confessional-DH
+        subfields.
+      </p>
+    </div>
+
+    <p class="mt-5 font-sans text-xs text-ink-300" lang="en">
+      <strong>Keywords:</strong> epistemic transparency, <em>lex orandi lex
+      credendi</em>, Reformation hymnology, Cithara Sanctorum, dossier
+      methodology, FAIR data, schema design.
+    </p>
+  </section>
+
+  <div class="ornament-rule"></div>
+
+  <!-- ═══════════ ABSTRACT VARIANTS (short + extended) ═══════════ -->
+  <section class="mx-auto max-w-content px-6 py-10">
+    <h2 class="text-section-title text-ink">Varianty abstraktu</h2>
+    <p class="mt-1 font-sans text-sm italic text-ink-300" lang="en">Abstract variants for different CFP word budgets</p>
+
+    <p class="mt-4 text-sm text-ink-400">
+      Tri verzie toho istého abstraktu sú v repo
+      (<code class="font-mono text-xs">MethodsPaper_Abstracts.md</code>):
+      štandardná (~470 slov; nad), krátka (~240 slov; nižšie) a rozšírená
+      (~1 150 slov). Plus jedna alternatívna verzia, ktorá pivotuje od
+      metodologického k substantívnemu zameraniu (PAIR_006) pre venues, kde je
+      reformačno-historická publika primárna.
+    </p>
+
+    <details class="card group mt-6">
+      <summary class="cursor-pointer font-display text-base font-semibold text-ink hover:text-burgundy">
+        Krátka verzia (~240 slov) <span class="ml-1 inline-block text-xs transition-transform group-open:rotate-90">&#x25B8;</span>
+      </summary>
+      <div class="mt-4 space-y-4 font-serif text-sm leading-relaxed text-ink-400" lang="en">
+        <p>
+          DH datasets in confessional theology routinely conflate distinct
+          epistemic dimensions: <em>what kind of claim is being made</em>
+          (factual / interpretive / deferred) versus <em>how strong the textual
+          evidence is</em> (documented / inferred / conjectured) versus
+          <em>whether the project has personally collated the primary witnesses</em>
+          (verified / secondary-only / primary-pending / unverified). The cells
+          <code class="font-mono text-[11px]">(INTERPRETIVE, DOCUMENTED, SECONDARY_ONLY)</code>
+          and
+          <code class="font-mono text-[11px]">(INTERPRETIVE, INFERRED, VERIFIED)</code>
+          look identical when only one axis is rendered; they are very different
+          epistemic acts.
+        </p>
+        <p>
+          This paper proposes a three-axis trust decomposition for <em>lex
+          orandi</em> datasets and demonstrates it on the TEPALIT hymn-pair
+          dossier (APVV-24-0484, Slovak Research and Development Agency) — six
+          paired comparisons between the Slovak Lutheran <em>Cithara Sanctorum</em>
+          (1636) and its Czech-Reformation source kancionáls. Two pairs are
+          VERIFIED via collation of critical editions; one is PRIMARY_PENDING
+          with documented unblockers; one is SECONDARY_ONLY pending
+          print-edition acquisition; one is transparently flagged as a working
+          hypothesis; one is a research-target manifest. The trust state is
+          exposed in CSV, in JSON-LD <code class="font-mono text-[11px]">Dataset</code>
+          structured data, and in a bilingual companion website's four-axis
+          filter bar.
+        </p>
+        <p>
+          The contribution is schema and pipeline, not findings. Schema released
+          under CC BY 4.0 (data) + MIT (code).
+        </p>
+        <p class="text-xs text-ink-300">
+          <strong>Keywords:</strong> epistemic transparency, <em>lex orandi</em>,
+          Reformation hymnology, schema design.
+        </p>
+      </div>
+    </details>
+
+    <p class="mt-3 text-xs text-ink-300">
+      Rozšírená verzia (~1 150 slov) a alternatívna substantívne-orientovaná
+      verzia (~530 slov) sú v repo:
+      <code class="font-mono text-[10px]">MethodsPaper_Abstracts.md</code>.
+    </p>
+  </section>
+
+  <div class="ornament-rule"></div>
+
+  <!-- ═══════════ STRUCTURE ═══════════ -->
+  <section class="mx-auto max-w-content px-6 py-10">
+    <h2 class="text-section-title text-ink">Plánovaná štruktúra</h2>
+    <p class="mt-1 font-sans text-sm italic text-ink-300" lang="en">Planned structure</p>
+    <ol class="mt-6 space-y-3 text-sm text-ink-400">
+      <li>
+        <span class="font-mono text-xs text-ink-300">§0</span>
+        <strong>Abstract</strong> · ~200 slov.
+      </li>
+      <li>
+        <span class="font-mono text-xs text-ink-300">§1</span>
+        <strong>Introduction: the epistemic problem in confessional DH</strong> · ~600 slov.
+      </li>
+      <li>
+        <span class="font-mono text-xs text-ink-300">§2</span>
+        <strong>Background: ITSERR's epistemic modesty and its limits</strong> · ~700 slov.
+      </li>
+      <li>
+        <span class="font-mono text-xs text-ink-300">§3</span>
+        <strong>The three-axis decomposition</strong> · ~1 500 slov ·
+        analytické jadro štúdie; každá os definovaná, demonštrovaná na
+        PAIR_001 – PAIR_006.
+      </li>
+      <li>
+        <span class="font-mono text-xs text-ink-300">§4</span>
+        <strong>Application: the TEPALIT hymn-pair dossier</strong> · ~1 200 slov ·
+        prepojenie metodológie na konkrétny dataset; transparentné označovanie
+        výskumných cieľov; bilingválna SK/EN dátová vrstva.
+      </li>
+      <li>
+        <span class="font-mono text-xs text-ink-300">§5</span>
+        <strong>Schema and validation</strong> · ~700 slov ·
+        CSV s TypeScript loaderom; cross-file integrity checks pri builde;
+        public-display rule pre CONJECTURED / UNVERIFIED páry; JSON-LD;
+        per-pair APA + BibTeX snippets.
+      </li>
+      <li>
+        <span class="font-mono text-xs text-ink-300">§§6–8</span>
+        <strong>Discussion, related work, conclusion</strong> · ~2 100 slov spolu.
+      </li>
+    </ol>
+  </section>
+
+  <div class="ornament-rule"></div>
+
+  <!-- ═══════════ VENUE STRATEGY ═══════════ -->
+  <section class="mx-auto max-w-content px-6 py-10">
+    <h2 class="text-section-title text-ink">Stratégia umiestnenia</h2>
+    <p class="mt-1 font-sans text-sm italic text-ink-300" lang="en">Venue strategy</p>
+
+    <ol class="mt-6 space-y-4 text-sm text-ink-400">
+      <li>
+        <strong>1. Digital Humanities Quarterly (DHQ)</strong> — primárny cieľ.
+        Open access (gold OA, bez APC). Metodologicky orientovaný, široká DH
+        čítanost. Recenzný proces 12–18 mesiacov.
+      </li>
+      <li>
+        <strong>2. Journal of Open Humanities Data (JOHD)</strong> — sekundárny
+        cieľ. Pre „data paper" o samotnom hymno-pár datasete. Koordinované
+        dvojité odoslanie s DHQ; obe štúdie sa navzájom citujú.
+      </li>
+      <li>
+        <strong>3. Journal of Religion, Media and Digital Culture (JRMDC)</strong>
+        — záloha. Priesečník náboženstva a DH; menšia čitatelia, ale bližšie k
+        predmetu.
+      </li>
+      <li>
+        <strong>4. International Journal of Humanities and Arts Computing
+        (IJHAC)</strong> — nižšia priorita. Hybridný OA, menej čitateľov v
+        našom subodbore.
+      </li>
+    </ol>
+    <p class="mt-4 text-xs italic text-ink-300">
+      Plný prehľad CFP a alternatívnych konferenčných variantov je v repo:
+      <code class="font-mono text-[10px]">MethodsPaper_Abstracts.md</code> §venue strategy.
+    </p>
+  </section>
+
+  <div class="ornament-rule"></div>
+
+  <!-- ═══════════ FORWARD LINKS ═══════════ -->
+  <section class="mx-auto max-w-content px-6 py-10">
+    <h2 class="text-section-title text-ink">Pracovný príklad na webe</h2>
+    <p class="mt-1 font-sans text-sm italic text-ink-300" lang="en">
+      The worked example, live on this site
+    </p>
+    <p class="mt-4 text-sm text-ink-400">
+      Trojosový rámec dôvery je viditeľný na celom webe; najpriamejšie sa
+      prejavuje na týchto stránkach:
+    </p>
+    <ul class="mt-4 space-y-2 text-sm">
+      <li>
+        <a href={`${baseN}/hymn-pairs/`} class="text-burgundy hover:underline">/hymn-pairs/</a>
+        — šesť dossierov s farebnými indikátormi všetkých troch osí, filter bar,
+        sortovanie, JSON-LD. Centrálna stránka pre §4 metodologickej štúdie.
+      </li>
+      <li>
+        <a href={`${baseN}/synoptikon/`} class="text-burgundy hover:underline">/synoptikon/</a>
+        — paralelné texty s rovnakými epistemickými indikátormi.
+      </li>
+      <li>
+        <a href={`${baseN}/sources/`} class="text-burgundy hover:underline">/sources/</a>
+        — register prameňov so Zenodo DOI a CC BY 4.0 licenciou.
+      </li>
+    </ul>
+  </section>
+
+  <div class="ornament-rule"></div>
+
+  <!-- ═══════════ HOW TO CITE ═══════════ -->
+  <section class="mx-auto max-w-content px-6 py-10">
+    <h2 class="text-section-title text-ink">Ako citovať</h2>
+    <p class="mt-1 font-sans text-sm italic text-ink-300" lang="en">How to cite (pre-publication)</p>
+    <p class="mt-4 text-sm text-ink-400">
+      Pred odoslaním sa štúdia cituje ako pracovný metodologický dokument
+      projektu APVV-24-0484:
+    </p>
+
+    <div class="card mt-6">
+      <h3 class="font-sans text-xs font-semibold uppercase tracking-wider text-ink-400">
+        APA (7th edition)
+      </h3>
+      <p class="mt-3 font-serif text-sm leading-relaxed text-ink" lang="en">
+        Valčo, M. (2026). <em>Three trust axes for digital confessional
+        hymnology: Decomposing epistemic status, evidentiary strength, and
+        verification in lex orandi datasets</em> [Methods paper outline,
+        APVV-24-0484 TEPALIT]. <a href={paperUrl} class="text-burgundy">{paperUrl}</a>
+      </p>
+    </div>
+
+    <p class="mt-6 rounded-md bg-burgundy/5 px-4 py-3 text-xs text-burgundy">
+      <strong>Stav:</strong> osnova kompletná, plný text v príprave. Citácia
+      sa nahradí oficiálnym vydaním DHQ / JOHD po prijatí. Dataset, na ktorom
+      je štúdia založená, má samostatné DOI:
+      <a href="https://doi.org/10.5281/zenodo.20081435" class="text-burgundy hover:underline" rel="noopener">
+        10.5281/zenodo.20081435
+      </a>.
+    </p>
+  </section>
+
+  <!-- ═══════════ NAV ═══════════ -->
+  <section class="mx-auto max-w-content px-6 py-10 pb-20">
+    <div class="flex flex-wrap items-center justify-between gap-4 border-t border-parchment-300/40 pt-6">
+      <a
+        href={`${baseN}/papers/theologos/`}
+        class="inline-flex items-center gap-1 font-sans text-sm font-medium text-burgundy no-underline hover:underline"
+      >
+        &#x2190; Theologos štúdia / <span class="italic" lang="en">Theologos paper</span>
+      </a>
+      <a
+        href={`${baseN}/papers/`}
+        class="inline-flex items-center gap-1 font-sans text-sm font-medium text-burgundy no-underline hover:underline"
+      >
+        Späť na štúdie / <span class="italic" lang="en">Back to papers</span> &#x2192;
+      </a>
+    </div>
+  </section>
+</BaseLayout>
