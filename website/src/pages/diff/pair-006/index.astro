@@ -1,0 +1,532 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+
+const base = import.meta.env.BASE_URL;
+const baseN = base.replace(/\/$/, "");
+const baseHref = baseN.endsWith("/") ? baseN : baseN + "/";
+const pageUrl = Astro.site
+  ? new URL("diff/pair-006/", new URL(baseHref, Astro.site)).toString()
+  : `${baseN}/diff/pair-006/`;
+
+// ── PAIR_006 Lutheranisation Diff data ──
+// Verbatim AC 1581 + BA 1585 textual material extracted from
+// Drafts/Theologos_Draft_v0.1_Full.md §§3–4 (the worked-example sections of
+// the Theologos paper). Where the source manuscript contains direct quotes,
+// they are reproduced inside <q lang="cs"> with the original orthography
+// preserved. Analytical annotations are bilingual SK + EN.
+
+type ShiftType = "ADDITION" | "INTENSIFICATION" | "CONTINUITY" | "SILENCE_BROKEN";
+
+interface ComparativeMove {
+  key: string;
+  titleSk: string;
+  titleEn: string;
+  shiftType: ShiftType;
+  acTextSk: string;
+  acTextEn: string;
+  acVerbatim?: string;
+  baTextSk: string;
+  baTextEn: string;
+  baVerbatim?: string;
+  annotationSk: string;
+  annotationEn: string;
+  doctrinalRelevance: string;
+}
+
+const moves: ComparativeMove[] = [
+  {
+    key: "manducatio_impiorum",
+    titleSk: "Manducatio impiorum",
+    titleEn: "Manducatio impiorum",
+    shiftType: "SILENCE_BROKEN",
+    acTextSk:
+      "AC formuluje hodné prijímanie cez vieru v slová ustanovenia, ale o nehodnom prijímaní explicitne mlčí. Toto mlčanie je samé osebe registrová voľba — nie teologická reticencia, ale pastoračný pragmatizmus voči českojazyčnej luteránskej populácii s utrakvistickou liturgickou pamäťou.",
+    acTextEn:
+      "AC formulates worthy reception through faith in the words of institution but is explicitly silent about unworthy reception. This silence is itself a register choice — not theological reticence but pastoral pragmatism toward a Czech-language Lutheran population with Utraquist liturgical memory.",
+    baVerbatim:
+      "Tělo a Krew Syna Božijho … hodným k spasenij, nehodným ne k spasenij, ale k zatraczenij wěčnemu",
+    baTextSk:
+      "BA explicitne formuluje obojstrannú formulu: hodný prijíma to isté telo a krv „k spaseniu“, nehodný „ne k spaseniu, ale k zatrateniu večnému“.",
+    baTextEn:
+      "BA explicitly articulates the bilateral formula: the worthy receive the same body and blood «k spasenij» (for salvation); the unworthy «ne k spasenij, ale k zatraczenij wěčnemu» (not for salvation, but for eternal damnation).",
+    annotationSk:
+      "BA prelomilo mlčanie, ktoré AC zachovávalo. Sviatosť účinkuje rovnako objektívne pre oboch komunikujúcich; rozlišovacím faktorom je nie prítomnosť tela a krvi, ale spasiteľný účinok podmienený hodnosťou. To je presne formulácia, ktorá Formula Concordiae SD VII §16 robí luteránskym hraničným indikátorom voči reformovanej eucharistickej teológii.",
+    annotationEn:
+      "BA breaks the silence AC kept. The Sacrament works equally objectively for both communicants; the distinguishing factor is not the presence of body and blood but the salvific outcome conditioned by worthiness. This is precisely the formulation that Formula Concordiae SD VII §16 makes the Lutheran boundary marker against Reformed Eucharistic theology.",
+    doctrinalRelevance: "FC SD VII §16 (Lutheran ↔ Reformed boundary marker)",
+  },
+  {
+    key: "polemical_adjectives",
+    titleSk: "Polemické prívlastky („pravý“, „substanciálny“)",
+    titleEn: "Polemical adjectives ('pravý', 'substanciálny')",
+    shiftType: "INTENSIFICATION",
+    acVerbatim: "tělo a krev",
+    acTextSk:
+      "AC používa nepolemické identifikatórne sloveso „tělo a krev“ bez prívlastkov, ktoré by špecifikovali metafyzický modus prítomnosti. Žiadne „pravý“, žiadne „substanciálny“, žiadne „in/sub/cum“. Identifikatórne, ale nie polemicky exaktné.",
+    acTextEn:
+      "AC uses the unpolemical identificatory phrase «tělo a krev» (body and blood) without any adjectives that would specify the metaphysical mode of presence. No «pravý» (true), no «substanciálny» (substantial), no «in/with/under». Identificatory but not polemically exact.",
+    baVerbatim: "Tělo a Krew Syna Božijho",
+    baTextSk:
+      "BA pridáva identifikatórnu apozíciu „Syna Božijho“, ktorá viaže sviatostné stretnutie na ortodoxnú kristologiu. Aj keď BA nepoužíva latinské „verum corpus“ alebo nemecké „wahrer Leib“, efekt je polemicky exaktnejší.",
+    baTextEn:
+      "BA adds the identificatory apposition «Syna Božijho» (of the Son of God), tying the sacramental encounter to orthodox Christology. Although BA does not use the Latin «verum corpus» or the German «wahrer Leib», the effect is polemically more exact.",
+    annotationSk:
+      "Register-shift bez kompletnej terminologickej revolúcie. AC neporušuje luteránsku teológiu — len ju neexplikuje. BA ju explicituje so zachovaním českojazyčného registra. Lexikálny posun je malý („Syna Božijho“ pridané), no diskurzívny náboj sa významne mení.",
+    annotationEn:
+      "Register-shift without a wholesale terminological revolution. AC does not violate Lutheran theology — it just leaves it unspecified. BA makes it specific while preserving the Czech-language register. The lexical move is small (the addition of «Syna Božijho»), but the discursive charge changes significantly.",
+    doctrinalRelevance: "FC SD VII identification language",
+  },
+  {
+    key: "sub_utraque_residue",
+    titleSk: "Sub utraque specie — utrakvistické liturgické rezíduum",
+    titleEn: "Sub utraque specie — Utraquist liturgical residue",
+    shiftType: "CONTINUITY",
+    acVerbatim: "sub utraque specie",
+    acTextSk:
+      "AC explicitne predpisuje prijímanie pod obidvomi spôsobmi pre všetkých veriacich. Toto je textové rezíduum staršieho neoutrakvizmu, ktoré v luteránskom prostredí post-Wittenberg už nie je polemicky aktívne — ale jeho explicitná prítomnosť svedčí o pastoračnej situácii s utrakvistickou liturgickou pamäťou.",
+    acTextEn:
+      "AC explicitly mandates communion in both kinds for all the faithful. This is textual residue of the older neo-Utraquism that is no longer polemically active in the post-Wittenberg Lutheran milieu — but its explicit presence attests to a pastoral situation with Utraquist liturgical memory.",
+    baTextSk:
+      "BA implicitne predpokladá; manuskriptový doplnok sa zameriava inde, na špecifikácie, ktoré v hornouhorskom luteránskom prostredí ešte nie sú vyriešené — predovšetkým na manducatio impiorum. Sub utraque je pre BA nesporné.",
+    baTextEn:
+      "BA implicitly assumes it; the manuscript supplement focuses elsewhere, on specifications that are not yet settled in the Upper-Hungarian Lutheran milieu — primarily on manducatio impiorum. For BA, sub utraque is uncontested.",
+    annotationSk:
+      "Príklad kontinuity v korpuse: utrakvistický liturgický prvok, ktorý preživa do luteránskeho prostredia bez teologickej úpravy. Príkaz preživa, polemická aktivita zaniká. Pre AC je textové potvrdenie pastoračnej kontinuity; pre BA je nepotrebným explicitným potvrdením.",
+    annotationEn:
+      "An example of continuity in the corpus: an Utraquist liturgical element that survives into the Lutheran milieu without theological modification. The rubric persists, the polemical activity recedes. For AC it is a textual reaffirmation of pastoral continuity; for BA it is no longer in need of explicit affirmation.",
+    doctrinalRelevance: "Utraquist → Lutheran continuity (no register-shift)",
+  },
+  {
+    key: "worthy_reception_grounding",
+    titleSk: "Hodné prijímanie: viera v slová ustanovenia",
+    titleEn: "Worthy reception: faith in the words of institution",
+    shiftType: "ADDITION",
+    acTextSk:
+      "AC kotví hodné prijímanie vo viere v slová ustanovenia („verba institutionis“). Žiadna metafyzická doktrína prítomnosti nie je explicitne formulovaná — kotva je v aktu komunikujúceho, v jeho viere v Kristov výrok. Čisto luteránska pozícia, ale formulovaná v miernom registri.",
+    acTextEn:
+      "AC grounds worthy reception in faith in the words of institution («verba institutionis»). No metaphysical doctrine of presence is explicitly formulated — the anchor is in the communicant's act, in his faith in Christ's pronouncement. A purely Lutheran position, but formulated in a moderate register.",
+    baTextSk:
+      "BA zachováva to isté ukotvenie a pridáva polemickú špecifikáciu protiľahlej strany — že nehodný prijíma rovnaký objektívny dar. Ukotvenie sa nemení; rozširuje sa o objasnenie, čo sa stane, keď ukotvenie chýba.",
+    baTextEn:
+      "BA preserves the same grounding and adds a polemical specification of the converse — that the unworthy also receive the same objective gift. The grounding does not change; it is expanded with a clarification of what happens when the grounding is missing.",
+    annotationSk:
+      "AC formulácia je konzistentná s luteránskym sola fide pri eucharistickom prijímaní, ale neformuluje to ako polemickú dištinkciu. BA tú istú teológiu rozšíruje o explicitnú obojsmernú formulu (hodný/nehodný), ktorá je v post-Formula prostredí diagnostickou markou pravoverného luteránstva.",
+    annotationEn:
+      "AC's formulation is consistent with Lutheran sola fide at Eucharistic reception, but does not articulate it as a polemical distinction. BA expands the same theology with an explicit bilateral formula (worthy/unworthy), which in the post-Formula milieu is a diagnostic marker of orthodox Lutheranism.",
+    doctrinalRelevance: "FC SD VII §15-§16 (worthy reception)",
+  },
+];
+
+// Visual encoding for shift types — colour matches a meaningful axis:
+//   ADDITION         = burgundy (theological intensification)
+//   INTENSIFICATION  = gold (sharper articulation of existing position)
+//   CONTINUITY       = utraquist (cross-tradition continuity preserved)
+//   SILENCE_BROKEN   = burgundy (most polemically charged: BA breaks AC silence)
+const shiftColor: Record<ShiftType, string> = {
+  ADDITION: "bg-burgundy/10 text-burgundy border-burgundy/40",
+  INTENSIFICATION: "bg-gold/15 text-gold-dark border-gold/40",
+  CONTINUITY: "bg-utraquist/10 text-utraquist border-utraquist/40",
+  SILENCE_BROKEN: "bg-burgundy/15 text-burgundy border-burgundy/60",
+};
+const shiftLabel: Record<ShiftType, { sk: string; en: string }> = {
+  ADDITION: { sk: "Pridanie", en: "Addition" },
+  INTENSIFICATION: { sk: "Intenzifikácia", en: "Intensification" },
+  CONTINUITY: { sk: "Kontinuita", en: "Continuity" },
+  SILENCE_BROKEN: { sk: "Mlčanie prelomené", en: "Silence broken" },
+};
+const shiftSummary: Record<ShiftType, { sk: string; en: string }> = {
+  ADDITION: {
+    sk: "BA pridáva formuláciu, ktorá v AC nebola explicitne prítomná, no neporušuje sa kontinuita.",
+    en: "BA adds a formulation that was not explicitly present in AC, but the continuity is not broken.",
+  },
+  INTENSIFICATION: {
+    sk: "Tá istá teológia s ostrejšími polemickými okrajmi.",
+    en: "The same theology with sharper polemical edges.",
+  },
+  CONTINUITY: {
+    sk: "Element preživa medzi tradíciami bez teologickej úpravy.",
+    en: "An element survives across traditions without theological modification.",
+  },
+  SILENCE_BROKEN: {
+    sk: "AC explicitne mlčalo; BA mlčanie prelomilo a pridalo polemicky špecifikujúcu formulu.",
+    en: "AC was explicitly silent; BA breaks the silence and adds a polemically specifying formula.",
+  },
+};
+
+// JSON-LD: ScholarlyArticle so the diff page is independently citable.
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ScholarlyArticle",
+  name: "PAIR_006 — Lutheranisation Diff: Agenda Česká 1581 → Bystrická agenda 1585",
+  alternateName:
+    "PAIR_006 — Diff luteranizácie: Agenda Česká 1581 → Bystrická agenda 1585",
+  url: pageUrl,
+  inLanguage: ["sk", "en"],
+  publishingPrinciples:
+    "Free-standing register-shift dossier published under CC BY 4.0. Anchored on the Theologos paper §§3–4 verbatim material from Drafts/Theologos_Draft_v0.1_Full.md.",
+  author: {
+    "@type": "Person",
+    name: "Michal Valčo",
+    affiliation: { "@type": "Organization", name: "ETF UK Bratislava" },
+  },
+  isPartOf: {
+    "@type": "ResearchProject",
+    name: "TEPALIT (APVV-24-0484)",
+    funder: {
+      "@type": "Organization",
+      name: "Slovak Research and Development Agency",
+      identifier: "APVV-24-0484",
+    },
+  },
+  keywords: [
+    "PAIR_006",
+    "Agenda Česká 1581",
+    "Bystrická agenda 1585",
+    "manducatio impiorum",
+    "Eucharist",
+    "register shift",
+    "intra-codex stratification",
+    "Lutheran",
+    "Banská Bystrica",
+    "Bratislava Lyceal Library",
+  ],
+};
+---
+
+<BaseLayout
+  title="PAIR_006 Diff — AC 1581 → BA 1585 register shift"
+  description="Lutheranisation Diff Tool: PAIR_006 register-shift dossier. Side-by-side comparison of Agenda Česká 1581 and Bystrická agenda 1585 across four comparative moves (manducatio impiorum, polemical adjectives, sub utraque residue, worthy reception)."
+  lang="sk"
+>
+  <script
+    is:inline
+    type="application/ld+json"
+    set:html={JSON.stringify(jsonLd)}
+  />
+
+  <!-- ═══════════ HERO ═══════════ -->
+  <section class="bg-ink-800 px-6 py-16 text-parchment">
+    <div class="mx-auto max-w-content">
+      <p class="font-sans text-xs font-medium uppercase tracking-[0.2em] text-gold">
+        Lutheranisation Diff · PAIR_006 · §4.1, §5
+      </p>
+      <h1 class="mt-4 font-display text-3xl font-bold leading-tight text-parchment-100 md:text-4xl">
+        Agenda Česká 1581 → Bystrická agenda 1585
+      </h1>
+      <p class="mt-3 font-display text-base font-medium text-parchment-300">
+        Intra-kódexová eucharistická stratifikácia v exemplári Lyceálnej knižnice
+        v Bratislave
+      </p>
+      <h2 class="mt-6 font-display text-lg font-semibold text-parchment-200" lang="en">
+        Intra-codex Eucharistic stratification in the Bratislava Lyceal Library exemplar
+      </h2>
+
+      <div class="mt-8 grid gap-4 md:grid-cols-2">
+        <div class="rounded-md border border-parchment-300/20 bg-ink-700/50 p-4">
+          <p class="font-sans text-[10px] uppercase tracking-wider text-parchment-300">
+            Source — printed Czech, moderate register
+          </p>
+          <p class="mt-1 font-display text-base font-semibold text-parchment-100">
+            Agenda Česká 1581
+          </p>
+          <p class="mt-2 font-mono text-[11px] text-parchment-400">
+            Benka 2024 (MLS X), pp. 131 – 263
+          </p>
+        </div>
+        <div class="rounded-md border border-parchment-300/20 bg-ink-700/50 p-4">
+          <p class="font-sans text-[10px] uppercase tracking-wider text-parchment-300">
+            Receptor — manuscript Slovak, sharper register
+          </p>
+          <p class="mt-1 font-display text-base font-semibold text-parchment-100">
+            Bystrická agenda 1585
+          </p>
+          <p class="mt-2 font-mono text-[11px] text-parchment-400">
+            Benka 2024 (MLS X), pp. 265 – 368
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ OVERVIEW ═══════════ -->
+  <section class="mx-auto max-w-content px-6 py-12">
+    <h2 class="text-section-title text-ink">Prehľad register-shiftu</h2>
+    <p class="mt-1 font-sans text-sm italic text-ink-300" lang="en">
+      Register-shift overview
+    </p>
+
+    <div class="mt-6 space-y-4 font-serif text-sm leading-relaxed text-ink-400">
+      <p>
+        Bratislavský exemplár Lyceálnej knižnice (dnes spravovaný Ústrednou
+        knižnicou SAV) obsahuje tlačenú <em>Agendu Českú</em> 1581 a rukopisnú
+        <em>Bystrickú agendu</em> 1585 zviazané v jednom fyzickom kódexe.
+        Pôvodní používatelia zviazali oba svedectvá ako jednu liturgickú
+        jednotku. Pavel Benka v kritickom vydaní z roku 2024 — prvom, ktoré
+        oba texty publikuje spolu s plným kritickým aparátom — umožňuje ich
+        čítať proti sebe v ich kódikografickej koexistencii.
+      </p>
+      <p>
+        Štyri komparatívne ťahy nižšie ukazujú, kde sa registre AC a BA
+        rozchádzajú. Žiadny ťah nie je doktrinálnym prelomom; všetky štyri
+        sú registrovým posunom v rámci toho istého luteránsky orientovaného
+        kódexu, štyri roky po sebe. To je intra-luteránska intenzifikácia
+        registra — ten istý fenomén ostrenia, ktorý kapitola argumentuje
+        ako komplementárny k medzikonfesionálnej luteranizácii.
+      </p>
+    </div>
+    <div class="mt-4 space-y-3 font-sans text-xs italic leading-relaxed text-ink-300" lang="en">
+      <p>
+        The Bratislava Lyceal Library exemplar (administered today by the
+        Central Library of the Slovak Academy of Sciences) contains the printed
+        <em>Agenda Česká</em> 1581 and the manuscript <em>Bystrická agenda</em>
+        1585 bound together in a single physical codex. The early users bound
+        the two witnesses as one liturgical unit. Peter Benka's 2024 critical
+        edition — the first to publish both with full apparatus — allows
+        reading them against each other in their codicological co-presence.
+      </p>
+      <p>
+        The four comparative moves below show where AC's and BA's registers
+        diverge. No single move is a doctrinal break; all four are register
+        shifts within the same Lutheran-aligned codex, four years apart. This
+        is intra-Lutheran register intensification — the same sharpening
+        phenomenon the chapter argues as complementary to cross-confessional
+        Lutheranisation.
+      </p>
+    </div>
+  </section>
+
+  <div class="ornament-rule"></div>
+
+  <!-- ═══════════ COMPARATIVE MOVES ═══════════ -->
+  <section class="mx-auto max-w-wide px-6 py-12">
+    <h2 class="text-section-title text-ink">Štyri komparatívne ťahy</h2>
+    <p class="mt-1 font-sans text-sm italic text-ink-300" lang="en">
+      Four comparative moves
+    </p>
+
+    <div class="mt-8 space-y-8">
+      {moves.map((m, idx) => (
+        <article
+          id={m.key}
+          class:list={[
+            "card scroll-mt-24",
+            "border-l-4",
+            shiftColor[m.shiftType].split(" ").slice(-1)[0],
+          ]}
+        >
+          <header class="flex flex-wrap items-baseline justify-between gap-3">
+            <div>
+              <p class="font-mono text-[10px] tracking-wider text-ink-300">
+                {String(idx + 1).padStart(2, "0")} · {m.key}
+              </p>
+              <h3 class="mt-1 font-display text-lg font-semibold text-ink">
+                {m.titleSk}
+              </h3>
+              <p class="mt-0.5 font-sans text-xs italic text-ink-300" lang="en">
+                {m.titleEn}
+              </p>
+            </div>
+            <div class="flex flex-col items-end gap-1">
+              <span
+                class:list={[
+                  "rounded-full border px-3 py-1 font-sans text-[11px] font-semibold uppercase tracking-wider",
+                  shiftColor[m.shiftType],
+                ]}
+              >
+                {shiftLabel[m.shiftType].sk} <span class="opacity-70" lang="en">/ {shiftLabel[m.shiftType].en}</span>
+              </span>
+              <span class="font-mono text-[10px] text-ink-300">
+                {m.doctrinalRelevance}
+              </span>
+            </div>
+          </header>
+
+          <p class="mt-3 font-sans text-xs italic text-ink-300">
+            {shiftSummary[m.shiftType].sk}
+          </p>
+
+          <!-- ── Side-by-side AC ↔ BA panels ── -->
+          <div class="mt-5 grid gap-4 md:grid-cols-2">
+            <!-- AC panel -->
+            <div class="rounded-md border-l-2 border-lutheran/40 bg-lutheran/5 p-4">
+              <div class="flex items-baseline justify-between gap-2">
+                <p class="font-display text-sm font-semibold text-lutheran">
+                  AC 1581
+                </p>
+                <p class="font-sans text-[10px] uppercase tracking-wider text-ink-300">
+                  moderate register
+                </p>
+              </div>
+              {m.acVerbatim && (
+                <blockquote class="mt-3 border-l-2 border-lutheran/60 pl-3 font-serif text-base italic leading-relaxed text-ink" lang="cs">
+                  <q>{m.acVerbatim}</q>
+                </blockquote>
+              )}
+              <p class="mt-3 font-serif text-sm leading-relaxed text-ink-400">
+                {m.acTextSk}
+              </p>
+              <p class="mt-2 font-sans text-[11px] italic leading-relaxed text-ink-300" lang="en">
+                {m.acTextEn}
+              </p>
+            </div>
+
+            <!-- BA panel -->
+            <div class="rounded-md border-l-2 border-burgundy/40 bg-burgundy/5 p-4">
+              <div class="flex items-baseline justify-between gap-2">
+                <p class="font-display text-sm font-semibold text-burgundy">
+                  BA 1585
+                </p>
+                <p class="font-sans text-[10px] uppercase tracking-wider text-ink-300">
+                  sharper register
+                </p>
+              </div>
+              {m.baVerbatim && (
+                <blockquote class="mt-3 border-l-2 border-burgundy/60 pl-3 font-serif text-base italic leading-relaxed text-ink" lang="cs">
+                  <q>{m.baVerbatim}</q>
+                </blockquote>
+              )}
+              <p class="mt-3 font-serif text-sm leading-relaxed text-ink-400">
+                {m.baTextSk}
+              </p>
+              <p class="mt-2 font-sans text-[11px] italic leading-relaxed text-ink-300" lang="en">
+                {m.baTextEn}
+              </p>
+            </div>
+          </div>
+
+          <!-- ── Analytical annotation ── -->
+          <div class="mt-5 rounded-md bg-parchment-100/60 p-4">
+            <p class="font-sans text-[10px] font-semibold uppercase tracking-wider text-ink-300">
+              Analytická poznámka / <span lang="en">Analytical annotation</span>
+            </p>
+            <p class="mt-2 font-serif text-sm leading-relaxed text-ink-400">
+              {m.annotationSk}
+            </p>
+            <p class="mt-2 font-sans text-xs italic leading-relaxed text-ink-300" lang="en">
+              {m.annotationEn}
+            </p>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <div class="ornament-rule"></div>
+
+  <!-- ═══════════ SHIFT-TYPE LEGEND ═══════════ -->
+  <section class="mx-auto max-w-content px-6 py-10">
+    <h2 class="text-section-title text-ink">Typy register-shiftu</h2>
+    <p class="mt-1 font-sans text-sm italic text-ink-300" lang="en">
+      Shift types — legend
+    </p>
+
+    <ul class="mt-6 space-y-3">
+      {(["SILENCE_BROKEN", "ADDITION", "INTENSIFICATION", "CONTINUITY"] as ShiftType[]).map((t) => (
+        <li class="flex items-start gap-3">
+          <span
+            class:list={[
+              "shrink-0 rounded-full border px-3 py-1 font-sans text-[11px] font-semibold uppercase tracking-wider",
+              shiftColor[t],
+            ]}
+          >
+            {shiftLabel[t].sk} <span class="opacity-70" lang="en">/ {shiftLabel[t].en}</span>
+          </span>
+          <div>
+            <p class="text-sm text-ink-400">{shiftSummary[t].sk}</p>
+            <p class="mt-1 font-sans text-xs italic text-ink-300" lang="en">{shiftSummary[t].en}</p>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <div class="ornament-rule"></div>
+
+  <!-- ═══════════ FORWARD LINKS ═══════════ -->
+  <section class="mx-auto max-w-content px-6 py-10">
+    <h2 class="text-section-title text-ink">Pokračovanie argumentu</h2>
+    <p class="mt-1 font-sans text-sm italic text-ink-300" lang="en">
+      Where the argument continues
+    </p>
+
+    <ul class="mt-6 grid gap-4 sm:grid-cols-2">
+      <li class="card">
+        <h3 class="font-display text-base font-semibold text-ink">
+          <a href={`${baseN}/hymn-pairs/#PAIR_006_AC_BA_EUCHARIST`} class="hover:text-burgundy">
+            PAIR_006 dossier
+          </a>
+        </h3>
+        <p class="mt-2 text-sm text-ink-400">
+          Štruktúrovaný hymno-pár záznam s tromi osami dôvery (epistemika,
+          sila dôkazu, vlastná verifikácia), citačným reťazcom a forwardovými
+          odkazmi.
+        </p>
+      </li>
+      <li class="card">
+        <h3 class="font-display text-base font-semibold text-ink">
+          <a href={`${baseN}/papers/theologos/`} class="hover:text-burgundy">
+            Theologos štúdia
+          </a>
+        </h3>
+        <p class="mt-2 text-sm text-ink-400">
+          Plný argumentačný rozvoj v ~9 200 slovách. Verbatim AC a BA texty na
+          tejto stránke pochádzajú z §§3–4 štúdie.
+        </p>
+      </li>
+      <li class="card">
+        <h3 class="font-display text-base font-semibold text-ink">
+          <a href={`${baseN}/cb1575/`} class="hover:text-burgundy">
+            CB 1575 archív
+          </a>
+        </h3>
+        <p class="mt-2 text-sm text-ink-400">
+          Trajektória CB 1575 → AC 1581 → BA 1585 → CS 1636 sleduje jeden
+          smer konfesionálnej konsolidácie. CB 1575 zachováva to isté mlčanie
+          o manducatio impiorum, ktoré AC zachová o šesť rokov neskôr a BA
+          prelomí o štyri roky po AC.
+        </p>
+      </li>
+      <li class="card">
+        <h3 class="font-display text-base font-semibold text-ink">
+          <a href={`${baseN}/sources/#Benka_2024`} class="hover:text-burgundy">
+            Benka 2024 (MLS X)
+          </a>
+        </h3>
+        <p class="mt-2 text-sm text-ink-400">
+          Kritická edícia AC + BA. Eucharistický rítus AC: pp. 131 – 263.
+          BA supplementum: pp. 265 – 368. Editorská diskusia anti-krypto-kalvínskej
+          disciplíny: pp. 77 – 78.
+        </p>
+      </li>
+    </ul>
+  </section>
+
+  <div class="ornament-rule"></div>
+
+  <!-- ═══════════ HOW TO CITE ═══════════ -->
+  <section class="mx-auto max-w-content px-6 py-10 pb-20">
+    <h2 class="text-section-title text-ink">Ako citovať túto stránku</h2>
+    <p class="mt-1 font-sans text-sm italic text-ink-300" lang="en">
+      How to cite this page
+    </p>
+
+    <div class="card mt-6">
+      <h3 class="font-sans text-xs font-semibold uppercase tracking-wider text-ink-400">
+        APA (7th edition)
+      </h3>
+      <p class="mt-3 font-serif text-sm leading-relaxed text-ink" lang="en">
+        Valčo, M. (2026). <em>PAIR_006 — Lutheranisation Diff: Agenda Česká
+        1581 → Bystrická agenda 1585</em> [Register-shift dossier,
+        APVV-24-0484 TEPALIT]. <a href={pageUrl} class="text-burgundy">{pageUrl}</a>
+      </p>
+    </div>
+
+    <p class="mt-4 text-xs italic text-ink-300">
+      Stránka je sprievodný materiál ku kapitole TEPALIT-monografie (§4.1, §5)
+      a ku Theologos štúdii. Verbatim AC a BA texty sú prevzaté z Benkovho
+      kritického vydania 2024 a citované v rozsahu primeranom pre vedeckú
+      komparáciu (fair-use). Stránka je pod licenciou
+      <a href="https://creativecommons.org/licenses/by/4.0/" class="text-burgundy" rel="noopener">CC BY 4.0</a>.
+    </p>
+  </section>
+</BaseLayout>

@@ -892,6 +892,17 @@ const jsonLd = {
                     Synoptikon &#x2192;
                   </a>
                 )}
+                {/* Currently only PAIR_006 has a per-pair diff page; the pair-id
+                    check stays inline until additional diff pages exist (per the
+                    strategy doc, ~6–8 hours per subsequent pair). */}
+                {p.pair_id === "PAIR_006_AC_BA_EUCHARIST" && (
+                  <a
+                    href={`${baseN}/diff/pair-006/`}
+                    class="inline-flex items-center gap-1 rounded-md bg-burgundy/10 px-2.5 py-1 font-sans text-xs font-medium text-burgundy no-underline transition-colors hover:bg-burgundy/20"
+                  >
+                    Register-shift diff &#x2192;
+                  </a>
+                )}
                 {(p.source_text_id || p.receptor_text_id) && (
                   <span class="inline-flex items-center gap-1 rounded-md bg-parchment-300/50 px-2.5 py-1 font-mono text-[10px] text-ink-400">
                     Evidence rows:
