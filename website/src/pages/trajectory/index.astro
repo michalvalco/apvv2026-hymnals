@@ -1,0 +1,722 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const base = import.meta.env.BASE_URL;
+const baseN = base.replace(/\/$/, "");
+const baseHref = baseN.endsWith("/") ? baseN : baseN + "/";
+const pageUrl = Astro.site
+  ? new URL("trajectory/", new URL(baseHref, Astro.site)).toString()
+  : `${baseN}/trajectory/`;
+
+// ── Confessional consolidation trajectory: CB 1575 → AC 1581 → BA 1585 → CS 1636 ──
+// Anchored on Theologos draft §6: the four-document chain that traces a single
+// direction of confessional consolidation across the second half of the 16th c.
+// and into the early 17th. Each node is a distinct register; each transition
+// is annotated with what shifts and what continues.
+
+// ── Marker presence on each document ──
+// Three diagnostic markers: manducatio impiorum, polemical-identification
+// adjectives, sub utraque specie residue. Each cell is one of:
+//   "PRESENT"     — explicitly articulated
+//   "SHARED_SILENCE" — deliberately not articulated; register choice
+//   "STRUCTURAL" — implicit in liturgical structure but not lexically marked
+//   "ABSENT"     — N/A or not applicable to this document type
+//   "INHERITED"  — preserved from a predecessor without modification
+type MarkerState =
+  | "PRESENT"
+  | "SHARED_SILENCE"
+  | "STRUCTURAL"
+  | "ABSENT"
+  | "INHERITED";
+
+const markerLabel: Record<MarkerState, { sk: string; en: string; symbol: string; class: string }> = {
+  PRESENT: { sk: "Prítomné", en: "Present", symbol: "✓", class: "bg-burgundy/15 text-burgundy border-burgundy/40" },
+  SHARED_SILENCE: { sk: "Mlčanie (zámerné)", en: "Silence (deliberate)", symbol: "—", class: "bg-parchment-300/40 text-ink-400 border-parchment-400/60" },
+  STRUCTURAL: { sk: "Štrukturálne", en: "Structural", symbol: "◇", class: "bg-utraquist/10 text-utraquist border-utraquist/40" },
+  ABSENT: { sk: "Neaplikuje sa", en: "Not applicable", symbol: "·", class: "bg-parchment-300/30 text-ink-300 border-parchment-300/50" },
+  INHERITED: { sk: "Zdedené", en: "Inherited", symbol: "↪", class: "bg-utraquist/10 text-utraquist border-utraquist/40" },
+};
+
+interface DocNode {
+  id: string;
+  shortName: string;
+  fullSk: string;
+  fullEn: string;
+  year: number;
+  registerSk: string;
+  registerEn: string;
+  registerClass: string;
+  characterSk: string;
+  characterEn: string;
+  manducatio: MarkerState;
+  polemicalAdj: MarkerState;
+  subUtraque: MarkerState;
+  forwardLink?: { href: string; labelSk: string };
+}
+
+const nodes: DocNode[] = [
+  {
+    id: "cb1575",
+    shortName: "CB 1575",
+    fullSk: "Confessio Bohemica",
+    fullEn: "Bohemian Confession",
+    year: 1575,
+    registerSk: "Medzikonfesionálny irenizmus",
+    registerEn: "Cross-confessional irenicism",
+    registerClass: "border-utraquist/60",
+    characterSk:
+      "Vyrokovaný kompromis medzi utrakvistami, luteránmi a Jednotou bratskou. Eucharistický článok „duchovně i podstatně, věrou i také ústy“ — vedome both/and, držiaci polemické špecifikácie nabok pre širšiu konfesionálnu použiteľnosť.",
+    characterEn:
+      "A negotiated compromise among Utraquists, Lutherans, and the Unity of Brethren. The Eucharistic article 'duchovně i podstatně, věrou i také ústy' — deliberately both/and, holding polemical specification at bay for broader confessional usability.",
+    manducatio: "SHARED_SILENCE",
+    polemicalAdj: "SHARED_SILENCE",
+    subUtraque: "STRUCTURAL",
+    forwardLink: { href: "/cb1575/", labelSk: "CB 1575 historiografický archív" },
+  },
+  {
+    id: "ac1581",
+    shortName: "AC 1581",
+    fullSk: "Agenda Česká",
+    fullEn: "Czech Agenda (printed)",
+    year: 1581,
+    registerSk: "Mierny český luteránsky register",
+    registerEn: "Moderate Czech-Lutheran register",
+    registerClass: "border-lutheran/60",
+    characterSk:
+      "Tlačená česko-luteránska agenda zostavená wittenberskými ordinovanými duchovnými. Identifikatórne „tělo a krev“ bez polemicky špecifikujúcich prívlastkov („pravý“, „substanciálny“). Hodné prijímanie kotví vo viere v slová ustanovenia. Zachováva mlčanie CB o manducatio impiorum.",
+    characterEn:
+      "A printed Czech-Lutheran agenda compiled by Wittenberg-ordained clergy. Identificatory 'tělo a krev' without polemically specifying adjectives ('pravý', 'substanciálny'). Worthy reception is anchored in faith in the words of institution. Preserves the CB silence on manducatio impiorum.",
+    manducatio: "SHARED_SILENCE",
+    polemicalAdj: "SHARED_SILENCE",
+    subUtraque: "STRUCTURAL",
+    forwardLink: { href: "/diff/pair-006/", labelSk: "Register-shift diff (PAIR_006)" },
+  },
+  {
+    id: "ba1585",
+    shortName: "BA 1585",
+    fullSk: "Bystrická agenda",
+    fullEn: "Bystrická agenda (manuscript)",
+    year: 1585,
+    registerSk: "Ostrejší hornouhorsko-luteránsky register",
+    registerEn: "Sharper Upper-Hungarian Lutheran register",
+    registerClass: "border-burgundy/60",
+    characterSk:
+      "Slovenský rukopisný doplnok pre lokálne použitie v baníckych mestách. Po štyroch rokoch po AC explicitne formuluje luteránske manducatio impiorum: hodný prijíma „k spaseniu“, nehodný „ne k spaseniu, ale k zatrateniu večnému“. Pridáva identifikatórnu apozíciu „Tělo a Krew Syna Božijho“. Tá istá teológia, ostrejšie hrany.",
+    characterEn:
+      "A Slovak manuscript supplement for local use in the mining towns. Four years after AC, BA explicitly articulates the Lutheran manducatio impiorum: the worthy receive 'k spaseniu' (for salvation), the unworthy 'ne k spaseniu, ale k zatrateniu večnému' (not for salvation, but for eternal damnation). Adds the identificatory apposition 'Tělo a Krew Syna Božijho'. The same theology, sharper edges.",
+    manducatio: "PRESENT",
+    polemicalAdj: "PRESENT",
+    subUtraque: "INHERITED",
+    forwardLink: { href: "/hymn-pairs/#PAIR_006_AC_BA_EUCHARIST", labelSk: "PAIR_006 dossier" },
+  },
+  {
+    id: "cs1636",
+    shortName: "CS 1636",
+    fullSk: "Cithara Sanctorum",
+    fullEn: "Cithara Sanctorum (printed hymnal)",
+    year: 1636,
+    registerSk: "Konsolidovaný slovenský luteránsky kompendí­um",
+    registerEn: "Consolidated Slovak-Lutheran compendium",
+    registerClass: "border-burgundy/60",
+    characterSk:
+      "Tranovského editorská kompilácia: ~49 % staršieho českého repertoáru utrakvistického pôvodu (per Grešová-Sekelská 2021), s diferenciálnou editorskou stratégiou ostrenia konfesionálne nejasných formulácií. Trajektória dosiahuje verejne tlačenú konsolidáciu päť desiatok rokov po BA.",
+    characterEn:
+      "Tranovský's editorial compilation: ~49% of older Czech repertoire of Utraquist origin (per Grešová-Sekelská 2021), with a differential editorial strategy that sharpens confessionally unclear formulations. The trajectory reaches publicly-printed consolidation half a century after BA.",
+    manducatio: "PRESENT",
+    polemicalAdj: "PRESENT",
+    subUtraque: "INHERITED",
+    forwardLink: { href: "/sources/#CitharaSanct_1636", labelSk: "Cithara Sanctorum 1636 v registeri prameňov" },
+  },
+];
+
+// ── Transition annotations between adjacent nodes ──
+type ShiftKind = "REGISTER_CONTINUITY" | "REGISTER_INTENSIFICATION" | "EDITORIAL_CONSOLIDATION";
+
+const shiftClass: Record<ShiftKind, string> = {
+  REGISTER_CONTINUITY: "bg-parchment-300/40 text-ink-400 border-parchment-400/60",
+  REGISTER_INTENSIFICATION: "bg-burgundy/15 text-burgundy border-burgundy/40",
+  EDITORIAL_CONSOLIDATION: "bg-gold/15 text-gold-dark border-gold/40",
+};
+
+const shiftLabel: Record<ShiftKind, { sk: string; en: string }> = {
+  REGISTER_CONTINUITY: { sk: "Registrová kontinuita", en: "Register continuity" },
+  REGISTER_INTENSIFICATION: { sk: "Registrová intenzifikácia", en: "Register intensification" },
+  EDITORIAL_CONSOLIDATION: { sk: "Editorská konsolidácia", en: "Editorial consolidation" },
+};
+
+interface Transition {
+  from: string;
+  to: string;
+  shift: ShiftKind;
+  yearGap: number;
+  summarySk: string;
+  summaryEn: string;
+}
+
+const transitions: Transition[] = [
+  {
+    from: "cb1575",
+    to: "ac1581",
+    shift: "REGISTER_CONTINUITY",
+    yearGap: 6,
+    summarySk:
+      "Šesť rokov medzi medzikonfesionálnym irenickým dokumentom a tlačenou luteránsky orientovanou agendou. Obe zachovávajú mlčanie o manducatio impiorum. Spoločná registrová stratégia: drží polemické špecifikácie nabok. Cross-konfesionálny irenizmus CB a vnútrokonfesionálna miernosť AC nie sú tá istá vec, ale zdieľajú register.",
+    summaryEn:
+      "Six years between a cross-confessional irenic document and a printed Lutheran-aligned agenda. Both preserve the silence on manducatio impiorum. A shared register strategy: hold polemical specifications at bay. The cross-confessional irenicism of CB and the intra-confessional moderation of AC are not the same thing, but they share the register.",
+  },
+  {
+    from: "ac1581",
+    to: "ba1585",
+    shift: "REGISTER_INTENSIFICATION",
+    yearGap: 4,
+    summarySk:
+      "Štyri roky medzi tlačou a rukopisným doplnkom v jednom kódexe. BA prelomilo mlčanie AC: explicitné manducatio impiorum, identifikatórna apozícia „Syna Božijho“. Tá istá teológia, ostrejšia artikulácia. Lokálny disciplinárny tlak po Formula Concordiae 1577.",
+    summaryEn:
+      "Four years between print and manuscript supplement in one codex. BA breaks AC's silence: explicit manducatio impiorum, identificatory apposition 'Syna Božijho'. The same theology, sharper articulation. Local disciplinary pressure after the Formula of Concord 1577.",
+  },
+  {
+    from: "ba1585",
+    to: "cs1636",
+    shift: "EDITORIAL_CONSOLIDATION",
+    yearGap: 51,
+    summarySk:
+      "Päťdesiatjeden rokov medzi rukopisným doplnkom a verejne tlačenou luteránskou hymnodickou kompiláciou. Tranovský preberá staršie české zdroje (utrakvistického pôvodu, bratrského pôvodu) s diferenciálnou editorskou stratégiou. Register-intenzifikačný smer pokračuje, ale vo verejnom tlačenom prostredí — cross-konfesionálne aj vnútro-luteránsky.",
+    summaryEn:
+      "Fifty-one years between the manuscript supplement and a publicly-printed Lutheran hymnody compilation. Tranovský absorbs older Czech sources (Utraquist-origin, Brethren-origin) through a differential editorial strategy. The register-intensification direction continues, but now in the publicly-printed milieu — both cross-confessionally and intra-Lutheran.",
+  },
+];
+
+// ── Markers cross-document table ──
+const markers = [
+  { key: "manducatio", labelSk: "Manducatio impiorum", labelEn: "Manducatio impiorum" },
+  { key: "polemicalAdj", labelSk: "Polemické prívlastky", labelEn: "Polemical adjectives" },
+  { key: "subUtraque", labelSk: "Sub utraque specie", labelEn: "Sub utraque specie" },
+] as const;
+
+// JSON-LD: ScholarlyArticle (this is a free-standing scholarly artifact).
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ScholarlyArticle",
+  name: "Confessional Consolidation Trajectory: CB 1575 → AC 1581 → BA 1585 → CS 1636",
+  alternateName:
+    "Trajektória konfesionálnej konsolidácie: CB 1575 → AC 1581 → BA 1585 → CS 1636",
+  url: pageUrl,
+  inLanguage: ["sk", "en"],
+  publishingPrinciples:
+    "Free-standing trajectory visualisation published under CC BY 4.0. Anchored on Theologos paper §6 and the chapter §5.",
+  author: {
+    "@type": "Person",
+    name: "Michal Valčo",
+    affiliation: { "@type": "Organization", name: "ETF UK Bratislava" },
+  },
+  isPartOf: {
+    "@type": "ResearchProject",
+    name: "TEPALIT (APVV-24-0484)",
+    funder: {
+      "@type": "Organization",
+      name: "Slovak Research and Development Agency",
+      identifier: "APVV-24-0484",
+    },
+  },
+  keywords: [
+    "Confessio Bohemica 1575",
+    "Agenda Česká 1581",
+    "Bystrická agenda 1585",
+    "Cithara Sanctorum 1636",
+    "trajectory",
+    "confessional consolidation",
+    "register intensification",
+    "manducatio impiorum",
+    "lex orandi",
+    "TEPALIT",
+  ],
+};
+---
+
+<BaseLayout
+  title="Trajektória konfesionálnej konsolidácie"
+  description="Confessional Consolidation Trajectory: CB 1575 → AC 1581 → BA 1585 → CS 1636. Four-document chain across 61 years of confessional sharpening."
+  lang="sk"
+>
+  <script
+    is:inline
+    type="application/ld+json"
+    set:html={JSON.stringify(jsonLd)}
+  />
+
+  <!-- ═══════════ HERO ═══════════ -->
+  <section class="bg-ink-800 px-6 py-16 text-parchment">
+    <div class="mx-auto max-w-content">
+      <p class="font-sans text-xs font-medium uppercase tracking-[0.2em] text-gold">
+        Trajektória · 61 rokov · 4 dokumenty
+      </p>
+      <h1 class="mt-3 font-display text-3xl font-bold leading-tight text-parchment-100 md:text-4xl">
+        Trajektória konfesionálnej konsolidácie
+      </h1>
+      <p class="mt-3 font-display text-base font-medium text-parchment-300">
+        CB 1575 → AC 1581 → BA 1585 → CS 1636
+      </p>
+      <h2 class="mt-6 font-display text-lg font-semibold text-parchment-200" lang="en">
+        Confessional Consolidation Trajectory
+      </h2>
+
+      <p class="mt-6 max-w-prose text-sm leading-relaxed text-parchment-400">
+        Štyri dokumenty cez 61 rokov stredoeurópskej protestantskej histórie
+        (1575 – 1636) sledujú jediný smer konfesionálnej konsolidácie. Každý
+        dokument hovorí o tej istej eucharistickej teológii v inom registri.
+        Trajektória nie je doktrinálnou rupturou; je registrovou intenzifikáciou
+        v rámci kontinuálnej luteránsky orientovanej tradície.
+      </p>
+      <p class="mt-3 max-w-prose font-sans text-sm italic leading-relaxed text-parchment-500" lang="en">
+        Four documents across 61 years of central-European Protestant history
+        (1575 – 1636) trace a single direction of confessional consolidation.
+        Each document articulates the same Eucharistic theology in a different
+        register. The trajectory is not a doctrinal rupture; it is register
+        intensification within a continuous Lutheran-aligned tradition.
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══════════ TIMELINE NODES (cards on a horizontal flow) ═══════════ -->
+  <section class="mx-auto max-w-wide px-6 py-12">
+    <h2 class="text-section-title text-ink">Štyri uzly trajektórie</h2>
+    <p class="mt-1 font-sans text-sm italic text-ink-300" lang="en">
+      Four nodes of the trajectory
+    </p>
+
+    <ol class="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+      {nodes.map((n, idx) => (
+        <li
+          id={n.id}
+          class:list={[
+            "card scroll-mt-24 relative",
+            "border-t-4",
+            n.registerClass,
+          ]}
+        >
+          {/* Year ribbon */}
+          <p class="font-mono text-[11px] font-semibold tracking-wider text-ink-300">
+            {n.year} · {String(idx + 1).padStart(2, "0")}/04
+          </p>
+          <h3 class="mt-1 font-display text-lg font-semibold text-ink">
+            {n.shortName}
+          </h3>
+          <p class="mt-0.5 font-display text-sm font-medium text-ink-400">
+            {n.fullSk}
+          </p>
+          <p class="mt-0.5 font-sans text-xs italic text-ink-300" lang="en">
+            {n.fullEn}
+          </p>
+
+          {/* Register descriptor */}
+          <div class="mt-4 rounded-md border-l-2 border-ink-300/30 bg-parchment-100/40 p-3">
+            <p class="font-sans text-[10px] uppercase tracking-wider text-ink-300">
+              Register
+            </p>
+            <p class="mt-1 font-display text-sm font-semibold text-ink">
+              {n.registerSk}
+            </p>
+            <p class="mt-0.5 font-sans text-[11px] italic text-ink-300" lang="en">
+              {n.registerEn}
+            </p>
+          </div>
+
+          <p class="mt-4 text-xs leading-relaxed text-ink-400">
+            {n.characterSk}
+          </p>
+
+          {/* Marker pills */}
+          <div class="mt-4 space-y-1.5">
+            {markers.map((m) => {
+              const state = (n as any)[m.key] as MarkerState;
+              const ml = markerLabel[state];
+              return (
+                <div class="flex items-baseline justify-between gap-2 text-[11px]">
+                  <span class="text-ink-400">{m.labelSk}:</span>
+                  <span
+                    class:list={[
+                      "shrink-0 rounded-full border px-2 py-0.5 font-sans font-semibold",
+                      ml.class,
+                    ]}
+                  >
+                    <span aria-hidden="true">{ml.symbol}</span> {ml.sk}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Forward link */}
+          {n.forwardLink && (
+            <p class="mt-5 border-t border-parchment-300/40 pt-3">
+              <a
+                href={`${baseN}${n.forwardLink.href}`}
+                class="inline-flex items-center gap-1 font-sans text-[11px] font-semibold text-burgundy no-underline hover:underline"
+              >
+                {n.forwardLink.labelSk} &#x2192;
+              </a>
+            </p>
+          )}
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <div class="ornament-rule"></div>
+
+  <!-- ═══════════ TRAJECTORY DIAGRAM (vanilla SVG) ═══════════ -->
+  <section class="mx-auto max-w-wide px-6 py-12">
+    <h2 class="text-section-title text-ink">Vizualizácia trajektórie</h2>
+    <p class="mt-1 font-sans text-sm italic text-ink-300" lang="en">
+      Trajectory diagram
+    </p>
+
+    <div class="mt-8 overflow-x-auto rounded-lg border border-parchment-300/60 bg-parchment-50 p-6">
+      {/* SVG: 4 circular nodes evenly spaced on a horizontal axis with arcs between.
+          Width fixed to allow horizontal scroll on small screens; sized for readable
+          year labels and shift annotations on desktop. */}
+      <svg
+        viewBox="0 0 920 280"
+        class="mx-auto w-full max-w-[920px]"
+        role="img"
+        aria-label="Trajectory diagram: CB 1575, AC 1581, BA 1585, CS 1636 connected by annotated arcs"
+      >
+        {/* Time axis */}
+        <line x1="60" y1="200" x2="860" y2="200" stroke="#9CA3AF" stroke-width="1" stroke-dasharray="3 3" />
+        <text x="60" y="225" font-family="ui-monospace,monospace" font-size="11" fill="#9CA3AF">1575</text>
+        <text x="860" y="225" font-family="ui-monospace,monospace" font-size="11" text-anchor="end" fill="#9CA3AF">1636</text>
+
+        {/* Calculate node positions: x scaled by year (1575 → 60, 1636 → 860). */}
+        {nodes.map((n) => {
+          const x = 60 + ((n.year - 1575) / (1636 - 1575)) * 800;
+          const radius = 28;
+          const fillClass =
+            n.registerClass.includes("utraquist") ? "#8B2332" :
+            n.registerClass.includes("lutheran") ? "#D4A843" :
+            n.registerClass.includes("burgundy") ? "#7C2D2D" : "#374151";
+          return (
+            <g>
+              {/* Node circle */}
+              <circle cx={x} cy={200} r={radius} fill={fillClass} fill-opacity="0.15" stroke={fillClass} stroke-width="2" />
+              {/* Label inside circle */}
+              <text x={x} y={205} font-family="ui-sans-serif,system-ui" font-size="11" font-weight="700" text-anchor="middle" fill="#1f2937">
+                {n.year}
+              </text>
+              {/* Short name above the node */}
+              <text x={x} y={155} font-family="ui-sans-serif,system-ui" font-size="13" font-weight="700" text-anchor="middle" fill="#1f2937">
+                {n.shortName}
+              </text>
+              {/* Full name above */}
+              <text x={x} y={138} font-family="ui-serif,serif" font-size="10" font-style="italic" text-anchor="middle" fill="#6b7280">
+                {n.fullSk}
+              </text>
+            </g>
+          );
+        })}
+
+        {/* Transition arcs with labels */}
+        {transitions.map((t) => {
+          const fromNode = nodes.find((n) => n.id === t.from)!;
+          const toNode = nodes.find((n) => n.id === t.to)!;
+          const x1 = 60 + ((fromNode.year - 1575) / (1636 - 1575)) * 800;
+          const x2 = 60 + ((toNode.year - 1575) / (1636 - 1575)) * 800;
+          const radius = 28;
+          // Arc midpoint above the timeline.
+          const midX = (x1 + x2) / 2;
+          const midY = 80;
+          // Bezier curve: from right edge of fromNode to left edge of toNode, arching upward.
+          const path = `M ${x1 + radius} 200 Q ${midX} ${midY}, ${x2 - radius} 200`;
+          const strokeColor =
+            t.shift === "REGISTER_INTENSIFICATION" ? "#7C2D2D" :
+            t.shift === "EDITORIAL_CONSOLIDATION" ? "#B68936" :
+            "#9CA3AF";
+          return (
+            <g>
+              <path d={path} fill="none" stroke={strokeColor} stroke-width="1.5" />
+              {/* Arrow tip */}
+              <polygon
+                points={`${x2 - radius - 4},196 ${x2 - radius - 4},204 ${x2 - radius + 2},200`}
+                fill={strokeColor}
+              />
+              {/* Year-gap label */}
+              <text x={midX} y={midY - 8} font-family="ui-sans-serif,system-ui" font-size="11" font-weight="600" text-anchor="middle" fill={strokeColor}>
+                +{t.yearGap} r.
+              </text>
+              {/* Shift label */}
+              <text x={midX} y={midY + 10} font-family="ui-sans-serif,system-ui" font-size="10" text-anchor="middle" fill="#4b5563">
+                {shiftLabel[t.shift].sk}
+              </text>
+            </g>
+          );
+        })}
+      </svg>
+
+      {/* SVG legend */}
+      <div class="mx-auto mt-6 flex max-w-2xl flex-wrap items-center justify-center gap-4 font-sans text-[11px] text-ink-400">
+        <span class="flex items-center gap-1.5">
+          <span class="h-3 w-3 rounded-full" style="background:#9CA3AF"></span>
+          {shiftLabel.REGISTER_CONTINUITY.sk}
+        </span>
+        <span class="flex items-center gap-1.5">
+          <span class="h-3 w-3 rounded-full" style="background:#7C2D2D"></span>
+          {shiftLabel.REGISTER_INTENSIFICATION.sk}
+        </span>
+        <span class="flex items-center gap-1.5">
+          <span class="h-3 w-3 rounded-full" style="background:#B68936"></span>
+          {shiftLabel.EDITORIAL_CONSOLIDATION.sk}
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <div class="ornament-rule"></div>
+
+  <!-- ═══════════ MARKER GRID (cross-document table) ═══════════ -->
+  <section class="mx-auto max-w-wide px-6 py-12">
+    <h2 class="text-section-title text-ink">Diagnostické markery naprieč dokumentmi</h2>
+    <p class="mt-1 font-sans text-sm italic text-ink-300" lang="en">
+      Diagnostic markers across documents
+    </p>
+    <p class="mt-3 max-w-prose text-sm text-ink-400">
+      Tri eucharistické markery, ktoré sa najlepšie posúvajú pozdĺž trajektórie.
+      Manducatio impiorum je hlavný diagnostický bod: jeho prítomnosť alebo
+      neprítomnosť rozdeľuje ostatné dokumenty po Formula Concordiae (1577).
+    </p>
+
+    <div class="mt-8 overflow-x-auto">
+      <table class="w-full min-w-[720px] border-collapse text-sm">
+        <thead>
+          <tr class="border-b-2 border-parchment-400/60 text-left">
+            <th class="px-3 py-2 font-sans text-[11px] uppercase tracking-wider text-ink-300">
+              Marker
+            </th>
+            {nodes.map((n) => (
+              <th class="px-3 py-2 text-center font-sans text-[11px] uppercase tracking-wider text-ink-300">
+                {n.shortName}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {markers.map((m) => (
+            <tr class="border-b border-parchment-300/40">
+              <th class="px-3 py-3 text-left font-display text-sm font-semibold text-ink">
+                {m.labelSk}
+                <span class="block font-sans text-[10px] font-normal italic text-ink-300" lang="en">
+                  {m.labelEn}
+                </span>
+              </th>
+              {nodes.map((n) => {
+                const state = (n as any)[m.key] as MarkerState;
+                const ml = markerLabel[state];
+                return (
+                  <td class="px-3 py-3 text-center">
+                    <span
+                      class:list={[
+                        "inline-flex items-center gap-1 rounded-full border px-2 py-0.5 font-sans text-[10px] font-semibold",
+                        ml.class,
+                      ]}
+                      title={`${ml.sk} / ${ml.en}`}
+                    >
+                      <span aria-hidden="true">{ml.symbol}</span> {ml.sk}
+                    </span>
+                  </td>
+                );
+              })}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <div class="ornament-rule"></div>
+
+  <!-- ═══════════ TRANSITIONS NARRATIVE ═══════════ -->
+  <section class="mx-auto max-w-content px-6 py-12">
+    <h2 class="text-section-title text-ink">Tri prechody, jeden smer</h2>
+    <p class="mt-1 font-sans text-sm italic text-ink-300" lang="en">
+      Three transitions, one direction
+    </p>
+
+    <div class="mt-8 space-y-6">
+      {transitions.map((t, idx) => {
+        const fromNode = nodes.find((n) => n.id === t.from)!;
+        const toNode = nodes.find((n) => n.id === t.to)!;
+        return (
+          <article
+            id={`transition-${t.from}-${t.to}`}
+            class="card scroll-mt-24"
+          >
+            <header class="flex flex-wrap items-baseline justify-between gap-3">
+              <div>
+                <p class="font-mono text-[10px] tracking-wider text-ink-300">
+                  {String(idx + 1).padStart(2, "0")} of 03
+                </p>
+                <h3 class="mt-1 font-display text-base font-semibold text-ink">
+                  {fromNode.shortName} <span class="text-ink-300">&#x2192;</span> {toNode.shortName}
+                  <span class="ml-2 font-sans text-xs font-normal text-ink-400">
+                    (+{t.yearGap} {t.yearGap === 1 ? "rok" : t.yearGap < 5 ? "roky" : "rokov"})
+                  </span>
+                </h3>
+              </div>
+              <span
+                class:list={[
+                  "shrink-0 rounded-full border px-3 py-1 font-sans text-[11px] font-semibold uppercase tracking-wider",
+                  shiftClass[t.shift],
+                ]}
+              >
+                {shiftLabel[t.shift].sk} <span class="opacity-70" lang="en">/ {shiftLabel[t.shift].en}</span>
+              </span>
+            </header>
+            <p class="mt-3 font-serif text-sm leading-relaxed text-ink-400">
+              {t.summarySk}
+            </p>
+            <p class="mt-2 font-sans text-xs italic leading-relaxed text-ink-300" lang="en">
+              {t.summaryEn}
+            </p>
+          </article>
+        );
+      })}
+    </div>
+  </section>
+
+  <div class="ornament-rule"></div>
+
+  <!-- ═══════════ THEOLOGICAL READING ═══════════ -->
+  <section class="mx-auto max-w-content px-6 py-12">
+    <h2 class="text-section-title text-ink">Teologická interpretácia</h2>
+    <p class="mt-1 font-sans text-sm italic text-ink-300" lang="en">
+      Theological reading
+    </p>
+
+    <div class="mt-6 space-y-4 font-serif text-sm leading-relaxed text-ink-400">
+      <p>
+        CB 1575 a AC 1581 zdieľajú registrovú stratégiu — držia polemické
+        špecifikácie nabok v záujme širšej pastoračnej a konfesionálnej
+        použiteľnosti. Cross-konfesionálny irenizmus CB a vnútrokonfesionálna
+        miernosť AC nie sú tá istá vec, ale je to ten istý register.
+        BA 1585 abandonuje túto stratégiu pod lokálnym disciplinárnym tlakom.
+      </p>
+      <p>
+        BA → CS 1636 je päť desaťročí, ale registrový smer pokračuje.
+        Tranovský preberá staršie české zdroje (utrakvistického pôvodu,
+        bratrského pôvodu) s diferenciálnou editorskou stratégiou: kde
+        zdrojové texty majú konfesionálne nejasné formulácie, edituje ich
+        smerom k luteránsky orientovanej norme. Editorská konsolidácia CS
+        zhrnuje to, čo BA už lokálne začalo.
+      </p>
+      <p>
+        Trajektória nie je doktrinálnym prerušením — všetky štyri dokumenty
+        sú podľa štandardov svojich autorov a používateľov v rámci širšieho
+        protestantského konsenzu strednej Európy. Ale keď sa čítajú spolu,
+        zjavujú jednosmerný register-intenzifikačný proces, ktorý kapitola
+        argumentuje ako lex orandi-ovskú stránku konfesionalizácie.
+      </p>
+    </div>
+    <div class="mt-4 space-y-3 font-sans text-xs italic leading-relaxed text-ink-300" lang="en">
+      <p>
+        CB 1575 and AC 1581 share a register strategy — holding polemical
+        specifications at bay for the sake of broader pastoral and confessional
+        usability. The cross-confessional irenicism of CB and the
+        intra-confessional moderation of AC are not the same thing, but they
+        are the same register. BA 1585 abandons that strategy under local
+        disciplinary pressure.
+      </p>
+      <p>
+        BA → CS 1636 is half a century, but the register direction continues.
+        Tranovský absorbs older Czech sources (Utraquist-origin,
+        Brethren-origin) through a differential editorial strategy: where
+        source texts have confessionally unclear formulations, he edits them
+        toward a Lutheran-aligned norm. The editorial consolidation of CS
+        sums up what BA had already begun locally.
+      </p>
+      <p>
+        The trajectory is not a doctrinal break — all four documents fall
+        within the wider central-European Protestant consensus by the
+        standards of their authors and users. But read together, they reveal
+        a single-direction register-intensification process, which the chapter
+        argues is the lex orandi face of confessionalisation.
+      </p>
+    </div>
+  </section>
+
+  <div class="ornament-rule"></div>
+
+  <!-- ═══════════ FORWARD LINKS ═══════════ -->
+  <section class="mx-auto max-w-content px-6 py-12">
+    <h2 class="text-section-title text-ink">Pokračovanie argumentu</h2>
+    <p class="mt-1 font-sans text-sm italic text-ink-300" lang="en">
+      Where the argument continues
+    </p>
+
+    <ul class="mt-6 grid gap-4 sm:grid-cols-2">
+      <li class="card">
+        <h3 class="font-display text-base font-semibold text-ink">
+          <a href={`${baseN}/cb1575/`} class="hover:text-burgundy">
+            CB 1575 archív
+          </a>
+        </h3>
+        <p class="mt-2 text-sm text-ink-400">
+          Kde sa staršie kalvinistické čítanie eucharistického článku CB stále
+          objavuje (tertiárne referenčné diela) a kde aktuálny odborný konsenzus
+          stojí (Just/Rothkegel 2012, Haberkern 2023, Hrejsa 1912).
+        </p>
+      </li>
+      <li class="card">
+        <h3 class="font-display text-base font-semibold text-ink">
+          <a href={`${baseN}/diff/pair-006/`} class="hover:text-burgundy">
+            PAIR_006 register-shift diff
+          </a>
+        </h3>
+        <p class="mt-2 text-sm text-ink-400">
+          Detailné porovnanie AC 1581 ↔ BA 1585 cez štyri komparatívne ťahy
+          (manducatio impiorum, polemické prívlastky, sub utraque rezíduum,
+          hodné prijímanie).
+        </p>
+      </li>
+      <li class="card">
+        <h3 class="font-display text-base font-semibold text-ink">
+          <a href={`${baseN}/papers/theologos/`} class="hover:text-burgundy">
+            Theologos štúdia
+          </a>
+        </h3>
+        <p class="mt-2 text-sm text-ink-400">
+          Plný argumentačný rozvoj v ~9 200 slovách. §6 obsahuje krátku
+          gestickú zmienku o trajektórii; plný rozvoj rezervovaný pre kapitolu.
+        </p>
+      </li>
+      <li class="card">
+        <h3 class="font-display text-base font-semibold text-ink">
+          <a href={`${baseN}/chapter/`} class="hover:text-burgundy">
+            Kapitola §5
+          </a>
+        </h3>
+        <p class="mt-2 text-sm text-ink-400">
+          Centrálna prípadová štúdia: Cithara Sanctorum a recepcia českej
+          reformačnej hymnografie. Trajektória ako spine §5; PAIR_006 ako
+          mikro-prípad.
+        </p>
+      </li>
+    </ul>
+  </section>
+
+  <!-- ═══════════ HOW TO CITE ═══════════ -->
+  <section class="mx-auto max-w-content px-6 py-12 pb-20">
+    <h2 class="text-section-title text-ink">Ako citovať túto stránku</h2>
+    <p class="mt-1 font-sans text-sm italic text-ink-300" lang="en">
+      How to cite this page
+    </p>
+
+    <div class="card mt-6">
+      <h3 class="font-sans text-xs font-semibold uppercase tracking-wider text-ink-400">
+        APA (7th edition)
+      </h3>
+      <p class="mt-3 font-serif text-sm leading-relaxed text-ink" lang="en">
+        Valčo, M. (2026). <em>Confessional Consolidation Trajectory: CB 1575 →
+        AC 1581 → BA 1585 → CS 1636</em> [Trajectory visualisation,
+        APVV-24-0484 TEPALIT]. <a href={pageUrl} class="text-burgundy">{pageUrl}</a>
+      </p>
+    </div>
+  </section>
+</BaseLayout>
