@@ -69,7 +69,8 @@ const maxCellValue = Math.max(
   ),
 );
 
-// Precompute epistemic-status totals once (used in three places below).
+// Precompute epistemic-status totals once (used in the SK + EN methodology
+// paragraphs — two places — to avoid running the same .filter() twice).
 const factualCount = positions.filter((p) => p.epistemic_status === "FACTUAL").length;
 const interpretiveCount = positions.filter((p) => p.epistemic_status === "INTERPRETIVE").length;
 
