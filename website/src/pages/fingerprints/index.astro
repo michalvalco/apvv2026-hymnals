@@ -3,7 +3,6 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import {
   getPositions,
   getLocusByCode,
-  TRADITION_META,
   type ConfessionalPosition,
 } from "../../data/taxonomy";
 
@@ -69,6 +68,10 @@ const maxCellValue = Math.max(
     Math.max(coverage[code].LUTHERAN, coverage[code].UTRAQUIST, coverage[code].UNITY),
   ),
 );
+
+// Precompute epistemic-status totals once (used in three places below).
+const factualCount = positions.filter((p) => p.epistemic_status === "FACTUAL").length;
+const interpretiveCount = positions.filter((p) => p.epistemic_status === "INTERPRETIVE").length;
 
 // ── Radar geometry ──
 // Place sub-loci evenly around the circle. Axis 0 is at the top
@@ -259,7 +262,7 @@ const gridLevels = [0.25, 0.5, 0.75, 1.0];
     </p>
     <p class="mt-3 max-w-prose text-sm text-ink-400">
       Každá os je sub-locus. Hodnota na osi (vzdialenosť od stredu) je počet
-      doložených pozícií pre danú tradíciu na danom locus. Maximum napríč
+      doložených pozícií pre danú tradíciu na danom locus. Maximum naprieč
       všetkými bunkami: <strong>{maxCellValue}</strong>. Polygón tradície
       kreslí jej „tvar“.
     </p>
@@ -496,7 +499,7 @@ const gridLevels = [0.25, 0.5, 0.75, 1.0];
         LUTHERAN má jednu konsolidovanú konfesionálnu pozíciu (FC SD VII).
       </p>
       <p>
-        Maximálna hodnota napríč všetkými bunkami je
+        Maximálna hodnota naprieč všetkými bunkami je
         <strong>{maxCellValue}</strong>; všetky polygóny sú škálované k
         tomuto maximu. Bunky s nulovým doložením znamenajú, že projekt
         nezachytil žiadnu pozíciu pre danú tradíciu na danom locus — môže
@@ -507,9 +510,9 @@ const gridLevels = [0.25, 0.5, 0.75, 1.0];
         identifikujú konkrétne medzery.
       </p>
       <p>
-        Z 26 doložených pozícií je <strong>{positions.filter((p) => p.epistemic_status === "FACTUAL").length}</strong> klasifikovaných ako FACTUAL
+        Z {positions.length} doložených pozícií je <strong>{factualCount}</strong> klasifikovaných ako FACTUAL
         (priamo doložené v normatívnych dokumentoch),
-        <strong>{positions.filter((p) => p.epistemic_status === "INTERPRETIVE").length}</strong> ako INTERPRETIVE (odborné syntézy
+        <strong>{interpretiveCount}</strong> ako INTERPRETIVE (odborné syntézy
         bez priameho doslovného doloženia v primárnom prameni). Radar
         nerozlišuje tieto dve úrovne — pokrytie sa počíta rovnako.
         Pre detailný prehľad epistemických flagov pre konkrétny locus
@@ -537,8 +540,8 @@ const gridLevels = [0.25, 0.5, 0.75, 1.0];
       </p>
       <p>
         Of the {positions.length} documented positions,
-        <strong>{positions.filter((p) => p.epistemic_status === "FACTUAL").length}</strong> are FACTUAL (directly attested in normative documents) and
-        <strong>{positions.filter((p) => p.epistemic_status === "INTERPRETIVE").length}</strong> are INTERPRETIVE (scholarly syntheses without direct
+        <strong>{factualCount}</strong> are FACTUAL (directly attested in normative documents) and
+        <strong>{interpretiveCount}</strong> are INTERPRETIVE (scholarly syntheses without direct
         verbatim attestation in a primary source). The radar does not
         distinguish these two levels — coverage counts identically.
       </p>

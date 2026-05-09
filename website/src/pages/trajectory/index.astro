@@ -115,7 +115,7 @@ const nodes: DocNode[] = [
     fullSk: "Cithara Sanctorum",
     fullEn: "Cithara Sanctorum (printed hymnal)",
     year: 1636,
-    registerSk: "Konsolidovaný slovenský luteránsky kompendí­um",
+    registerSk: "Konsolidovaný slovenský luteránsky kompendium",
     registerEn: "Consolidated Slovak-Lutheran compendium",
     registerClass: "border-burgundy/60",
     characterSk:
@@ -187,11 +187,14 @@ const transitions: Transition[] = [
 ];
 
 // ── Markers cross-document table ──
-const markers = [
+// MarkerKey unions the marker-state fields of DocNode so `n[m.key]` is
+// typed as MarkerState without `any` casting.
+type MarkerKey = "manducatio" | "polemicalAdj" | "subUtraque";
+const markers: ReadonlyArray<{ key: MarkerKey; labelSk: string; labelEn: string }> = [
   { key: "manducatio", labelSk: "Manducatio impiorum", labelEn: "Manducatio impiorum" },
   { key: "polemicalAdj", labelSk: "Polemické prívlastky", labelEn: "Polemical adjectives" },
   { key: "subUtraque", labelSk: "Sub utraque specie", labelEn: "Sub utraque specie" },
-] as const;
+];
 
 // JSON-LD: ScholarlyArticle (this is a free-standing scholarly artifact).
 const jsonLd = {
@@ -328,7 +331,7 @@ const jsonLd = {
           {/* Marker pills */}
           <div class="mt-4 space-y-1.5">
             {markers.map((m) => {
-              const state = (n as any)[m.key] as MarkerState;
+              const state = n[m.key];
               const ml = markerLabel[state];
               return (
                 <div class="flex items-baseline justify-between gap-2 text-[11px]">
@@ -507,7 +510,7 @@ const jsonLd = {
                 </span>
               </th>
               {nodes.map((n) => {
-                const state = (n as any)[m.key] as MarkerState;
+                const state = n[m.key];
                 const ml = markerLabel[state];
                 return (
                   <td class="px-3 py-3 text-center">
