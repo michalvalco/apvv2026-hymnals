@@ -18,7 +18,7 @@ Between the original WEBSITE_BRIEFING (24 March 2026) and today (9 May 2026) the
 3. **An audit-corrected literature-gap reconnaissance** (`Drafts/DeepResearch_Literature_Gap_Report.md`, 61 KB, with the pre-audit version preserved as a backup) listing ~30 post-2010 peer-reviewed items, a top-10 prioritisation matrix, and an explicit historiographical finding: **no peer-reviewed post-2010 anglophone or German-language venue defends the older "Calvinist Eucharist" reading of the Confessio Bohemica 1575**. The persistence of that reading is a tertiary-reference-work phenomenon (Britannica, encyclopedia.com, derivative AI synthesis), not an ongoing scholarly disagreement. The chapter §4.1 will refute it as one of its substantive contributions.
 4. **A methods-paper apparatus** (`MethodsPaper_Outline.md`, `MethodsPaper_Abstracts.md`) describing the project's three-axis trust framework — `epistemic_status` × `evidentiary_strength` × `verification_status` — as a peer-reviewable methodological contribution to confessional-DH. The website partially exposes this on `/hymn-pairs/`, but does not yet treat the framework as a first-class scholarly artefact.
 
-This strategy document proposes **eleven enhancements organised in three tiers** (A — anchor, B — substantive expansion, C — architectural). Tier A items are high-leverage and ready-to-implement against existing data. Tier B items require additional content authoring (mostly aggregation from existing markdown into the website data layer). Tier C items are longer-horizon architectural improvements (build pipeline, search, IIIF integration).
+This strategy document proposes **fourteen enhancements organised in three tiers** — five Tier A (anchor), six Tier B (substantive expansion), three Tier C (architectural). Tier A items are high-leverage and ready-to-implement against existing data. Tier B items require additional content authoring (mostly aggregation from existing markdown into the website data layer). Tier C items are longer-horizon architectural improvements (build pipeline, search, IIIF integration).
 
 **Headline recommendation:** prioritise five Tier-A items in the first implementation sprint — (A1) Companion-papers section, (A2) CB 1575 historiographical archive, (A3) Two-modes Lutheranisation framing in `/hymn-pairs/`, (A4) Chapter scaffold replacing the coming-soon placeholder, (A5) Sources expansion with lit-gap report results — because each of these directly surfaces work already completed, and together they shift the site from "MVP companion" to "publication-grade research apparatus."
 
@@ -87,7 +87,7 @@ The Astro implementation at `website/` is **production-quality** as of v0.1.0 (r
 
 ### 2.2 Where the briefing is under-served
 
-The original briefing's Tier 1 listed six items; v0.1.0 implements 5.5 of them (the chapter viewer remains a placeholder pending the chapter draft itself). Tier 2 items (Lutheranisation Diff Tool, Confessional Fingerprinting, Analytical Dashboards, Corpus Explorer + Search) are not implemented, but the underlying taxonomy data does not yet support all of them and most should not ship as half-data prototypes. Tier 3 items (Scriptural Root System, Geographic Map, IIIF, Hypothes.is, Export & API) are not implemented and remain deliberate stretch goals.
+The original briefing's Tier 1 listed six items; v0.1.0 implements five of them, with the sixth (the hypertext monograph viewer) standing as a coming-soon placeholder pending the chapter draft itself. Tier 2 items (Lutheranisation Diff Tool, Confessional Fingerprinting, Analytical Dashboards, Corpus Explorer + Search) are not implemented, but the underlying taxonomy data does not yet support all of them and most should not ship as half-data prototypes. Tier 3 items (Scriptural Root System, Geographic Map, IIIF, Hypothes.is, Export & API) are not implemented and remain deliberate stretch goals.
 
 ### 2.3 Where the briefing did not anticipate the new materials
 
@@ -128,7 +128,7 @@ These five items leverage work already completed in `Drafts/`, `Chapter/`, and `
 **What.** A new top-level section listing the project's two preliminary publications: the Theologos paper and the methods paper. Each paper gets:
 
 - `/papers/theologos/` — landing page with bilingual abstract (current draft has English abstract; Slovak translation needed), argument synopsis (~250 words pulled from `Drafts/Theologos_Draft_v0.1_Full.md` introduction), status (Draft v0.1 complete, awaiting submission), forward link to PAIR_006 dossier, full bibliography (16 entries from `Drafts/Theologos_Bibliography.md`), citation snippets (APA + BibTeX), and a download link to the rendered PDF (when produced) or to the GitHub markdown source.
-- `/papers/methods/` — same structure for the methods paper. Status: outline complete, drafting Phase 3 / 2027 target. Three abstract variants (470 / 240 / 1,150 words) from `MethodsPaper_Abstracts.md` displayed with venue strategy.
+- `/papers/methods/` — same structure for the methods paper. Status: outline v0.1 complete; drafting target TBD (per `MethodsPaper_Outline.md` the plan is a coordinated DHQ methods paper + JOHD data paper double submission once the v0.1.0 dataset DOI is minted, which has now happened). Three abstract variants (470 / 240 / 1,150 words) from `MethodsPaper_Abstracts.md` displayed with venue strategy.
 - `/papers/` — index page listing both papers with status badges, target venues, bilingual labels.
 
 **Why.** The Theologos paper is the project's most polished scholarly artefact. It is currently invisible on the website — a reader who arrives at `/hymn-pairs/PAIR_006` sees the dossier but no link to the paper that develops it. Adding `/papers/theologos/` closes this gap with no new research, only structural work.
@@ -161,7 +161,7 @@ These five items leverage work already completed in `Drafts/`, `Chapter/`, and `
 
 **Risks.** Two:
 - The Czech-original formula needs a final philological double-check against Hrejsa 1912 (the project notes have it; the chapter and the Theologos paper §6 invoke it; but neither has yet been re-checked against the original 1912 print). The audit of `Theologos_Audit_v0.1_Sec5_Sec7.md` flags this as "format consistent with project notes; verbatim Czech to be cross-checked against Hrejsa 1912 by Michal before submission as part of the chapter work." The website page can follow the same discipline and ship an INTERPRETIVE flag on the verbatim until the cross-check is done.
-- Direct quotation of *Encyclopaedia Britannica* requires a fair-use determination. Recommendation: quote only the diagnostic phrase ("Calvinist interpretation of the Eucharist") with retrieval date, framed as a documentary observation about reference-work persistence, not a full quotation of the entry.
+- Direct quotation of *Encyclopaedia Britannica* requires a fair-use determination. The project's outgoing CC BY 4.0 license does not affect this — the question is fair-use of incoming Britannica material under copyright. Recommendation: quote only the diagnostic phrase ("Calvinist interpretation of the Eucharist") with retrieval date, framed as a brief documentary observation about reference-work persistence, not a full reproduction of the entry. Slovak academic convention is permissive about brief, transformative citation of this kind.
 
 **Open questions for Michal:**
 - Should the page be in `/cb1575/` (its own top-level), or nested as `/chapter/cb1575/` (under the chapter), or `/papers/cb1575/` (under papers)? (Recommendation: top-level `/cb1575/` because the page is a free-standing scholarly resource that survives the chapter's eventual completion.)
@@ -177,7 +177,7 @@ These five items leverage work already completed in `Drafts/`, `Chapter/`, and `
   - **Regional Lutheran continuity.** PAIR_004, PAIR_005 (LUTHERAN_REGIONAL_CONTINUITY) — Hungarian-Lutheran liturgical practice flowing into CS.
   - **Research-target manifest.** PAIR_003 (DEFERRED, the 34-pair Vajda manifest).
 - **A short conceptual prelude** (~150 words SK + EN) at the top of the page summarising the two-modes framework, citing the Theologos paper, and linking to `/papers/theologos/` (depends on A1).
-- **Filter bar enhancement.** Add a fourth filter axis: `transfer_direction` mode. Existing filters are tradition / locus / verification status; adding mode keeps the filter bar's visual language consistent.
+- **Filter bar enhancement.** Add a `transfer_direction` mode filter to the existing filter set on `/hymn-pairs/`. (The current filter axes need a quick check at implementation time; the audit identified the page as "filtered, sortable card-based grid" with three trust axes prominent on each card, but did not enumerate every filter chip. The mode filter is additive either way.)
 
 **Why.** This is the most direct way to expose the chapter's substantive scholarly move on the website. The data already supports it (the `transfer_direction` enum is in `taxonomy/SCHEMA.md` since v0.1.0 and the values are populated correctly in `taxonomy/hymn_pairs.csv`). What's missing is the page-level conceptual framing.
 
@@ -418,7 +418,7 @@ This sequence puts the highest-leverage transposition work first (Sprint 1), the
 
 **R4. Klátik editorial conventions.** The Master Plan flags "Before Phase 4 begins, confirm the chapter's target length and editorial conventions with Klátik." This affects A4 (chapter scaffold) only insofar as the public-facing structure should match the eventual published structure. Manageable risk; A4 ships against the current outline and updates if Klátik's conventions shift.
 
-**R5. Britannica fair-use determination.** Item A2 (CB 1575 archive) needs a fair-use call on direct quotation of the Britannica entry. Recommendation as in §4.A2: quote only the diagnostic phrase with retrieval date, framed as documentary observation about reference-work persistence. Slovak academic convention is permissive about this kind of citation; the project's CC BY 4.0 content license is compatible with brief quotation under fair-use principles.
+**R5. Britannica fair-use determination.** Item A2 (CB 1575 archive) needs a fair-use call on direct quotation of the Britannica entry. Recommendation as in §4.A2: quote only the diagnostic phrase with retrieval date, framed as a brief documentary observation about reference-work persistence. Slovak academic convention is permissive about transformative citation of this kind. The project's outgoing CC BY 4.0 license is independent of this question — it governs how the website's own content may be reused, not what the website may quote from third parties.
 
 **R6. Volunteer-time-pressure on `Sources/*.md` notes.** Item A5 (Sources expansion) couples directly to Phase 2 source-note creation. Each `Sources/*.md` note takes 30–45 minutes per the Master Plan. The website integration adds maybe another 10–15 minutes per source. Total effort scales with the number of sources documented; over 2026–2027 this should be spread across many short sessions rather than a single sprint.
 
@@ -448,11 +448,11 @@ These six decisions, taken together, shape the first sprint. Each is small indiv
 
 This strategy document was prepared in response to Michal's request "examine [the new materials] closely and develop a complex strategy of our website enhancement". It synthesises:
 
-- The eleven new files in `Drafts/` (Theologos paper draft, three audits, bibliography, style guide, paper outline, two literature-gap reports, source notes)
+- The eleven new files in `Drafts/` (Theologos paper draft, three audits, bibliography, style guide, paper outline, three literature-gap files — prompt, report, pre-audit backup, source notes)
 - The four new files in `Chapter/` (Master Plan v0.2, Outline v0.1, two READMEs)
 - The two methods-paper files at root (`MethodsPaper_Outline.md`, `MethodsPaper_Abstracts.md`)
 - The current state of `taxonomy/*.csv` (six files, 118 lines, with new `hymn_pairs.csv` and `transfer_direction` enum extensions for `LUTHERAN_REGIONAL_CONTINUITY` and `LUTHERAN_CONFESSIONAL_INTENSIFICATION`)
-- The current state of `website/src/` (12 routes, 4 data files, 4 components, ~3,700 LoC) audited via dedicated review on 2026-05-09
+- The current state of `website/src/` (12 routes, 4 data files, 4 components, ~5,500 LoC across pages + data + components) audited via dedicated review on 2026-05-09
 - External verification of key resources: the Haberkern 2023 R&RR article (DOI confirmed via tandfonline), the Cithara Sanctorum 1636 first edition repository at REAL-R / MTAK Budapest, the Pagefind static-search Astro integration, and the Kralická Bible digital availability via Manuscriptorium and Kramerius MZK
 
 The recommendations follow the project's existing conventions per `CLAUDE.md`, `WEBSITE_BRIEFING.md`, and `taxonomy/SCHEMA.md`. Forbidden vocabulary is observed; bilingual coverage is preserved at every layer; the static-site / GitHub-Pages / no-database architecture is preserved.
