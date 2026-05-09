@@ -140,10 +140,14 @@ function loadCsv(name) {
 
 // ── Validation rules ──
 
+// Per `taxonomy/SCHEMA.md`: every column listed below is marked YES (required)
+// in its file's schema table. Optional columns (NO) are NOT listed here. If you
+// add a new required field to a CSV, add it here too — and remember to add the
+// corresponding enum / cross-reference / format check below.
 const REQUIRED_COLS = {
   "loci_hierarchy.csv": [
     "locus_code", "locus_name_la", "locus_name_sk", "locus_name_en",
-    "parent_locus", "description_en", "chapter_section", "priority",
+    "description_en", "chapter_section", "priority",
   ],
   "confessional_positions.csv": [
     "locus_code", "tradition", "tradition_phase", "position_label",
@@ -155,22 +159,26 @@ const REQUIRED_COLS = {
   ],
   "hymnic_evidence.csv": [
     "text_id", "source_collection_id", "incipit", "locus_codes",
-    "tradition", "epistemic_status",
+    "tradition", "tradition_phase", "hymnic_function", "original_language",
+    "epistemic_status",
   ],
   "hymnic_functions.csv": [
     "function_code", "function_name_en", "function_name_sk",
-    "description_en", "theological_weight",
+    "description_en", "detection_markers", "theological_weight", "example",
   ],
   "hymn_pairs.csv": [
     "pair_id", "pair_label_sk", "pair_label_en",
-    "primary_locus_code", "epistemic_status", "evidentiary_strength",
-    "verification_status",
+    "primary_locus_code", "all_locus_codes",
+    "theological_argument_sk", "theological_argument_en",
+    "epistemic_status", "evidentiary_strength", "verification_status",
   ],
 };
 
 const ENUMS = {
   epistemic_status: new Set(["FACTUAL", "INTERPRETIVE", "DEFERRED"]),
-  tradition: new Set(["LUTHERAN", "UTRAQUIST", "UNITY", "UNCERTAIN"]),
+  // Per SCHEMA.md the documented set is LUTHERAN / UTRAQUIST / UNITY only.
+  // No row currently uses anything else; the validator stays strict.
+  tradition: new Set(["LUTHERAN", "UTRAQUIST", "UNITY"]),
   evidentiary_strength: new Set(["DOCUMENTED", "INFERRED", "CONJECTURED"]),
   verification_status: new Set([
     "VERIFIED", "SECONDARY_ONLY", "PRIMARY_PENDING", "UNVERIFIED",
@@ -188,6 +196,8 @@ const ENUMS = {
     "LATIN_TO_VERNACULAR",
     "GERMAN_TO_CZECH",
   ]),
+  // hymnic_evidence.original_language per SCHEMA.md: LA / CZ / DE / SK
+  original_language: new Set(["LA", "CZ", "DE", "SK"]),
 };
 
 // Required-columns gate. Returns true if every required column is present;
@@ -283,7 +293,7 @@ function validateTermVariants(table, lociSet) {
   }
 }
 
-function validateHymnicEvidence(table, lociSet) {
+function validateHymnicEvidence(table, lociSet, functionCodeSet) {
   if (!checkColumns("hymnic_evidence.csv", table.header)) return;
   checkUnique("hymnic_evidence.csv", table.data, "text_id");
   // Build text_id index for paired_text_id back-reference check
@@ -291,10 +301,16 @@ function validateHymnicEvidence(table, lociSet) {
   for (const r of table.data) {
     checkEnum("hymnic_evidence.csv", r, "tradition", ENUMS.tradition);
     checkEnum("hymnic_evidence.csv", r, "epistemic_status", ENUMS.epistemic_status);
+    checkEnum("hymnic_evidence.csv", r, "original_language", ENUMS.original_language);
     for (const code of splitSemis(r.locus_codes)) {
       if (!lociSet.has(code)) {
         err("hymnic_evidence.csv", r._line, `locus_codes contains unknown locus "${code}"`);
       }
+    }
+    // Cross-file: hymnic_function must reference an existing function_code in
+    // hymnic_functions.csv (per SCHEMA.md cross-file integrity constraints).
+    if (r.hymnic_function && !functionCodeSet.has(r.hymnic_function)) {
+      err("hymnic_evidence.csv", r._line, `hymnic_function "${r.hymnic_function}" does not exist as function_code in hymnic_functions.csv`);
     }
     if (r.paired_text_id && !textIds.has(r.paired_text_id)) {
       err("hymnic_evidence.csv", r._line, `paired_text_id "${r.paired_text_id}" does not exist as text_id`);
@@ -329,15 +345,31 @@ function validateHymnPairs(table, lociSet, evidenceTextIds) {
         err("hymn_pairs.csv", r._line, `all_locus_codes contains unknown locus "${code}"`);
       }
     }
+    // Determine whether this row is a working-hypothesis / research-target.
+    // For honestly flagged research-target pairs (CONJECTURED evidence OR
+    // DEFERRED epistemic status) a placeholder text_id that does not yet exist
+    // in hymnic_evidence is acceptable — collation has not started. For all
+    // other pairs (FACTUAL/INTERPRETIVE + DOCUMENTED/INFERRED), a missing
+    // text_id reference is almost certainly a typo that should fail the build.
+    const isWorkingHypothesis =
+      r.evidentiary_strength === "CONJECTURED" ||
+      r.epistemic_status === "DEFERRED";
+    const refReport = isWorkingHypothesis ? warn : err;
     if (r.source_text_id && !evidenceTextIds.has(r.source_text_id)) {
-      // PAIR_002 has placeholder source/receptor IDs that intentionally do not
-      // reference real hymnic_evidence rows yet — the pair is a working
-      // hypothesis whose verbatim collection has not started. Demote to warning
-      // so honest research-target manifests don't fail the build.
-      warn("hymn_pairs.csv", r._line, `source_text_id "${r.source_text_id}" not in hymnic_evidence (acceptable for working-hypothesis pairs)`);
+      refReport(
+        "hymn_pairs.csv",
+        r._line,
+        `source_text_id "${r.source_text_id}" not in hymnic_evidence` +
+          (isWorkingHypothesis ? " (acceptable for working-hypothesis pairs)" : ""),
+      );
     }
     if (r.receptor_text_id && !evidenceTextIds.has(r.receptor_text_id)) {
-      warn("hymn_pairs.csv", r._line, `receptor_text_id "${r.receptor_text_id}" not in hymnic_evidence (acceptable for working-hypothesis pairs)`);
+      refReport(
+        "hymn_pairs.csv",
+        r._line,
+        `receptor_text_id "${r.receptor_text_id}" not in hymnic_evidence` +
+          (isWorkingHypothesis ? " (acceptable for working-hypothesis pairs)" : ""),
+      );
     }
   }
 }
@@ -360,11 +392,16 @@ function main() {
   const functions = loadCsv("hymnic_functions.csv");
   const pairs = loadCsv("hymn_pairs.csv");
 
+  // Validate functions FIRST so the function_code set is available to the
+  // hymnic_evidence.hymnic_function cross-reference check below.
   validateLoci(loci, lociSet);
   validateConfessionalPositions(positions, lociSet);
   validateTermVariants(terms, lociSet);
-  validateHymnicEvidence(evidence, lociSet);
   validateHymnicFunctions(functions);
+  const functionCodeSet = new Set(
+    functions.data.map((r) => r.function_code).filter(Boolean),
+  );
+  validateHymnicEvidence(evidence, lociSet, functionCodeSet);
   validateHymnPairs(pairs, lociSet, evidenceTextIds);
 
   // Report
