@@ -1,0 +1,504 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const base = import.meta.env.BASE_URL;
+const baseN = base.replace(/\/$/, "");
+const baseHref = baseN.endsWith("/") ? baseN : baseN + "/";
+const pageUrl = Astro.site
+  ? new URL("cb1575/", new URL(baseHref, Astro.site)).toString()
+  : `${baseN}/cb1575/`;
+
+// JSON-LD: ArticleType for indexing as a free-standing scholarly resource.
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ScholarlyArticle",
+  name: "Confessio Bohemica 1575: Reference-Work Persistence vs. Scholarly Consensus",
+  alternateName:
+    "Confessio Bohemica 1575: trvanlivosť referenčných diel vs. odborný konsenzus",
+  url: pageUrl,
+  inLanguage: ["sk", "en"],
+  publishingPrinciples:
+    "Free-standing historiographical archive published under CC BY 4.0. Supports the chapter §4.1 refutation of the older 'Calvinist Eucharist' reading of Confessio Bohemica 1575.",
+  author: {
+    "@type": "Person",
+    name: "Michal Valčo",
+    affiliation: { "@type": "Organization", name: "ETF UK Bratislava" },
+  },
+  isPartOf: {
+    "@type": "ResearchProject",
+    name: "TEPALIT (APVV-24-0484)",
+    funder: {
+      "@type": "Organization",
+      name: "Slovak Research and Development Agency",
+      identifier: "APVV-24-0484",
+    },
+  },
+  keywords: [
+    "Confessio Bohemica 1575",
+    "Czech Reformation",
+    "Eucharist",
+    "Lutheran",
+    "Utraquist",
+    "Unity of Brethren",
+    "irenic confession",
+    "historiography",
+    "reference-work persistence",
+    "TEPALIT",
+  ],
+};
+
+// ── New consensus (post-2010 peer-reviewed scholarship) ──
+const newConsensus = [
+  {
+    citation:
+      "Just, Jiří, and Martin Rothkegel. \"Confessio Bohemica, 1575/1609.\" In Reformierte Bekenntnisschriften 3/1 (1570–1599), edited by Andreas Mühling and Peter Opitz, 47–176. Neukirchen-Vluyn: Neukirchener Theologie / Vandenhoeck & Ruprecht, 2012.",
+    role_sk: "Cornerstone",
+    role_en: "Cornerstone",
+    summarySk:
+      "Štandardná kritická edícia s historickým úvodom. Číta CB jednoznačne ako irenický kompromisný text, nie ako kalvinistickú konfesiu. Eucharistický článok preukazuje ako deliberátnu „duchovně i podstatně“ formulu. Že táto edícia vyšla v sérii *Reformierte Bekenntnisschriften* a napriek tomu argumentuje za both/and čítanie, je samé osebe historiografické tvrdenie.",
+    summaryEn:
+      "The standard critical edition with substantive historical introduction. Reads the CB unambiguously as an irenic compromise text, not as a Calvinist confession. Treats the Eucharistic article as the deliberate 'duchovně i podstatně' both/and formula. The fact that this edition appeared in the *Reformierte Bekenntnisschriften* series and yet argues the both/and reading is itself a historiographical statement.",
+    url: "https://www.academia.edu/12910590",
+    sourceId: "Just_Rothkegel_2012",
+  },
+  {
+    citation:
+      "Haberkern, Phillip N. \"The Bohemian Confession of 1575: Towards an Archaeology of the Czech Reformation.\" Reformation & Renaissance Review 25, no. 2–3 (2023): 136–[…].",
+    role_sk: "Recentný anglofónny statement",
+    role_en: "Recent anglophone statement",
+    summarySk:
+      "Číta CB ako produkt multi-stranovej negociácie medzi utrakvistami, luteránmi a Jednotou bratskou. Eucharistický článok je „deliberátne irenický“ — explicitne odmieta staršiu charakterizáciu CB ako krypto-kalvinistickú. Haberkern angažuje a rozširuje Just/Rothkegel 2012 a cituje ich ako nový štandard.",
+    summaryEn:
+      "Reads the CB as the product of multi-party negotiation among Utraquists, Lutherans, and Brethren. The Eucharistic article is 'deliberately irenic' — explicitly rejecting the older characterisation of the document as crypto-Calvinist. Haberkern engages and extends Just/Rothkegel 2012, citing it as the new standard.",
+    url: "https://doi.org/10.1080/14622459.2023.2283009",
+    sourceId: "Haberkern_2023",
+  },
+  {
+    citation:
+      "Hrejsa, Ferdinand. Česká konfesse, její vznik, podstata a dějiny. Praha: Česká akademie císaře Františka Josefa pro vědy, slovesnost a umění, 1912. 818 pp.",
+    role_sk: "Originárna českojazyčná refutácia",
+    role_en: "Originary Czech-language refutation",
+    summarySk:
+      "Originárna českojazyčná refutácia kalvinistického čítania, datujúca sa do roku 1912. Hrejsa preukazuje, že CB je výsledkom irenických rokovaní troch konfesionálnych prúdov českej krajiny a že jej eucharistická formulácia je vedome both/and, nie kalvinistická. Backbone pre §4.1 kapitoly.",
+    summaryEn:
+      "The originary Czech-language refutation of the Calvinist reading, dating to 1912. Hrejsa demonstrates that the CB is the result of irenic negotiations among the three confessional streams of the Czech lands, and that its Eucharistic formulation is consciously both/and, not Calvinist. Backbone for the chapter §4.1.",
+    sourceId: "Hrejsa_1912",
+  },
+];
+
+// ── Older reading (where the Calvinist characterisation persists) ──
+// Per strategy doc §A2 / R5: quote only the diagnostic phrase with retrieval
+// date as a documentary observation about reference-work persistence; not a
+// full reproduction. The project's outgoing CC BY 4.0 license does not apply
+// to incoming Britannica material, which is under copyright; quoting the
+// diagnostic phrase is fair-use observation about reference-work practice.
+const olderReading = [
+  {
+    title: "Encyclopaedia Britannica (online), \"Bohemian Confession\"",
+    url: "https://www.britannica.com/topic/Bohemian-Confession",
+    diagnosticPhrase:
+      "\"upheld the Lutheran position on justification and the Calvinist interpretation of the Eucharist\"",
+    retrieved: "2026-05-09",
+    note_sk:
+      "Hlavný prežívajúci propagačný bod staršej charakterizácie. Nie je to recenzovaná veda — Britannica je tertiálne referenčné dielo. Persistencia tohto čítania v 2025 / 2026 je empirická odpoveď na historiografickú otázku.",
+    note_en:
+      "The primary surviving propagation point of the older characterisation. This is not peer-reviewed scholarship — Britannica is a tertiary reference work. The persistence of this reading through 2025 / 2026 is the empirical answer to the historiographical question.",
+  },
+  {
+    title: "Encyclopedia.com (Gale), \"Bohemian Brethren\"",
+    url: "https://www.encyclopedia.com/",
+    diagnosticPhrase:
+      "\"reflecting Lutheran and Calvinist influences\"",
+    retrieved: "2026-05-09",
+    note_sk:
+      "Mäkšie formulácie, ale stále distorzívne pre skutočný eucharistický článok CB. Ten istý problém propagácie, mierne atenuovaný; široko scrapeovaný AI modelmi.",
+    note_en:
+      "Softer phrasing, but still distortive of the actual CB Eucharistic article. The same propagation problem, slightly attenuated; widely scraped by AI models.",
+  },
+  {
+    title: "Schaff, Philip. The Creeds of Christendom (1877)",
+    url: "https://ccel.org/ccel/schaff/creeds1.ix.i.html",
+    diagnosticPhrase:
+      "Places CB in a Reformed harmony of confessions",
+    retrieved: "2026-05-09",
+    note_sk:
+      "Zaraďuje CB do reformovaného harmonu konfesií. Klasická 19. storočie klasifikácia, nie 21. storočie odborná pozícia. Hrejsa 1912 už toto čítanie odmieta v rámci českojazyčnej vedy.",
+    note_en:
+      "Places the CB within a Reformed harmony of confessions. A 19th-century classification, not a 21st-century scholarly position. Hrejsa 1912 already rejects this reading within Czech-language scholarship.",
+  },
+];
+---
+
+<BaseLayout
+  title="Confessio Bohemica 1575 — historiographický archív"
+  description="A free-standing historiographical archive: the Confessio Bohemica 1575 'Calvinist Eucharist' reading is a tertiary-reference-work phenomenon, not current scholarship. Anchored on Just/Rothkegel 2012 and Haberkern 2023."
+  lang="sk"
+>
+  <script
+    is:inline
+    type="application/ld+json"
+    set:html={JSON.stringify(jsonLd)}
+  />
+
+  <!-- ═══════════ HERO ═══════════ -->
+  <section class="bg-ink-800 px-6 py-16 text-parchment">
+    <div class="mx-auto max-w-content">
+      <p class="font-sans text-xs font-medium uppercase tracking-[0.2em] text-gold">
+        Historiografický archív · TEPALIT
+      </p>
+      <h1 class="mt-4 font-display text-3xl font-bold leading-tight text-parchment-100 md:text-4xl">
+        Confessio Bohemica 1575
+      </h1>
+      <p class="mt-3 font-display text-lg font-medium text-parchment-300">
+        Trvanlivosť referenčných diel vs. odborný konsenzus
+      </p>
+      <h2 class="mt-6 font-display text-xl font-semibold text-parchment-200" lang="en">
+        Reference-Work Persistence vs. Scholarly Consensus
+      </h2>
+
+      <p class="mt-8 max-w-prose text-sm leading-relaxed text-parchment-400">
+        Staršie anglofónne referenčné diela charakterizujú eucharistický
+        článok <em>Confessio Bohemica</em> 1575 ako kalvinistický. Nepretržitá
+        rešerš v auditovanom Literature-Gap reporte (9. máj 2026) nelokalizovala
+        <strong>žiadne recenzované post-2010 anglofónne ani nemeckojazyčné
+        miesto</strong>, ktoré toto čítanie obhajuje. Persistencia tohto
+        charakterizácie je fenomén tertiálnych referenčných diel
+        (<em>Encyclopaedia Britannica</em>, encyclopedia.com, derivátna AI
+        syntéza), nie aktuálnej vedy.
+      </p>
+      <p class="mt-3 max-w-prose font-sans text-sm italic leading-relaxed text-parchment-500" lang="en">
+        Older anglophone reference works characterise the Eucharistic article
+        of <em>Confessio Bohemica</em> 1575 as Calvinist. The audit-corrected
+        Literature-Gap reconnaissance (9 May 2026) located <strong>no
+        peer-reviewed post-2010 anglophone or German-language venue</strong>
+        defending this reading. The persistence of the older characterisation
+        is a tertiary-reference-work phenomenon (<em>Britannica</em>,
+        encyclopedia.com, derivative AI synthesis), not current scholarship.
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══════════ THE CONTESTED FORMULA ═══════════ -->
+  <section class="mx-auto max-w-content px-6 py-12">
+    <h2 class="text-section-title text-ink">Sporná formula</h2>
+    <p class="mt-1 font-sans text-sm italic text-ink-300" lang="en">
+      The contested formula
+    </p>
+
+    <p class="mt-4 text-sm text-ink-400">
+      Eucharistický článok CB 1575 obsahuje formulu, ktorú obe strany
+      historiografického sporu preberajú ako test:
+    </p>
+
+    <figure class="mt-8 rounded-md border-l-4 border-gold/60 bg-parchment-100/60 p-6">
+      <blockquote class="font-display text-2xl font-medium leading-relaxed text-ink md:text-3xl">
+        <em>duchovně i podstatně, věrou i také ústy</em>
+      </blockquote>
+      <figcaption class="mt-4 text-sm text-ink-400">
+        <p>
+          (po slovensky: duchovne aj podstatne, vierou aj ústami) — t. j.
+          spirituálne aj substanciálne, vierou aj orálnym prijatím.
+        </p>
+        <p class="mt-2 font-sans text-xs italic text-ink-300" lang="en">
+          (English: 'spiritually and substantially, by faith and also by mouth')
+          — i.e., spiritually <em>and</em> substantially, by faith
+          <em>and</em> orally received.
+        </p>
+        <p class="mt-3 font-sans text-[11px] italic text-ink-300">
+          Prameň: <code class="font-mono">Hrejsa 1912</code> a kritická edícia
+          <code class="font-mono">Just/Rothkegel 2012</code>, pp. 47–176.
+          <strong>Verbatim česká forma vyžaduje finálnu filologickú kontrolu
+          voči Hrejsa 1912 originálnemu tlačeniu</strong> pred publikáciou
+          kapitoly — táto stránka zachováva projektovú formu ako pracovnú.
+        </p>
+      </figcaption>
+    </figure>
+
+    <p class="mt-6 text-sm leading-relaxed text-ink-400">
+      Formula je <strong>deliberátne both/and</strong>: explicitne potvrdzuje
+      substanciálnu prítomnosť a orálne prijímanie (luteránske dištinktívy)
+      a zároveň potvrdzuje spirituálnu recepciu vierou (reformovaný akcent).
+      Ide o irenický register — kompromisný text vyrokovaný medzi tromi
+      konfesionálnymi prúdmi (utrakvisti, luteráni, Jednota bratská), nie
+      kalvinistická pozícia.
+    </p>
+    <p class="mt-3 font-sans text-xs italic leading-relaxed text-ink-300" lang="en">
+      The formula is <strong>deliberately both/and</strong>: it explicitly
+      affirms substantial presence and oral reception (the Lutheran
+      distinctives) <em>and</em> affirms spiritual reception by faith (the
+      Reformed emphasis). This is an irenic register — a compromise text
+      negotiated among three confessional streams (Utraquist, Lutheran, Unity
+      of Brethren), not a Calvinist position.
+    </p>
+
+    <p class="mt-4 rounded-md bg-burgundy/5 px-4 py-3 text-xs text-ink-400">
+      <strong>Poznámka:</strong> CB ostáva nápadne tichá o
+      <em>manducatio impiorum</em> — práve teste, ktorý <em>Formula Concordiae</em>
+      (1577) urobí luteránskym hraničným indikátorom voči reformovaným.
+      Tichom je ten istý mlčanie, ktoré <em>Agenda Česká</em> 1581 zachováva o
+      štyri roky neskôr v luteránsky orientovanom kódexe; <em>Bystrická
+      agenda</em> 1585 je dokument, ktorý lokálne to mlčanie prelomuje
+      (PAIR_006).
+    </p>
+  </section>
+
+  <div class="ornament-rule"></div>
+
+  <!-- ═══════════ NEW CONSENSUS ═══════════ -->
+  <section class="mx-auto max-w-content px-6 py-12">
+    <h2 class="text-section-title text-ink">Nový konsenzus</h2>
+    <p class="mt-1 font-sans text-sm italic text-ink-300" lang="en">
+      The new consensus (post-2010 peer-reviewed scholarship)
+    </p>
+    <p class="mt-3 max-w-prose text-sm text-ink-400">
+      Tri kotvy moderného odborného čítania CB 1575. Prvé dve sú post-2010
+      anglofónne / nemeckojazyčné, tretia je originárna českojazyčná
+      refutácia z roku 1912.
+    </p>
+
+    <div class="mt-8 space-y-5">
+      {newConsensus.map((entry) => (
+        <article class="card border-l-4 border-epistemic-factual/60">
+          <div class="flex flex-wrap items-start justify-between gap-3">
+            <span class="rounded-full bg-epistemic-factual/15 px-3 py-1 font-sans text-[11px] font-semibold uppercase tracking-wider text-epistemic-factual">
+              {entry.role_sk} <span class="opacity-70" lang="en">/ {entry.role_en}</span>
+            </span>
+            {entry.url && (
+              <a
+                href={entry.url}
+                class="font-sans text-xs text-burgundy hover:underline"
+                rel="noopener"
+              >
+                Online &#x2197;
+              </a>
+            )}
+          </div>
+          <p class="mt-3 font-serif text-sm leading-relaxed text-ink">
+            {entry.citation}
+          </p>
+          <p class="mt-3 text-sm leading-relaxed text-ink-400">
+            {entry.summarySk}
+          </p>
+          <p class="mt-2 font-sans text-xs italic leading-relaxed text-ink-300" lang="en">
+            {entry.summaryEn}
+          </p>
+          {entry.sourceId && (
+            <p class="mt-3">
+              <a
+                href={`${baseN}/sources/#${entry.sourceId}`}
+                class="font-mono text-[11px] text-burgundy hover:underline"
+              >
+                /sources/#{entry.sourceId} &#x2192;
+              </a>
+            </p>
+          )}
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <div class="ornament-rule"></div>
+
+  <!-- ═══════════ OLDER READING ═══════════ -->
+  <section class="mx-auto max-w-content px-6 py-12">
+    <h2 class="text-section-title text-ink">Staršie čítanie (kde pretrváva)</h2>
+    <p class="mt-1 font-sans text-sm italic text-ink-300" lang="en">
+      Where the older reading still surfaces
+    </p>
+
+    <p class="mt-3 max-w-prose text-sm text-ink-400">
+      Tri tertiálne referenčné diela, kde charakterizácia eucharistickej
+      pozície CB 1575 ako kalvinistickej dodnes pretrváva. Citácie sú
+      diagnostické fragmenty (fair-use), nie reprodukcie celých záznamov.
+    </p>
+
+    <div class="mt-8 space-y-5">
+      {olderReading.map((entry) => (
+        <article class="card border-l-4 border-burgundy/40">
+          <div class="flex flex-wrap items-start justify-between gap-3">
+            <h3 class="font-display text-base font-semibold text-ink">
+              {entry.title}
+            </h3>
+            <a
+              href={entry.url}
+              class="font-sans text-xs text-burgundy hover:underline"
+              rel="noopener"
+            >
+              {entry.url.replace(/https?:\/\/(www\.)?/, "").split("/")[0]} &#x2197;
+            </a>
+          </div>
+          <blockquote class="mt-3 border-l-2 border-burgundy/40 pl-3 font-serif text-sm italic text-ink">
+            {entry.diagnosticPhrase}
+          </blockquote>
+          <p class="mt-2 font-sans text-[10px] uppercase tracking-wider text-ink-300">
+            Retrieved: {entry.retrieved}
+          </p>
+          <p class="mt-3 text-sm leading-relaxed text-ink-400">
+            {entry.note_sk}
+          </p>
+          <p class="mt-2 font-sans text-xs italic leading-relaxed text-ink-300" lang="en">
+            {entry.note_en}
+          </p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <div class="ornament-rule"></div>
+
+  <!-- ═══════════ PATTERN OBSERVATION ═══════════ -->
+  <section class="mx-auto max-w-content px-6 py-12">
+    <h2 class="text-section-title text-ink">Pozorovanie vzorca</h2>
+    <p class="mt-1 font-sans text-sm italic text-ink-300" lang="en">
+      The pattern observation
+    </p>
+
+    <div class="mt-6 rounded-md border-l-4 border-gold/60 bg-parchment-100/40 p-5">
+      <p class="font-display text-base font-semibold text-ink">
+        Empirický záver auditovaného Literature-Gap reportu (2026-05-09):
+      </p>
+      <p class="mt-3 text-sm leading-relaxed text-ink-400">
+        <em>„Žiadne recenzované post-2010 anglofónne ani nemeckojazyčné miesto,
+        ktoré obhajuje kalvinistické čítanie eucharistického článku Confessio
+        Bohemica, nebolo lokalizované."</em> Persistencia staršej
+        charakterizácie je fenomén tertiálnych referenčných diel
+        (<em>Encyclopaedia Britannica</em>, encyclopedia.com, derivátna AI
+        syntéza), nie pokračujúca odborná nezhoda.
+      </p>
+      <p class="mt-3 font-sans text-xs italic leading-relaxed text-ink-300" lang="en">
+        <em>"No peer-reviewed post-2010 anglophone or German-language venue
+        defending the Calvinist reading of the Confessio Bohemica's Eucharistic
+        article was located."</em> The persistence of the older characterisation
+        is a phenomenon of tertiary reference works
+        (<em>Britannica</em>, encyclopedia.com, derivative AI synthesis), not
+        an ongoing scholarly disagreement.
+      </p>
+    </div>
+
+    <p class="mt-6 text-sm leading-relaxed text-ink-400">
+      Historiografická otázka tým mení tvar. Nejde o aktuálny odborný spor
+      „kalvinistická vs. luteránska/irenická pozícia"; ide o spor medzi
+      <strong>aktuálnym odborným konsenzom</strong> (Just/Rothkegel 2012,
+      Haberkern 2023, Hrejsa 1912 backbone) a <strong>trvanlivosťou
+      tertiálnych referenčných diel</strong>, ktoré naďalej propagujú staršiu
+      charakterizáciu — kde Britannica zostáva citačnou plochou pre AI-generované
+      synthézy. Refutácia je preto refutácia trvanlivosti referenčných diel,
+      nie odborná polemika.
+    </p>
+    <p class="mt-3 font-sans text-xs italic leading-relaxed text-ink-300" lang="en">
+      The historiographical question therefore changes shape. It is not a
+      current scholarly dispute 'Calvinist vs. Lutheran/irenic'; it is a
+      mismatch between <strong>current scholarly consensus</strong>
+      (Just/Rothkegel 2012, Haberkern 2023, Hrejsa 1912 backbone) and
+      <strong>tertiary-reference-work persistence</strong> that continues to
+      propagate the older characterisation — with Britannica functioning as
+      the citation surface for AI-generated synthesis. The refutation is
+      therefore a refutation of reference-work persistence, not a scholarly
+      polemic.
+    </p>
+  </section>
+
+  <div class="ornament-rule"></div>
+
+  <!-- ═══════════ FORWARD LINKS ═══════════ -->
+  <section class="mx-auto max-w-content px-6 py-12">
+    <h2 class="text-section-title text-ink">Pokračovanie argumentu</h2>
+    <p class="mt-1 font-sans text-sm italic text-ink-300" lang="en">
+      Where the argument continues
+    </p>
+
+    <ul class="mt-6 grid gap-4 sm:grid-cols-2">
+      <li class="card">
+        <h3 class="font-display text-base font-semibold text-ink">
+          <a href={`${baseN}/chapter/`} class="hover:text-burgundy">
+            Kapitola §4.1
+          </a>
+        </h3>
+        <p class="mt-1 font-sans text-xs italic text-ink-300" lang="en">
+          Chapter §4.1 (Eucharistia)
+        </p>
+        <p class="mt-2 text-sm text-ink-400">
+          Plný rozvoj refutácie ako jednej zo substantívnych kontribúcií
+          monografickej kapitoly. CB 1575 → AC 1581 → BA 1585 → CS 1636
+          trajektória čitateľná ako kontinuálne smerovanie konfesionálnej
+          konsolidácie.
+        </p>
+      </li>
+      <li class="card">
+        <h3 class="font-display text-base font-semibold text-ink">
+          <a href={`${baseN}/papers/theologos/`} class="hover:text-burgundy">
+            Theologos štúdia §6
+          </a>
+        </h3>
+        <p class="mt-1 font-sans text-xs italic text-ink-300" lang="en">
+          Theologos paper §6
+        </p>
+        <p class="mt-2 text-sm text-ink-400">
+          Krátka gestická zmienka (~480 slov) o paralelnom registrovom
+          fenoméne na medzikonfesionálnej úrovni; plné rozvoj rezervovaný pre
+          kapitolu.
+        </p>
+      </li>
+      <li class="card">
+        <h3 class="font-display text-base font-semibold text-ink">
+          <a href={`${baseN}/hymn-pairs/#PAIR_006_AC_BA_EUCHARIST`} class="hover:text-burgundy">
+            PAIR_006
+          </a>
+        </h3>
+        <p class="mt-1 font-sans text-xs italic text-ink-300" lang="en">
+          PAIR_006 (intra-codex Eucharistic stratification)
+        </p>
+        <p class="mt-2 text-sm text-ink-400">
+          Mikro-prípad rovnakého registrového fenoménu na úrovni jedného
+          fyzického kódexu (Bratislavská Lyceálna knižnica). Anchor pre §4.1
+          a §5 kapitoly.
+        </p>
+      </li>
+      <li class="card">
+        <h3 class="font-display text-base font-semibold text-ink">
+          <a href={`${baseN}/sources/`} class="hover:text-burgundy">
+            Pramene
+          </a>
+        </h3>
+        <p class="mt-1 font-sans text-xs italic text-ink-300" lang="en">
+          Sources register
+        </p>
+        <p class="mt-2 text-sm text-ink-400">
+          Kotvy pre Just/Rothkegel 2012, Haberkern 2023, Hrejsa 1912 v
+          anotovanej bibliografii kapitoly.
+        </p>
+      </li>
+    </ul>
+  </section>
+
+  <div class="ornament-rule"></div>
+
+  <!-- ═══════════ HOW TO CITE ═══════════ -->
+  <section class="mx-auto max-w-content px-6 py-10 pb-20">
+    <h2 class="text-section-title text-ink">Ako citovať túto stránku</h2>
+    <p class="mt-1 font-sans text-sm italic text-ink-300" lang="en">
+      How to cite this page
+    </p>
+
+    <div class="card mt-6">
+      <h3 class="font-sans text-xs font-semibold uppercase tracking-wider text-ink-400">
+        APA (7th edition)
+      </h3>
+      <p class="mt-3 font-serif text-sm leading-relaxed text-ink" lang="en">
+        Valčo, M. (2026). <em>Confessio Bohemica 1575: Reference-work
+        persistence vs. scholarly consensus</em> [Historiographical archive,
+        APVV-24-0484 TEPALIT]. <a href={pageUrl} class="text-burgundy">{pageUrl}</a>
+      </p>
+    </div>
+
+    <p class="mt-6 text-xs italic text-ink-300">
+      Stránka je sprievodný materiál ku kapitole TEPALIT-monografie (§4.1).
+      Po publikácii kapitoly bude obsah re-anchorovaný na finálnu citáciu.
+      Stránka je publikovaná pod licenciou
+      <a href="https://creativecommons.org/licenses/by/4.0/" class="text-burgundy" rel="noopener">CC BY 4.0</a>;
+      diagnostické citácie z tretích strán (Britannica, encyclopedia.com,
+      Schaff) sú použité v zmysle fair-use ako dokumentačné pozorovanie
+      o trvanlivosti referenčných diel.
+    </p>
+  </section>
+</BaseLayout>

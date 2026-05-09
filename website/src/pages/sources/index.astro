@@ -154,6 +154,404 @@ const typeOrder: Record<CuratedSource["type"], number> = {
   secondary: 2,
 };
 
+// ── Annotated chapter bibliography ──
+// Sources the chapter draws on beyond what the hymn-pair dossier yet
+// references. Built from the audit-corrected literature-gap report's
+// prioritisation matrix (top-10 + secondary recommendations) and the
+// Master Plan v0.3 Phase-2 priority list.
+//
+// Tier semantics (per Chapter/Chapter_Master_Plan.md):
+//   1 = primary or accessible peer-reviewed scholarship; source-note
+//       creation is a near-term Phase-2 task or already done.
+//   2 = requires acquisition, ILL, or collegial coordination.
+//   3 = scaffolding-only (AI-generated reports, compass artifact); not
+//       citable; included here for transparency only.
+//
+// Status semantics:
+//   "done"               — Sources/*.md note complete in the repo.
+//   "ill-pending"        — Tier 2; ILL or institutional access needed.
+//   "collegial-expected" — expected via TEPALIT collaboration channels.
+//   "tier-3-scaffold"    — Tier 3 scaffolding; not citable.
+type BibStatus = "done" | "ill-pending" | "collegial-expected" | "tier-3-scaffold";
+type BibTier = 1 | 2 | 3;
+interface BibEntry {
+  id: string;
+  type: CuratedSource["type"];
+  tier: BibTier;
+  status: BibStatus;
+  full_citation: string;
+  description_sk: string;
+  description_en: string;
+  url?: string;
+  chapter_relevance: string;
+  language: string;
+  recently_added?: boolean;
+  source_note_path?: string;
+}
+
+const bibEntries: BibEntry[] = [
+  // ── Phase 2 / Tier 1 — DONE in the v0.3 push (2026-05-09) ──
+  {
+    id: "Csepregi_2003",
+    type: "secondary",
+    tier: 1,
+    status: "done",
+    full_citation:
+      "Csepregi, Zoltán. \"Konfessionsbildung und Einheitsbestrebungen im Königreich Ungarn zur Regierungszeit Ferdinands I.\" Archiv für Reformationsgeschichte 94 (2003): 243–275.",
+    description_sk:
+      "Zdrojovo-kritická revízia Pentapolitany 1549. Csepregi argumentuje, že Stöckel nebol jediným autorom a že existovali pravdepodobne dva texty pod jedným titulom. Kľúčové pre §3 a §4.1 (hornouhorský luteránsky kontext).",
+    description_en:
+      "Source-critical reassessment of the Confessio Pentapolitana 1549. Csepregi argues Stöckel was not the sole author and that two distinct texts probably existed under one title. Key for §3 and §4.1 (Upper-Hungarian Lutheran context).",
+    url: "https://www.academia.edu/5472154",
+    chapter_relevance: "§3, §4.1",
+    language: "DE",
+    recently_added: true,
+    source_note_path: "Sources/Csepregi_2003.md",
+  },
+  {
+    id: "Hrobon_2011",
+    type: "secondary",
+    tier: 1,
+    status: "done",
+    full_citation:
+      "Hroboň, Bohdan. \"The Kralice Bible: Czech-mate to the KJV.\" Word & World 31, no. 3 (Summer 2011): 279–286.",
+    description_sk:
+      "Open-access esej rámcujúca Kralickú bibliu ako transkonfesionálnu slovensko-českú protestantskú Bibliu, používanú v slovenskej luteránskej liturgii do druhej polovice 19. storočia (fn. 20). Cituje Souček 1933 ako analýzu KB poznámok. Anchor pre §4.4.",
+    description_en:
+      "Open-access essay framing the Kralice Bible as the trans-confessional Slovak-Czech Protestant Scripture, used in Slovak Lutheran liturgy until the second half of the 19th century (fn. 20). Cites Souček 1933 on KB marginal notes. Anchor for §4.4.",
+    url: "https://wordandworld.luthersem.edu/wp-content/uploads/pdfs/31-3_Bible_Translation/The%20Kralice%20Bible;%20Czech-mate%20to%20the%20KJV.pdf",
+    chapter_relevance: "§4.4, §5",
+    language: "EN",
+    recently_added: true,
+    source_note_path: "Sources/Hrobon_2011.md",
+  },
+  {
+    id: "Ruscin_2019",
+    type: "secondary",
+    tier: 1,
+    status: "done",
+    full_citation:
+      "Ruščin, Peter. \"Nové nápevy levočských vydaní Cithary Sanctorum z rokov 1674 a 1684.\" Musicologica Slovaca 10 (36)/1 (2019): 46–81.",
+    description_sk:
+      "Open-access muzikologická štúdia tretieho a štvrtého notovaného Levočského vydania CS (1674 — Lednický; 1684 — Horčička). Dokumentuje protichodné editorské logiky pod rovnakým politickým tlakom. Komplementárna štúdia ku Grešová-Sekelská 2016. Kľúčový pre §5.",
+    description_en:
+      "Open-access musicological study of the third and fourth notated Levoča editions of CS (1674 — Lednický; 1684 — Horčička). Documents contrasting editorial logics under the same political pressure. Complementary to Grešová-Sekelská 2016. Key for §5.",
+    url: "https://www.sav.sk/journals/uploads/02081403Musicologica2019_1-46-81.pdf",
+    chapter_relevance: "§5",
+    language: "SK",
+    recently_added: true,
+    source_note_path: "Sources/Ruscin_2019.md",
+  },
+  // ── Phase 2 / Tier 1 — STILL PENDING (open-access, near-term tasks) ──
+  {
+    id: "Csepregi_2004",
+    type: "secondary",
+    tier: 1,
+    status: "ill-pending",
+    full_citation:
+      "Csepregi, Zoltán. \"A Confessio Pentapolitana újabb datálási kísérletei.\" Lelkipásztor 79 (2004): 300–303.",
+    description_sk:
+      "Maďarský vektor tej istej Pentapolitana redating debaty z Csepregi 2003. Lelkipásztor je luteránsky pastoračný časopis neindexovaný v hlavných databázach. ILL cez Evangelisch-Lutherische Theologische Universität Budapest.",
+    description_en:
+      "Hungarian-language vector of the same Pentapolitana redating debate from Csepregi 2003. Lelkipásztor is a Lutheran pastoral journal not indexed in major databases. ILL via the Lutheran Theological University Budapest.",
+    url: "https://real.mtak.hu/5814",
+    chapter_relevance: "§3",
+    language: "HU",
+  },
+  {
+    id: "Puff_2018",
+    type: "secondary",
+    tier: 1,
+    status: "ill-pending",
+    full_citation:
+      "Puff, Helmut. \"Belief in the Reformation Era: Reflections on the State of Confessionalization.\" Central European History 51, no. 1 (March 2018): 46–52.",
+    description_sk:
+      "Cambridge Core review-essay v CEH 50-výročnom klastri. Reflektuje recentné výzvy a zjemnenia konfesionalizačnej paradigmy. Orientačný esej pre §2.",
+    description_en:
+      "Cambridge Core review-essay in the CEH 50th-anniversary cluster. Reflects on recent challenges and refinements of the confessionalisation paradigm. Orienting essay for §2.",
+    url: "https://doi.org/10.1017/S0008938918000213",
+    chapter_relevance: "§2",
+    language: "EN",
+  },
+  {
+    id: "David_1999",
+    type: "secondary",
+    tier: 1,
+    status: "ill-pending",
+    full_citation:
+      "David, Zdeněk V. \"Utraquists, Lutherans, and the Bohemian Confession of 1575.\" Church History 68, no. 2 (1999): 294–337.",
+    description_sk:
+      "JSTOR. Foundational pre §4.1 (Confessio Bohemica) a §3 (utrakvistický profil). Pokrýva všetky tri konfesionálne prúdy v príprave CB 1575 a vyhne sa staršiemu kalvinistickému čítaniu.",
+    description_en:
+      "JSTOR. Foundational for §4.1 (Confessio Bohemica) and §3 (Utraquist profile). Covers all three confessional streams in the preparation of CB 1575 and avoids the older Calvinist reading.",
+    url: "https://www.jstor.org/stable/3170628",
+    chapter_relevance: "§3, §4.1",
+    language: "EN",
+  },
+  // ── Tier 1 → Tier 2 reclassified (v0.3, blocked online access) ──
+  {
+    id: "Crews_2018",
+    type: "secondary",
+    tier: 2,
+    status: "ill-pending",
+    full_citation:
+      "Crews, C. Daniel. \"Luke of Prague: Theologian of the Unity.\" Journal of Moravian History 18, no. 1 (Spring 2018): 1–46.",
+    description_sk:
+      "Najlepšia novšia anglofónna štúdia o Lukášovi Pražskom. Pokrýva loci 1, 2, 4. Reklasifikované z Tier 1 → Tier 2 v0.3: JSTOR/ResearchGate vracia abstrakt; potrebuje JSTOR proxy alebo ILL cez Univerzitnú knižnicu UK.",
+    description_en:
+      "The best recent English-language treatment of Lukáš Pražský. Covers loci 1, 2, 4. Reclassified Tier 1 → Tier 2 in v0.3: JSTOR/ResearchGate return abstract only; needs JSTOR proxy or ILL via the Comenius University library.",
+    url: "https://doi.org/10.5325/jmorahist.18.1.0001",
+    chapter_relevance: "§4.1, §4.3, §4.4",
+    language: "EN",
+  },
+  {
+    id: "Hrejsa_1912",
+    type: "secondary",
+    tier: 2,
+    status: "ill-pending",
+    full_citation:
+      "Hrejsa, Ferdinand. Česká konfesse, její vznik, podstata a dějiny. Praha: Česká akademie císaře Františka Josefa pro vědy, slovesnost a umění, 1912. 818 pp.",
+    description_sk:
+      "Originárna českojazyčná refutácia kalvinistického čítania CB 1575. Reklasifikované z Tier 1 → Tier 2 v0.3: monografia nedigitalizovaná v NDK ČR / Archive.org; potrebuje tlačenú kópiu z UK alebo ILL cez ETF UK Praha. Backbone pre §4.1.",
+    description_en:
+      "The originary Czech-language refutation of the Calvinist reading of CB 1575. Reclassified Tier 1 → Tier 2 in v0.3: monograph not digitised in NDK ČR / Archive.org; needs print copy from Comenius University library or ILL via ETF UK Praha. Backbone for §4.1.",
+    chapter_relevance: "§4.1",
+    language: "CZ",
+  },
+  // ── Tier 2 — Lit-gap report top-10 (acquisitions queue) ──
+  {
+    id: "Just_Rothkegel_2012",
+    type: "edition",
+    tier: 2,
+    status: "ill-pending",
+    full_citation:
+      "Just, Jiří, and Martin Rothkegel. \"Confessio Bohemica, 1575/1609.\" In Reformierte Bekenntnisschriften 3/1 (1570–1599), edited by Andreas Mühling and Peter Opitz, 47–176. Neukirchen-Vluyn: Neukirchener Theologie / Vandenhoeck & Ruprecht, 2012. ISBN 978-3-7887-2528-0.",
+    description_sk:
+      "Štandardná kritická edícia Confessio Bohemica 1575/1609. Cornerstone pre §5 a §4.1 — refutuje staršie kalvinistické čítanie CB 1575. **Najdôležitejšia jednotlivá Tier-2 položka.**",
+    description_en:
+      "The standard critical edition of the Confessio Bohemica 1575/1609. Cornerstone for §5 and §4.1 — refutes the older Calvinist reading of CB 1575. **The single most important Tier-2 item.**",
+    url: "https://www.academia.edu/12910590",
+    chapter_relevance: "§4.1, §5",
+    language: "DE",
+  },
+  {
+    id: "Haberkern_2023",
+    type: "secondary",
+    tier: 2,
+    status: "ill-pending",
+    full_citation:
+      "Haberkern, Phillip N. \"The Bohemian Confession of 1575: Towards an Archaeology of the Czech Reformation.\" Reformation & Renaissance Review 25, no. 2–3 (2023): 136–[…].",
+    description_sk:
+      "Recentná anglofónna irenická interpretácia CB 1575. Argumentuje za „alternatívnu trajektóriu“ stredoeurópskej reformácie. Kľúčová pre refutáciu staršieho kalvinistického čítania.",
+    description_en:
+      "The recent anglophone irenic statement on CB 1575. Argues for an 'alternative trajectory' of east-central European Reformation. Key for the refutation of the older Calvinist reading.",
+    url: "https://doi.org/10.1080/14622459.2023.2283009",
+    chapter_relevance: "§4.1, §5, §7",
+    language: "EN",
+  },
+  {
+    id: "Haberkern_2016",
+    type: "secondary",
+    tier: 2,
+    status: "ill-pending",
+    full_citation:
+      "Haberkern, Phillip N. Patron Saint and Prophet: Jan Hus in the Bohemian and German Reformations. Oxford Studies in Historical Theology. New York: Oxford University Press, 2016. ISBN 978-0-19-028073-4.",
+    description_sk:
+      "Mostuje §4.2 (utrakvistická ekleziologická sebainterpretácia cez kult Husa) a §4.4 (Hus ako autorita). Najdôležitejšia post-2010 anglofónna monografia pre kombinované loci 2 + 4.",
+    description_en:
+      "Bridges §4.2 (Utraquist ecclesial self-understanding via Hus commemoration) and §4.4 (Hus as authority). The most important post-2010 anglophone monograph for combined loci 2 + 4.",
+    url: "https://doi.org/10.1093/acprof:oso/9780190280734.001.0001",
+    chapter_relevance: "§4.2, §4.4",
+    language: "EN",
+  },
+  {
+    id: "Atwood_2009",
+    type: "secondary",
+    tier: 2,
+    status: "ill-pending",
+    full_citation:
+      "Atwood, Craig D. The Theology of the Czech Brethren from Hus to Comenius. University Park, PA: Penn State University Press, 2009. xv + 457 pp. ISBN 978-0-271-03532-1.",
+    description_sk:
+      "Štandardná anglofónna syntéza teológie Jednoty bratskej. Adresuje loci 1, 2, 3 simultánne. Reviewer caveat: Atwood neexploituje českojazyčné pramene — neostáva náhradou za Říčana, Hrejsu alebo Just/Rothkegel.",
+    description_en:
+      "The standard anglophone synthesis of Brethren theology. Addresses loci 1, 2, 3 simultaneously. Reviewer caveat: Atwood does not exploit Czech-language sources — not a substitute for Říčan, Hrejsa, or Just/Rothkegel.",
+    url: "https://www.psupress.org/books/titles/978-0-271-03532-1.html",
+    chapter_relevance: "§4.1, §4.2, §4.3",
+    language: "EN",
+  },
+  {
+    id: "Csepregi_2021",
+    type: "secondary",
+    tier: 2,
+    status: "ill-pending",
+    full_citation:
+      "Csepregi, Zoltán. \"Die reformatorischen Bekenntnisse in Ungarn und Siebenbürgen (1545–1572).\" Journal of Early Modern Christianity 8, no. 1 (2021): 47–70.",
+    description_sk:
+      "Najnovšia recenzovaná nemeckojazyčná štúdia o hornouhorských a sedmohradských konfesiách. Synoptické spracovanie ako prepojený recepčný proces. Špeciálne číslo \"500 Jahre Rezeption der Reformation in Siebenbürgen und Ungarn\".",
+    description_en:
+      "The most recent peer-reviewed German-language treatment of the Upper-Hungarian and Transylvanian confessions. Synoptic treatment as a connected reception process. Special issue '500 Jahre Rezeption der Reformation in Siebenbürgen und Ungarn'.",
+    url: "https://doi.org/10.1515/jemc-2021-2004",
+    chapter_relevance: "§3, §4.1, §4.4",
+    language: "DE",
+  },
+  {
+    id: "Csepregi_2009",
+    type: "secondary",
+    tier: 2,
+    status: "ill-pending",
+    full_citation:
+      "Csepregi, Zoltán. \"Die Confessio Pentapolitana: Fragen nach Autorschaft und Datierung.\" In „Nezameniteľné je dedičstvo otcov…“ Štúdie k dejinám a súčasnosti protestantizmu v strednej Európe k osemdesiatym narodeninám biskupa Jána Midriaka, edited by Peter Kónya. Acta Collegii Evangelici Prešoviensis X. Prešov: Prešovská univerzita, 2009, 73–85.",
+    description_sk:
+      "Granulárne rozšírenie Csepregi 2003 ARG eseje. Záver: Stöckel Pentapolitanu nenapísal a Ferdinand I ju len takticky toleroval, nikdy formálne neschválil. Prešovská univerzita; ILL.",
+    description_en:
+      "Granular extension of the Csepregi 2003 ARG essay. Conclusion: Stöckel did not write the Pentapolitana, and it was at most tactically tolerated by Ferdinand I, never formally approved. Prešov university press; ILL.",
+    url: "https://real.mtak.hu/44271",
+    chapter_relevance: "§3, §4.1, §4.2",
+    language: "DE",
+  },
+  {
+    id: "Augustinova_2011",
+    type: "secondary",
+    tier: 2,
+    status: "ill-pending",
+    full_citation:
+      "Augustínová, Eva. Cithara sanctorum bibliografia. Martin: Slovenská národná knižnica, 2011.",
+    description_sk:
+      "Komplexný bibliografický súpis všetkých známych vydaní Cithary Sanctorum cez 19. a začiatok 20. storočia. Foundational pre §6/§5 recepčnú naratívu. SNK Martin; ILL.",
+    description_en:
+      "Comprehensive bibliographic survey of all known Cithara Sanctorum editions through the 19th and early 20th centuries. Foundational for §6/§5 reception narrative. SNK Martin; ILL.",
+    chapter_relevance: "§5",
+    language: "SK",
+  },
+  {
+    id: "GresovaSekelska_2016",
+    type: "secondary",
+    tier: 2,
+    status: "collegial-expected",
+    full_citation:
+      "Grešová-Sekelská, Adriana. \"Notované vydania Cithary Sanctorum v 17. storočí – opis a komparácia pamiatok.\" Slovenská hudba 42, no. 3 (2016): 261–274.",
+    description_sk:
+      "Textovo-kritický popis a komparatívna analýza notovaných Levočských vydaní 17. storočia. Komplementárna štúdia ku Ruščin 2019. Najlepšie získať kolegiálne od Adriany — TEPALIT spolupracovníčka.",
+    description_en:
+      "Text-critical description and comparative analysis of the notated 17th-century Levoča editions. Companion to Ruščin 2019. Best obtained collegially through TEPALIT collaboration channels.",
+    chapter_relevance: "§5",
+    language: "SK",
+  },
+  {
+    id: "Leaver_2024",
+    type: "secondary",
+    tier: 2,
+    status: "ill-pending",
+    full_citation:
+      "Leaver, Robin A., ed. A New Song We Now Begin: Celebrating the Half Millennium of Lutheran Hymnals 1524–2024. Lutheran Quarterly Books. Minneapolis: Fortress, 2024. 304 pp. ISBN 978-1-5064-8744-1.",
+    description_sk:
+      "Najrecentnejší kolektívny statement hymnologicko-konfesionálnej tézy v polmiléniovom rozsahu. Najbližší existujúci paralel ku TEPALIT-projektu pre wittenbersko-saské strane. Pre §7-štýlové rámcovanie.",
+    description_en:
+      "The most recent collective statement of the hymnological-confessional thesis at half-millennium scope. The closest existing parallel to the TEPALIT project for the Wittenberg/Saxon side. For §7-style framing.",
+    url: "https://fortresspress.com/store/product/9781506487441",
+    chapter_relevance: "§7",
+    language: "EN",
+  },
+  // ── Tier 2 — Master Plan v0.3 newly added ──
+  {
+    id: "Soucek_1933",
+    type: "secondary",
+    tier: 2,
+    status: "ill-pending",
+    full_citation:
+      "Souček, J. B. Theologie výkladů kralické šestidílky. Praha: Královská česká společnost nauk, 1933.",
+    description_sk:
+      "Monografia 1933 analyzujúca teologické poznámky v Kralickej Biblii — záver: Bratrstvo bolo „viac kalvinistické ako luteránske v teológii“. §4.4 prerekvizita pridaná v Master Plan v0.3 (z Hroboň 2011 fn. 18). Akvizícia: Kramerius NDK ČR / Národní knihovna Praha / ETF UK Praha.",
+    description_en:
+      "1933 monograph analysing theological notes in the Kralice Bible — concludes the Brethren were 'more Calvinist than Lutheran in their theology'. §4.4 prerequisite added in Master Plan v0.3 (from Hroboň 2011 fn. 18). Acquisition: Kramerius NDK ČR / National Library Prague / ETF UK Prague.",
+    chapter_relevance: "§4.4",
+    language: "CZ",
+  },
+  // ── Secondary recommendations from lit-gap report ──
+  {
+    id: "Holeton_BRRP",
+    type: "secondary",
+    tier: 1,
+    status: "ill-pending",
+    full_citation:
+      "Holeton, David R. \"The Evolution of Utraquist Eucharistic Liturgy: A Textual Study.\" Bohemian Reformation and Religious Practice 2 (1998): 97–126. + further BRRP papers (vols. 6, 7, 8).",
+    description_sk:
+      "Open-access. Jediná súvislá textovo-kritická analýza utrakvistického eucharistického ordo proti luteránskym, katolíckym a švédskym paralelám. Metodologický model pre lex-orandi čítanie. Dostupné na brrp.org.",
+    description_en:
+      "Open-access. The only sustained text-critical analysis of the Utraquist eucharistic ordo against Lutheran, Catholic, and Swedish parallels. Methodological model for lex-orandi reading. Available at brrp.org.",
+    url: "http://brrp.org/proceedings/brrp2/holeton.pdf",
+    chapter_relevance: "§4.1, §4.2",
+    language: "EN",
+  },
+  {
+    id: "Karant_Nunn_1997",
+    type: "secondary",
+    tier: 2,
+    status: "ill-pending",
+    full_citation:
+      "Karant-Nunn, Susan C. The Reformation of Ritual: An Interpretation of Early Modern Germany. London/New York: Routledge, 1997. 282 pp. ISBN 978-0-415-11337-3.",
+    description_sk:
+      "Foundational metodologický precedens pre kapitolovú lex-orandi optiku. Pokrýva eucharistický rítus, krst, churching, pokánie, pohreb. Pre §2 a §4.1.",
+    description_en:
+      "Foundational methodological precedent for the chapter's lex-orandi optic. Covers the Eucharistic rite, baptism, churching, repentance, burial. For §2 and §4.1.",
+    chapter_relevance: "§2, §4.1",
+    language: "EN",
+  },
+  {
+    id: "Lambert_2017",
+    type: "secondary",
+    tier: 2,
+    status: "ill-pending",
+    full_citation:
+      "Lambert, Erin. Singing the Resurrection: Body, Community, and Belief in Reformation Europe. New York: Oxford University Press, 2017.",
+    description_sk:
+      "Surfaced via Puff 2018. Priamo relevantná pre kapitolovú tézu hymnody ako konfesionálnej formácie. Pre §7.",
+    description_en:
+      "Surfaced via Puff 2018. Directly relevant to the chapter's thesis about hymnody as confessional formation. For §7.",
+    url: "https://global.oup.com/academic/product/9780190649890",
+    chapter_relevance: "§7",
+    language: "EN",
+  },
+];
+
+const tierColor: Record<BibTier, string> = {
+  1: "bg-epistemic-factual/15 text-epistemic-factual",
+  2: "bg-gold/15 text-gold-dark",
+  3: "bg-burgundy/15 text-burgundy",
+};
+const statusBadge: Record<BibStatus, { sk: string; en: string; class: string }> = {
+  done: {
+    sk: "Hotové",
+    en: "Done",
+    class: "bg-epistemic-factual/15 text-epistemic-factual",
+  },
+  "ill-pending": {
+    sk: "ILL / akvizícia čaká",
+    en: "ILL pending",
+    class: "bg-gold/10 text-gold-dark",
+  },
+  "collegial-expected": {
+    sk: "Kolegiálne očakávané",
+    en: "Collegial channel",
+    class: "bg-unity/15 text-unity",
+  },
+  "tier-3-scaffold": {
+    sk: "Tier 3 — len scaffolding",
+    en: "Tier 3 — scaffolding only",
+    class: "bg-burgundy/10 text-burgundy",
+  },
+};
+
+// Sort: recently_added first, then by tier (1 → 2 → 3), then alphabetical.
+const sortedBibEntries = bibEntries.slice().sort((a, b) => {
+  if (a.recently_added && !b.recently_added) return -1;
+  if (b.recently_added && !a.recently_added) return 1;
+  if (a.tier !== b.tier) return a.tier - b.tier;
+  return a.id.localeCompare(b.id);
+});
+
+const recentlyAddedCount = bibEntries.filter((e) => e.recently_added).length;
+
 const allReferenced = Array.from(referencedIds).sort();
 const curatedReferenced = allReferenced
   .filter((id) => curated[id])
@@ -205,6 +603,38 @@ const typeLabels: Record<CuratedSource["type"], { sk: string; en: string }> = {
         Source_Index.md &#x2192; GitHub
       </a>
     </div>
+  </section>
+
+  <!-- ═══════════ AUDIT-STORY / VERIFICATION-DISCIPLINE PANEL ═══════════ -->
+  <section class="mx-auto max-w-content px-6 pt-10">
+    <aside class="rounded-lg border-l-4 border-epistemic-factual/60 bg-parchment-100/40 p-5">
+      <p class="font-sans text-[10px] font-semibold uppercase tracking-wider text-ink-300">
+        Verifikačná disciplína / <span lang="en">Verification discipline</span>
+      </p>
+      <p class="mt-2 text-sm leading-relaxed text-ink-400">
+        Každý prameň v tomto registri prešiel nezávislou verifikáciou voči
+        katalógu vydavateľstva, indexu časopisu, DOI alebo repozitárnemu
+        záznamu. Audit z 9. mája 2026 odhalil <strong>~20 % chybovosť</strong>
+        v pôvodnej AI-generovanej rešerši — hlavne autorské zámeny v tesne
+        prepojených bibliografických klastroch a neoverené ISBN/strany. Žiadna
+        citácia z AI rešerše nevstupuje do <code class="font-mono text-xs">Sources/*.md</code>
+        bez verifikačného kroku.
+      </p>
+      <p class="mt-3 font-sans text-xs italic leading-relaxed text-ink-300" lang="en">
+        Every source in this register has been independently verified against
+        a publisher catalogue, journal index, DOI, or repository entry. The
+        9 May 2026 audit revealed a <strong>~20% error rate</strong> in the
+        original AI-generated reconnaissance — chiefly author swaps in tightly
+        bibliographically-linked clusters and unverified ISBNs/page ranges.
+        No AI-generated citation enters
+        <code class="font-mono text-xs">Sources/*.md</code> without an
+        independent verification step.
+      </p>
+      <p class="mt-3 font-sans text-xs text-ink-300">
+        Plný metodologický opis: <a href={`${baseN}/papers/methods/`} class="text-burgundy hover:underline">metodologická štúdia</a>
+        (tri osi dôvery v lex-orandi datasetoch).
+      </p>
+    </aside>
   </section>
 
   <!-- Curated entries -->
@@ -291,6 +721,122 @@ const typeLabels: Record<CuratedSource["type"], { sk: string; en: string }> = {
         })
       }
     </div>
+  </section>
+
+  <!-- ═══════════ ANNOTATED CHAPTER BIBLIOGRAPHY ═══════════ -->
+  <section class="mx-auto max-w-content px-6 py-10">
+    <div class="flex flex-wrap items-baseline justify-between gap-3">
+      <h2 class="text-section-title text-ink">Anotovaná bibliografia kapitoly</h2>
+      {recentlyAddedCount > 0 && (
+        <span class="rounded-full bg-epistemic-factual/15 px-3 py-1 font-sans text-[11px] font-semibold uppercase tracking-wider text-epistemic-factual">
+          {recentlyAddedCount} nedávno pridané /
+          <span class="italic" lang="en">recently added</span>
+        </span>
+      )}
+    </div>
+    <p class="mt-1 font-sans text-sm italic text-ink-300" lang="en">
+      Annotated chapter bibliography — beyond the hymn-pair dossier
+    </p>
+    <p class="mt-3 max-w-prose text-sm text-ink-400">
+      Pramene, na ktoré sa kapitola opiera mimo hymno-párového dossiera —
+      Tier-priorita matica z auditovanej Literature-Gap reportu, Phase-2
+      priority list z Master Plan v0.3, sekundárne odporúčania. Hotové
+      záznamy sú v <code class="font-mono text-xs">Sources/*.md</code> v
+      repozitári; ostatné majú akvizičný status.
+    </p>
+    <p class="mt-2 max-w-prose font-sans text-xs italic text-ink-300" lang="en">
+      Sources the chapter draws on beyond the hymn-pair dossier — the
+      tier-priority matrix from the audited Literature-Gap Report, the Phase-2
+      priority list from Master Plan v0.3, and secondary recommendations.
+      Completed entries live in <code class="font-mono text-xs">Sources/*.md</code>
+      in the repository; others carry an acquisition-status flag.
+    </p>
+
+    <ol class="mt-8 space-y-4">
+      {sortedBibEntries.map((entry, idx) => {
+        const sb = statusBadge[entry.status];
+        const tl = typeLabels[entry.type];
+        return (
+          <li
+            id={entry.id}
+            class:list={[
+              "card scroll-mt-24",
+              entry.recently_added && "border-l-4 border-epistemic-factual/60",
+            ]}
+          >
+            <div class="flex flex-wrap items-start justify-between gap-3">
+              <div>
+                <code class="font-mono text-xs font-semibold text-burgundy">
+                  {entry.id}
+                </code>
+                <span
+                  class:list={[
+                    "ml-2 rounded-full px-2 py-0.5 font-sans text-[10px] font-semibold",
+                    tierColor[entry.tier],
+                  ]}
+                >
+                  Tier {entry.tier}
+                </span>
+                <span
+                  class:list={[
+                    "ml-1 rounded-full px-2 py-0.5 font-sans text-[10px] font-medium",
+                    sb.class,
+                  ]}
+                >
+                  {sb.sk} <span class="opacity-70" lang="en">/ {sb.en}</span>
+                </span>
+                <span class="ml-1 rounded-full bg-parchment-300/50 px-2 py-0.5 font-sans text-[10px] text-ink-400">
+                  {tl.sk}
+                </span>
+                {entry.recently_added && (
+                  <span class="ml-1 rounded-full bg-epistemic-factual/20 px-2 py-0.5 font-sans text-[10px] font-semibold text-epistemic-factual">
+                    &#x2728; nedávno pridané
+                  </span>
+                )}
+              </div>
+              {entry.url && (
+                <a
+                  href={entry.url}
+                  class="font-sans text-xs text-burgundy hover:underline"
+                  rel="noopener"
+                >
+                  Online &#x2197;
+                </a>
+              )}
+            </div>
+
+            <p class="mt-3 font-serif text-sm text-ink">
+              {entry.full_citation}
+            </p>
+
+            <p class="mt-3 text-sm leading-relaxed text-ink-400">
+              {entry.description_sk}
+            </p>
+            <p class="mt-2 font-sans text-xs italic leading-relaxed text-ink-300" lang="en">
+              {entry.description_en}
+            </p>
+
+            <div class="mt-3 flex flex-wrap gap-2 font-mono text-[11px]">
+              <span class="rounded bg-parchment-100/70 px-2 py-0.5 text-ink-400">
+                Kapitola: <strong>{entry.chapter_relevance}</strong>
+              </span>
+              <span class="rounded bg-parchment-100/70 px-2 py-0.5 text-ink-400">
+                Lang: <strong>{entry.language}</strong>
+              </span>
+              {entry.source_note_path && (
+                <a
+                  href={`${REPO_BLOB}/${entry.source_note_path}`}
+                  class="rounded bg-burgundy/10 px-2 py-0.5 text-burgundy hover:bg-burgundy/20"
+                  rel="noopener"
+                >
+                  Sources/*.md &#x2197;
+                </a>
+              )}
+            </div>
+          </li>
+        );
+      })}
+    </ol>
   </section>
 
   <!-- Stub entries -->

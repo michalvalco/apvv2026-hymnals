@@ -5,109 +5,731 @@ import { getHymnPairs } from "../../data/taxonomy";
 const base = import.meta.env.BASE_URL;
 const baseN = base.replace(/\/$/, "");
 
-// Compute pair-state summary at build time so counts stay current with each
-// dataset version automatically.
+// Pair counts at build time so the section descriptions stay current.
 const pairs = getHymnPairs();
 const verifiedCount = pairs.filter((p) => p.verification_status === "VERIFIED").length;
 const targetManifestCount = pairs.filter((p) => p.epistemic_status === "DEFERRED").length;
 const activeDossierCount = pairs.length - targetManifestCount;
+
+// ── Five-phase plan (per Chapter/Chapter_Master_Plan.md v0.3) ──
+type PhaseStatus = "complete" | "in-progress" | "pending";
+const phases: Array<{
+  num: number;
+  titleSk: string;
+  titleEn: string;
+  status: PhaseStatus;
+  blurbSk: string;
+  blurbEn: string;
+}> = [
+  {
+    num: 1,
+    titleSk: "Literárna rešerš",
+    titleEn: "Literature reconnaissance",
+    status: "complete",
+    blurbSk:
+      "Mapa existujúcej vedy naprieč štyrmi loci; identifikácia overených, scaffoldingových a chýbajúcich prameňov. Uzavreté audit-passom 9. mája 2026.",
+    blurbEn:
+      "Map of existing scholarship across the four loci; identification of verified, scaffolding, and missing sources. Closed by audit pass 9 May 2026.",
+  },
+  {
+    num: 2,
+    titleSk: "Dokumentácia prameňov podľa loci",
+    titleEn: "Source documentation per locus",
+    status: "in-progress",
+    blurbSk:
+      "Tvorba verifikovaných záznamov v Sources/ — primárne pramene + recenzovaná sekundárna literatúra, organizované podľa loci. Po Phase-1 auditovaní bežia kontinuálne sedenia.",
+    blurbEn:
+      "Producing verified Sources/ notes — primary sources + peer-reviewed secondary literature, organised by locus. Running in continuous sessions after the Phase-1 audit.",
+  },
+  {
+    num: 3,
+    titleSk: "Komparatívne písanie podľa loci",
+    titleEn: "Locus-by-locus comparative drafting",
+    status: "pending",
+    blurbSk:
+      "Návrh §3 a §4: pre každý locus normatívna komparácia, liturgicko-hymnologická ilustrácia, identifikácia konvergencií / divergencií / hybridov, vývojová analýza.",
+    blurbEn:
+      "Drafting §3 and §4: for each locus a normative comparison, liturgical/hymnological illustration, identification of convergences / divergences / hybrids, developmental analysis.",
+  },
+  {
+    num: 4,
+    titleSk: "Syntéza transferu a recepcie (§5)",
+    titleEn: "Transfer-and-reception synthesis (§5)",
+    status: "pending",
+    blurbSk:
+      "Návrh §5: prípadová štúdia o Cithare Sanctorum a recepcii českej reformačnej hymnografie v slovenskom luteránskom prostredí. PAIR_006 nestuje sa tu ako sub-komponent.",
+    blurbEn:
+      "Drafting §5: the case study on Cithara Sanctorum and the reception of Czech-Reformation hymnody in Slovak Lutheran usage. PAIR_006 nests here as a sub-component.",
+  },
+  {
+    num: 5,
+    titleSk: "Revízia a finalizácia",
+    titleEn: "Revision and finalisation",
+    status: "pending",
+    blurbSk:
+      "Integrácia, terminologická konzistencia, kompletnosť citácií, bibliografická montáž, interná recenzia (Klátik, Sekelská, Hanus), finálne revízie.",
+    blurbEn:
+      "Integration, terminological consistency, citation completeness, bibliography assembly, internal review (Klátik, Sekelská, Hanus), final revisions.",
+  },
+];
+
+// ── Six-section outline (per Chapter/Chapter_Outline.md, drafting sequence
+// per Chapter_Master_Plan.md §"Phase 3"). Forward links match strategy doc
+// §A4 — some target pages may be forthcoming (e.g. /cb1575/ in Sprint 2). ──
+interface ChapterSection {
+  code: string;
+  titleSk: string;
+  titleEn: string;
+  draftOrder: number; // 1-based; smaller = drafted earlier
+  draftOrderNote?: string;
+  loci: string[]; // locus codes touched
+  descriptionSk: string;
+  descriptionEn: string;
+  links: Array<{ href: string; labelSk: string; labelEn: string; status?: "forthcoming" }>;
+  isSubsection?: boolean;
+}
+
+const sections: ChapterSection[] = [
+  {
+    code: "§1",
+    titleSk: "Úvod",
+    titleEn: "Introduction",
+    draftOrder: 7,
+    draftOrderNote: "Návrh predposledný — keď je analytické jadro hotové",
+    loci: [],
+    descriptionSk:
+      "Kontext projektu TEPALIT. Cieľ kapitoly. Metodologické východiská (lex orandi, lex credendi; štyri loci; štyri metodologické prístupy). Stav výskumu. Štruktúra kapitoly.",
+    descriptionEn:
+      "TEPALIT project context. Chapter aim. Methodological starting points (lex orandi lex credendi; four loci; four methodological approaches). State of research. Chapter structure.",
+    links: [],
+  },
+  {
+    code: "§2",
+    titleSk: "Konfesionálny kontext",
+    titleEn: "Confessional context",
+    draftOrder: 9,
+    draftOrderNote: "Floatuje — môže sa písať kedykoľvek; nezávislé od §3–§5",
+    loci: [],
+    descriptionSk:
+      "Historický prehľad vzťahov medzi luteranizmom, utrakvizmom a Jednotou bratskou v 16.–18. storočí. Kontaktné zóny: Wittenberg ↔ Praha, Wittenberg ↔ Horné Uhorsko, Praha ↔ Horné Uhorsko. Politicko-právne rámce. Konfesionalizácia ako rámec čítania (Schilling, Reinhard).",
+    descriptionEn:
+      "Historical overview of relations between Lutheranism, Utraquism, and the Unity of Brethren in the 16th–18th centuries. Contact zones; political-legal frameworks; confessionalisation as reading frame (Schilling, Reinhard).",
+    links: [
+      { href: "/timeline/", labelSk: "Chronológia", labelEn: "Timeline" },
+    ],
+  },
+  {
+    code: "§3",
+    titleSk: "Dogmatické profily",
+    titleEn: "Dogmatic profiles",
+    draftOrder: 5,
+    loci: [],
+    descriptionSk:
+      "Charakteristika každej konfesie v zrelej forme 16. storočia. Pre každú konfesiu: normatívne dokumenty, kľúčové dogmatické dôrazy, vývojové fázy, vnútorné pluralizmy. Pre utrakvizmus rozlišovať staro- a novoutrakvizmus; pre Jednotu bratskú raná (Chelčický) vs. konsolidovaná (Lukáš Pražský) fáza.",
+    descriptionEn:
+      "Characterisation of each confession in its mature 16th-century form. Per confession: normative documents, key dogmatic emphases, developmental phases, internal pluralisms. Distinguish old vs. neo Utraquism; distinguish early (Chelčický) vs. mature (Lukáš Pražský) Unity phases.",
+    links: [
+      { href: "/taxonomy/", labelSk: "Teologická taxonómia", labelEn: "Theological taxonomy" },
+    ],
+  },
+  {
+    code: "§4",
+    titleSk: "Komparatívna analýza (jadro)",
+    titleEn: "Comparative analysis (core)",
+    draftOrder: 1,
+    draftOrderNote: "Jadro kapitoly — návrh prvý, podľa loci",
+    loci: ["L1", "L2", "L3", "L4"],
+    descriptionSk:
+      "Organizovaná podľa štyroch loci. Pre každý locus: komparácia normatívnych dokumentov, ilustrácia z liturgie a hymnológie, identifikácia konvergencií/divergencií/hybridov, vývoj v čase.",
+    descriptionEn:
+      "Organised by the four loci. Per locus: comparison of normative documents, illustration from liturgy and hymnody, identification of convergences/divergences/hybrids, development over time.",
+    links: [
+      { href: "/taxonomy/", labelSk: "Taxonómia (4 loci)", labelEn: "Taxonomy (4 loci)" },
+    ],
+  },
+  {
+    code: "§4.1",
+    titleSk: "Locus 1 — Sviatosti (Eucharistia)",
+    titleEn: "Locus 1 — Sacraments (Eucharist)",
+    draftOrder: 1,
+    draftOrderNote:
+      "Návrh prvý — najrozvinutejšia pramenná báza, jasná argumentačná štruktúra (Theologos štúdia poskytuje scaffolding)",
+    loci: ["L1.1", "L1.2", "L1.3", "L1.4", "L1.5"],
+    descriptionSk:
+      "Reálna prítomnosť (luteranizmus) vs. spirituálna prítomnosť (Jednota bratská) vs. sviatostná substancialita (utrakvizmus); spoločné východiská v sub utraque specie. Refutácia kalvinistického čítania Confessio Bohemica 1575 ako jedna zo substantívnych kontribúcií kapitoly.",
+    descriptionEn:
+      "Real presence (Lutheran) vs. spiritual presence (Unity) vs. sacramental substantiality (Utraquist); common ground in sub utraque specie. Refutation of the Calvinist reading of Confessio Bohemica 1575 as one of the chapter's substantive contributions.",
+    links: [
+      { href: "/cb1575/", labelSk: "Confessio Bohemica 1575 (archív)", labelEn: "CB 1575 archive" },
+      { href: "/hymn-pairs/#PAIR_006_AC_BA_EUCHARIST", labelSk: "PAIR_006 (kotva)", labelEn: "PAIR_006 (anchor)" },
+      { href: "/papers/theologos/", labelSk: "Theologos štúdia", labelEn: "Theologos paper" },
+    ],
+    isSubsection: true,
+  },
+  {
+    code: "§4.2",
+    titleSk: "Locus 2 — Ekleziológia",
+    titleEn: "Locus 2 — Ecclesiology",
+    draftOrder: 2,
+    loci: ["L2.1", "L2.2", "L2.3", "L2.4", "L2.5", "L2.6"],
+    descriptionSk:
+      "Cirkev ako congregatio sanctorum vs. cirkev ako disciplinovaná visible community vs. cirkev ako reformované krídlo katolíckej cirkvi. Apoštolská sukcesia: doktrinálna, valdénska (Lhotka 1467), grécka (Benátky).",
+    descriptionEn:
+      "Church as congregatio sanctorum vs. as disciplined visible community vs. as reformed wing of the Catholic church. Apostolic succession: doctrinal, Waldensian (Lhotka 1467), Greek (Venice).",
+    links: [
+      { href: "/taxonomy/l2-3/", labelSk: "L2.3 Successio Apostolica", labelEn: "L2.3 Apostolic succession" },
+    ],
+    isSubsection: true,
+  },
+  {
+    code: "§4.3",
+    titleSk: "Locus 3 — Soteriológia a etika",
+    titleEn: "Locus 3 — Soteriology and ethics",
+    draftOrder: 3,
+    loci: ["L3.1", "L3.2", "L3.3", "L3.4", "L3.5"],
+    descriptionSk:
+      "Luteránska sola fide a forenzné ospravedlnenie vs. bratrská doktrína obnovy/posvätenia/Ordnung Christi; staroutrakvistická akcentácia dobrých skutkov.",
+    descriptionEn:
+      "Lutheran sola fide and forensic justification vs. Brethren doctrine of renewal/sanctification/Ordnung Christi; old-Utraquist works-emphasis.",
+    links: [
+      { href: "/taxonomy/l3-1/", labelSk: "L3.1 Iustificatio", labelEn: "L3.1 Justification" },
+    ],
+    isSubsection: true,
+  },
+  {
+    code: "§4.4",
+    titleSk: "Locus 4 — Autorita Písma a tradície",
+    titleEn: "Locus 4 — Authority of Scripture and tradition",
+    draftOrder: 4,
+    loci: ["L4.1", "L4.2", "L4.3", "L4.4", "L4.5"],
+    descriptionSk:
+      "Sola scriptura a luteránske čítanie tradície; bratrský dôraz na biblickú jednoduchosť a apoštolskú prax; utrakvistický prístup k tradícii (kompaktátna citlivosť, dôraz na patristických otcov). Tlmočnosť patristického dedičstva v slovenských luteránskych prameňoch.",
+    descriptionEn:
+      "Sola scriptura and the Lutheran reading of tradition; Brethren emphasis on biblical simplicity and apostolic practice; Utraquist approach to tradition (Compactata sensitivity, patristic emphasis). Patristic reception in Slovak Lutheran sources.",
+    links: [],
+    isSubsection: true,
+  },
+  {
+    code: "§5",
+    titleSk: "Transfer a recepcia (prípadová štúdia)",
+    titleEn: "Transfer and reception (case study)",
+    draftOrder: 6,
+    loci: ["L4.5"],
+    descriptionSk:
+      "Centrálna prípadová štúdia: Cithara Sanctorum (1636) a adaptácia českých zdrojov. PAIR_006 ako mikro-prípad v širšej recepčnej dynamike. Editorská metóda Tranovského ako diferenciálna adaptácia. Dlhotrvajúce stopy bratskej a utrakvistickej teológie v slovenskom luteránskom prostredí.",
+    descriptionEn:
+      "Central case study: Cithara Sanctorum (1636) and the adaptation of Czech sources. PAIR_006 as a micro-case within broader reception dynamics. Tranovský's editorial method as differential adaptation. Lasting traces of Brethren and Utraquist theology in the Slovak Lutheran milieu.",
+    links: [
+      { href: "/hymn-pairs/", labelSk: "Hymno-páry (6 dossierov)", labelEn: "Hymn-pairs (6 dossiers)" },
+      { href: "/synoptikon/", labelSk: "Synoptikon", labelEn: "Synoptikon" },
+    ],
+  },
+  {
+    code: "§6",
+    titleSk: "Záver",
+    titleEn: "Conclusion",
+    draftOrder: 8,
+    draftOrderNote: "Návrh posledný",
+    loci: [],
+    descriptionSk:
+      "Zhrnutie zistení. Konvergencie a divergencie troch konfesií v štyroch loci. Konfesionalizácia ako registrový posun. Lex orandi, lex credendi ako produktívna metodologická optika pre stredoeurópsky reformačný kontext. Otvorené otázky.",
+    descriptionEn:
+      "Summary of findings. Convergences and divergences of the three confessions across the four loci. Confessionalisation as register shift. Lex orandi, lex credendi as a productive methodological optic for the central European Reformation context. Open questions.",
+    links: [],
+  },
+];
+
+// ── Substantive decisions (curated from Chapter_Master_Plan.md decision log).
+// Per strategy doc §A4: include the v0.1 / v0.2 substantive decisions but
+// exclude operational items about specific people and acquisition timing. ──
+const decisions = [
+  {
+    version: "v0.1",
+    headlineSk: "Tier-3 disciplína",
+    headlineEn: "Tier-3 discipline rule",
+    bodySk:
+      "Šesť AI-generovaných výskumných správ sa berie ako Tier-3 scaffolding. Žiaden ich nárok nevstupuje do návrhu kapitoly bez verifikácie voči primárnemu prameňu alebo recenzovanej sekundárnej literatúre.",
+    bodyEn:
+      "The six AI-generated research reports are treated as Tier-3 scaffolding only. No claim from them enters the chapter draft without verification against a primary source or peer-reviewed secondary literature.",
+  },
+  {
+    version: "v0.1",
+    headlineSk: "Refutácia kalvinistického čítania CB 1575",
+    headlineEn: "Refutation of the Calvinist reading of CB 1575",
+    bodySk:
+      "Refutácia staršieho anglofónneho čítania Confessio Bohemica 1575 ako kalvinistickej (Encyclopaedia Britannica, Schaff, derivátna AI syntéza) sa stáva jednou zo substantívnych kontribúcií kapitoly, primárne v §4.1.",
+    bodyEn:
+      "Refutation of the older anglophone reading of the Confessio Bohemica 1575 as Calvinist (Encyclopaedia Britannica, Schaff, derivative AI synthesis) becomes one of the chapter's substantive contributions, primarily in §4.1.",
+  },
+  {
+    version: "v0.1",
+    headlineSk: "PAIR_006 ako sub-komponent §5",
+    headlineEn: "PAIR_006 as sub-component of §5",
+    bodySk:
+      "PAIR_006 (intra-kódexová eucharistická stratifikácia) vstupuje do kapitoly ako sub-komponent §5, nie ako samostatná sekcia. Theologos štúdia spracováva fokusovaný PAIR_006 argument; §5 ho hniezdi vo väčšom recepčnom rámci Cithary Sanctorum.",
+    bodyEn:
+      "PAIR_006 (intra-codex Eucharistic stratification) enters the chapter as a sub-component of §5, not as a stand-alone section. The Theologos paper handles the focused PAIR_006 argument; §5 nests it within the broader CS reception narrative.",
+  },
+  {
+    version: "v0.2",
+    headlineSk: "Methodologická disciplína citácií",
+    headlineEn: "Citation methodology discipline",
+    bodySk:
+      "Žiadna citácia z AI-generovanej rešerše nevstupuje do Sources/*.md bez nezávislého verifikačného kroku voči katalógu vydavateľstva, indexu časopisu, DOI alebo repozitárnemu záznamu. Audit z 9. mája 2026 odhalil ~20 % chybovosť v pôvodnej AI-generovanej rešerši — hlavne autorské zámeny v tesne prepojených bibliografických klastroch a neoverené ISBN/strany.",
+    bodyEn:
+      "No citation surfaced by AI-generated reconnaissance enters Sources/*.md without an independent verification step against the publisher catalogue, journal index, DOI, or repository entry. The 9 May 2026 audit revealed a ~20% error rate in the original AI-generated reconnaissance — chiefly author swaps in tightly bibliographically-linked clusters and unverified ISBNs/page ranges.",
+  },
+  {
+    version: "v0.3",
+    headlineSk: "Phase 2 zahájenie + reklasifikácie Tier 1 → Tier 2",
+    headlineEn: "Phase 2 kick-off + Tier 1 → Tier 2 reclassifications",
+    bodySk:
+      "Prvé dva Tier-1 záznamy sú hotové (Csepregi 2003 — Pentapolitana; Hroboň 2011 — Bibla Kralická). Dva pôvodne Tier-1 položky (Crews 2018, Hrejsa 1912) sa reklasifikujú na Tier 2 pre blokovaný online prístup; potrebujú JSTOR proxy alebo ILL cez Univerzitnú knižnicu UK / ETF UK Praha. Pridaná nová Tier-2 položka: Souček 1933 (KB poznámky) ako prerekvizita §4.4.",
+    bodyEn:
+      "First two Tier-1 notes complete (Csepregi 2003 — Pentapolitana; Hroboň 2011 — Bible of Kralice). Two formerly Tier-1 items (Crews 2018, Hrejsa 1912) reclassified to Tier 2 due to blocked online access; they need JSTOR proxy or ILL via the Comenius University library / ETF UK Praha. New Tier-2 item added: Souček 1933 (KB marginal notes) as §4.4 prerequisite.",
+  },
+];
+
+// ── Source-base inventory (per Chapter_Master_Plan.md §"Source-base inventory").
+// Display Tier 1 as primary-evidentiary; Tier 2 as verified peer-reviewed
+// scholarship; Tier 3 as scaffolding-only with an explicit caution note. ──
+
+// Status helpers
+const phaseColor: Record<PhaseStatus, string> = {
+  complete: "bg-epistemic-factual/15 text-epistemic-factual border-epistemic-factual/40",
+  "in-progress": "bg-gold/15 text-gold-dark border-gold/40",
+  pending: "bg-parchment-300/40 text-ink-300 border-parchment-300/60",
+};
+const phaseLabelSk: Record<PhaseStatus, string> = {
+  complete: "Hotové",
+  "in-progress": "Prebieha",
+  pending: "Pripravuje sa",
+};
+const phaseLabelEn: Record<PhaseStatus, string> = {
+  complete: "Complete",
+  "in-progress": "In progress",
+  pending: "Pending",
+};
 ---
 
 <BaseLayout
-  title="Kapitola — pripravujeme"
-  description="The chapter — Phase 4 deliverable, drafting in 2028. Until then, see the hymn-pair dossier and source register for evidence and methodology."
+  title="Kapitola — TEPALIT monografia"
+  description="The chapter — six-section outline, five-phase plan, source-base inventory, and substantive decisions for the TEPALIT monograph chapter on dogmatic comparison of Lutheranism and the Czech confessions."
   lang="sk"
 >
+  <!-- ═══════════ HERO ═══════════ -->
   <section class="bg-ink-800 px-6 py-16 text-parchment">
-    <div class="mx-auto max-w-content text-center">
-      <p class="font-sans text-xs font-medium uppercase tracking-[0.2em] text-gold" lang="en">
-        Phase 4 / 2028 · Drafting deliverable
+    <div class="mx-auto max-w-content">
+      <p class="font-sans text-xs font-medium uppercase tracking-[0.2em] text-gold">
+        APVV-24-0484 (TEPALIT) · monografia · kapitola
       </p>
-      <h1 class="mt-3 text-section-title font-display font-bold text-parchment-100">
-        Kapitola
+      <h1 class="mt-4 font-display text-3xl font-bold leading-tight text-parchment-100 md:text-4xl">
+        Dogmatická komparácia luteranizmu a českých konfesií
       </h1>
-      <p class="mx-auto mt-2 max-w-prose font-sans text-sm uppercase tracking-wider text-parchment-500" lang="en">
-        Hypertext Monograph Chapter
+      <p class="mt-3 font-display text-base font-medium text-parchment-300">
+        utrakvizmus a Jednota bratská v zrkadle liturgických a hymnologických
+        prameňov (16. – 18. storočie)
       </p>
-      <p class="mx-auto mt-6 max-w-prose text-parchment-400">
-        Monografická kapitola sa pripravuje v rámci grantu APVV-24-0484
-        (TEPALIT) a je naplánovaná ako výstup Fázy 4 v roku 2028.
+      <p class="mt-6 max-w-prose font-sans text-sm italic text-parchment-400" lang="en">
+        Dogmatic Comparison of Lutheranism and the Czech Confessions: Utraquism
+        and the Unity of Brethren through Liturgical and Hymnological Sources
+        (16th – 18th c.)
       </p>
-      <p class="mx-auto mt-3 max-w-prose font-sans text-sm italic text-parchment-500" lang="en">
-        The monograph chapter is in preparation under the APVV-24-0484
-        (TEPALIT) grant and is scheduled as a Phase 4 deliverable in 2028.
-      </p>
+
+      <div class="mt-8 grid gap-4 md:grid-cols-3">
+        <div class="rounded-md border border-parchment-300/20 bg-ink-700/50 p-4">
+          <p class="font-sans text-[10px] uppercase tracking-wider text-parchment-300">
+            Aktuálna fáza
+          </p>
+          <p class="mt-1 font-display text-base font-semibold text-parchment-100">
+            Phase 2 — Pramenné poznámky
+          </p>
+          <p class="mt-0.5 font-sans text-xs italic text-parchment-400" lang="en">
+            Phase 2 — Source documentation
+          </p>
+        </div>
+        <div class="rounded-md border border-parchment-300/20 bg-ink-700/50 p-4">
+          <p class="font-sans text-[10px] uppercase tracking-wider text-parchment-300">
+            Pracovný jazyk
+          </p>
+          <p class="mt-1 font-display text-base font-semibold text-parchment-100">
+            Slovenčina
+          </p>
+          <p class="mt-0.5 font-sans text-xs italic text-parchment-400" lang="en">
+            Working language: Slovak
+          </p>
+        </div>
+        <div class="rounded-md border border-parchment-300/20 bg-ink-700/50 p-4">
+          <p class="font-sans text-[10px] uppercase tracking-wider text-parchment-300">
+            Anchorovaný hymno-pár
+          </p>
+          <p class="mt-1 font-display text-base font-semibold text-parchment-100">
+            <a
+              href={`${baseN}/hymn-pairs/#PAIR_006_AC_BA_EUCHARIST`}
+              class="hover:text-gold"
+            >
+              PAIR_006 (§4.1, §5)
+            </a>
+          </p>
+          <p class="mt-0.5 font-sans text-xs italic text-parchment-400" lang="en">
+            Anchor pair: PAIR_006 (Eucharistic stratification)
+          </p>
+        </div>
+      </div>
     </div>
   </section>
 
-  <section class="mx-auto max-w-content px-6 py-12">
-    <h2 class="text-section-title text-ink">Čo už je dostupné</h2>
+  <!-- ═══════════ PHASE TRACKER ═══════════ -->
+  <section class="mx-auto max-w-wide px-6 py-12">
+    <h2 class="text-section-title text-ink">Päťfázový plán</h2>
     <p class="mt-1 font-sans text-sm italic text-ink-300" lang="en">
-      What is already available
+      Five-phase plan
     </p>
-    <p class="mt-4 text-sm leading-relaxed text-ink-400">
-      Kým kapitola nie je hotová, jej infraštruktúra a empirické jadro sú
-      verejne prístupné a citovateľné cez tieto sekcie:
+
+    <ol class="mt-6 grid gap-3 md:grid-cols-5">
+      {phases.map((p) => (
+        <li
+          class:list={[
+            "rounded-lg border bg-parchment-50 p-4",
+            phaseColor[p.status],
+          ]}
+        >
+          <p class="font-mono text-[10px] uppercase tracking-wider opacity-70">
+            Phase {p.num}
+          </p>
+          <p class="mt-1 font-display text-sm font-semibold leading-snug">
+            {p.titleSk}
+          </p>
+          <p class="mt-0.5 font-sans text-[10px] italic opacity-80" lang="en">
+            {p.titleEn}
+          </p>
+          <p class="mt-3 inline-block rounded-full border border-current px-2 py-0.5 font-sans text-[10px] font-semibold uppercase tracking-wider">
+            {phaseLabelSk[p.status]} <span class="opacity-70" lang="en">/ {phaseLabelEn[p.status]}</span>
+          </p>
+        </li>
+      ))}
+    </ol>
+
+    <div class="mt-6 grid gap-4 md:grid-cols-5">
+      {phases.map((p) => (
+        <div class="text-xs text-ink-400">
+          <p class="font-sans text-[10px] uppercase tracking-wider text-ink-300">
+            Phase {p.num}
+          </p>
+          <p class="mt-1 leading-snug">{p.blurbSk}</p>
+          <p class="mt-2 font-sans text-[10px] italic leading-snug text-ink-300" lang="en">
+            {p.blurbEn}
+          </p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <div class="ornament-rule"></div>
+
+  <!-- ═══════════ SECTION OUTLINE ═══════════ -->
+  <section class="mx-auto max-w-wide px-6 py-12">
+    <h2 class="text-section-title text-ink">Štruktúra kapitoly</h2>
+    <p class="mt-1 font-sans text-sm italic text-ink-300" lang="en">
+      Chapter structure (six sections)
     </p>
-    <p class="mt-2 font-sans text-xs italic leading-relaxed text-ink-300" lang="en">
-      Until the chapter is complete, its infrastructure and empirical core
-      are publicly accessible and citable through these sections:
+    <p class="mt-3 max-w-prose text-sm text-ink-400">
+      Šesť sekcií. Návrh sa začína analytickým jadrom (§4) podľa loci, postupuje
+      cez §3 a §5 a uzaviera sa §1, §6 a §2 (ktorá môže floatovať).
+    </p>
+    <p class="mt-1 max-w-prose font-sans text-xs italic text-ink-300" lang="en">
+      Six sections. Drafting starts from the analytical core (§4) by locus,
+      proceeds through §3 and §5, and closes with §1, §6, and §2 (which can float).
+    </p>
+
+    <div class="mt-8 space-y-4">
+      {sections.map((s) => (
+        <article
+          id={`section-${s.code.replace(/§/g, "").replace(/\./g, "-")}`}
+          class:list={[
+            "card scroll-mt-24",
+            s.isSubsection && "ml-0 md:ml-8 border-l-4 border-gold/40",
+          ]}
+        >
+          <header class="flex flex-wrap items-baseline justify-between gap-3">
+            <div>
+              <p class="font-mono text-xs font-semibold tracking-wider text-burgundy">
+                {s.code}
+              </p>
+              <h3 class="mt-1 font-display text-lg font-semibold text-ink">
+                {s.titleSk}
+              </h3>
+              <p class="mt-0.5 font-sans text-xs italic text-ink-300" lang="en">
+                {s.titleEn}
+              </p>
+            </div>
+            <span class="rounded-full bg-parchment-200 px-2 py-0.5 font-sans text-[10px] text-ink-400">
+              Návrh #{s.draftOrder}
+            </span>
+          </header>
+
+          {s.draftOrderNote && (
+            <p class="mt-3 font-sans text-[11px] italic text-ink-300">
+              {s.draftOrderNote}
+            </p>
+          )}
+
+          <p class="mt-4 text-sm leading-relaxed text-ink-400">
+            {s.descriptionSk}
+          </p>
+          <p class="mt-2 font-sans text-xs italic leading-relaxed text-ink-300" lang="en">
+            {s.descriptionEn}
+          </p>
+
+          {s.loci.length > 0 && (
+            <p class="mt-4 font-mono text-[10px] text-ink-300">
+              Loci: {s.loci.join(", ")}
+            </p>
+          )}
+
+          {s.links.length > 0 && (
+            <footer class="mt-4 flex flex-wrap gap-2 border-t border-parchment-300/40 pt-3">
+              {s.links.map((l) => (
+                <a
+                  href={l.status === "forthcoming" ? "#" : `${baseN}${l.href}`}
+                  class:list={[
+                    "inline-flex items-center gap-1 rounded-md px-2.5 py-1 font-sans text-xs font-medium no-underline transition-colors",
+                    l.status === "forthcoming"
+                      ? "cursor-not-allowed bg-parchment-300/30 text-ink-300"
+                      : "bg-burgundy/10 text-burgundy hover:bg-burgundy/20",
+                  ]}
+                  aria-disabled={l.status === "forthcoming" ? "true" : undefined}
+                  title={l.status === "forthcoming" ? "Pripravuje sa v Sprint 2 / Forthcoming in Sprint 2" : undefined}
+                >
+                  {l.labelSk}
+                  {l.status === "forthcoming" && (
+                    <span class="ml-1 text-[9px] uppercase opacity-60">
+                      pripravuje sa
+                    </span>
+                  )}
+                  <span class="opacity-60" aria-hidden="true">·</span>
+                  <span class="italic" lang="en">{l.labelEn}</span>
+                  {l.status !== "forthcoming" && <span aria-hidden="true">&#x2192;</span>}
+                </a>
+              ))}
+            </footer>
+          )}
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <div class="ornament-rule"></div>
+
+  <!-- ═══════════ SOURCE-BASE INVENTORY ═══════════ -->
+  <section class="mx-auto max-w-wide px-6 py-12">
+    <h2 class="text-section-title text-ink">Pramenná báza</h2>
+    <p class="mt-1 font-sans text-sm italic text-ink-300" lang="en">
+      Source-base inventory (three tiers)
+    </p>
+    <p class="mt-3 max-w-prose text-sm text-ink-400">
+      Kapitola pracuje s troma úrovňami prameňov. Každé tvrdenie v návrhu musí
+      byť spätne sledovateľné na Tier-1 alebo Tier-2 prameň. Tier-3 dokumenty sa
+      smie konzultovať pre orientáciu, ale ich nároky vstupujú do návrhu len
+      po verifikácii voči primárnemu alebo recenzovanému prameňu.
+    </p>
+
+    <div class="mt-8 grid gap-5 md:grid-cols-3">
+      <!-- Tier 1 -->
+      <article class="card border-l-4 border-epistemic-factual/60">
+        <p class="font-mono text-[10px] uppercase tracking-wider text-ink-300">
+          Tier 1
+        </p>
+        <h3 class="mt-1 font-display text-base font-semibold text-ink">
+          Primárne pramene
+        </h3>
+        <p class="mt-0.5 font-sans text-xs italic text-ink-300" lang="en">
+          Primary sources (evidentiary base)
+        </p>
+        <ul class="mt-3 space-y-1.5 text-xs text-ink-400">
+          <li>· Confessio Augustana 1530 + Formula of Concord 1577 (Kolb–Wengert 2000; Bente–Dau 1921)</li>
+          <li>· Confessio Bohemica 1575 (Hrejsa 1912; Just/Rothkegel 2012)</li>
+          <li>· Štyri pražské artikuly 1420; Bazilejské kompaktáta 1436</li>
+          <li>· Confessio Fratrum 1535 (Wittenberg 1538 + český original)</li>
+          <li>· Hus, De ecclesia 1413; Lukáš Pražský; Chelčický, Síť viery</li>
+          <li>· Luther, Formula Missae 1523 + Deutsche Messe 1526 (WA 12, 19)</li>
+          <li>· AC 1581 + BA 1585 (Benka 2024) + 229 PNG skenov AC 1581</li>
+          <li>· Šamotulský 1561, Ivančický 1564, Cithara Sanctorum 1636 (REAL-R)</li>
+          <li>· Hymnorum Thesaurus Bohemicus (clavmon.cz)</li>
+        </ul>
+      </article>
+
+      <!-- Tier 2 -->
+      <article class="card border-l-4 border-gold/60">
+        <p class="font-mono text-[10px] uppercase tracking-wider text-ink-300">
+          Tier 2
+        </p>
+        <h3 class="mt-1 font-display text-base font-semibold text-ink">
+          Recenzovaná sekundárna literatúra
+        </h3>
+        <p class="mt-0.5 font-sans text-xs italic text-ink-300" lang="en">
+          Verified peer-reviewed scholarship
+        </p>
+        <p class="mt-3 text-xs text-ink-400">
+          Zaznamenávané v adresári <code class="font-mono text-[11px]">Sources/</code>
+          s plnými bibliografickými údajmi, kľúčovými argumentmi, citáciami so
+          stranami a Michalovými anotáciami. Rastie kontinuálne počas Phase 2.
+        </p>
+        <p class="mt-3 text-xs font-semibold text-ink-400">
+          Kotvy klastra:
+        </p>
+        <ul class="mt-1 space-y-1.5 text-xs text-ink-400">
+          <li>· Vajda 1944 — kanonická anglofónna história Cithary</li>
+          <li>· Grešová-Sekelská 2021, 2023, 2019 — TEPALIT spolupracovníčka</li>
+          <li>· Benka 2024 — kritická edícia AC 1581 + BA 1585</li>
+          <li>· Just/Rothkegel 2012 — kritická edícia CB 1575</li>
+          <li>· Haberkern 2023 — recentné anglofónne prečítanie CB 1575</li>
+          <li>· Atwood 2009 — anglofónna syntéza teológie Jednoty</li>
+          <li>· Csepregi (2003, 2009, 2021) — Pentapolitana redating</li>
+          <li>· Žurek 2016, Chalupský 2024 — utrakvistický sanktorál + krst</li>
+          <li>
+            <a href={`${baseN}/sources/`} class="text-burgundy hover:underline">
+              Plný register na /sources/ &#x2192;
+            </a>
+          </li>
+        </ul>
+      </article>
+
+      <!-- Tier 3 -->
+      <article class="card border-l-4 border-burgundy/60">
+        <p class="font-mono text-[10px] uppercase tracking-wider text-ink-300">
+          Tier 3
+        </p>
+        <h3 class="mt-1 font-display text-base font-semibold text-ink">
+          Scaffolding (len orientácia)
+        </h3>
+        <p class="mt-0.5 font-sans text-xs italic text-ink-300" lang="en">
+          Scaffolding only (orientation, not citable)
+        </p>
+        <p class="mt-3 text-xs text-ink-400">
+          Štruktúrna orientácia, žiadne tvrdenia priamo do návrhu kapitoly.
+          Žiadny Tier-3 nárok nevstupuje do návrhu bez verifikácie voči Tier-1
+          alebo Tier-2 prameňu.
+        </p>
+        <ul class="mt-3 space-y-1.5 text-xs text-ink-400">
+          <li>· Compass artifact (AI ekleziologická syntéza)</li>
+          <li>· 6 AI-generovaných výskumných správ (Eucharistia, ekleziológia, hymnologický transfer; Claude/Gemini/ChatGPT verzie)</li>
+          <li>· Perplexity Agenda Česká 1581 detailný prehľad</li>
+          <li>· Komparatívny hymnologický strategický dokument</li>
+        </ul>
+        <p class="mt-3 rounded-md bg-burgundy/5 px-2 py-1.5 text-[10px] italic text-burgundy">
+          <strong>Zdokumentovaná Tier-3 chyba (refutácia v §4.1):</strong>
+          Compass artifact charakterizuje CB 1575 ako kalvinisticky orientovanú —
+          čítanie, ktoré recenzovaná post-2010 literatúra (Just/Rothkegel 2012,
+          Haberkern 2023) nepodporuje.
+        </p>
+      </article>
+    </div>
+  </section>
+
+  <div class="ornament-rule"></div>
+
+  <!-- ═══════════ DECISION LOG (substantive only) ═══════════ -->
+  <section class="mx-auto max-w-content px-6 py-12">
+    <h2 class="text-section-title text-ink">Substantívne rozhodnutia</h2>
+    <p class="mt-1 font-sans text-sm italic text-ink-300" lang="en">
+      Substantive decisions (curated from the Master Plan decision log)
+    </p>
+    <p class="mt-3 max-w-prose text-sm text-ink-400">
+      Kuratované zo živého rozhodovacieho logu v
+      <code class="font-mono text-xs">Chapter/Chapter_Master_Plan.md</code>.
+      Operačné rozhodnutia (mená kolegov, akvizičné termíny) sa neuvádzajú.
+    </p>
+
+    <div class="mt-8 space-y-4">
+      {decisions.map((d) => (
+        <article class="card">
+          <header class="flex flex-wrap items-baseline gap-3">
+            <span class="rounded-full bg-parchment-200 px-2 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-wider text-ink-400">
+              {d.version}
+            </span>
+            <h3 class="font-display text-base font-semibold text-ink">
+              {d.headlineSk}
+            </h3>
+          </header>
+          <p class="mt-1 font-sans text-xs italic text-ink-300" lang="en">
+            {d.headlineEn}
+          </p>
+          <p class="mt-3 text-sm leading-relaxed text-ink-400">
+            {d.bodySk}
+          </p>
+          <p class="mt-2 font-sans text-xs italic leading-relaxed text-ink-300" lang="en">
+            {d.bodyEn}
+          </p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <div class="ornament-rule"></div>
+
+  <!-- ═══════════ COMPANION INFRASTRUCTURE ═══════════ -->
+  <section class="mx-auto max-w-content px-6 py-12">
+    <h2 class="text-section-title text-ink">Sprievodná infraštruktúra</h2>
+    <p class="mt-1 font-sans text-sm italic text-ink-300" lang="en">
+      Companion infrastructure
+    </p>
+    <p class="mt-3 max-w-prose text-sm text-ink-400">
+      Návrh kapitoly zatiaľ nie je hotový (Phase 4 / 2028), ale jej dôkazové
+      jadro a prameňová podpora sú už dnes verejne prístupné a citovateľné.
     </p>
 
     <ul class="mt-6 grid gap-4 sm:grid-cols-2">
       <li class="card">
         <h3 class="font-display text-base font-semibold text-ink">
-          <a href={`${baseN}/hymn-pairs/`} class="hover:text-burgundy">
-            Hymno-páry
-          </a>
+          <a href={`${baseN}/hymn-pairs/`} class="hover:text-burgundy">Hymno-páry</a>
         </h3>
-        <p class="mt-1 font-sans text-xs italic text-ink-300" lang="en">
-          Hymn-Pair Dossier
-        </p>
         <p class="mt-2 text-sm text-ink-400">
-          Empirické jadro kapitoly — {activeDossierCount} aktívnych dossierov
-          + {targetManifestCount} výskumný cieľ; {verifiedCount} {verifiedCount === 1 ? "je VERIFIED" : "sú VERIFIED"}.
+          {activeDossierCount} aktívnych dossierov + {targetManifestCount} výskumný cieľ;
+          {" "}{verifiedCount} {verifiedCount === 1 ? "je VERIFIED" : "sú VERIFIED"}.
+          Zoskupené podľa štyroch režimov luteranizácie.
         </p>
       </li>
       <li class="card">
         <h3 class="font-display text-base font-semibold text-ink">
-          <a href={`${baseN}/synoptikon/`} class="hover:text-burgundy">
-            Synoptikon
-          </a>
+          <a href={`${baseN}/papers/`} class="hover:text-burgundy">Štúdie</a>
         </h3>
-        <p class="mt-1 font-sans text-xs italic text-ink-300" lang="en">
-          Parallel Text Viewer
-        </p>
         <p class="mt-2 text-sm text-ink-400">
-          Paralelné porovnania konfesijných textov a hymnov.
+          Theologos paper (PAIR_006 anchor) + metodologická štúdia (tri osi
+          dôvery). Predbežné publikácie odvodené z prípravy kapitoly.
         </p>
       </li>
       <li class="card">
         <h3 class="font-display text-base font-semibold text-ink">
-          <a href={`${baseN}/taxonomy/`} class="hover:text-burgundy">
-            Teologická taxonómia
-          </a>
+          <a href={`${baseN}/synoptikon/`} class="hover:text-burgundy">Synoptikon</a>
         </h3>
-        <p class="mt-1 font-sans text-xs italic text-ink-300" lang="en">
-          Theological Taxonomy
-        </p>
         <p class="mt-2 text-sm text-ink-400">
-          Štyri teologické loci s 5–6 sub-loci v každom (21 kategórií celkom),
-          na ktoré sa kapitola opiera.
+          Paralelné porovnania konfesijných textov a hymnov vedľa seba.
         </p>
       </li>
       <li class="card">
         <h3 class="font-display text-base font-semibold text-ink">
-          <a href={`${baseN}/sources/`} class="hover:text-burgundy">
-            Pramene
-          </a>
+          <a href={`${baseN}/taxonomy/`} class="hover:text-burgundy">Teologická taxonómia</a>
         </h3>
-        <p class="mt-1 font-sans text-xs italic text-ink-300" lang="en">
-          Source Register
-        </p>
         <p class="mt-2 text-sm text-ink-400">
-          Register kotviacich identifikátorov pre každý prameň, na ktorý
-          sa kapitola odvoláva.
+          Štyri loci × 5–6 sub-loci (21 kategórií) — rámec, na ktorý sa
+          §3 a §4 priamo opierajú.
+        </p>
+      </li>
+      <li class="card">
+        <h3 class="font-display text-base font-semibold text-ink">
+          <a href={`${baseN}/sources/`} class="hover:text-burgundy">Pramene</a>
+        </h3>
+        <p class="mt-2 text-sm text-ink-400">
+          Register kotviacich identifikátorov pre každý citovaný prameň.
+        </p>
+      </li>
+      <li class="card">
+        <h3 class="font-display text-base font-semibold text-ink">
+          <a href={`${baseN}/timeline/`} class="hover:text-burgundy">Chronológia</a>
+        </h3>
+        <p class="mt-2 text-sm text-ink-400">
+          Časová os troch konfesionálnych tradícií — kontext pre §2.
         </p>
       </li>
     </ul>
@@ -115,14 +737,14 @@ const activeDossierCount = pairs.length - targetManifestCount;
 
   <div class="ornament-rule"></div>
 
+  <!-- ═══════════ CITE + FUNDING ═══════════ -->
   <section class="mx-auto max-w-content px-6 py-12 pb-20">
     <h2 class="text-section-title text-ink">Citovať dataset</h2>
     <p class="mt-1 font-sans text-sm italic text-ink-300" lang="en">
-      Cite the dataset
+      Cite the dataset (until the chapter is published)
     </p>
     <p class="mt-4 text-sm text-ink-400">
-      Kým kapitola nevyšla, cituje sa aktuálna verzia datasetu cez Zenodo
-      DOI:
+      Kým kapitola nevyšla, cituje sa aktuálna verzia datasetu cez Zenodo DOI:
     </p>
     <p class="mt-3 font-mono text-sm">
       <a
@@ -133,8 +755,21 @@ const activeDossierCount = pairs.length - targetManifestCount;
         https://doi.org/10.5281/zenodo.20081435
       </a>
     </p>
-    <p class="mt-4 font-sans text-xs italic text-ink-300" lang="en">
-      Each individual hymn-pair dossier on <a href={`${baseN}/hymn-pairs/`} class="text-burgundy">/hymn-pairs/</a> carries its own permalink and "How to cite this pair" snippet (APA + BibTeX).
+    <p class="mt-4 text-xs italic text-ink-300">
+      Každý hymno-pár dossier má svoj vlastný permalink a snippet „Ako citovať"
+      na <a href={`${baseN}/hymn-pairs/`} class="text-burgundy">stránke
+      hymno-párov</a>.
+    </p>
+
+    <h2 class="mt-12 text-section-title text-ink">Financovanie</h2>
+    <p class="mt-1 font-sans text-sm italic text-ink-300" lang="en">Funding</p>
+    <p class="mt-4 text-sm text-ink-400">
+      Táto práca bola podporená Agentúrou na podporu výskumu a vývoja na základe
+      Zmluvy č. APVV-24-0484.
+    </p>
+    <p class="mt-2 font-sans text-xs italic text-ink-300" lang="en">
+      This work was supported by the Slovak Research and Development Agency
+      under the Contract no. APVV-24-0484.
     </p>
   </section>
 </BaseLayout>
