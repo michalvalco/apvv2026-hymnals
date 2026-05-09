@@ -160,16 +160,23 @@ const typeOrder: Record<CuratedSource["type"], number> = {
 // prioritisation matrix (top-10 + secondary recommendations) and the
 // Master Plan v0.3 Phase-2 priority list.
 //
-// Tier semantics (per Chapter/Chapter_Master_Plan.md):
-//   1 = primary or accessible peer-reviewed scholarship; source-note
-//       creation is a near-term Phase-2 task or already done.
-//   2 = requires acquisition, ILL, or collegial coordination.
-//   3 = scaffolding-only (AI-generated reports, compass artifact); not
-//       citable; included here for transparency only.
+// Tier semantics (per Chapter/Chapter_Master_Plan.md). Tier is the
+// scholarly-priority dimension, independent of access status:
+//   1 = primary or peer-reviewed scholarship at the head of the
+//       priority queue; source-note creation is a near-term Phase-2
+//       task or already done.
+//   2 = next-priority peer-reviewed scholarship; not yet on the
+//       near-term creation queue.
+//   3 = scaffolding-only (AI-generated reports, compass artifact);
+//       not citable; included here for transparency only.
 //
-// Status semantics:
+// Status is the orthogonal access-state axis. Note that "ill-pending"
+// applies across tiers — a Tier-1 priority item may still need ILL
+// (e.g. Hungarian-language Lelkipásztor for Csepregi_2004; print-only
+// Word & World back-issues for Puff_2018; JSTOR-paywalled David_1999):
 //   "done"               — Sources/*.md note complete in the repo.
-//   "ill-pending"        — Tier 2; ILL or institutional access needed.
+//   "ill-pending"        — ILL, institutional database, or
+//                          paywall-bypass needed; applies to any tier.
 //   "collegial-expected" — expected via TEPALIT collaboration channels.
 //   "tier-3-scaffold"    — Tier 3 scaffolding; not citable.
 type BibStatus = "done" | "ill-pending" | "collegial-expected" | "tier-3-scaffold";

@@ -300,9 +300,11 @@ const jsonLd = {
                           Latinčina <span class="opacity-60" lang="en">/ Latin</span>
                         </dt>
                         <dd class="mt-1 space-y-0.5 font-serif text-sm text-ink">
-                          {splitSynonyms(t.latin).map((syn) => (
-                            <p>{syn}</p>
-                          )) || <p class="italic text-ink-300">—</p>}
+                          {splitSynonyms(t.latin).length > 0 ? (
+                            splitSynonyms(t.latin).map((syn) => <p>{syn}</p>)
+                          ) : (
+                            <p class="italic text-ink-300">—</p>
+                          )}
                         </dd>
                       </div>
                       <div class="rounded-md border-l-2 border-utraquist/40 bg-utraquist/5 p-3">
@@ -378,7 +380,7 @@ const jsonLd = {
 
   <!-- ═══════════ HOW TO READ ═══════════ -->
   <section class="mx-auto max-w-content px-6 py-12 pb-20">
-    <h2 class="text-section-title text-ink">Ako sa tento glosár čítá</h2>
+    <h2 class="text-section-title text-ink">Ako sa tento glosár číta</h2>
     <p class="mt-1 font-sans text-sm italic text-ink-300" lang="en">
       How this glossary reads
     </p>
