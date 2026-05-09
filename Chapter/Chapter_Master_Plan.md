@@ -1,6 +1,6 @@
 # Chapter Master Plan — TEPALIT Monograph Chapter
 
-**Version:** v0.2 (2026-05-09 — Phase 1 closed with audit pass; Phase 2 priority list refreshed)
+**Version:** v0.3 (2026-05-09 — Phase 2 source-note creation kick-off; first two Tier-1 notes complete: Csepregi 2003, Hroboň 2011)
 **Last updated:** 2026-05-09
 **Working language:** English (internal collaboration record); chapter itself is in Slovak.
 
@@ -65,18 +65,20 @@ The chapter follows the Research Paper Protocol's five-phase structure (per the 
 - `Sources/GresovaSek_Prispevok.md` — Grešová-Sekelská 2021 *Clavibus unitis* on CS origin and content
 - `Sources/GresovaSek_2019.md` — Grešová-Sekelská 2019 *Testimonia Theologica* on *de cultu sanctorum* in CS hymnody
 - `Sources/Vajda_1944.md` — Vajda's standard English-language CS history
+- `Sources/Csepregi_2003.md` — Csepregi on *Confessio Pentapolitana* redating and *taktische Duldung* of Slovak Lutheranism under Ferdinand I; foundational for §3 and §4.1 (was on the Phase 2 v0.2 Tier 1 priority list; now done)
+- `Sources/Hrobon_2011.md` — Hroboň on the Kralice Bible as the trans-confessional Slovak-Czech Protestant Scripture; accessible English-language anchor for §4.4 and §5 (was on the Phase 2 v0.2 Tier 1 priority list; now done)
 - (additional Sources files per the existing `Source_Index.md`)
 
 **Remaining (immediate priority — refreshed 2026-05-09 against the audited Literature-Gap Report):**
 
 *Tier 1 — accessible without acquisition / ILL; can be drafted as proper Tier-2 source notes in upcoming sessions:*
-- `Sources/Crews_2018.md` — C. Daniel Crews, "Luke of Prague: Theologian of the Unity," *JMH* 18/1 (2018), pp. 1–46. Foundational for §4.3 (Brethren scriptural authority) and §4.1 (Lukáš's spiritual-presence Eucharistic position). JSTOR / ResearchGate access.
+- ~~`Sources/Crews_2018.md`~~ — **RECLASSIFIED to Tier 2 on 2026-05-09**: JSTOR returns blank for scraping, ResearchGate returns 403, Project MUSE and the Penn State Scholarly Publishing Collective give only the abstract. Pull via Comenius University library JSTOR proxy or ILL. C. Daniel Crews, "Luke of Prague: Theologian of the Unity," *JMH* 18/1 (2018), pp. 1–46. Foundational for §4.3 (Brethren scriptural authority) and §4.1 (Lukáš's spiritual-presence Eucharistic position).
 - `Sources/Ruscin_2019.md` — Peter Ruščin, "Nové nápevy levočských vydaní Cithary Sanctorum v 17. storočí," *Musicologica Slovaca* 10(36)/1 (2019), pp. 46–81. Open access at sav.sk; complements Grešová-Sekelská on Levoča editions.
-- `Sources/Csepregi_2003.md` — Csepregi, "Konfessionsbildung und Einheitsbestrebungen…", *ARG* 94 (2003), pp. 243–275. Foundational for §3 (Pentapolitana redating) and §4.1 (Upper-Hungarian Lutheran Eucharistic articles). academia.edu mirror.
+- ✅ `Sources/Csepregi_2003.md` — **DONE 2026-05-09**. Csepregi, "Konfessionsbildung und Einheitsbestrebungen…", *ARG* 94 (2003), pp. 243–275. Foundational for §3 (Pentapolitana redating) and §4.1 (Upper-Hungarian Lutheran Eucharistic articles). academia.edu mirror.
 - `Sources/Csepregi_2004.md` — Csepregi, "A Confessio Pentapolitana újabb datálási kísérletei," *Lelkipásztor* 79 (2004), pp. 300–303. Hungarian-language vector of the same dating debate. REAL repository.
-- `Sources/Hrobon_2011.md` — Hroboň, "The Kralice Bible: Czech-mate to the KJV," *Word & World* 31/3 (2011). Open access. The accessible English-language anchor for §4.1 Kralice argument.
+- ✅ `Sources/Hrobon_2011.md` — **DONE 2026-05-09**. Hroboň, "The Kralice Bible: Czech-mate to the KJV," *Word & World* 31/3 (2011). Open access. The accessible English-language anchor for §4.1 Kralice argument.
 - `Sources/Puff_2018.md` — Helmut Puff, "Belief in the Reformation Era," *CEH* 51/1 (2018), pp. 46–52. Cambridge Core; orienting essay for §2 confessionalisation framing.
-- `Sources/Hrejsa_1912.md` — *Česká konfesse, její vznik, podstata a dějiny* (Praha 1912). Foundational for §4.1 CB-1575 refutation. Czech, not digitised in full but key passages accessible.
+- ~~`Sources/Hrejsa_1912.md`~~ — **RECLASSIFIED to Tier 2 on 2026-05-09**: monograph not digitised in NDK ČR, Archive.org, or Google Books. Page-specific quotes traceable through David 1999, Halama, and the recent ETF UK Praha *Česká konfese 550 let* conference proceedings — but original-text reading requires print copy from Comenius University library or ILL through ETF UK Praha. *Česká konfesse, její vznik, podstata a dějiny* (Praha 1912). Foundational for §4.1 CB-1575 refutation.
 - `Sources/David_1999.md` — Z. V. David, "Utraquists, Lutherans, and the Bohemian Confession of 1575," *Church History* 68/2 (1999), pp. 294–337. Foundational for §4.1 and §3 utraquist profile. JSTOR.
 
 *Tier 2 — requires acquisition, ILL, or collegial coordination; track as a parallel acquisitions queue:*
@@ -87,6 +89,7 @@ The chapter follows the Research Paper Protocol's five-phase structure (per the 
 - `Sources/Leaver_2024.md` — *A New Song We Now Begin* (Fortress 2024). The methodological parallel for §7-style framing.
 - `Sources/Csepregi_2009.md` — Csepregi, "Die Confessio Pentapolitana," Acta Collegii Evangelici Prešoviensis 10 (2009). Prešov university press; ILL.
 - `Sources/GresovaSekelska_2016.md` — Grešová-Sekelská, *Slovenská hudba* 42/3 (2016), pp. 261–274. **Best obtained collegially from Adriana directly; she is a TEPALIT collaborator.**
+- `Sources/Soucek_1933.md` — J. B. Souček, *Theologie výkladů kralické šestidílky* (Praha: Královská česká společnost nauk, 1933). **§4.4 prerequisite (added 2026-05-09).** The 1933 monograph that analyses the KB's marginal notes and concludes the Brethren were "more Calvinist than Lutheran in their theology." Surfaced from `Hrobon_2011.md` fn. 18. Required before any chapter claim about KB-and-Brethren-Reformed-theology can be made — exactly the kind of reception-history claim the chapter must scrutinise rather than absorb. Acquisition: check Kramerius NDK ČR / Národní knihovna Praha / ETF UK Praha library.
 
 *Tier 3 — Phase 1 carry-over, newly tractable:*
 - `Drafts/Reports_Verification_Audit.md` — verification audit of the six AI-generated research reports against the audited Literature-Gap Report as comparative baseline.
@@ -249,13 +252,13 @@ These conventions are inherited from the Theologos paper workflow and adapted fo
 
 ## Current state and immediate next steps
 
-**Current phase status:** Phase 1 complete (audit pass 2026-05-09); Phase 2 in progress, with the immediate-priority list refreshed against the audited Literature-Gap Report.
+**Current phase status:** Phase 1 complete (audit pass 2026-05-09); Phase 2 in progress, with two Tier-1 source notes complete (Csepregi_2003, Hrobon_2011) and the priority list re-sequenced against in-session accessibility findings.
 
 **Immediate priorities (next 2–3 sessions):**
 
-1. **Tier-1 source-note creation** — start with items immediately accessible (Crews 2018, Ruščin 2019, Csepregi 2003, Csepregi 2004, Hroboň 2011, Puff 2018, Hrejsa 1912, David 1999). Each takes approximately 30–45 minutes of focused work. Recommended sequence: Crews_2018 first (because §4.1's Brethren sub-argument leans on it), then Csepregi_2003 (Pentapolitana redating that §3 needs), then Hrejsa_1912 (CB-1575 refutation backbone in §4.1).
+1. **Tier-1 source-note creation, continued.** Two of the eight v0.2 Tier-1 items are done (Csepregi_2003, Hrobon_2011). Two have been reclassified to Tier 2 because their online-only access is blocked (Crews_2018 needs Comenius JSTOR proxy or ILL; Hrejsa_1912 needs ETF UK Praha library or ILL). The remaining four Tier-1 items are open-access and tractable in upcoming sessions: Ruščin_2019 (sav.sk), Csepregi_2004 (Hungarian-language *Lelkipásztor*), Puff_2018 (Cambridge Core *CEH*), David_1999 (JSTOR — to be re-tested for in-session access; if blocked, also reclassify to Tier 2). Recommended sequence: Ruščin_2019 first (open-access, complements Grešová-Sekelská on Levoča editions for §5), then Puff_2018 (orienting essay for §2 confessionalisation framing), then Csepregi_2004 (Hungarian-language vector of the same Pentapolitana redating debate Csepregi_2003 makes in German).
 
-2. **Tier-2 acquisitions decisions** — Michal's call. The cornerstone item is Just/Rothkegel 2012; secondary cornerstones are Haberkern 2016 (monograph) and Haberkern 2023 (R&RR article). Augustínová 2011 needs SNK Martin ILL. Grešová-Sekelská 2016 *Slovenská hudba* is best obtained collegially from Adriana at the next TEPALIT meeting.
+2. **Tier-2 acquisitions decisions** — Michal's call (still pending from session-opening). The cornerstone item is Just/Rothkegel 2012; secondary cornerstones are Haberkern 2016 (monograph) and Haberkern 2023 (R&RR article). Augustínová 2011 needs SNK Martin collegial route. Grešová-Sekelská 2016 *Slovenská hudba* is best obtained collegially from Adriana at the next TEPALIT meeting. Newly added to the Tier-2 queue: Souček 1933 (KB notes monograph) as a §4.4 prerequisite. Crews 2018 and Hrejsa 1912 have moved into this queue too — Crews via JSTOR institutional access, Hrejsa via print or ILL.
 
 3. **AI-reports verification audit** (`Drafts/Reports_Verification_Audit.md`) — newly tractable now that the audited Literature-Gap Report serves as comparative baseline. Tests which claims in the six AI-generated research reports survive against the audit-confirmed scholarly consensus.
 
@@ -288,6 +291,13 @@ Significant decisions about the chapter's scope, approach, or conventions get lo
 - Decision: Methodological discipline tightened. No citation surfaced by AI-generated reconnaissance enters `Sources/*.md` without an independent verification step against the publisher catalogue, journal index, DOI, or repository entry. The verification step belongs in the source-notes pipeline; reconnaissance reports are Phase 1 orientation material only.
 - Decision: Phase 2 immediate-priority list refreshed against the audited Report. Two of the four v0.1 immediate-priority items (Žurek and Chalupský) are already done; David_1999 and Hrejsa_1912 carry forward; eight new items from the audited Report's top-10 are added, split between Tier 1 (immediately accessible) and Tier 2 (acquisition / ILL / collegial coordination required).
 - Decision: The CB-1575 Calvinist mis-reading refutation is now strongly supported. The audit confirmed that no peer-reviewed post-2010 anglophone or German-language venue defends the older Calvinist characterisation; its persistence is a phenomenon of tertiary reference works (Britannica, encyclopedia.com, derivative AI synthesis), not of current scholarship. The chapter §4.1 refutation can therefore be framed as one of *reference-work persistence versus scholarly consensus*, not as an ongoing scholarly disagreement — a stronger and more defensible framing.
+
+**v0.3 (2026-05-09 — Phase 2 source-note creation kick-off):**
+- Event: First two Tier-1 source notes from the v0.2 priority list documented to the Žurek/Benka quality bar — `Sources/Csepregi_2003.md` (33-pp. *ARG* article on Pentapolitana redating, fully accessed via academia.edu mirror) and `Sources/Hrobon_2011.md` (8-pp. *Word & World* article on the Kralice Bible, open-access via Luther Seminary). Both notes follow the established structure (citation, multi-paragraph summary, key arguments with page numbers, notable quotes with page numbers, *locus*-by-*locus* relevance, cross-references, verification status, notes).
+- Event: Six new entries added to `Sources/Source_Index.md` Section V — four surfaced from `Csepregi_2003.md` cross-references (`Suda_2001`, `Kohnle_2001`, `Solyom_1999`, `Schwarz_2000`), two from `Hrobon_2011.md` (`Kyas_1997`, `Rice_2006`).
+- Decision: Phase 2 access-discipline tightened. Online accessibility was tested before drafting each source note; items that returned blank or paywalled (Crews 2018 on JSTOR/ResearchGate/Project MUSE; Hrejsa 1912 not in NDK ČR / Archive.org / Google Books) were not drafted as metadata stubs but reclassified to Tier 2, on the principle that a "proper Tier-2 source note" requires the source to have been actually read in-session — not pieced together from secondary citation. The Tier 1 list now reflects this discipline: Crews_2018 and Hrejsa_1912 require institutional access (Comenius JSTOR proxy and ETF UK Praha library / Comenius print or ILL respectively).
+- Decision: Souček 1933 (*Theologie výkladů kralické šestidílky*) added to the Tier 2 acquisitions queue as a §4.4 prerequisite. Surfaced from `Hrobon_2011.md` fn. 18, where its conclusion that the Brethren KB notes are "more Calvinist than Lutheran in their theology" is reported flatly and without scrutiny. The chapter cannot accept Souček's reading uncritically — it is structurally identical to the CB-1575 Calvinist mis-reading the chapter is committed to refuting, and may itself be a reception-history artefact that needs independent verification against the original KB notes. The acquisition is a §4.4 prerequisite in the same sense that Just/Rothkegel 2012 is a §4.1 cornerstone prerequisite.
+- Pending Michal-side decisions (carried over from session opening, still open): (a) Tier-2 acquisitions strategy across Just/Rothkegel 2012, the two Haberkerns, Augustínová 2011, Leaver 2024 — recommended split is ILL for Just/Rothkegel and Haberkern 2023, purchase for Haberkern 2016 and Leaver 2024, collegial via SNK Martin for Augustínová; (b) Slovak email to Adriana Sekelská requesting her 2016 *Slovenská hudba* article — Claude-drafted version available on confirmation.
 
 ---
 
