@@ -1,0 +1,482 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import {
+  getTerms,
+  getLocusByCode,
+  type TermVariant,
+} from "../../data/taxonomy";
+
+const base = import.meta.env.BASE_URL;
+const baseN = base.replace(/\/$/, "");
+
+const terms = getTerms();
+
+// L1.1 -> l1-1 — slug shape used by /taxonomy/[code]/.
+const locusSlug = (code: string): string =>
+  code.toLowerCase().replace(/\./g, "-");
+
+// Split semicolon-separated synonym lists into displayable arrays.
+const splitSynonyms = (s: string): string[] =>
+  s ? s.split(";").map((x) => x.trim()).filter(Boolean) : [];
+
+// Group terms by semantic_field so the page renders as a thematic
+// reference rather than a flat alphabetical list.
+type Grouped = Record<string, TermVariant[]>;
+const grouped: Grouped = {};
+for (const t of terms) {
+  if (!grouped[t.semantic_field]) grouped[t.semantic_field] = [];
+  grouped[t.semantic_field].push(t);
+}
+
+// Field-display order: bring sacramental fields (the chapter's analytical
+// core) to the top; keep the rest alphabetical for predictability.
+const FIELD_PRIORITY: Record<string, number> = {
+  MODE_OF_PRESENCE: 1,
+  EUCHARISTIC_ELEMENTS: 2,
+  EUCHARISTIC_PIETY: 3,
+  COMMUNION_PRACTICE: 4,
+  WORDS_OF_INSTITUTION: 5,
+  SACRIFICIAL_CHARACTER: 6,
+};
+const fieldOrder = Object.keys(grouped).sort((a, b) => {
+  const pa = FIELD_PRIORITY[a] ?? 99;
+  const pb = FIELD_PRIORITY[b] ?? 99;
+  if (pa !== pb) return pa - pb;
+  return a.localeCompare(b);
+});
+
+// Bilingual labels for semantic_field codes. Each label is a concise
+// English phrase matched with the standard Slovak theological term.
+const FIELD_LABELS: Record<string, { sk: string; en: string }> = {
+  MODE_OF_PRESENCE: { sk: "Spôsob prítomnosti", en: "Mode of presence" },
+  EUCHARISTIC_ELEMENTS: { sk: "Eucharistické elementy", en: "Eucharistic elements" },
+  EUCHARISTIC_PIETY: { sk: "Eucharistická zbožnosť", en: "Eucharistic piety" },
+  COMMUNION_PRACTICE: { sk: "Komuniková prax", en: "Communion practice" },
+  WORDS_OF_INSTITUTION: { sk: "Slová ustanovenia", en: "Words of institution" },
+  SACRIFICIAL_CHARACTER: { sk: "Obetný charakter", en: "Sacrificial character" },
+  NATURE_OF_CHURCH: { sk: "Povaha Cirkvi", en: "Nature of the Church" },
+  APOSTOLIC_SUCCESSION: { sk: "Apoštolská sukcesia", en: "Apostolic succession" },
+  MINISTRY_AND_ORDERS: { sk: "Služba a stupne", en: "Ministry and orders" },
+  CHURCH_DISCIPLINE: { sk: "Cirkevná disciplína", en: "Church discipline" },
+  JUSTIFICATION: { sk: "Ospravedlnenie", en: "Justification" },
+  SANCTIFICATION: { sk: "Posvätenie", en: "Sanctification" },
+  BIBLICAL_AUTHORITY: { sk: "Autorita Písma", en: "Biblical authority" },
+  LITURGICAL_LANGUAGE: { sk: "Liturgický jazyk", en: "Liturgical language" },
+};
+
+// canonical_term values are snake_case English keys — render with spaces and
+// title-case for visual presentation while keeping the snake_case as the
+// permalink fragment for stable cross-document references.
+const prettyTerm = (key: string): string =>
+  key
+    .split("_")
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(" ");
+
+const totalTerms = terms.length;
+const totalFields = fieldOrder.length;
+const totalLoci = new Set(terms.map((t) => t.locus_code)).size;
+
+// Filter dropdown options
+const allLoci = Array.from(new Set(terms.map((t) => t.locus_code))).sort();
+
+// JSON-LD: emit a DefinedTermSet for the whole glossary so search engines
+// understand the page is a curated glossary of theological terms.
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "DefinedTermSet",
+  name: "TEPALIT theological term variants (16th–18th c.)",
+  description:
+    "A 34-entry multilingual glossary of theological terms across the four loci (Eucharist, Ecclesiology, Soteriology, Authority of Scripture) in their 16th–18th century Latin, Czech, German, and Slovak forms.",
+  url: Astro.site
+    ? new URL("glossary/", new URL(baseN + "/", Astro.site)).toString()
+    : `${baseN}/glossary/`,
+  inLanguage: ["la", "cs", "de", "sk"],
+  hasDefinedTerm: terms.map((t) => ({
+    "@type": "DefinedTerm",
+    "@id": `#${t.canonical_term}`,
+    name: prettyTerm(t.canonical_term),
+    inDefinedTermSet: "TEPALIT theological term variants",
+    termCode: t.canonical_term,
+  })),
+};
+---
+
+<BaseLayout
+  title="Glosár — terminologické varianty 16.–18. storočia"
+  description="Multilingual glossary of theological terms across four loci (Eucharist, Ecclesiology, Soteriology, Authority of Scripture) in their 16th–18th century Latin, Czech, German, and Slovak forms. 34 canonical terms, 14 semantic fields, 13 sub-loci."
+  lang="sk"
+>
+  <script
+    is:inline
+    type="application/ld+json"
+    set:html={JSON.stringify(jsonLd)}
+  />
+
+  <!-- ═══════════ HERO ═══════════ -->
+  <section class="bg-ink-800 px-6 py-16 text-parchment">
+    <div class="mx-auto max-w-content text-center">
+      <p class="font-sans text-xs font-medium uppercase tracking-[0.2em] text-gold">
+        Terminologický aparát · 4 jazyky · 14 sémantických polí
+      </p>
+      <h1 class="mt-3 text-section-title font-display font-bold text-parchment-100">
+        Glosár
+      </h1>
+      <p class="mx-auto mt-2 max-w-prose font-sans text-sm uppercase tracking-wider text-parchment-500" lang="en">
+        Theological term variants (16th–18th c.)
+      </p>
+      <p class="mx-auto mt-6 max-w-prose text-parchment-400">
+        Kanonické teologické termíny s ich latinskou, českou, nemeckou
+        a slovenskou formou v jazykovom registri 16. – 18. storočia. Každý
+        termín je viazaný na konkrétny sub-locus a sémantické pole.
+      </p>
+      <p class="mx-auto mt-3 max-w-prose font-sans text-sm italic text-parchment-500" lang="en">
+        Canonical theological terms with their Latin, Czech, German, and Slovak
+        forms in the language register of the 16th – 18th centuries. Each term
+        is bound to a specific sub-locus and semantic field.
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══════════ STATS ═══════════ -->
+  <div class="mx-auto max-w-wide px-6 pt-8">
+    <div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
+      <div class="card text-center">
+        <p class="font-display text-3xl font-bold text-ink">{totalTerms}</p>
+        <p class="mt-1 font-sans text-xs text-ink-400">
+          Termíny / <span lang="en">Terms</span>
+        </p>
+      </div>
+      <div class="card text-center">
+        <p class="font-display text-3xl font-bold text-ink">{totalFields}</p>
+        <p class="mt-1 font-sans text-xs text-ink-400">
+          Sémantických polí / <span lang="en">Semantic fields</span>
+        </p>
+      </div>
+      <div class="card text-center">
+        <p class="font-display text-3xl font-bold text-ink">{totalLoci}</p>
+        <p class="mt-1 font-sans text-xs text-ink-400">
+          Sub-loci / <span lang="en">Sub-loci</span>
+        </p>
+      </div>
+      <div class="card text-center">
+        <p class="font-display text-3xl font-bold text-ink">4</p>
+        <p class="mt-1 font-sans text-xs text-ink-400">
+          Jazyky (LA/CZ/DE/SK) / <span lang="en">Languages</span>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════ FILTER BAR ═══════════ -->
+  <div class="mx-auto max-w-wide px-6 pt-6">
+    <div class="rounded-lg border border-parchment-300/60 bg-parchment-50 p-4">
+      <div class="flex flex-wrap items-center gap-3">
+        <span class="font-sans text-xs font-semibold uppercase tracking-wider text-ink-400">
+          Filter:
+        </span>
+        <label class="flex items-center gap-1.5 text-xs">
+          <span class="text-ink-400">Sémantické pole</span>
+          <select
+            id="filter-field"
+            class="rounded border border-parchment-300 bg-parchment-50 px-2 py-1 font-sans text-xs"
+          >
+            <option value="">Všetky / All</option>
+            {fieldOrder.map((f) => (
+              <option value={f}>
+                {(FIELD_LABELS[f]?.sk) ?? f}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label class="flex items-center gap-1.5 text-xs">
+          <span class="text-ink-400">Sub-locus</span>
+          <select
+            id="filter-locus"
+            class="rounded border border-parchment-300 bg-parchment-50 px-2 py-1 font-sans text-xs"
+          >
+            <option value="">Všetky / All</option>
+            {allLoci.map((l) => (
+              <option value={l}>{l}</option>
+            ))}
+          </select>
+        </label>
+        <label class="flex items-center gap-1.5 text-xs">
+          <span class="text-ink-400">Hľadať / <span class="italic" lang="en">Search</span></span>
+          <input
+            id="filter-search"
+            type="search"
+            lang="en"
+            placeholder="Latin, Czech, German, Slovak…"
+            class="w-56 rounded border border-parchment-300 bg-parchment-50 px-2 py-1 font-sans text-xs"
+          />
+        </label>
+        <button
+          id="filter-reset"
+          type="button"
+          class="ml-auto rounded-md bg-parchment-300/50 px-3 py-1 font-sans text-xs text-ink-400 hover:bg-parchment-300"
+        >
+          Reset
+        </button>
+      </div>
+      <p
+        id="filter-status"
+        class="mt-2 font-sans text-[11px] text-ink-300"
+        aria-live="polite"
+      >
+        Zobrazené: {totalTerms} z {totalTerms}
+      </p>
+    </div>
+  </div>
+
+  <!-- ═══════════ TERM GROUPS ═══════════ -->
+  <div class="mx-auto max-w-wide px-6 py-8">
+    <div id="terms-list">
+      {fieldOrder.map((field, fieldIdx) => {
+        const label = FIELD_LABELS[field] ?? { sk: field, en: field };
+        const fieldTerms = grouped[field];
+        return (
+          <section
+            class:list={["field-group", fieldIdx > 0 && "mt-10"]}
+            data-field-group={field}
+            aria-labelledby={`field-heading-${field}`}
+          >
+            <div class="mb-5 border-b-2 border-parchment-300/60 pb-3">
+              <div class="flex flex-wrap items-baseline justify-between gap-2">
+                <h2
+                  id={`field-heading-${field}`}
+                  class="font-display text-lg font-semibold text-ink"
+                >
+                  {label.sk}
+                </h2>
+                <span class="font-sans text-[11px] uppercase tracking-wider text-ink-300">
+                  {fieldTerms.length} {fieldTerms.length === 1 ? "termín" : fieldTerms.length < 5 ? "termíny" : "termínov"} / <span lang="en">{fieldTerms.length} term{fieldTerms.length === 1 ? "" : "s"}</span>
+                </span>
+              </div>
+              <p class="mt-0.5 font-sans text-xs italic text-ink-300" lang="en">
+                {label.en}
+              </p>
+              <p class="mt-1 font-mono text-[10px] text-ink-300">
+                {field}
+              </p>
+            </div>
+
+            <div class="space-y-4">
+              {fieldTerms.map((t) => {
+                const locus = getLocusByCode(t.locus_code);
+                return (
+                  <article
+                    id={t.canonical_term}
+                    data-field={t.semantic_field}
+                    data-locus={t.locus_code}
+                    class="card scroll-mt-24"
+                  >
+                    <header class="flex flex-wrap items-baseline justify-between gap-2">
+                      <div>
+                        <h3 class="font-display text-base font-semibold text-ink">
+                          {prettyTerm(t.canonical_term)}
+                        </h3>
+                        <p class="mt-0.5 font-mono text-[10px] text-ink-300">
+                          {t.canonical_term}
+                        </p>
+                      </div>
+                      <a
+                        href={`${baseN}/taxonomy/${locusSlug(t.locus_code)}/`}
+                        class="rounded-full bg-gold/15 px-2 py-0.5 font-mono text-[11px] font-medium text-gold-dark no-underline hover:bg-gold/25"
+                        title={locus ? `${locus.locus_name_sk} / ${locus.locus_name_en}` : undefined}
+                      >
+                        {t.locus_code}
+                        {locus && (
+                          <span class="ml-1 font-sans font-normal opacity-80">
+                            · {locus.locus_name_sk}
+                          </span>
+                        )}
+                      </a>
+                    </header>
+
+                    <dl class="mt-4 grid gap-3 sm:grid-cols-2">
+                      <div class="rounded-md border-l-2 border-ink-300/40 bg-parchment-100/50 p-3">
+                        <dt class="font-sans text-[10px] uppercase tracking-wider text-ink-300">
+                          Latinčina <span class="opacity-60" lang="en">/ Latin</span>
+                        </dt>
+                        <dd class="mt-1 space-y-0.5 font-serif text-sm text-ink">
+                          {splitSynonyms(t.latin).map((syn) => (
+                            <p>{syn}</p>
+                          )) || <p class="italic text-ink-300">—</p>}
+                        </dd>
+                      </div>
+                      <div class="rounded-md border-l-2 border-utraquist/40 bg-utraquist/5 p-3">
+                        <dt class="font-sans text-[10px] uppercase tracking-wider text-ink-300">
+                          Čeština 16. stor. <span class="opacity-60" lang="en">/ Czech (16c)</span>
+                        </dt>
+                        <dd class="mt-1 space-y-0.5 font-serif text-sm text-ink">
+                          {splitSynonyms(t.czech_16c).length > 0 ? (
+                            splitSynonyms(t.czech_16c).map((syn) => <p>{syn}</p>)
+                          ) : (
+                            <p class="italic text-ink-300">—</p>
+                          )}
+                        </dd>
+                      </div>
+                      <div class="rounded-md border-l-2 border-lutheran/40 bg-lutheran/5 p-3">
+                        <dt class="font-sans text-[10px] uppercase tracking-wider text-ink-300">
+                          Nemčina 16. stor. <span class="opacity-60" lang="en">/ German (16c)</span>
+                        </dt>
+                        <dd class="mt-1 space-y-0.5 font-serif text-sm text-ink">
+                          {splitSynonyms(t.german_16c).length > 0 ? (
+                            splitSynonyms(t.german_16c).map((syn) => <p>{syn}</p>)
+                          ) : (
+                            <p class="italic text-ink-300">—</p>
+                          )}
+                        </dd>
+                      </div>
+                      <div class="rounded-md border-l-2 border-burgundy/40 bg-burgundy/5 p-3">
+                        <dt class="font-sans text-[10px] uppercase tracking-wider text-ink-300">
+                          Slovenčina (CS register) <span class="opacity-60" lang="en">/ Slovak</span>
+                        </dt>
+                        <dd class="mt-1 space-y-0.5 font-serif text-sm text-ink">
+                          {splitSynonyms(t.slovak_cs).length > 0 ? (
+                            splitSynonyms(t.slovak_cs).map((syn) => <p>{syn}</p>)
+                          ) : (
+                            <p class="italic text-ink-300">—</p>
+                          )}
+                        </dd>
+                      </div>
+                    </dl>
+
+                    {t.notes && (
+                      <p class="mt-4 rounded-md bg-parchment-100/70 p-3 font-serif text-xs italic leading-relaxed text-ink-400">
+                        {t.notes}
+                      </p>
+                    )}
+
+                    <footer class="mt-3 flex justify-end">
+                      <a
+                        href={`#${t.canonical_term}`}
+                        class="font-mono text-[10px] text-ink-300 hover:text-burgundy"
+                      >
+                        #{t.canonical_term}
+                      </a>
+                    </footer>
+                  </article>
+                );
+              })}
+            </div>
+          </section>
+        );
+      })}
+      <p
+        id="terms-empty"
+        class="hidden rounded-md border border-dashed border-parchment-400 bg-parchment-100/50 p-6 text-center font-sans text-sm text-ink-400"
+      >
+        Žiadne termíny nezodpovedajú filtrom. /
+        <span lang="en">No terms match the current filters.</span>
+      </p>
+    </div>
+  </div>
+
+  <div class="ornament-rule"></div>
+
+  <!-- ═══════════ HOW TO READ ═══════════ -->
+  <section class="mx-auto max-w-content px-6 py-12 pb-20">
+    <h2 class="text-section-title text-ink">Ako sa tento glosár čítá</h2>
+    <p class="mt-1 font-sans text-sm italic text-ink-300" lang="en">
+      How this glossary reads
+    </p>
+
+    <p class="mt-4 text-sm leading-relaxed text-ink-400">
+      Každý kanonický termín je referenčný kľúč, ktorý sa používa naprieč
+      taxonómiou (<a href={`${baseN}/taxonomy/`} class="text-burgundy hover:underline">/taxonomy/</a>),
+      paralelnými textami (<a href={`${baseN}/synoptikon/`} class="text-burgundy hover:underline">/synoptikon/</a>)
+      a hymno-pármi (<a href={`${baseN}/hymn-pairs/`} class="text-burgundy hover:underline">/hymn-pairs/</a>).
+      Štyri jazykové stĺpce zachytávajú dobový jazykový register —
+      polemicky a teologicky exaktné formuly, ktoré obiehali v
+      stredoeurópskom protestantskom prostredí. Bodkočiarka oddeľuje
+      synonymné varianty.
+    </p>
+    <p class="mt-3 font-sans text-xs italic leading-relaxed text-ink-300" lang="en">
+      Each canonical term is a reference key used across the taxonomy
+      (<a href={`${baseN}/taxonomy/`} class="text-burgundy hover:underline">/taxonomy/</a>),
+      parallel texts (<a href={`${baseN}/synoptikon/`} class="text-burgundy hover:underline">/synoptikon/</a>),
+      and hymn-pair dossiers (<a href={`${baseN}/hymn-pairs/`} class="text-burgundy hover:underline">/hymn-pairs/</a>).
+      The four language columns capture the period language register — the
+      polemically and theologically exact formulas that circulated in the
+      central-European Protestant milieu. Semicolons separate synonymous
+      variants.
+    </p>
+
+    <p class="mt-6 text-sm leading-relaxed text-ink-400">
+      Stabilný permalink na konkrétny termín:
+      <code class="font-mono text-xs">{baseN}/glossary/#&lt;canonical_term&gt;</code>
+      — napr. <a href="#real_presence" class="text-burgundy hover:underline">#real_presence</a>.
+    </p>
+  </section>
+</BaseLayout>
+
+<script is:inline>
+  // ── Filter bar ──
+  const filters = {
+    field: document.getElementById("filter-field"),
+    locus: document.getElementById("filter-locus"),
+  };
+  const searchInp = document.getElementById("filter-search");
+  const reset = document.getElementById("filter-reset");
+  const status = document.getElementById("filter-status");
+  const empty = document.getElementById("terms-empty");
+  const list = document.getElementById("terms-list");
+  const articles = list ? Array.from(list.querySelectorAll("article[data-field]")) : [];
+  const fieldGroups = list ? Array.from(list.querySelectorAll("section[data-field-group]")) : [];
+  const total = articles.length;
+
+  // Pre-compute lowercase search-text for each article (visible content) so
+  // the search input doesn't re-traverse textContent on every keystroke.
+  const articleSearchText = new Map();
+  articles.forEach(function (a) {
+    articleSearchText.set(a, ((a.id || "") + " " + (a.textContent || "")).toLowerCase());
+  });
+
+  function applyFilters() {
+    if (!status) return;
+    const f = filters.field && filters.field.value;
+    const l = filters.locus && filters.locus.value;
+    const q = searchInp && searchInp.value ? searchInp.value.trim().toLowerCase() : "";
+    let visible = 0;
+    articles.forEach(function (a) {
+      const ok =
+        (!f || a.dataset.field === f) &&
+        (!l || a.dataset.locus === l) &&
+        (!q || (articleSearchText.get(a) || "").indexOf(q) !== -1);
+      a.classList.toggle("hidden", !ok);
+      if (ok) visible++;
+    });
+    // Hide field group sections whose terms are all filtered out.
+    fieldGroups.forEach(function (group) {
+      const groupArticles = Array.from(group.querySelectorAll("article[data-field]"));
+      const anyVisible = groupArticles.some(function (a) {
+        return !a.classList.contains("hidden");
+      });
+      group.classList.toggle("hidden", !anyVisible);
+    });
+    status.textContent = "Zobrazené: " + visible + " z " + total;
+    if (empty) empty.classList.toggle("hidden", visible !== 0);
+  }
+
+  Object.values(filters).forEach(function (el) {
+    if (el) el.addEventListener("change", applyFilters);
+  });
+  if (searchInp) {
+    let t;
+    searchInp.addEventListener("input", function () {
+      clearTimeout(t);
+      t = setTimeout(applyFilters, 120);
+    });
+  }
+  if (reset) {
+    reset.addEventListener("click", function () {
+      Object.values(filters).forEach(function (el) {
+        if (el) el.value = "";
+      });
+      if (searchInp) searchInp.value = "";
+      applyFilters();
+    });
+  }
+</script>
