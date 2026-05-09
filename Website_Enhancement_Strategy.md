@@ -20,7 +20,7 @@ Between the original WEBSITE_BRIEFING (24 March 2026) and today (9 May 2026) the
 
 This strategy document proposes **fourteen enhancements organised in three tiers** — five Tier A (anchor), six Tier B (substantive expansion), three Tier C (architectural). Tier A items are high-leverage and ready-to-implement against existing data. Tier B items require additional content authoring (mostly aggregation from existing markdown into the website data layer). Tier C items are longer-horizon architectural improvements (build pipeline, search, IIIF integration).
 
-**Headline recommendation:** prioritise the five Tier-A items as the first implementation wave, split across two sprints per §7 (Sprint 1: A3 Two-modes framing, A1 Companion-papers section, A4 Chapter scaffold; Sprint 2: A5 Sources expansion, A2 CB 1575 archive). Each of these directly surfaces work already completed, and together they shift the site from "MVP companion" to "publication-grade research apparatus."
+**Headline recommendation:** prioritise the five Tier-A items as the first implementation wave, split across two sprints per §7 (Sprint 1: A3 Four-modes framing, A1 Companion-papers section, A4 Chapter scaffold; Sprint 2: A5 Sources expansion, A2 CB 1575 archive). Each of these directly surfaces work already completed, and together they shift the site from "MVP companion" to "publication-grade research apparatus."
 
 ---
 
@@ -167,16 +167,16 @@ These five items leverage work already completed in `Drafts/`, `Chapter/`, and `
 - Should the page be in `/cb1575/` (its own top-level), or nested as `/chapter/cb1575/` (under the chapter), or `/papers/cb1575/` (under papers)? (Recommendation: top-level `/cb1575/` because the page is a free-standing scholarly resource that survives the chapter's eventual completion.)
 - Bilingual: Slovak primary or English primary? (Recommendation: Slovak primary, since the formula is Czech-original and the chapter is Slovak; English secondary for international citation utility.)
 
-### A3. Two-Modes-of-Lutheranisation framing in `/hymn-pairs/`
+### A3. Four-Modes-of-Lutheranisation framing in `/hymn-pairs/`
 
-**What.** A conceptual restructuring of the hymn-pairs page that surfaces the Theologos paper's distinction between cross-confessional and intra-confessional Lutheranisation. Implementation:
+**What.** A conceptual restructuring of the hymn-pairs page that surfaces the Theologos paper's distinction between cross-confessional and intra-Lutheran Lutheranisation, plus the regional-continuity and research-target categories that complete the schema. The Theologos paper's substantive contribution is the *two-mode* distinction (cross-confessional vs intra-Lutheran); the page surfaces *four* equal-weighted operational modes because regional-continuity and research-target are needed to classify the full hymn-pair dataset honestly. Implementation:
 
 - **Pair grouping by mode.** The existing card grid is augmented with a group header above each cluster:
   - **Cross-confessional Lutheranisation.** PAIR_001 (UTRAQUIST_TO_LUTHERAN), PAIR_002 (UNITY_TO_LUTHERAN, working hypothesis).
   - **Intra-Lutheran register intensification.** PAIR_006 (LUTHERAN_CONFESSIONAL_INTENSIFICATION) — the worked example developed in the Theologos paper.
   - **Regional Lutheran continuity.** PAIR_004, PAIR_005 (LUTHERAN_REGIONAL_CONTINUITY) — Hungarian-Lutheran liturgical practice flowing into CS.
   - **Research-target manifest.** PAIR_003 (DEFERRED, the 34-pair Vajda manifest).
-- **A short conceptual prelude** (~150 words SK + EN) at the top of the page summarising the two-modes framework, citing the Theologos paper, and linking to `/papers/theologos/` (depends on A1).
+- **A short conceptual prelude** (~150 words SK + EN) at the top of the page summarising the four-modes framework, citing the Theologos paper, and linking to `/papers/theologos/` (depends on A1).
 - **Filter bar enhancement.** Add a `transfer_direction` mode filter to the existing filter set on `/hymn-pairs/`. (The current filter axes need a quick check at implementation time; the audit identified the page as "filtered, sortable card-based grid" with three trust axes prominent on each card, but did not enumerate every filter chip. The mode filter is additive either way.)
 
 **Why.** This is the most direct way to expose the chapter's substantive scholarly move on the website. The data already supports it (the `transfer_direction` enum is in `taxonomy/SCHEMA.md` since v0.1.0 and the values are populated correctly in `taxonomy/hymn_pairs.csv`). What's missing is the page-level conceptual framing.
@@ -383,7 +383,7 @@ These three items improve the underlying engineering, not user-visible features.
 The following sequence is calibrated to Michal's capacity (Phase 2 of the chapter is in progress, with most cycles going to source-note creation and chapter drafting) and to where each enhancement maximally reuses already-completed material.
 
 **Sprint 1 (next 2–3 working sessions, ~12–20 hours):**
-1. **A3** Two-Modes-of-Lutheranisation framing in `/hymn-pairs/` (2–4 h). Lowest risk, highest immediate visibility.
+1. **A3** Four-Modes-of-Lutheranisation framing in `/hymn-pairs/` (2–4 h). Lowest risk, highest immediate visibility.
 2. **A1** Companion-papers section `/papers/` (4–6 h). Surfaces the Theologos paper.
 3. **A4** Chapter scaffold replacing placeholder (6–10 h). Replaces the most under-served route.
 

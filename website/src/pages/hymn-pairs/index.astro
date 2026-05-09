@@ -66,11 +66,15 @@ interface PairView {
   mode: ModeCode;
 }
 
-// ── Two-Modes-of-Lutheranisation framing (per Theologos paper §§5–6) ──
-// The chapter's substantive scholarly move distinguishes four operational
-// modes of confessional sharpening across the 16th-18th c. corpus. The
-// classification derives from `transfer_direction` plus the trust-state for
-// research-target placement. Slovak labels confirmed by Michal 2026-05-09.
+// ── Four-Modes-of-Lutheranisation framing (per Theologos paper §§5–6) ──
+// The chapter's substantive scholarly move (the cross-confessional vs
+// intra-Lutheran distinction) is operationalised on this page as four
+// equal-weighted classification modes across the 16th–18th c. corpus.
+// Cross-confessional + intra-Lutheran-intensification are the two "novel"
+// modes from the Theologos paper; regional-continuity and research-target
+// are auxiliary categories that complete the schema. Mode is derived from
+// `transfer_direction` plus the trust-state for non-directional/research-target
+// placement. Slovak labels confirmed by Michal 2026-05-09.
 type ModeCode =
   | "CROSS_CONFESSIONAL"
   | "INTRA_LUTHERAN_INTENSIFICATION"
@@ -117,8 +121,8 @@ const MODE_DESCRIPTIONS: Record<ModeCode, { sk: string; en: string }> = {
     en: "Continuous transmission: Hungarian-Lutheran liturgical practice of the mining towns flowed into the Cithara Sanctorum through concrete text-and-melody units, without documented theological modification.",
   },
   RESEARCH_TARGET: {
-    sk: "Pracovné hypotézy a otvorené otázky. Páry s neoverenou bázou alebo neúplnou kolaciou — transparentne označené ako výskumné ciele, nie ako dôkaz.",
-    en: "Working hypotheses and open questions. Pairs with unverified bases or incomplete collation — transparently flagged as research targets, not as evidence.",
+    sk: "Pracovné hypotézy, otvorené otázky a nesmerové porovnania. Páry s neoverenou bázou, neúplnou kolaciou alebo bez doloženého smeru prenosu — transparentne označené ako výskumné ciele, nie ako dôkaz.",
+    en: "Working hypotheses, open questions, and non-directional comparisons. Pairs with unverified bases, incomplete collation, or no documented transfer direction — transparently flagged as research targets, not as evidence.",
   },
 };
 
@@ -129,12 +133,20 @@ function deriveMode(pair: HymnPair): ModeCode {
   if (pair.transfer_direction === "LUTHERAN_REGIONAL_CONTINUITY") {
     return "REGIONAL_LUTHERAN_CONTINUITY";
   }
-  // PAIR_003 (research-target manifest) has empty direction + DEFERRED status.
-  // Note: PAIR_002 is a working hypothesis with UNITY_TO_LUTHERAN direction; per
-  // the strategy doc §A3 it is grouped with cross-confessional (its directional
-  // axis), with the existing "Research target — verification in progress"
-  // banner on the card itself flagging its trust-state honestly.
-  if (!pair.transfer_direction && pair.epistemic_status === "DEFERRED") {
+  // Empty `transfer_direction` is, per `taxonomy/SCHEMA.md`, the field's value
+  // for "non-directional comparisons" (any trust-state, not only DEFERRED
+  // research-target manifests). All such rows belong in the RESEARCH_TARGET
+  // group on the page — both the current PAIR_003 manifest and any hypothetical
+  // future non-directional FACTUAL/INTERPRETIVE pair, which by virtue of
+  // lacking a transfer claim is a candidate for further work rather than a
+  // worked example of any of the three directional modes. The mode-group
+  // description for RESEARCH_TARGET covers both cases ("working hypotheses
+  // and open questions" / "non-directional pairs").
+  // Note: PAIR_002 is a working hypothesis WITH UNITY_TO_LUTHERAN direction;
+  // per the strategy doc §A3 it is grouped with cross-confessional (its
+  // directional axis), with the existing "Research target — verification in
+  // progress" banner on the card itself flagging its trust-state honestly.
+  if (!pair.transfer_direction) {
     return "RESEARCH_TARGET";
   }
   return "CROSS_CONFESSIONAL";
@@ -410,7 +422,7 @@ const jsonLd = {
     </div>
   </div>
 
-  <!-- ═══════════ TWO-MODES CONCEPTUAL PRELUDE ═══════════ -->
+  <!-- ═══════════ FOUR-MODES CONCEPTUAL PRELUDE ═══════════ -->
   <div class="mx-auto max-w-wide px-6 pt-8">
     <div class="rounded-lg border-l-4 border-burgundy/60 bg-parchment-100/40 p-5">
       <h2 class="font-display text-base font-semibold text-ink">
@@ -649,9 +661,9 @@ const jsonLd = {
                       {p.pair_id}
                       {p.chapter_section && ` · ${p.chapter_section}`}
                     </p>
-                    <h2 class="mt-1 font-display text-lg font-semibold text-ink">
+                    <h3 class="mt-1 font-display text-lg font-semibold text-ink">
                       {p.pair_label_sk}
-                    </h2>
+                    </h3>
                     <p class="mt-0.5 font-sans text-xs italic text-ink-300" lang="en">
                       {p.pair_label_en}
                     </p>
@@ -778,9 +790,9 @@ const jsonLd = {
 
               {/* Theological argument */}
               <div class="mt-4">
-                <h3 class="font-sans text-xs font-semibold uppercase tracking-wider text-ink-300">
+                <h4 class="font-sans text-xs font-semibold uppercase tracking-wider text-ink-300">
                   Teologický argument / <span lang="en">Theological Argument</span>
-                </h3>
+                </h4>
                 <p class="mt-2 font-serif text-sm leading-relaxed text-ink-400">
                   {p.theological_argument_sk}
                 </p>
@@ -792,9 +804,9 @@ const jsonLd = {
               {/* Citation chain */}
               {view.citationIds.length > 0 && (
                 <div class="mt-4 rounded-md bg-parchment-100/70 p-3">
-                  <h3 class="font-sans text-xs font-semibold uppercase tracking-wider text-ink-300">
+                  <h4 class="font-sans text-xs font-semibold uppercase tracking-wider text-ink-300">
                     Citačný reťazec / <span lang="en">Citation Chain</span>
-                  </h3>
+                  </h4>
                   <ul class="mt-2 list-disc space-y-1 pl-5 font-mono text-xs text-ink-400">
                     {view.citationIds.map((id) => (
                       <li>
