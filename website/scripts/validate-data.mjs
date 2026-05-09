@@ -307,9 +307,13 @@ function validateHymnicEvidence(table, lociSet, functionCodeSet) {
         err("hymnic_evidence.csv", r._line, `locus_codes contains unknown locus "${code}"`);
       }
     }
-    // Cross-file: hymnic_function must reference an existing function_code in
-    // hymnic_functions.csv (per SCHEMA.md cross-file integrity constraints).
-    if (r.hymnic_function && !functionCodeSet.has(r.hymnic_function)) {
+    // Cross-file: hymnic_function is a required field that must reference an
+    // existing function_code in hymnic_functions.csv (per SCHEMA.md cross-file
+    // integrity constraints). Empty values fail because the column is required;
+    // non-empty values must resolve to a known function_code.
+    if (!r.hymnic_function) {
+      err("hymnic_evidence.csv", r._line, `hymnic_function is required and must not be empty`);
+    } else if (!functionCodeSet.has(r.hymnic_function)) {
       err("hymnic_evidence.csv", r._line, `hymnic_function "${r.hymnic_function}" does not exist as function_code in hymnic_functions.csv`);
     }
     if (r.paired_text_id && !textIds.has(r.paired_text_id)) {
@@ -345,31 +349,20 @@ function validateHymnPairs(table, lociSet, evidenceTextIds) {
         err("hymn_pairs.csv", r._line, `all_locus_codes contains unknown locus "${code}"`);
       }
     }
-    // Determine whether this row is a working-hypothesis / research-target.
-    // For honestly flagged research-target pairs (CONJECTURED evidence OR
-    // DEFERRED epistemic status) a placeholder text_id that does not yet exist
-    // in hymnic_evidence is acceptable — collation has not started. For all
-    // other pairs (FACTUAL/INTERPRETIVE + DOCUMENTED/INFERRED), a missing
-    // text_id reference is almost certainly a typo that should fail the build.
-    const isWorkingHypothesis =
-      r.evidentiary_strength === "CONJECTURED" ||
-      r.epistemic_status === "DEFERRED";
-    const refReport = isWorkingHypothesis ? warn : err;
+    // Per SCHEMA.md hymn_pairs.csv: source_text_id and receptor_text_id are
+    // optional ("May be empty for research-target entries") but if non-empty
+    // must reference existing text_id values in hymnic_evidence.csv. Research-
+    // target pairs (e.g., PAIR_003) leave both blank; pairs with placeholder
+    // example data (e.g., PAIR_002) point to actual EXAMPLE_* rows that DO
+    // exist in hymnic_evidence with epistemic_status flagged accordingly. A
+    // missing reference here is therefore always a real integrity error —
+    // either a typo or a row that was deleted from hymnic_evidence without
+    // updating the pair.
     if (r.source_text_id && !evidenceTextIds.has(r.source_text_id)) {
-      refReport(
-        "hymn_pairs.csv",
-        r._line,
-        `source_text_id "${r.source_text_id}" not in hymnic_evidence` +
-          (isWorkingHypothesis ? " (acceptable for working-hypothesis pairs)" : ""),
-      );
+      err("hymn_pairs.csv", r._line, `source_text_id "${r.source_text_id}" does not exist as text_id in hymnic_evidence.csv`);
     }
     if (r.receptor_text_id && !evidenceTextIds.has(r.receptor_text_id)) {
-      refReport(
-        "hymn_pairs.csv",
-        r._line,
-        `receptor_text_id "${r.receptor_text_id}" not in hymnic_evidence` +
-          (isWorkingHypothesis ? " (acceptable for working-hypothesis pairs)" : ""),
-      );
+      err("hymn_pairs.csv", r._line, `receptor_text_id "${r.receptor_text_id}" does not exist as text_id in hymnic_evidence.csv`);
     }
   }
 }
