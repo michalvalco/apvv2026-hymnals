@@ -224,3 +224,70 @@ The `resources/notes-*.md` files (Schoen, Sekelská 2019) use a briefing-documen
 3. **First hymn-pair comparison:** Use "Jezu Kriste, jenž zajisté" lead from ChatGPT R03 — verify in HTB, locate in 1572 Polička digitisation
 4. **Acquire** Schoen 2022 (€168), GresovaSek 2016, GresovaSek 2020 dissertation
 5. **Download** Mladějovská 2008 dissertation for concordance reference
+
+
+---
+
+## Session Log: 2026-05-10 (Claude Desktop, David Corpus Integration + §IX.D Source Hunt)
+
+### Completed
+
+1. **David BRRP trilogy integrated as `David_Corpus.md`.** Three full PDFs in `resources/` (Cohabitation, Roman Curia/RCC, Integrity) plus the 1999 *Church History* article (apparatus only) treated as integrated corpus. Created `Sources/David_Corpus.md` (~290 lines): Citation, Summary, Key Arguments (5 subsections), Notable Quotes (10 verified), Relation to TEPALIT (per locus), Cross-References, Verification Status, Methodological Note. **Major thesis impact:** the corpus REVERSES the Phase 1 framing of David as "potential challenge to Lutheranisation thesis" — full corpus actually STRENGTHENS the thesis by hardening the confessional boundary that hymn transfer crosses (denial of "Neo-Utraquism" makes the boundary real rather than gradient).
+
+2. **BRRP citation verification completed via brrp.org TOCs.**
+   - "A Cohabitation of Convenience": BRRP 3 (1998 conf., pub. 2000), pp. 173–214 ✓
+   - "The Utraquists and the Roman Catholic Church, 1575–1609: Institutional Aspects": BRRP 4 (2000 conf., pub. 2002), pp. 225–260 ✓ (note: local PDF carries the offprint title "Roman Curia"; published title is "Roman Catholic Church")
+   - "The Integrity of the Utraquist Church and Neo-Utraquism": BRRP 5/2 (2002 conf., pub. 2005), pp. 329–352 ✓
+
+3. **Source_Index.md §IX merge — full audit-trail integration.** Added Section IX (~92 lines): IX.A (4 cross-referenced David works); IX.B (16 late-Utraquist printed witnesses surfaced from David's apparatus); IX.C (3 trans-confessional documents); IX.D (9 foundational Czech historiography items); IX.E (cross-refs to existing entries); IX.F (pending decisions). Two existing `David_1999` and `David_MiddleWay` stubs in §V upgraded to full citations.
+
+4. **Audit pass with 5 corrections applied** (~23 spot-checks against PDFs, all confirmed):
+   - `David_Welcome_2001` page range corrected: 74–104 → 74–84 (per Integrity p. 4 fn. 11)
+   - Title-correction note in `David_Corpus.md` reframed: removed unverified claim that "Cohabitation fn. 93" calls the BRRP 4 article "Roman Curia"; the related Notre Dame conference paper "The Coming Tragedy of Confessionalisation" (cited in Integrity p. 6 fn. 20 as forthcoming 2002) may be a separate piece — flagged for follow-up at §IX.F item 6
+   - `David_Bydzovsky_1996` entry now flags page-range variance (42–53 in 1999 fn. 124 vs 59–63 in Cohabitation fn. 21)
+   - §IX.F item 4 short-ID corrected: `David_StrangeFate_1995_JEH` → `David_1995_JEH` (matches existing §VIII.C entry)
+   - §IX.F item 1 verified: Zdeněk Václav David's death confirmed via [Dignity Memorial obituary](https://www.dignitymemorial.com/obituaries/alexandria-va/zdenek-david-12668596) — born 4 May 1931 Blatná; died 15 December 2025 Alexandria, VA; 50 years at Wilson Center; Palacký Medal Czech Academy of Sciences 2009; deeply religious Roman Catholic.
+
+5. **§IX.D digital-source-hunt — access confirmed.** Both Matoušek 1931 (ČČH 37) and Hrubý 1939 (ČČH 45) confirmed open-access at KNAV Kramerius — periodical UUID `9da3b368-45b9-11e1-a671-005056a60003`. Per rukovet.cms.flu.cas.cz/detail/13/: "volně dostupných je v Digitální knihovně prvních 50 [ročníků]" — both target volumes within the open-access range. Direct article-level URLs require browser navigation through the JS-rendered Kramerius interface (5–10 min each); programmatic extraction not possible. Hrubý 1939 also indexed at biblio.hiu.cas.cz record `34529fff-df2e-45de-89e4-cb352dd6efc1`.
+
+6. **Major biographical discoveries — both authors are scholar-victims of the Nazi era.**
+   - **Josef Matoušek** (13 Jan 1906, Hořice – 17 Nov 1939, Prague): student of Josef Šusta, specialist in Reformation/Counter-Reformation; *executed by the Gestapo without trial on 17 November 1939* during the post-Opletal arrests at Charles University, where he was a docent. Wrote the 1931 article at age 25.
+   - **František Hrubý** (21 Aug 1887, Strukov – 10 Feb 1943, Brno): Pekař's assistant 1912–1915; Director Moravian Land Archive 1927–1937; Professor Masaryk University 1937–1943; *editor of ČČH from 1936*. The 1939 article appeared in the journal Hrubý himself was editing. Died in occupied Brno 1943; posthumous *Étudiants tchèques aux écoles protestantes...* edition published 1970 by daughter Libuše Urbánková-Hrubá.
+   
+   That the foundational Czech-language apparatus on the late-Utraquist question is the work of two scholars who paid for their scholarly independence with their lives is itself a fact worth marking in the chapter's framing.
+
+7. **Two source notes drafted:**
+   - `Sources/Hruby_1939.md` (75 lines) — based on PDF in `resources/` (image-only, no OCR text layer; manual transcription required for direct quotation), David's three apparatus citations in `David_Integrity_2005`, and verified biographical context.
+   - `Sources/Matousek_1931.md` (89 lines) — scaffolded entirely from David's apparatus (>20 citations across the four BRRP articles) and biographical context. PDF not yet acquired; all article-content claims explicitly flagged as reconstructed from David's apparatus until primary verification.
+   
+   Both notes follow `_Source_Template.md` structure with explicit Verification Status sections and Next Steps blocks.
+
+### New files created this session
+
+- `Sources/David_Corpus.md` (~290 lines)
+- `Sources/Hruby_1939.md` (75 lines)
+- `Sources/Matousek_1931.md` (89 lines)
+
+### Files updated this session
+
+- `Sources/Source_Index.md` — header updated, two §V David stubs upgraded to full citations, Section IX appended (~92 lines), 5 audit corrections applied, §IX.D Matoušek + Hrubý entries upgraded with biographical context and access info, both flagged 📝 with source-note links
+
+### Issues / open items added to backlog
+
+| Date | Section | Issue | Priority | Status |
+|---|---|---|---|---|
+| 2026-05-10 | §IX.F.1 | Acquire `David_1999` (Church History) via ILL — David's surviving collaborators no longer reachable (Z. V. David died 15 Dec 2025) | Medium | Open |
+| 2026-05-10 | §IX.D | Browser session at kramerius.lib.cas.cz to capture article-level URLs for Matoušek 1931 (vol. 37) and Hrubý 1939 (vol. 45) | High | Open |
+| 2026-05-10 | §IX.D | OCR or manual transcription of `resources/Frantisek Hruby - Luterství a novoutrakvismus...pdf` (image-only); use Tesseract `ces` model or ABBYY FineReader | High | Open |
+| 2026-05-10 | §IX.D | Acquire Matoušek 1931 PDF from KNAV Kramerius and update `Sources/Matousek_1931.md` with verified content (move status 📝 → 📖) | High | Open |
+| 2026-05-10 | §IX.B | 16 late-Utraquist printed witnesses (Bydžovský 1541, Štelcar Želetavský 1592, Bruncvík 1613, Šturm 1584, Polon 1589, etc.) — digital-source-hunt session needed (Kramerius NK ČR + Manuscriptorium + Google Books) | Medium | Open |
+| 2026-05-10 | §IX.F.6 | BRRP 4 article title puzzle: relationship between published BRRP 4 piece ("Institutional Aspects") and the Notre Dame conference paper "The Coming Tragedy of Confessionalisation" (Integrity p. 6 fn. 20) | Low | Open |
+
+### Next session priorities
+
+1. **Browser session at kramerius.lib.cas.cz** (10–15 min): capture article-level URLs for ČČH vols 37 (1931) and 45 (1939). Both freely accessible — the only blocker is the JS-rendered interface.
+2. **OCR or manual transcription** of `resources/Frantisek Hruby - Luterství a novoutrakvismus...pdf`. Once readable, populate the "Notable Quotes" section of `Sources/Hruby_1939.md` and verify the three David-cited locations.
+3. **Acquire Matoušek 1931 PDF** from the same Kramerius browser session and update `Sources/Matousek_1931.md` with verified content. First-reading priorities flagged in the source note.
+4. **§IX.B late-Utraquist printed witnesses hunt** (high-priority items: Bydžovský 1541, Štelcar Želetavský 1592, Bruncvík 1613, Šturm 1584, Polon 1589). Same kind of session as today, different repositories.
+5. **Integration of David's contribution into §3.2 (Utraquist profile) chapter draft** — David's denial of "Neo-Utraquism" hardens the confessional boundary that the chapter's *lex orandi* argument crosses. With Matoušek and Hrubý now scaffolded, §3.2 can be drafted with proper Czech-language scholarly anchoring rather than reliance on David alone.
+6. **`David_1999` ILL request** through ETF UK Bratislava library — direct contact with David is no longer possible.

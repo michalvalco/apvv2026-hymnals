@@ -151,3 +151,31 @@ The Tier 1 scholar surveys (2026-05-10) confirmed two negative facts that secure
 4. Open `Drafts/CS Theologos` precursor and locate sections that map to §5 of the current outline.
 
 *Last updated: 2026-05-10, end of strategic pivot session.*
+
+
+---
+
+## Status Update — 2026-05-10 (evening session: Theologos draft refinement)
+
+**Phase:** Phase 4 work on the Theologos paper has reactivated; Phase 2 work on the broader chapter remains the open horizon.
+
+### Active task
+Targeted refinements of `Drafts/The Cithara Sanctorum (Theologos) first complete draft.docx`. Four specific additions identified by Michal:
+
+1. **Footnote on "Msse / Wečeře Páně" inheritance from Luther's Formula Missae** (currently fn. 16, empty). Targeted scholarly support needed (≥2 verified references) for the claim that Luther's Formula Missae retains the term "Mass" while excising sacrificial canon language.
+2. **Christological development at "the body given in the Supper is the same body that was made man and that suffered"** — currently a single sentence; expand to one substantive paragraph drawing on Valčo 2017 (Chemnitz Eucharistic Christology, *Konštantínove listy* 10/2). The paragraph should connect the Agenda's christological identification to the Lutheran sacramental-Christological tradition (Chemnitz on hypostatic union, *communicatio idiomatum*, the *unio sacramentalis* analogy) without overburdening the article's local register.
+3. **Verification / brief support for the *consolatio conscientiae* characterisation** — currently asserted with a single Benka footnote. Needs (a) confirmation that the formulation is genuinely Lutherian (Small Catechism, Apology of CA Article XXIV / Larger Catechism on the Sacrament), and (b) that the contrast with Utraquist sanctifying-transformative emphasis and Brethren disciplinary-communal emphasis is defensible from the relevant secondary literature.
+4. **Footnote 34 (Schilling/Reinhard confessionalisation)** — extend with David P. Daniel as Slovak interlocutor. Use Daniel 2011, "Melanchton, Stöckel a teologická orientácia evanjelikov v Uhorsku" (*Acta Collegii Evangelici Prešoviensis* XI), which directly establishes that the Wittenberg-Bardejov Lutheran filiation (Stöckel as Praeceptor Hungariae) was theologically secured against both Sacramentarian/Helvetic alternatives and against the older protestant-historiographical reading of Stöckel as a soft Melanchthonian.
+
+### Materials available
+- Daniel 2011 PDF in `resources/`. Read in full this session — provides direct support for fn. 34 extension. Most pertinent on pp. 33–35 (the four Stöckel works as evidence of Lutheran-orthodox orientation; *Annotationes* 1561 explicitly cited on Eucharist).
+- Valčo 2017 PDF (Chemnitz study) in `Research/Chemnitz_East_West_Bridge/Sources/Chemnitz_Scholarship/`. Read in full this session — provides the christological framework for addition (2). Pertinent passages: pp. 144–146 on hypostatic union, *communicatio idiomatum*, sacramental analogy.
+- Luther *Formula Missae* (1523) PDF in `resources/luther formula missae.pdf`. Already cited in fn. 17.
+- Luther *Deutsche Messe* (1526) PDF in `resources/luther deutsche messe.pdf`.
+
+### Pending after this session
+- Apply approved additions to draft (`Drafts/The Cithara Sanctorum (Theologos) first complete draft.docx`).
+- Finalise `Drafts/Theologos_Bibliography.md` to reflect new entries (Daniel 2011; Valčo 2017; possibly Bayer 2008 / *Apology of the Augsburg Confession* / Wandel 2014 depending on which references Michal approves for fn. 16).
+- Decision pending: target venue. Theologos vs. *Historia Ecclesiastica* (Scopus). Title and abstract may need light reframing if redirecting.
+
+*Last updated: 2026-05-10, evening session.*
