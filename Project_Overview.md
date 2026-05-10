@@ -71,7 +71,7 @@ The Tier 1 scholar surveys (2026-05-10) confirmed two negative facts that secure
 
 ---
 
-*Last updated: 2026-03-24 (audit pass: infrastructure fixes, source mapping, acquisition strategy)*
+*Last updated: 2026-05-10 (Option B pivot: Scope and Approach section added; status of Tier 1 surveys recorded below). Earlier 2026-03-24 entry: audit pass — infrastructure fixes, source mapping, acquisition strategy.*
 
 
 ---

@@ -194,11 +194,11 @@
 - **Citation:** ResearchGate publication; full citation tbc.
 - **Signature:** Vogt's German-language meditation on the theological programme implied by the term *Brüdergemeine*. **Secondary** — could support the §3 framing of Brethren self-understanding, but is methodologically continuous with Vogt 2018 above.
 
-#### Foušek, Marianka S. — "A Church in a Hostile State: The Unity of Czech Brethren"
-- **Citation:** *Central European History* (volume / year tbc — pre-2008 from Cambridge Core results).
-- **URL:** https://www.cambridge.org/core/journals/central-european-history/article/abs/church-in-a-hostile-state-the-unity-of-czech-brethren/66F35447829A18C08B8D9A758C265CFD
-- **Signature:** Foušek's *other* English-language Brethren article (in addition to her 1961 *Church History* perfectionism article already in `Source_Index.md`). On the Brethren under crown persecution.
-- **§-relevance:** §3 (Brethren as confessional minority — the legal-political frame the Slovak Lutheran reception inherits along with Brethren textual material). **Secondary** but a useful supplement to Foušek 1961.
+#### ~~Foušek, Marianka S.~~ → **Odložilík, Otakar** — "A Church in a Hostile State: The Unity of Czech Brethren" [**AUTHOR CORRECTED 2026-05-10** per `Survey_URLcheck_2026-05-10.md` §1; this survey's original Foušek attribution was wrong]
+- **Citation:** *Central European History* **6/2 (June 1973): 111–127** (corrected; survey originally said "vol/year tbc — pre-2008").
+- **URL:** https://www.cambridge.org/core/journals/central-european-history/article/abs/church-in-a-hostile-state-the-unity-of-czech-brethren/66F35447829A18C08B8D9A758C265CFD — the Cambridge Core page returns Otakar Odložilík as author, not Marianka S. Foušek. Same URL, wrong author claimed by this survey.
+- **Signature:** Anglophone article on the Brethren under crown persecution. (NOT Foušek's *other* article — Foušek 1961 in `Source_Index.md` is unaffected and remains a separate work.)
+- **§-relevance:** §3 (Brethren as confessional minority — the legal-political frame the Slovak Lutheran reception inherits along with Brethren textual material). **Secondary.** Now in Source_Index Section VIII.D as `Odlozilik_1973`.
 
 #### Schweinitz, Edmund de — *A History of the Unitas Fratrum from its Overthrow in Bohemia and Moravia to its Renewal at Herrnhut, 1627–1722* (1877)
 - **Citation:** Bethlehem, PA: Moravian Publications Office, 1877.

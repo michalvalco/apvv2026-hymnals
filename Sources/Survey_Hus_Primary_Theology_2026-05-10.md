@@ -52,7 +52,7 @@ This is the **master umbrella** — Half A entries 1.2–1.7 below are individua
 
 ### 1.6 Hus, *Knížky proti knězi kuchmistrovi* — Daňhelka
 
-**Full reference:** Jiří Daňhelka (ed.), in *Mistr Jan Hus: Drobné spisy české* (Academia, 1980s — confirm exact volume). Polemical Czech tractate from 1414 against an apostate-priest-turned-cook. Brief but vivid; useful sample of Hus's Czech vernacular polemical register.
+**Full reference:** Jiří Daňhelka (ed.), *Mistr Jan Hus: Drobné spisy české*, MIHOO IV (Praha: Academia, **1985**). [**RESOLVED 2026-05-10** per `Survey_URLcheck_2026-05-10.md`; the original "1980s — confirm exact volume" hedge is superseded.] Polemical Czech tractate from 1414 against an apostate-priest-turned-cook. Brief but vivid; useful sample of Hus's Czech vernacular polemical register.
 
 **Status:** SECONDARY (not load-bearing for any single locus, but represents Hus's late vernacular polemical voice). NOT in `Source_Index.md`. **Connection:** §3 (Hus's profile and tone) only.
 
@@ -320,7 +320,7 @@ Patschovsky's MGH source-edition output — *Status:* SECONDARY.
 
 ### 3.24 Burnett, Amy Nelson — *Karlstadt and the Origins of the Eucharistic Controversy* (Oxford 2011)
 
-**Full reference:** Amy Nelson Burnett, *Karlstadt and the Origins of the Eucharistic Controversy: A Study in the Circulation of Ideas*. Oxford / New York: Oxford University Press, 2011. ISBN 978-0-19-973436-3.
+**Full reference:** Amy Nelson Burnett, *Karlstadt and the Origins of the Eucharistic Controversy: A Study in the Circulation of Ideas*. Oxford / New York: Oxford University Press, 2011. ISBN **978-0-19-975399-4** [**CORRECTED 2026-05-10** per `Survey_URLcheck_2026-05-10.md`; the original "978-0-19-973436-3" failed its own ISBN-13 checksum and appears in no catalogue].
 
 **What it is:** the principal English-language study of how Karlstadt's Eucharistic position emerged — explicitly tracing **Hussite influence** via Karlstadt's Bohemian connections. Pairs with Burnett's BRRP 11 article (already in `Jakoubek_Euch` notes) but the monograph treatment is broader. (Different Burnett — Amy Nelson, not Stephen G., though the BRRP article is also by Amy Nelson Burnett — verify.)
 

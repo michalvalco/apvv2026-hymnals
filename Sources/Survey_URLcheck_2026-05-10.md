@@ -8,7 +8,7 @@
 
 **Method:** Direct WebFetch of canonical URLs; WebSearch fallback when fetch returned 403 / browser-required; cross-check against publisher catalogues, JSTOR/Project MUSE/Cambridge Core listings, and the relevant BRRP volume contents pages at brrp.org. Per `Gotchas.md`, factual claims that contradict the four survey files are flagged as NEW issues for Michal's review rather than silently corrected.
 
-**Total verifications attempted:** 36 (16 remaining Bucket B items + 9 Google Books IDs + 11 BRRP secondary samples + 4 BRRP volume ToC pulls used as evidence).
+**Total verifications attempted:** 34 (16 remaining Bucket B items + 9 Google Books IDs + 9 BRRP secondary URL samples). Additional supporting fetches (4 BRRP volume tables of contents, several publisher catalogue lookups) served as evidence for verdicts above rather than as independent verifications and are not counted in the 34.
 
 **Files cross-referenced:** The four survey files (Holeton, Crews, Hus, Brethren Primary), `Survey_Audit_2026-05-10.md`, `Source_Index.md` (read-only).
 
