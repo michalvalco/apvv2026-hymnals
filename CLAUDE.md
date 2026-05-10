@@ -11,11 +11,11 @@
 
 ## Michal's Deliverable
 
-A monograph chapter (potentially expandable to a small monograph):
+A monograph chapter (horizon decided 2026-05-10 — chapter only, not book; the CS Theologos draft serves as precursor / potential §5 material rather than the seed of a separate book project for now).
 
 **Slovak (contractual title):** Dogmatická komparácia luteranizmu a českých konfesií (utrakvizmus, Jednota bratská) v zrkadle liturgických a hymnologických prameňov (16.–18. storočie)
 
-**English working title** (subtitle TBD — see Project_Overview.md): A Dogmatic Comparison of Lutheranism and the Czech Confessions (Utraquism, Unity of Brethren) in the Mirror of Liturgical and Hymnological Sources, 16th–18th Centuries
+**English working title** (decided 2026-05-10): *A Dogmatic Comparison of Lutheranism and the Czech Confessions (Utraquism, Unity of Brethren) in the Mirror of Liturgical and Hymnological Sources, 16th–18th Centuries: Reading Czech Reformation Sources through their Slovak Lutheran Reception*
 
 ### Core Argument
 The chapter examines how dogmatic differences and convergences between Augsburg Lutheranism,
