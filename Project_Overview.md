@@ -120,15 +120,17 @@ The Tier 1 scholar surveys (2026-05-10) confirmed two negative facts that secure
 - `Sources/Survey_Hus_Primary_Theology_2026-05-10.md` — Hus primary editions + theological-textual scholarship (9 primary editions located, 12 NEW Essential studies, ~15 Secondary, 3 corrective findings).
 - `Sources/Survey_Brethren_Primary_2026-05-10.md` — Brethren primary sources verification + acquisition (18 NEW Essential primary editions, 14 Secondary, 8 confirmed gaps).
 
-### Required Source_Index.md corrections (factual errors discovered by surveys)
-- `Haberkern_2023` → `Haberkern_2016`. *Patron Saint and Prophet* is Oxford 2016 (ISBN 9780190280734).
-- "Cambridge Companion to Jan Hus 2018" — does not exist. Real reference: **Brill 2015, Šmahel & Pavlíček eds.**
-- Lahey *John Wyclif* — **Oxford 2009**, not Cambridge.
-- Šmahel *Hussite Revolution* — only **MGH Schriften 43, 2002**, German (no English translation).
-- `Holeton_Lit` placeholder scope — should be **Holeton 1995 *Studia Liturgica* "Evolution of Utraquist Liturgy"** (methodological anchor) **plus the 9 BRRP essays** (corpus).
-- `Weisse_1531` URL — replace with **Stadtbibliothek Nürnberg viewer for the 1531 Jungbunzlau editio princeps** (better anchor than the unconfirmed 1544 e-rara).
-- `LukasPrazsky_Sviat` access status — **8 primary Lukáš Pražský works freely available on Google Play Books**.
-- `ActaUF` — **Svazek 1 published 2022** (Bahlcke / Halama / Holý / Just / Rothkegel / Udolph).
+### Source_Index.md corrections applied 2026-05-10 (Option 3)
+- `Holeton_Lit` placeholder scope clarified — it is a CORPUS reference: Holeton 1995 *Studia Liturgica* "Evolution of Utraquist Liturgy" (methodological anchor, open access on academia.edu) **plus the 9 BRRP essays**. Note added that Holeton died 2023; his unfinished comparative-liturgy monograph never published.
+- `Weisse_1531` URL — replaced "Check Archive.org, BSB, Google Books" with the **Stadtbibliothek Nürnberg viewer for the 1531 Jungbunzlau editio princeps** (better anchor than the unconfirmed 1544 e-rara).
+- `LukasPrazsky_Sviat` access status — **8 primary Lukáš Pražský works on Google Play Books** added with cross-reference to the survey file for full IDs.
+- `ActaUF` — **Svazek 1 published 2022** (Bahlcke / Halama / Holý / Just / Rothkegel / Udolph) — closes the long-standing "critical edition in progress" gap.
+
+### Survey claims that did NOT translate into Source_Index edits
+- The survey's claimed "`Haberkern_2023` mis-dated" correction **was itself in error.** `Chapter/Chapter_Master_Plan.md` lines 86–87 already distinguishes Haberkern's *Patron Saint and Prophet* (Oxford 2016) from a separate 2023 R&RR 25/2–3 article on the Confessio Bohemica. The Source_Index entry was always the 2023 article; the 2016 monograph is a separate item in the Chapter Master Plan's Tier 2 acquisitions queue and warrants its own Source_Index entry pending Phase-2 new-entry review.
+- "Cambridge Companion to Jan Hus 2018" — phantom reference; not in `Source_Index.md` to begin with. The real work is **Brill 2015, Šmahel & Pavlíček eds.** (warrants new entry).
+- Lahey *John Wyclif* — phantom reference; not in `Source_Index.md`. Real publication: **Oxford 2009** (warrants new entry).
+- Šmahel *Hussite Revolution* — phantom reference; not in `Source_Index.md`. Real publication: **MGH Schriften 43, 2002**, German only (warrants new entry).
 
 ### Top-10 consolidated acquisition priorities
 1. Tabita Landová, *Liturgie Jednoty bratrské 1457–1620* (Mervart, 2014).
