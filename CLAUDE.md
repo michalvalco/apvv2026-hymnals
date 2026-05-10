@@ -11,15 +11,28 @@
 
 ## Michal's Deliverable
 
-A monograph chapter:
+A monograph chapter (potentially expandable to a small monograph):
 
-**Dogmatická komparácia luteranizmu a českých konfesií (utrakvizmus, Jednota bratská) v zrkadle liturgických a hymnologických prameňov (16.–18. storočie)**
+**Slovak (contractual title):** Dogmatická komparácia luteranizmu a českých konfesií (utrakvizmus, Jednota bratská) v zrkadle liturgických a hymnologických prameňov (16.–18. storočie)
+
+**English working title** (subtitle TBD — see Project_Overview.md): A Dogmatic Comparison of Lutheranism and the Czech Confessions (Utraquism, Unity of Brethren) in the Mirror of Liturgical and Hymnological Sources, 16th–18th Centuries
 
 ### Core Argument
 The chapter examines how dogmatic differences and convergences between Augsburg Lutheranism,
 Utraquism (old and neo-), and the Unity of Brethren manifested in liturgical practice and
 hymnography. Primary lens: *lex orandi, lex credendi* — what was sung and prayed reveals
 what was believed, often more faithfully than normative confessional documents.
+
+### Approach: directional reception (Option B)
+After local-resource inventory (May 2026), the chapter pursues comparison **through reception
+rather than parallel exposition**. The four loci are read primarily through Slovak Lutheran
+sources adapting Czech Reformation material: Cithara Sanctorum (1636+), the Bardejov Catechism
+(1556), Stöckel's annotations on Melanchthon's Loci Communes (1561), and the Agenda
+of regional Lutheran communities. Where Utraquist or Brethren positions appear, they
+appear as positions being received, modified, or rejected. The chapter does not attempt
+parity of dogmatic-profile coverage between the three traditions; the asymmetry mirrors
+the historical phenomenon — Czech Reformation textual material flowing into Slovak
+Lutheran usage and there undergoing dogmatic re-framing.
 
 ### Four Theological Loci
 
@@ -37,12 +50,14 @@ what was believed, often more faithfully than normative confessional documents.
 
 ### Proposed Chapter Structure
 
-1. Introduction (TEPALIT context, objectives, methodology)
-2. Confessional Context (historical overview of relations)
-3. Dogmatic Profiles (characteristics of each confession)
-4. Comparative Analysis (core: organised by *loci* — Eucharist, Ecclesiology, etc.)
-5. Transfer and Reception (case study: Cithara Sanctorum adaptation of Czech hymns)
+1. Introduction (TEPALIT context, objectives, methodology, **scope statement justifying the directional/reception approach**)
+2. Confessional Context (historical overview of relations; political-cultural setting of source flow Czech → Slovak Lutheran)
+3. Dogmatic Profiles (Lutheran profile reconstructed from local primary corpus; Utraquist and Brethren profiles presupposed from secondary literature, summarised concisely as positions-being-received)
+4. Comparative Analysis (organised by *loci*; readings of Slovak Lutheran sources receiving and re-framing Czech material)
+5. **Transfer and Reception** — elevated under Option B from "case study" to argumentative pillar. Cithara Sanctorum Lutheranisation, Bardejov Catechism modification of Luther's Small Catechism, Stöckel's *Loci Communes* annotations as patterns of dogmatic re-framing
 6. Conclusion
+
+The CS Theologos draft (in Drafts/) is precursor material that may feed §5 of this chapter — or seed a larger book project if scope expansion is warranted.
 
 ## Directory Layout
 
@@ -79,7 +94,7 @@ This project follows the Research Paper Protocol (five phases). Current phase no
 
 ### Writing
 - Michal's voice: conversational yet scholarly, dramatic sentence-length variation, rhetorical development
-- Language: primarily Slovak for the chapter text; English for infrastructure and notes
+- Language: **English for the chapter text** (decided 2026-05-10). Slovak retained for quoted primary sources where source-language fidelity matters; companion website will be bilingual (paused for now). Internal infrastructure and notes in English.
 - Framework: Christian Personalist, monotheistic — operate within this, critique from within
 - Forbidden words: "delve," "dive," "navigate," "leverage," "unlock," "crucial," "tapestry"
 
@@ -150,11 +165,15 @@ A structured data model in `taxonomy/` that serves as the intellectual backbone 
 - **Multi-tradition with developmental phases** — not monolithic (e.g., `UNITY_EARLY` vs. `UNITY_MATURE`)
 - Adapted from ITSERR-RESILIENCE entity resolution and epistemic modesty patterns
 
-## Companion Website
+## Companion Website (PAUSED 2026-05-10)
 
 A DH companion website planned for `website/`. Full specification in `WEBSITE_BRIEFING.md`.
 
-- **Stack:** Astro + Tailwind + D3.js, hosted on GitHub Pages (static, no server)
+**Status: paused.** Chapter drafting takes priority. Website work resumes after a stable
+chapter draft exists and taxonomy CSVs reflect the actual primary-source corpus.
+
+- **Stack (when resumed):** Astro + Tailwind + D3.js, hosted on GitHub Pages (static, no server)
+- **Bilingual:** SK + EN; chapter is English-primary, but website serves both audiences
 - **Data source:** All taxonomy CSVs → build script → JSON for each visualisation
 - **Build in tiers:** Tier 1 (scaffold, timeline, parallel viewer, modest network graph, monograph viewer) → Tier 2 (Lutheranisation Diff, confessional fingerprinting, dashboards) → Tier 3 (scriptural root system, map, IIIF, annotation)
 - **Three tradition colours:** Lutheran gold (#D4A843), Utraquist crimson (#8B2332), Unity teal (#2E8B8B)
