@@ -1,5 +1,7 @@
-# Large resource files (PDFs, scans, images)
-resources/
+# Large resource files (PDFs, scans, images) — ignore contents, but keep .md
+# research artifacts (inventory, audits, source hunts) tracked.
+resources/**
+!resources/*.md
 
 # OS files
 .DS_Store
