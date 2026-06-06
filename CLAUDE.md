@@ -79,7 +79,10 @@ apvv2026-hymnals/           ← THIS REPO (working directory)
 
 ### External Locations (same machine, OneDrive)
 
-- **Grant admin folder:** `C:\Users\valco\OneDrive\Documents\04 Projekty\2025 APVV Hymnals Klatik\`
+> **Canonical paths (verified 2026-06-03).** Windows user is `Michal Valco`; OneDrive is nested under Documents. The earlier on-record prefix `C:\Users\valco\OneDrive\Documents\...` was wrong on both counts.
+> - **This repository:** `C:\Users\Michal Valco\Documents\OneDrive\Documents\GitHub\apvv2026-hymnals\`
+
+- **Grant admin folder:** `C:\Users\Michal Valco\Documents\OneDrive\Documents\04 Projekty\2025 APVV Hymnals Klatik\`
   - APVV application PDF, meeting minutes, CVs
 - **Existing research materials:** `...\2025 APVV Hymnals Klatik\Monografia\Resources\`
   - AI research reports (ChatGPT, Gemini, Claude), academic PDFs

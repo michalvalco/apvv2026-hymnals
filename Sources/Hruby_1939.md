@@ -53,7 +53,7 @@ The three David-cited locations to verify on first reading (per `David_Integrity
 ## Cross-References
 
 - **`David_Integrity_2005`** (`Sources/David_Corpus.md`) — three explicit citations: p. 7 fn. 23, p. 8 fn. 27, p. 23 fn. 99. Hrubý is one of two foundational Czech-language anchors for David's Neo-Utraquism critique (the other being Hrejsa 1912 / 1934).
-- **`Hrejsa_CeskaKonf` (Hrejsa 1912)** and **`Hrejsa_LutKalv_1934`** — Hrejsa's coining and elaboration of the "Neo-Utraquism" label; Hrubý 1939 is the first systematic Czech-language critique of that label. The Hrejsa–Hrubý exchange is the foundational Czech-language scholarly disagreement on this question.
+- **`Hrejsa_1912`** and **`Hrejsa_LutKalv_1934`** — Hrejsa's coining and elaboration of the "Neo-Utraquism" label; Hrubý 1939 is the first systematic Czech-language critique of that label. The Hrejsa–Hrubý exchange is the foundational Czech-language scholarly disagreement on this question.
 - **`Matousek_Kurie_1931`** — companion piece on the institutional dimension (Curia–Consistory–Rezek). Matoušek and Hrubý together cover the 1593–1620 period from two angles: institutional politics (Matoušek) and theological-textual analysis (Hrubý).
 - **`Schoen_2022`** — the contemporary German monograph that argues, *contra* David and Hrubý, for treating Utraquism as a full *Konfessionskirche* (a position that re-opens some of the territory Hrubý's negative thesis closed). The chapter must navigate this disagreement explicitly.
 
