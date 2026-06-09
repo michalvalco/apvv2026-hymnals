@@ -247,7 +247,7 @@ K tomuť má býti naše napravení, nejmilejší, k čemuž slýcháme a mívá
 
 ## [s. 237] — fol. XXV–XXVI (sign. B1b)
 
-A níže:ᵃ Vy ne tak ste se vyučilⁱᵇ Krista. Složtež tehdy první obcování podlé starého člověka, rušícího se podlé žádostí oklamávajících. Obnovte se duchem mysli vaší a oblecte nového člověka, podlé Boha| `‹XXV›` ‹marg. Efez. 4› stvořeného, v spravedlnosti a svatosti pravdy.ᶜ A opět: Oblectež se vy jako vyvolení Boží, svatí a milí, v dobrotivost,| `‹B1b›` krotkost, trpělivost etc.ᵈ ¹⁰
+A níže:ᵃ Vy ne tak ste se vyučiliᵇ Krista. Složtež tehdy první obcování podlé starého člověka, rušícího se podlé žádostí oklamávajících. Obnovte se duchem mysli vaší a oblecte nového člověka, podlé Boha| `‹XXV›` ‹marg. Efez. 4› stvořeného, v spravedlnosti a svatosti pravdy.ᶜ A opět: Oblectež se vy jako vyvolení Boží, svatí a milí, v dobrotivost,| `‹B1b›` krotkost, trpělivost etc.ᵈ ¹⁰
 
 Tyto i jiné mnohé Boží řeči u vědomosti a známosti majíce a je sobě připomínajíce, napravmež se tedyᵉ jakož vnitř, tak i zevnitř k hledání i k činění skutečnému vůle Boží přede všemi věcmi, potom i při všech věcech. A přivedeť nám Pán Bůh kázeň všech pokušení i zámutků v radost neskonalou a v užitek přepotěšený, zde v milosti i u věčné slávě na věky věků. Amen.| `‹XXVI›`
 
