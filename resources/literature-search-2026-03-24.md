@@ -88,7 +88,7 @@ Beyond what we already have (the 2023 critical edition of 8 CS hymns and the Pr�
     - Access: Widely available; Johns Hopkins UP.
     - Priority: **HIGH** (already in your bibliography, but verify you have engaged it fully)
 
-14. **David, Zdeněk V. "Utraquists, Lutherans, and the Bohemian Confession of 1575." *Church History* 68, no. 2 (1999): 294–336.**
+14. **David, Zdeněk V. "Utraquists, Lutherans, and the Bohemian Confession of 1575." *Church History* 68, no. 2 (1999): 294–337.**
     - Relevance: Directly addresses the confessional tensions our chapter analyses. David argues the 1575 Confession was NOT a Utraquist capitulation to Lutheranism but a more complex negotiation. This challenges a simplistic "Lutheranisation" narrative — **a potential counter-argument to our thesis** that we must engage.
     - Access: Cambridge Core (JSTOR).
     - Priority: **HIGH** — potential challenge to thesis
@@ -193,7 +193,7 @@ Beyond what we already have (the 2023 critical edition of 8 CS hymns and the Pr�
     - Access: Academia.edu.
     - Priority: MEDIUM
 
-31. **Graham, Barry F.H. "The Evolution of the Utraquist Mass, 1420–1620." *The Catholic Historical Review* 92, no. 4 (2006): 550–574.**
+31. **Graham, Barry F.H. "The Evolution of the Utraquist Mass, 1420–1620." *The Catholic Historical Review* 92, no. 4 (2006): 553–573.**
     - Relevance: Comprehensive overview of Utraquist Mass evolution. Argues most Utraquist priests used standard Latin Prague missals for the anaphora, with Czech additions. The key finding: "There is no sign of Lutheran influence on the Utraquist Mass, unless one argues that Luther influenced the increased use of the vernacular after 1538." **This is directly relevant and potentially challenging for our argument** — it suggests liturgical distinctiveness persisted even where confessional documents converged.
     - Access: Catholic Historical Review (JSTOR).
     - Priority: **HIGH** — important finding for our methodology

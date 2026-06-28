@@ -38,7 +38,7 @@ This single article most directly enacts the *lex orandi, lex credendi* methodol
 
 ### 1.3 `David_1999` — full citation confirmed (already correct in index)
 
-> David, Zdeněk V. "Utraquists, Lutherans, and the Bohemian Confession of 1575." *Church History* 68/2 (June 1999): 294–336.
+> David, Zdeněk V. "Utraquists, Lutherans, and the Bohemian Confession of 1575." *Church History* 68/2 (June 1999): 294–337. [corrected 2026-06-28: was 294–336]
 > [Cambridge Core](https://www.cambridge.org/core/journals/church-history/article/abs/utraquists-lutherans-and-the-bohemian-confession-of-1575/C911A91E7FEC249F92138C785DA6253A)
 > **Foundational** for the chapter's §2 (Utraquist–Lutheran rapprochement) and §3 (Lutheranisation thread).
 
