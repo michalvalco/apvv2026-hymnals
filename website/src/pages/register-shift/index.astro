@@ -728,7 +728,7 @@ const jsonLd = {
     .silence-reveal.is-open { grid-template-rows: 1fr; opacity: 1; }
 
     @media (prefers-reduced-motion: reduce) {
-      .rs-meter, .silence-reveal, #rs-mand-clause, #rs-mand-clause-en { transition: none !important; }
+      #rs-meter, .silence-reveal, #rs-mand-clause, #rs-mand-clause-en { transition: none !important; }
     }
   </style>
 
@@ -741,6 +741,7 @@ const jsonLd = {
       const stations = DATA.stations;
       const chart = DATA.chart;
       const range = document.getElementById("rs-range");
+      const ticks = document.querySelectorAll(".rs-tick");
 
       const xForPos = (p) => chart.x0 + (p / 100) * (chart.x1 - chart.x0);
       const yForReg = (p) => chart.yBot - (p / 100) * (chart.yBot - chart.yTop);
@@ -794,12 +795,20 @@ const jsonLd = {
           els.mandClauseEn.textContent = s.manducatioClauseEn || "";
           els.mandClause.style.opacity = "1";
           els.mandClauseEn.style.opacity = "1";
+          els.mandClause.removeAttribute("aria-hidden");
+          els.mandClauseEn.removeAttribute("aria-hidden");
         } else {
           els.mandStatus.textContent = "— mlčanie (zámerné) / deliberate silence";
           els.mandStatus.style.color = "#7C7367";
           els.mandBox.style.background = "rgba(0,0,0,0.03)";
           els.mandClause.style.opacity = "0";
           els.mandClauseEn.style.opacity = "0";
+          // Clear stale clause text so it is not announced by assistive tech
+          // on moderate (silent) stations.
+          els.mandClause.textContent = "";
+          els.mandClauseEn.textContent = "";
+          els.mandClause.setAttribute("aria-hidden", "true");
+          els.mandClauseEn.setAttribute("aria-hidden", "true");
         }
         // meter (continuous with handle)
         els.meter.style.width = v + "%";
@@ -811,7 +820,7 @@ const jsonLd = {
         els.playdot.setAttribute("cx", px);
         els.playdot.setAttribute("cy", yForReg(v));
         // highlight active tick
-        document.querySelectorAll(".rs-tick").forEach((t) => {
+        ticks.forEach((t) => {
           const on = Math.abs(Number(t.dataset.pos) - s.pos) < 0.5;
           t.style.opacity = on ? "1" : "0.6";
         });
@@ -825,7 +834,7 @@ const jsonLd = {
       range.addEventListener("input", () => render(Number(range.value)));
 
       // station ticks jump the handle
-      document.querySelectorAll(".rs-tick").forEach((t) => {
+      ticks.forEach((t) => {
         t.addEventListener("click", () => {
           range.value = t.dataset.pos;
           render(Number(range.value));
