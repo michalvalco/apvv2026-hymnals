@@ -100,7 +100,7 @@ This bibliography aggregates **28 distinct works** cited across the paper's 38 f
 
 - **HOLETON 1993 page citation convention**: the original article's pagination begins at p. [155] (square brackets indicate the title page, where the article begins but where the page number is not printed). The convention "[155]" preserves this and is correct citation practice. If your house style prefers, you could also write "pp. 155 – 164" without brackets; both are acceptable.
 
-- **`Sources/Source_Index.md` GRAHAM 2006 page-range error** (currently shows "550 – 574") is a pre-existing project-file inconsistency, not a bibliography problem. The correct range is 553 – 573 (verified via Project MUSE). Flag for separate fix later.
+- **`Sources/Source_Index.md` GRAHAM 2006 page-range error** — **RESOLVED 2026-06-28**: `Graham_2006` corrected to 553 – 573 (verified via Project MUSE; the next article, Rowe, begins on p. 574). The same correction was applied to `David_1999` (294–336 → 294–337) and stray copies were swept repo-wide. See the `Source_Index.md` header log.
 
 - **One body-text typo in para 67 of the .docx**: "we can also puy it this way" → "we can also put it this way".
 

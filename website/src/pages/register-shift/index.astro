@@ -1,0 +1,908 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import EpistemicLegend from "../../components/EpistemicLegend.astro";
+
+const base = import.meta.env.BASE_URL;
+const baseN = base.replace(/\/$/, "");
+const baseHref = baseN.endsWith("/") ? baseN : baseN + "/";
+const pageUrl = Astro.site
+  ? new URL("register-shift/", new URL(baseHref, Astro.site)).toString()
+  : `${baseN}/register-shift/`;
+
+// ════════════════════════════════════════════════════════════════════
+// REGISTER SHIFT — interactive flagship for the HE paper's central finding
+// ────────────────────────────────────────────────────────────────────
+// Thesis: the SAME Eucharistic doctrine is articulated at DIFFERENT
+// registers — moderate → polemically sharp — across four documents and
+// 61 years, with the Formula of Concord (1577) as the disciplinary
+// threshold. Confessional sharpening is register work, visible at the
+// granularity of a single bound codex (AC 1581 + BA 1585).
+//
+// `pos` is the register-intensity coordinate (0 = moderate, 100 = sharp).
+// It is NOT a time axis: AC 1581 sits LEFT of the FC threshold even though
+// FC (1577) predates it — the paper's point is precisely that AC keeps the
+// moderate register despite FC, and BA adopts the sharpened one.
+// ════════════════════════════════════════════════════════════════════
+
+type Tone = "irenic" | "moderate" | "sharp";
+
+interface Station {
+  id: string;
+  short: string;
+  full: string;
+  fullEn: string;
+  year: number;
+  pos: number; // 0..100 register-intensity coordinate
+  tone: Tone;
+  kindSk: string;
+  kindEn: string;
+  registerSk: string;
+  registerEn: string;
+  verbatim: string; // verbatim Czech/Slovak Eucharistic phrase
+  verbatimEn: string;
+  manducatio: boolean; // is manducatio impiorum explicit?
+  manducatioClause?: string;
+  manducatioClauseEn?: string;
+  glossSk: string;
+  glossEn: string;
+  cite: string;
+  link: { href: string; labelSk: string };
+}
+
+const stations: Station[] = [
+  {
+    id: "cb",
+    short: "CB 1575",
+    full: "Confessio Bohemica",
+    fullEn: "Bohemian Confession",
+    year: 1575,
+    pos: 9,
+    tone: "irenic",
+    kindSk: "Medzikonfesionálny kompromis",
+    kindEn: "Cross-confessional compromise",
+    registerSk: "Irenický register „both/and“",
+    registerEn: "Irenic both/and register",
+    verbatim: "duchovně i podstatně, věrou i také ústy",
+    verbatimEn: "spiritually and substantially, by faith and also by mouth",
+    manducatio: false,
+    glossSk:
+      "Vyrokovaný konsenzus utrakvistov, luteránov a Jednoty bratskej. Eucharistický článok (čl. XV) drží luteránske aj reformované dôrazy v jednej formule — zámerne both/and, aby bol konfesionálne široko prijateľný. Mlčí o manducatio impiorum.",
+    glossEn:
+      "A negotiated consensus of Utraquists, Lutherans, and the Unity of Brethren. The Eucharistic article (Art. XV) holds both the Lutheran and the Reformed emphases in one formula — deliberately both/and, for the broadest confessional usability. Silent on manducatio impiorum.",
+    cite: "Hrejsa 1912, čl. XV (pp. 695–717)",
+    link: { href: "/cb1575/", labelSk: "CB 1575 archív" },
+  },
+  {
+    id: "ac",
+    short: "AC 1581",
+    full: "Agenda Česká",
+    fullEn: "Czech Agenda (printed)",
+    year: 1581,
+    pos: 31,
+    tone: "moderate",
+    kindSk: "Tlačená česko-luteránska agenda",
+    kindEn: "Printed Czech-Lutheran agenda",
+    registerSk: "Mierny český luteránsky register",
+    registerEn: "Moderate Czech-Lutheran register",
+    verbatim: "tělo a krev",
+    verbatimEn: "body and blood — without “pravý” / “substanciálny”",
+    manducatio: false,
+    glossSk:
+      "Identifikatórne „tělo a krev“ bez polemicky špecifikujúcich prívlastkov („pravý“, „substanciálny“). Hodné prijímanie kotví vo viere v slová ustanovenia. Nehodné prijímanie zostáva nevyslovené — registrová voľba, nie teologická reticencia.",
+    glossEn:
+      "Identificatory “tělo a krev” without the polemically specifying adjectives (“pravý”, “substanciálny”). Worthy reception is grounded in faith in the words of institution. Unworthy reception is left unspoken — a register choice, not theological reticence.",
+    cite: "Benka 2024, p. 79; rite pp. 131–150",
+    link: { href: "/diff/pair-006/", labelSk: "PAIR_006 diff" },
+  },
+  {
+    id: "ba",
+    short: "BA 1585",
+    full: "Bystrická agenda",
+    fullEn: "Bystrická agenda (manuscript)",
+    year: 1585,
+    pos: 74,
+    tone: "sharp",
+    kindSk: "Rukopisný slovenský doplnok",
+    kindEn: "Manuscript Slovak supplement",
+    registerSk: "Ostrejší hornouhorsko-luteránsky register",
+    registerEn: "Sharper Upper-Hungarian Lutheran register",
+    verbatim: "Tělo a Krew Syna Božijho",
+    verbatimEn: "the Body and Blood of the Son of God",
+    manducatio: true,
+    manducatioClause: "hodným k spasenij — nehodným ne k spasenij, ale k zatraczenij wěčnemu",
+    manducatioClauseEn:
+      "to the worthy for salvation — to the unworthy not for salvation, but for eternal damnation",
+    glossSk:
+      "O štyri roky neskôr, v tom istom kódexe, BA prelomí mlčanie AC: výslovné luteránske manducatio impiorum. Tá istá teológia — ostrejšie hrany. Pridáva aj identifikatórnu apozíciu „Syna Božijho“.",
+    glossEn:
+      "Four years later, in the same codex, BA breaks AC's silence: explicit Lutheran manducatio impiorum. The same theology — sharper edges. It also adds the identificatory apposition “Syna Božijho”.",
+    cite: "Benka 2024, pp. 78–79",
+    link: { href: "/diff/pair-006/#manducatio_impiorum", labelSk: "PAIR_006 · manducatio" },
+  },
+  {
+    id: "cs",
+    short: "CS 1636",
+    full: "Cithara Sanctorum",
+    fullEn: "Cithara Sanctorum (printed hymnal)",
+    year: 1636,
+    pos: 93,
+    tone: "sharp",
+    kindSk: "Verejne tlačený luteránsky spevník",
+    kindEn: "Publicly-printed Lutheran hymnal",
+    registerSk: "Konsolidovaný slovenský luteránsky register",
+    registerEn: "Consolidated Slovak-Lutheran register",
+    verbatim: "Tranovského diferenciálna editorská ruka",
+    verbatimEn: "Tranovský's differential editorial hand",
+    manducatio: true,
+    manducatioClause:
+      "ostrenie v eucharistických, mariánskych a ekleziologických rubrikách",
+    manducatioClauseEn:
+      "sharpening in the Eucharistic, Marian, and ecclesiological rubrics",
+    glossSk:
+      "O pol storočia neskôr Tranovský preberá ~49 % staršieho repertoáru utrakvistického pôvodu a edituje konfesionálne citlivé rubriky smerom k luteránskej norme. Ten istý smer ostrenia — teraz vo verejnej tlači.",
+    glossEn:
+      "Half a century later Tranovský absorbs ~49% of older repertoire of Utraquist origin and edits confessionally sensitive rubrics toward the Lutheran norm. The same direction of sharpening — now in public print.",
+    cite: "Grešová-Sekelská 2021; Vajda 1944",
+    link: { href: "/trajectory/", labelSk: "Trajektória CB→CS" },
+  },
+];
+
+// FC threshold position on the register axis (between AC and BA).
+const FC_POS = 53;
+
+// ── Twin-line chart geometry (server-rendered; JS adds the moving playhead) ──
+const CHART = { w: 800, h: 250, x0: 64, x1: 760, yTop: 44, yBot: 206 };
+const xForPos = (p: number) => CHART.x0 + (p / 100) * (CHART.x1 - CHART.x0);
+// Register line: y descends (rises visually) with pos.
+const yForReg = (p: number) => CHART.yBot - (p / 100) * (CHART.yBot - CHART.yTop);
+const DOCTRINE_Y = CHART.yTop + 14; // flat, near the top (constant substance)
+const regPolyline = stations.map((s) => `${xForPos(s.pos)},${yForReg(s.pos)}`).join(" ");
+const fcX = xForPos(FC_POS);
+
+const toneHex: Record<Tone, string> = {
+  irenic: "#2E8B8B", // unity teal
+  moderate: "#D4A843", // lutheran gold
+  sharp: "#8B2332", // utraquist crimson / burgundy family
+};
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ScholarlyArticle",
+  name: "Register Shift — Confessional Sharpening as Register Work (CB 1575 · AC 1581 · BA 1585 · CS 1636)",
+  alternateName:
+    "Posun registra — konfesionálne ostrenie ako registrová práca",
+  url: pageUrl,
+  inLanguage: ["sk", "en"],
+  isBasedOn:
+    "Valčo, M. (2026). Intra-Codex Confessional Stratification in the Bratislava Lyceal Library Exemplar of Agenda Česká 1581 + Bystrická agenda 1585 (Historia Ecclesiastica, in submission).",
+  publishingPrinciples:
+    "Interactive visualisation of the paper's central finding. Verbatim AC/BA material from Benka 2024 (MLS X), cited at fair-use length. CC BY 4.0.",
+  author: {
+    "@type": "Person",
+    name: "Michal Valčo",
+    affiliation: { "@type": "Organization", name: "ETF UK Bratislava" },
+  },
+  isPartOf: {
+    "@type": "ResearchProject",
+    name: "TEPALIT (APVV-24-0484)",
+    funder: {
+      "@type": "Organization",
+      name: "Slovak Research and Development Agency",
+      identifier: "APVV-24-0484",
+    },
+  },
+  keywords: [
+    "register shift",
+    "manducatio impiorum",
+    "Agenda Česká 1581",
+    "Bystrická agenda 1585",
+    "Confessio Bohemica 1575",
+    "Cithara Sanctorum 1636",
+    "Formula of Concord",
+    "lex orandi lex credendi",
+    "confessionalisation",
+    "intra-codex stratification",
+  ],
+};
+---
+
+<BaseLayout
+  title="Register Shift — confessional sharpening you can scrub"
+  description="Interactive flagship for the HE paper: the same Eucharistic doctrine articulated at rising registers — moderate to polemically sharp — across CB 1575, AC 1581, BA 1585, CS 1636, with the Formula of Concord 1577 as the threshold. Scrub the register, watch the manducatio impiorum break the silence."
+  lang="sk"
+>
+  <script
+    is:inline
+    type="application/ld+json"
+    set:html={JSON.stringify(jsonLd)}
+  />
+  <!-- Data island: authoritative station data for the inline controller -->
+  <script
+    type="application/json"
+    id="rs-data"
+    set:html={JSON.stringify({ stations, fcPos: FC_POS, chart: CHART, doctrineY: DOCTRINE_Y, base: baseN })}
+  />
+
+  <!-- ═══════════ HERO ═══════════ -->
+  <section class="relative overflow-hidden bg-ink-800 px-6 py-16 text-parchment md:py-20">
+    <div
+      class="absolute inset-0 opacity-40"
+      style="background: radial-gradient(ellipse at 18% 40%, rgba(212,168,67,0.22) 0%, transparent 55%),
+             radial-gradient(ellipse at 82% 60%, rgba(139,35,50,0.22) 0%, transparent 55%);"
+      aria-hidden="true"
+    ></div>
+    <div class="relative mx-auto max-w-content">
+      <p class="font-sans text-xs font-medium uppercase tracking-[0.2em] text-gold">
+        Lex orandi, lex credendi · Interaktívny nález / Interactive finding
+      </p>
+      <h1 class="mt-4 font-display text-3xl font-bold leading-tight text-parchment-100 md:text-5xl">
+        Posun registra
+      </h1>
+      <p class="mt-3 font-display text-lg font-medium text-parchment-300 md:text-xl">
+        Tá istá náuka, ostrejší jazyk — konfesionálne ostrenie ako práca s registrom
+      </p>
+      <h2 class="mt-5 font-display text-xl font-semibold text-parchment-200" lang="en">
+        Register Shift
+      </h2>
+      <p class="mt-2 max-w-prose font-sans text-sm leading-relaxed text-parchment-400" lang="en">
+        The same Eucharistic doctrine, articulated at a rising register — from
+        moderate to polemically sharp — across four documents and 61 years. The
+        sharpening is not a change of <em>substance</em> but of <em>shape</em>,
+        and it becomes visible at the granularity of a single bound codex.
+      </p>
+
+      <div class="mt-8 flex flex-wrap items-center gap-2 font-mono text-[11px] text-parchment-400">
+        <span class="rounded-full border border-parchment-300/20 px-3 py-1">CB 1575</span>
+        <span aria-hidden="true">→</span>
+        <span class="rounded-full border border-parchment-300/20 px-3 py-1">AC 1581</span>
+        <span aria-hidden="true" class="text-gold">⟂ FC 1577</span>
+        <span aria-hidden="true">→</span>
+        <span class="rounded-full border border-parchment-300/20 px-3 py-1">BA 1585</span>
+        <span aria-hidden="true">→</span>
+        <span class="rounded-full border border-parchment-300/20 px-3 py-1">CS 1636</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ THESIS CALLOUT ═══════════ -->
+  <section class="mx-auto max-w-content px-6 py-10">
+    <blockquote class="blockquote-scholarly text-lg leading-relaxed">
+      <p>
+        Konfesionálne ostrenie nie je výlučne fenoménom <em>medzikonfesionálneho
+        prenosu</em>. Je to aj fenomén <strong>registrovej intenzifikácie</strong>,
+        pozorovateľný na úrovni jediného fyzického kódexu, ktorý pôvodní
+        používatelia zviazali ako jednu liturgickú jednotku.
+      </p>
+      <p class="mt-3 font-sans text-sm not-italic text-ink-300" lang="en">
+        Confessional sharpening is not only a phenomenon of cross-confessional
+        transfer. It is also a phenomenon of <strong>register intensification</strong>,
+        observable at the granularity of a single physical codex bound together
+        by its early users.
+      </p>
+    </blockquote>
+  </section>
+
+  <!-- ═══════════ ① THE SCRUBBER (signature interactive) ═══════════ -->
+  <section class="mx-auto max-w-wide px-6 py-12">
+    <h2 class="text-section-title text-ink">① Potiahnite register</h2>
+    <p class="mt-1 font-sans text-sm italic text-ink-300" lang="en">
+      Scrub the register — drag from moderate to sharp and watch the words change
+    </p>
+
+    <div class="mt-8 rounded-xl border border-parchment-400/50 bg-parchment-50 p-5 shadow-sm md:p-8">
+      <!-- Track + handle -->
+      <div class="rs-track-wrap">
+        <div class="flex items-center justify-between font-sans text-[11px] font-semibold uppercase tracking-wider">
+          <span class="text-lutheran-dark">◀ Mierny / Moderate</span>
+          <span class="text-burgundy">Ostrý / Sharp ▶</span>
+        </div>
+
+        <div class="rs-track relative mt-3">
+          <!-- gradient rail -->
+          <div class="rs-rail" aria-hidden="true"></div>
+          <!-- FC threshold marker -->
+          <div class="rs-fc" id="rs-fc" style={`left:${FC_POS}%`} aria-hidden="true">
+            <span class="rs-fc-line"></span>
+            <span class="rs-fc-label">FC 1577</span>
+          </div>
+          <!-- station ticks -->
+          {stations.map((s) => (
+            <button
+              type="button"
+              class="rs-tick"
+              data-pos={s.pos}
+              style={`left:${s.pos}%`}
+              aria-label={`${s.short} — ${s.registerEn}`}
+              title={`${s.short}`}
+            >
+              <span class="rs-tick-dot" style={`--tone:${toneHex[s.tone]}`}></span>
+              <span class="rs-tick-label">{s.short}</span>
+            </button>
+          ))}
+          <!-- the actual range input (keyboard + touch accessible) -->
+          <input
+            id="rs-range"
+            class="rs-range"
+            type="range"
+            min="0"
+            max="100"
+            value="31"
+            step="1"
+            aria-label="Register intensity from moderate to sharp"
+          />
+        </div>
+      </div>
+
+      <!-- Reading panel + meter -->
+      <div class="mt-10 grid gap-6 lg:grid-cols-[1.3fr_1fr]">
+        <!-- Active document reading -->
+        <article id="rs-panel" class="rounded-lg border-l-4 p-5" style="border-color:#D4A843;background:rgba(212,168,67,0.06)">
+          <div class="flex flex-wrap items-baseline justify-between gap-2">
+            <div>
+              <p class="font-mono text-[11px] tracking-wider text-ink-300">
+                <span id="rs-year">1581</span> · <span id="rs-kind">Printed Czech-Lutheran agenda</span>
+              </p>
+              <h3 class="mt-0.5 font-display text-2xl font-bold text-ink" id="rs-short">AC 1581</h3>
+              <p class="font-display text-sm font-medium text-ink-400" id="rs-full">Agenda Česká</p>
+            </div>
+            <span id="rs-register" class="rounded-full bg-parchment-200/70 px-3 py-1 font-sans text-[11px] font-semibold text-ink-400">
+              Mierny český luteránsky register
+            </span>
+          </div>
+
+          <p class="mt-5 font-sans text-[10px] font-semibold uppercase tracking-wider text-ink-300">
+            Eucharistická formula / Eucharistic articulation
+          </p>
+          <blockquote class="mt-1.5 border-l-2 border-ink-300/30 pl-3">
+            <p class="font-serif text-xl italic leading-snug text-ink" lang="cs" id="rs-verbatim">tělo a krev</p>
+            <p class="mt-1 font-sans text-xs italic text-ink-300" lang="en" id="rs-verbatim-en">body and blood</p>
+          </blockquote>
+
+          <!-- manducatio impiorum status -->
+          <div class="mt-5 rounded-md p-3 transition-colors duration-500" id="rs-mand-box" style="background:rgba(0,0,0,0.03)">
+            <p class="font-sans text-[10px] font-semibold uppercase tracking-wider text-ink-300">
+              Manducatio impiorum
+            </p>
+            <p class="mt-1 font-sans text-sm font-semibold" id="rs-mand-status">— mlčanie (zámerné) / deliberate silence</p>
+            <p class="mt-1 font-serif text-sm italic leading-snug text-burgundy opacity-0 transition-opacity duration-700" lang="cs" id="rs-mand-clause"></p>
+            <p class="mt-0.5 font-sans text-xs italic text-ink-300 opacity-0 transition-opacity duration-700" lang="en" id="rs-mand-clause-en"></p>
+          </div>
+
+          <p class="mt-4 font-serif text-sm leading-relaxed text-ink-400" id="rs-gloss">Identifikatórne „tělo a krev“ bez polemicky špecifikujúcich prívlastkov („pravý“, „substanciálny“). Hodné prijímanie kotví vo viere v slová ustanovenia. Nehodné prijímanie zostáva nevyslovené — registrová voľba, nie teologická reticencia.</p>
+          <p class="mt-2 font-sans text-xs italic leading-relaxed text-ink-300" lang="en" id="rs-gloss-en">Identificatory “tělo a krev” without the polemically specifying adjectives. Worthy reception is grounded in faith in the words of institution; unworthy reception is left unspoken — a register choice.</p>
+
+          <div class="mt-4 flex flex-wrap items-center justify-between gap-2 border-t border-parchment-300/50 pt-3">
+            <span class="font-mono text-[10px] text-ink-300" id="rs-cite">Benka 2024, p. 79; rite pp. 131–150</span>
+            <a id="rs-link" href={`${baseN}/diff/pair-006/`} class="font-sans text-[11px] font-semibold text-burgundy no-underline hover:underline">PAIR_006 diff →</a>
+          </div>
+        </article>
+
+        <!-- Meter + twin-line chart -->
+        <div class="flex flex-col gap-6">
+          <!-- sharpness meter -->
+          <div>
+            <div class="flex items-baseline justify-between">
+              <p class="font-sans text-[10px] font-semibold uppercase tracking-wider text-ink-300">
+                Polemická ostrosť / Polemical sharpness
+              </p>
+              <span class="font-mono text-sm font-bold text-ink" id="rs-meter-pct">31%</span>
+            </div>
+            <div class="mt-2 h-3 overflow-hidden rounded-full bg-parchment-300/60">
+              <div id="rs-meter" class="h-full rounded-full transition-[width] duration-200" style="width:31%;background:linear-gradient(90deg,#D4A843,#B5344A,#8B2332)"></div>
+            </div>
+          </div>
+
+          <!-- twin-line chart: doctrine flat vs register rising -->
+          <div class="rounded-lg border border-parchment-300/60 bg-parchment-100/40 p-3">
+            <p class="font-sans text-[10px] font-semibold uppercase tracking-wider text-ink-300">
+              Náuka vs. register / Doctrine vs. register
+            </p>
+            <svg
+              viewBox={`0 0 ${CHART.w} ${CHART.h}`}
+              class="mt-1 w-full"
+              role="img"
+              aria-label="Twin-line chart: doctrine stays flat while register rises across CB, AC, BA, CS"
+            >
+              <!-- doctrine line (flat, constant substance) -->
+              <line
+                x1={CHART.x0}
+                y1={DOCTRINE_Y}
+                x2={CHART.x1}
+                y2={DOCTRINE_Y}
+                stroke="#504A3F"
+                stroke-width="2.5"
+                stroke-dasharray="2 4"
+              />
+              <text x={CHART.x0} y={DOCTRINE_Y - 8} font-family="ui-sans-serif,system-ui" font-size="12" font-weight="600" fill="#504A3F">
+                Náuka — tá istá podstata / Doctrine — same substance
+              </text>
+
+              <!-- register polyline (rising shape) -->
+              <polyline
+                points={regPolyline}
+                fill="none"
+                stroke="#8B2332"
+                stroke-width="3"
+                stroke-linejoin="round"
+                stroke-linecap="round"
+              />
+
+              <!-- FC threshold -->
+              <line x1={fcX} y1={CHART.yTop - 6} x2={fcX} y2={CHART.yBot + 6} stroke="#A68230" stroke-width="1.2" stroke-dasharray="4 3" />
+              <text x={fcX} y={CHART.yBot + 22} font-family="ui-monospace,monospace" font-size="11" text-anchor="middle" fill="#A68230">FC 1577</text>
+
+              <!-- station dots + labels -->
+              {stations.map((s) => (
+                <g>
+                  <circle cx={xForPos(s.pos)} cy={yForReg(s.pos)} r="5" fill={toneHex[s.tone]} />
+                  <text
+                    x={xForPos(s.pos)}
+                    y={yForReg(s.pos) - 12}
+                    font-family="ui-sans-serif,system-ui"
+                    font-size="11"
+                    font-weight="700"
+                    text-anchor="middle"
+                    fill="#1A1611"
+                  >{s.short}</text>
+                </g>
+              ))}
+
+              <!-- moving playhead (JS-driven) -->
+              <line id="rs-playhead" x1={xForPos(31)} y1={CHART.yTop - 6} x2={xForPos(31)} y2={CHART.yBot + 6} stroke="#1A1611" stroke-width="1.5" opacity="0.5" />
+              <circle id="rs-playdot" cx={xForPos(31)} cy={yForReg(31)} r="7" fill="#1A1611" stroke="#F5F0E8" stroke-width="2" />
+
+              <!-- register axis label -->
+              <text x={CHART.x0} y={CHART.h - 6} font-family="ui-sans-serif,system-ui" font-size="11" fill="#7C7367">register: mierny → ostrý / moderate → sharp</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <p class="mt-6 text-center font-sans text-xs text-ink-300">
+        <span class="rs-hint">Potiahnite jazdec alebo kliknite na medzník · klávesnica: ←/→ ·
+        <span lang="en">drag the slider or click a milestone · keyboard ←/→</span></span>
+      </p>
+    </div>
+
+    <div class="mt-6">
+      <EpistemicLegend compact={true} />
+    </div>
+  </section>
+
+  <div class="ornament-rule"></div>
+
+  <!-- ═══════════ ② THE BOUND CODEX ═══════════ -->
+  <section class="mx-auto max-w-content px-6 py-12">
+    <h2 class="text-section-title text-ink">② Jeden kódex, dva registre</h2>
+    <p class="mt-1 font-sans text-sm italic text-ink-300" lang="en">
+      One physical codex, two registers — intra-codex stratification
+    </p>
+    <p class="mt-4 max-w-prose font-serif text-sm leading-relaxed text-ink-400">
+      Bratislavský exemplár Lyceálnej knižnice (dnes Ústredná knižnica SAV) viaže
+      tlačenú <em>Agendu Českú</em> 1581 a rukopisnú <em>Bystrickú agendu</em> 1585
+      do jedného fyzického zväzku. Pôvodní používatelia ich zviazali ako jednu
+      liturgickú jednotku — a práve preto je posun registra čitateľný na úrovni
+      jedného predmetu. Kliknite na vrstvu.
+    </p>
+
+    <div class="mt-8 grid items-center gap-8 md:grid-cols-[auto_1fr]">
+      <!-- Codex SVG -->
+      <svg
+        viewBox="0 0 300 250"
+        class="mx-auto w-full max-w-[300px]"
+        role="img"
+        aria-label="A single bound codex with two strata: the printed Agenda Česká 1581 and the manuscript Bystrická agenda 1585"
+      >
+        <!-- back cover -->
+        <polygon points="40,40 250,28 262,40 52,52" fill="#7A6B54" />
+        <polygon points="250,28 262,40 262,212 250,200" fill="#584D3D" />
+        <!-- AC stratum (print) -->
+        <g class="codex-stratum" data-stratum="ac" role="button" tabindex="0" aria-label="Agenda Česká 1581 — printed, moderate register">
+          <polygon points="52,52 250,40 250,116 52,128" fill="#E8C872" stroke="#A68230" stroke-width="1.5" />
+          <polygon points="250,40 262,52 262,128 250,116" fill="#D4A843" stroke="#A68230" stroke-width="1.5" />
+          <text x="150" y="88" font-family="ui-sans-serif,system-ui" font-size="12" font-weight="700" text-anchor="middle" fill="#2B210C">AC 1581 · tlač</text>
+          <text x="150" y="104" font-family="ui-monospace,monospace" font-size="9" text-anchor="middle" fill="#544218">pp. 107–264</text>
+        </g>
+        <!-- BA stratum (manuscript) -->
+        <g class="codex-stratum" data-stratum="ba" role="button" tabindex="0" aria-label="Bystrická agenda 1585 — manuscript, sharper register">
+          <polygon points="52,128 250,116 250,192 52,204" fill="#B5344A" stroke="#6A1A26" stroke-width="1.5" />
+          <polygon points="250,116 262,128 262,204 250,192" fill="#8B2332" stroke="#6A1A26" stroke-width="1.5" />
+          <text x="150" y="164" font-family="ui-sans-serif,system-ui" font-size="12" font-weight="700" text-anchor="middle" fill="#FBE8EB">BA 1585 · rukopis</text>
+          <text x="150" y="180" font-family="ui-monospace,monospace" font-size="9" text-anchor="middle" fill="#F0BFC7">pp. 265–368</text>
+        </g>
+        <!-- front cover edge / spine binding -->
+        <polygon points="40,40 52,52 52,204 40,192" fill="#372F26" />
+        <line x1="46" y1="70" x2="46" y2="180" stroke="#9C8A6C" stroke-width="1" stroke-dasharray="2 3" />
+      </svg>
+
+      <!-- Detail panel -->
+      <div id="codex-detail" class="rounded-lg border border-parchment-400/50 bg-parchment-50 p-5">
+        <p class="font-sans text-[10px] font-semibold uppercase tracking-wider text-ink-300" id="codex-eyebrow">
+          Vyberte vrstvu / Select a stratum
+        </p>
+        <h3 class="mt-1 font-display text-lg font-semibold text-ink" id="codex-title">
+          Zviazané spolu
+        </h3>
+        <p class="mt-2 font-serif text-sm leading-relaxed text-ink-400" id="codex-body">
+          Tlač a rukopis nie sú kódikologické dvojičky — vznikli oddelene, štyri
+          roky od seba, a zviazali ich až používatelia, ktorí v nich rozpoznali
+          jednu liturgickú prax. Akt zviazania je kódikologickým zápisom
+          teologického úsudku: že tieto dve svedectvá patria k sebe.
+        </p>
+        <p class="mt-2 font-sans text-xs italic leading-relaxed text-ink-300" lang="en" id="codex-body-en">
+          Print and manuscript are not codicological twins — produced separately,
+          four years apart, and bound together only by the users who recognised
+          them as one liturgical use. The act of binding is the codicological
+          encoding of a theological judgement: that the two witnesses belong
+          together.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <div class="ornament-rule"></div>
+
+  <!-- ═══════════ ③ SILENCE → BROKEN ═══════════ -->
+  <section class="mx-auto max-w-content px-6 py-12">
+    <h2 class="text-section-title text-ink">③ Mlčanie, ktoré sa prelomilo</h2>
+    <p class="mt-1 font-sans text-sm italic text-ink-300" lang="en">
+      The silence that broke — the single sharpest move in the codex
+    </p>
+
+    <div class="mt-8 grid gap-5 md:grid-cols-2" id="silence-block">
+      <!-- AC silence -->
+      <div class="rounded-lg border-l-4 border-lutheran/50 bg-lutheran/5 p-5">
+        <p class="font-display text-sm font-semibold text-lutheran-dark">AC 1581 · mlčanie</p>
+        <p class="mt-3 font-serif text-base italic leading-relaxed text-ink" lang="cs">
+          „…a ti slowa, kteráž od Krysta slyssíš a tomu nařízení… silně wěříš,
+          tenť jest hodný Host k stolu Páně.“
+        </p>
+        <p class="mt-3 font-sans text-sm leading-relaxed text-ink-400">
+          Hodné prijímanie sa zakladá na <strong>viere v slová ustanovenia</strong>.
+          O tom, čo sa stane <em>nehodnému</em> prijímajúcemu, AC mlčí. Mlčanie je
+          registrová voľba.
+        </p>
+        <p class="mt-1 font-sans text-xs italic text-ink-300" lang="en">
+          Worthy reception rests on <strong>faith in the words of institution</strong>.
+          On what befalls the <em>unworthy</em> communicant, AC is silent. The
+          silence is a register choice.
+        </p>
+      </div>
+
+      <!-- BA reveal -->
+      <div class="relative rounded-lg border-l-4 border-burgundy/60 bg-burgundy/5 p-5">
+        <p class="font-display text-sm font-semibold text-burgundy">BA 1585 · prelomenie</p>
+
+        <!-- collapsed prompt -->
+        <button
+          type="button"
+          id="silence-btn"
+          class="mt-3 inline-flex items-center gap-2 rounded-md bg-burgundy/15 px-4 py-2 font-sans text-sm font-semibold text-burgundy transition-colors hover:bg-burgundy/25"
+          aria-expanded="false"
+          aria-controls="silence-reveal"
+        >
+          <span aria-hidden="true">▶</span> Čo BA pridáva / Reveal what BA adds
+        </button>
+
+        <!-- revealed content -->
+        <div id="silence-reveal" class="silence-reveal mt-3">
+          <blockquote class="border-l-2 border-burgundy/60 pl-3">
+            <p class="font-serif text-lg italic leading-relaxed text-ink" lang="cs">
+              „Tělo a Krew Syna Božijho… hodným <strong>k spasenij</strong>,
+              nehodným <strong>ne k spasenij, ale k zatraczenij wěčnemu</strong>.“
+            </p>
+          </blockquote>
+          <p class="mt-3 font-sans text-sm leading-relaxed text-ink-400">
+            Ten istý objektívny dar pre <em>oboch</em> prijímajúcich; líši sa len
+            spásny účinok podľa hodnosti. To je presne to, čo
+            <strong>Formula Concordiae, SD VII §16</strong> robí luteránskym
+            hraničným indikátorom voči reformovanej eucharistickej teológii.
+          </p>
+          <p class="mt-1 font-sans text-xs italic text-ink-300" lang="en">
+            The same objective gift for <em>both</em> communicants; only the
+            salvific outcome differs by worthiness — exactly what
+            <strong>Formula of Concord SD VII §16</strong> makes the Lutheran
+            boundary marker against Reformed Eucharistic theology.
+          </p>
+          <p class="mt-3 font-mono text-[10px] text-ink-300">Benka 2024, pp. 78–79 · FC SD VII §16</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="ornament-rule"></div>
+
+  <!-- ═══════════ WHERE THIS SITS / FORWARD LINKS ═══════════ -->
+  <section class="mx-auto max-w-content px-6 py-12">
+    <h2 class="text-section-title text-ink">Kde to pokračuje</h2>
+    <p class="mt-1 font-sans text-sm italic text-ink-300" lang="en">Where the argument continues</p>
+
+    <ul class="mt-6 grid gap-4 sm:grid-cols-2">
+      <li class="card">
+        <h3 class="font-display text-base font-semibold text-ink">
+          <a href={`${baseN}/diff/pair-006/`} class="no-underline hover:text-burgundy">PAIR_006 register-shift diff →</a>
+        </h3>
+        <p class="mt-2 text-sm text-ink-400">Štyri komparatívne ťahy AC ↔ BA s verbatim citáciami a analytickými poznámkami.</p>
+      </li>
+      <li class="card">
+        <h3 class="font-display text-base font-semibold text-ink">
+          <a href={`${baseN}/trajectory/`} class="no-underline hover:text-burgundy">Trajektória CB→AC→BA→CS →</a>
+        </h3>
+        <p class="mt-2 text-sm text-ink-400">Štyri dokumenty, 61 rokov, jeden smer konsolidácie — s diagnostickými markermi.</p>
+      </li>
+      <li class="card">
+        <h3 class="font-display text-base font-semibold text-ink">
+          <a href={`${baseN}/papers/theologos/`} class="no-underline hover:text-burgundy">Štúdia (Historia Ecclesiastica) →</a>
+        </h3>
+        <p class="mt-2 text-sm text-ink-400">Plný argument: abstrakt (DE/EN/SK), štruktúra a 28-záznamová bibliografia.</p>
+      </li>
+      <li class="card">
+        <h3 class="font-display text-base font-semibold text-ink">
+          <a href={`${baseN}/cb1575/`} class="no-underline hover:text-burgundy">CB 1575 archív →</a>
+        </h3>
+        <p class="mt-2 text-sm text-ink-400">Prečo staršie čítanie CB ako „kalvínskeho“ neobstojí — a kde stojí konsenzus.</p>
+      </li>
+    </ul>
+  </section>
+
+  <!-- ═══════════ HOW TO CITE ═══════════ -->
+  <section class="mx-auto max-w-content px-6 py-10 pb-20">
+    <h2 class="text-section-title text-ink">Ako citovať túto stránku</h2>
+    <p class="mt-1 font-sans text-sm italic text-ink-300" lang="en">How to cite this page</p>
+    <div class="card mt-6">
+      <h3 class="font-sans text-xs font-semibold uppercase tracking-wider text-ink-400">APA (7th edition)</h3>
+      <p class="mt-3 font-serif text-sm leading-relaxed text-ink" lang="en">
+        Valčo, M. (2026). <em>Register Shift — confessional sharpening as register
+        work (CB 1575 · AC 1581 · BA 1585 · CS 1636)</em> [Interactive
+        visualisation, APVV-24-0484 TEPALIT]. <a href={pageUrl} class="text-burgundy">{pageUrl}</a>
+      </p>
+    </div>
+    <p class="mt-4 text-xs italic text-ink-300">
+      Vizualizácia sprevádza štúdiu pripravenú pre <span lang="en">Historia Ecclesiastica</span>
+      a kapitolu TEPALIT-monografie (§5). Verbatim AC/BA texty pochádzajú z Benkovho
+      kritického vydania 2024 a sú citované v rozsahu primeranom pre vedeckú
+      komparáciu. Stránka je pod licenciou
+      <a href="https://creativecommons.org/licenses/by/4.0/" class="text-burgundy" rel="noopener">CC BY 4.0</a>.
+    </p>
+  </section>
+
+  <!-- ═══════════ SCOPED STYLES ═══════════ -->
+  <style>
+    /* ── Scrubber track ── */
+    .rs-track { height: 56px; }
+    .rs-rail {
+      position: absolute; left: 0; right: 0; top: 26px; height: 8px;
+      border-radius: 9999px;
+      background: linear-gradient(90deg, #E8C872 0%, #D4A843 30%, #B5344A 60%, #8B2332 100%);
+      box-shadow: inset 0 1px 2px rgba(0,0,0,0.15);
+    }
+    .rs-fc { position: absolute; top: 0; transform: translateX(-50%); pointer-events: none; }
+    .rs-fc-line { display:block; width: 2px; height: 38px; margin: 0 auto;
+      background: repeating-linear-gradient(#A68230, #A68230 3px, transparent 3px, transparent 6px); }
+    .rs-fc-label { display:block; margin-top: 2px; font-family: ui-monospace, monospace;
+      font-size: 9px; font-weight: 700; color: #A68230; white-space: nowrap; }
+    .rs-tick {
+      position: absolute; top: 18px; transform: translateX(-50%); z-index: 3;
+      display:flex; flex-direction: column; align-items:center; gap: 14px;
+      background: none; border: none; cursor: pointer; padding: 0;
+    }
+    .rs-tick-dot { width: 14px; height: 14px; border-radius: 9999px;
+      background: var(--tone); border: 2px solid #F5F0E8; box-shadow: 0 0 0 1px rgba(0,0,0,0.15);
+      transition: transform .15s ease; }
+    .rs-tick:hover .rs-tick-dot, .rs-tick:focus-visible .rs-tick-dot { transform: scale(1.3); }
+    .rs-tick-label { font-family: ui-monospace, monospace; font-size: 10px; font-weight: 700;
+      color: #7C7367; white-space: nowrap; }
+    /* range input sits over the rail, transparent track, visible thumb */
+    .rs-range {
+      position: absolute; left: -2px; right: -2px; top: 16px; width: calc(100% + 4px); z-index: 2;
+      margin: 0; background: transparent; -webkit-appearance: none; appearance: none; cursor: grab;
+    }
+    .rs-range:active { cursor: grabbing; }
+    .rs-range:focus { outline: none; }
+    .rs-range::-webkit-slider-runnable-track { height: 28px; background: transparent; }
+    .rs-range::-moz-range-track { height: 28px; background: transparent; }
+    .rs-range::-webkit-slider-thumb {
+      -webkit-appearance: none; appearance: none; width: 26px; height: 28px;
+      border-radius: 6px; background: #1A1611; border: 3px solid #F5F0E8;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.35); margin-top: 0;
+    }
+    .rs-range::-moz-range-thumb {
+      width: 26px; height: 28px; border-radius: 6px; background: #1A1611;
+      border: 3px solid #F5F0E8; box-shadow: 0 2px 6px rgba(0,0,0,0.35);
+    }
+    .rs-range:focus-visible::-webkit-slider-thumb { box-shadow: 0 0 0 3px rgba(212,168,67,0.7); }
+    .rs-range:focus-visible::-moz-range-thumb { box-shadow: 0 0 0 3px rgba(212,168,67,0.7); }
+
+    /* ── Codex strata ── */
+    .codex-stratum { cursor: pointer; transition: opacity .2s ease; }
+    .codex-stratum:hover, .codex-stratum:focus-visible { opacity: 0.88; outline: none; }
+    .codex-stratum.is-active { filter: drop-shadow(0 3px 6px rgba(0,0,0,0.3)); }
+    .codex-stratum.is-dim { opacity: 0.4; }
+
+    /* ── Silence reveal ── */
+    .silence-reveal {
+      display: grid; grid-template-rows: 0fr; opacity: 0;
+      transition: grid-template-rows .55s ease, opacity .55s ease;
+    }
+    .silence-reveal > * { overflow: hidden; min-height: 0; }
+    .silence-reveal.is-open { grid-template-rows: 1fr; opacity: 1; }
+
+    @media (prefers-reduced-motion: reduce) {
+      #rs-meter, .silence-reveal, #rs-mand-clause, #rs-mand-clause-en { transition: none !important; }
+    }
+  </style>
+
+  <!-- ═══════════ CONTROLLER ═══════════ -->
+  <script is:inline>
+    (function () {
+      const dataEl = document.getElementById("rs-data");
+      if (!dataEl) return;
+      const DATA = JSON.parse(dataEl.textContent);
+      const stations = DATA.stations;
+      const chart = DATA.chart;
+      const range = document.getElementById("rs-range");
+      const ticks = document.querySelectorAll(".rs-tick");
+
+      const xForPos = (p) => chart.x0 + (p / 100) * (chart.x1 - chart.x0);
+      const yForReg = (p) => chart.yBot - (p / 100) * (chart.yBot - chart.yTop);
+      const toneHex = { irenic: "#2E8B8B", moderate: "#D4A843", sharp: "#8B2332" };
+
+      const $ = (id) => document.getElementById(id);
+      const els = {
+        year: $("rs-year"), kind: $("rs-kind"), short: $("rs-short"), full: $("rs-full"),
+        register: $("rs-register"), verbatim: $("rs-verbatim"), verbatimEn: $("rs-verbatim-en"),
+        mandBox: $("rs-mand-box"), mandStatus: $("rs-mand-status"),
+        mandClause: $("rs-mand-clause"), mandClauseEn: $("rs-mand-clause-en"),
+        gloss: $("rs-gloss"), glossEn: $("rs-gloss-en"), cite: $("rs-cite"), link: $("rs-link"),
+        meter: $("rs-meter"), meterPct: $("rs-meter-pct"),
+        playhead: $("rs-playhead"), playdot: $("rs-playdot"), panel: $("rs-panel"),
+      };
+
+      function nearest(v) {
+        let best = stations[0], bestD = Infinity;
+        for (const s of stations) {
+          const d = Math.abs(s.pos - v);
+          if (d < bestD) { bestD = d; best = s; }
+        }
+        return best;
+      }
+
+      function render(v) {
+        const s = nearest(v);
+        const hex = toneHex[s.tone];
+        // panel identity
+        els.short.textContent = s.short;
+        els.full.textContent = s.full;
+        els.year.textContent = String(s.year);
+        els.kind.textContent = s.kindEn;
+        els.register.textContent = s.registerSk;
+        els.verbatim.textContent = s.verbatim;
+        els.verbatimEn.textContent = s.verbatimEn;
+        els.gloss.textContent = s.glossSk;
+        els.glossEn.textContent = s.glossEn;
+        els.cite.textContent = s.cite;
+        els.link.textContent = s.link.labelSk + " →";
+        els.link.setAttribute("href", (DATA.base || "") + s.link.href);
+        // panel accent
+        els.panel.style.borderColor = hex;
+        els.panel.style.background = hexToRgba(hex, 0.06);
+        // manducatio
+        if (s.manducatio) {
+          els.mandStatus.textContent = "✓ explicitné / explicit";
+          els.mandStatus.style.color = "#8B2332";
+          els.mandBox.style.background = "rgba(139,35,50,0.08)";
+          els.mandClause.textContent = "„" + (s.manducatioClause || "") + "“";
+          els.mandClauseEn.textContent = s.manducatioClauseEn || "";
+          els.mandClause.style.opacity = "1";
+          els.mandClauseEn.style.opacity = "1";
+          els.mandClause.removeAttribute("aria-hidden");
+          els.mandClauseEn.removeAttribute("aria-hidden");
+        } else {
+          els.mandStatus.textContent = "— mlčanie (zámerné) / deliberate silence";
+          els.mandStatus.style.color = "#7C7367";
+          els.mandBox.style.background = "rgba(0,0,0,0.03)";
+          els.mandClause.style.opacity = "0";
+          els.mandClauseEn.style.opacity = "0";
+          // Clear stale clause text so it is not announced by assistive tech
+          // on moderate (silent) stations.
+          els.mandClause.textContent = "";
+          els.mandClauseEn.textContent = "";
+          els.mandClause.setAttribute("aria-hidden", "true");
+          els.mandClauseEn.setAttribute("aria-hidden", "true");
+        }
+        // meter (continuous with handle)
+        els.meter.style.width = v + "%";
+        els.meterPct.textContent = Math.round(v) + "%";
+        // playhead + dot (dot follows the register curve)
+        const px = xForPos(v);
+        els.playhead.setAttribute("x1", px);
+        els.playhead.setAttribute("x2", px);
+        els.playdot.setAttribute("cx", px);
+        els.playdot.setAttribute("cy", yForReg(v));
+        // highlight active tick
+        ticks.forEach((t) => {
+          const on = Math.abs(Number(t.dataset.pos) - s.pos) < 0.5;
+          t.style.opacity = on ? "1" : "0.6";
+        });
+      }
+
+      function hexToRgba(hex, a) {
+        const n = parseInt(hex.slice(1), 16);
+        return `rgba(${(n >> 16) & 255},${(n >> 8) & 255},${n & 255},${a})`;
+      }
+
+      range.addEventListener("input", () => render(Number(range.value)));
+
+      // station ticks jump the handle
+      ticks.forEach((t) => {
+        t.addEventListener("click", () => {
+          range.value = t.dataset.pos;
+          render(Number(range.value));
+        });
+      });
+
+      render(Number(range.value));
+
+      // ── Bound codex ──
+      const codexCopy = {
+        ac: {
+          eyebrow: "Tlač · mierny register / Print · moderate",
+          title: "Agenda Česká 1581",
+          body: "Tlačená česko-luteránska agenda zostavená wittenberskými ordinovanými duchovnými. „Tělo a krev“ bez prívlastkov; hodné prijímanie kotví vo viere v slová ustanovenia. Mlčí o manducatio impiorum. Eucharistický rítus: Benka 2024, pp. 131–150.",
+          bodyEn: "A printed Czech-Lutheran agenda compiled by Wittenberg-ordained clergy. “Body and blood” without adjectives; worthy reception grounded in faith in the words of institution. Silent on manducatio impiorum. Eucharistic rite: Benka 2024, pp. 131–150.",
+        },
+        ba: {
+          eyebrow: "Rukopis · ostrý register / Manuscript · sharp",
+          title: "Bystrická agenda 1585",
+          body: "Slovenský rukopisný doplnok pre lokálne použitie v baníckych mestách, napísaný o štyri roky neskôr. Výslovné luteránske manducatio impiorum; identifikatórna apozícia „Syna Božijho“. Tá istá teológia, ostrejšie hrany. Benka 2024, pp. 265–368.",
+          bodyEn: "A Slovak manuscript supplement for local use in the mining towns, written four years later. Explicit Lutheran manducatio impiorum; the identificatory apposition “Syna Božijho”. The same theology, sharper edges. Benka 2024, pp. 265–368.",
+        },
+      };
+      const cd = {
+        eyebrow: $("codex-eyebrow"), title: $("codex-title"),
+        body: $("codex-body"), bodyEn: $("codex-body-en"),
+      };
+      const strata = document.querySelectorAll(".codex-stratum");
+      function selectStratum(key) {
+        const c = codexCopy[key];
+        if (!c) return;
+        cd.eyebrow.textContent = c.eyebrow;
+        cd.title.textContent = c.title;
+        cd.body.textContent = c.body;
+        cd.bodyEn.textContent = c.bodyEn;
+        strata.forEach((g) => {
+          const on = g.dataset.stratum === key;
+          g.classList.toggle("is-active", on);
+          g.classList.toggle("is-dim", !on);
+        });
+      }
+      strata.forEach((g) => {
+        g.addEventListener("click", () => selectStratum(g.dataset.stratum));
+        g.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") { e.preventDefault(); selectStratum(g.dataset.stratum); }
+        });
+      });
+
+      // ── Silence → broken ──
+      const sbtn = $("silence-btn");
+      const sreveal = $("silence-reveal");
+      function openReveal() {
+        sreveal.classList.add("is-open");
+        sbtn.setAttribute("aria-expanded", "true");
+        sbtn.style.display = "none";
+      }
+      if (sbtn && sreveal) {
+        sbtn.addEventListener("click", openReveal);
+        // auto-reveal once when scrolled into view
+        if ("IntersectionObserver" in window) {
+          const io = new IntersectionObserver((entries) => {
+            entries.forEach((en) => {
+              if (en.isIntersecting) { openReveal(); io.disconnect(); }
+            });
+          }, { threshold: 0.45 });
+          io.observe(document.getElementById("silence-block"));
+        }
+      }
+    })();
+  </script>
+</BaseLayout>
