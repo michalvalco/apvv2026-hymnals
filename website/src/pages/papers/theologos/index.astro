@@ -8,11 +8,19 @@ const paperUrl = Astro.site
   ? new URL("papers/theologos/", new URL(baseHref, Astro.site)).toString()
   : `${baseN}/papers/theologos/`;
 
-// Bibliography (from Drafts/Theologos_Bibliography.md, all 16 entries verified
-// in the bibliography-audit pass 2026-05-08). Single alphabetical list per
-// Theologos house style. Titles preserve original orthography (e.g., the 1912
-// "konfesse" with double 's' in Hrejsa).
+// Bibliography — HE-final version (29 entries), refreshed 2026-06-28 to match
+// "Valco - Agenda ceska a bystricka - Final for HE.docx" and the citation-audit
+// corrections (Daniel 2010 added; Zenodo title; KOLB (ed.); Mahlmann imprint).
+// Single alphabetical list; small caps surnames; diacritics preserved.
 const bibliography = [
+  {
+    citation:
+      "ATWOOD, C. D.: <em>The Theology of the Czech Brethren from Hus to Comenius</em>. University Park, PA: Pennsylvania State University Press, 2009.",
+  },
+  {
+    citation:
+      "BAYER, O.: <em>Martin Luther's Theology: A Contemporary Interpretation</em>. Trans. Thomas H. Trapp. Grand Rapids: Eerdmans, 2008, 398 pp. ISBN 978-0-8028-2799-9.",
+  },
   {
     citation:
       "BENKA, P. (ed.): <em>Agenda Neosoliensia: Agenda Czeská 1581 a Bystrická agenda 1585</em>. Monumenta Linguae Slovacae X. Documenta Theologico-Religionistica, Tomus 2. Bratislava: Univerzita Komenského, 2024, 388 pp. ISBN 978-80-223-5971-9 (print); 978-80-223-6072-2 (online). CC BY-SA 4.0.",
@@ -31,6 +39,26 @@ const bibliography = [
   },
   {
     citation:
+      "DANIEL, D. P.: K problému konfesionalizácie na Slovensku. In: KÓNYA, P. (ed.): <em>Konfesionalizácia na Slovensku v 16. – 18. storočí</em>. Prešov: Vydavateľstvo Prešovskej univerzity, 2010, pp. 9 – 22.",
+  },
+  {
+    citation:
+      "DANIEL, D. P.: Melanchton, Stöckel a teologická orientácia evanjelikov v Uhorsku. In: <em>Acta Collegii Evangelici Prešoviensis XI: Leonard Stöckel a reformácia v strednej Európe</em>. Prešov: Vydavateľstvo Prešovskej univerzity, 2011, pp. 31 – 36.",
+  },
+  {
+    citation:
+      "DAVID, Z. V.: Utraquists, Lutherans, and the Bohemian Confession of 1575. In: <em>Church History</em>, vol. 68, no. 2 (1999), pp. 294 – 337. DOI: 10.2307/3170859.",
+  },
+  {
+    citation:
+      "DINGEL, I. (ed.): <em>Die Bekenntnisschriften der Evangelisch-Lutherischen Kirche [BSELK]. Vollständige Neuedition</em>. Göttingen: Vandenhoeck & Ruprecht, 2014, 1712 pp. ISBN 978-3-525-52104-5.",
+  },
+  {
+    citation:
+      "GRAHAM, B. F. H.: The Evolution of the Utraquist Mass, 1420 – 1620. In: <em>The Catholic Historical Review</em>, vol. 92, no. 4 (October 2006), pp. 553 – 573. DOI: 10.1353/cat.2007.0021.",
+  },
+  {
+    citation:
       "GREŠOVÁ-SEKELSKÁ, A.: Príspevok k vzniku a obsahu Cithary sanctorum. In: <em>Clavibus unitis</em>, vol. 10, no. 4 (2021), pp. 5 – 14.",
   },
   {
@@ -39,11 +67,15 @@ const bibliography = [
   },
   {
     citation:
+      "HOLETON, D. R.: The Evolution of Utraquist Liturgy: A Precursor of Western Liturgical Reform. In: <em>Religio</em>, vol. 1, no. 2 (1993), pp. [155] – 164 (repr. in <em>Studia Liturgica</em> 25/1 (1995), pp. 51 – 67). ISSN 1210-3640.",
+  },
+  {
+    citation:
       "HREJSA, F.: <em>Česká konfesse, její vznik, podstata a dějiny</em>. Praha: Česká akademie císaře Františka Josefa pro vědy, slovesnost a umění, 1912, 818 pp.",
   },
   {
     citation:
-      "KOLB, R.: <em>Lutheran Ecclesiastical Culture, 1550 – 1675</em>. Brill's Companions to the Christian Tradition 11. Leiden: Brill, 2008.",
+      "KOLB, R. (ed.): <em>Lutheran Ecclesiastical Culture, 1550 – 1675</em>. Brill's Companions to the Christian Tradition 11. Leiden: Brill, 2008.",
   },
   {
     citation:
@@ -59,6 +91,10 @@ const bibliography = [
   },
   {
     citation:
+      "MAHLMANN, T.: <em>Das neue Dogma der lutherischen Christologie: Problem und Geschichte seiner Begründung</em>. Gütersloh: Gütersloher Verlagshaus Gerd Mohn, 1969, 271 pp.",
+  },
+  {
+    citation:
       "PROSPER OF AQUITAINE: <em>Praeteritorum Sedis Apostolicae episcoporum auctoritates de gratia Dei</em> (also known as the <em>Indiculus de gratia Dei</em> or the <em>Capitula pseudo-Caelestini</em>), c. 8 (5th century). Standard edition in <em>Patrologia Latina</em>, vol. 51, col. 209.",
   },
   {
@@ -71,11 +107,27 @@ const bibliography = [
   },
   {
     citation:
+      "SCHOEN, C. M.: <em>Der böhmische Utraquismus als Konfession im 16. Jahrhundert</em>. Quellen und Forschungen zur Reformationsgeschichte 100. Gütersloh: Gütersloher Verlagshaus, 2022, 456 pp. ISBN 978-3-579-05983-9.",
+  },
+  {
+    citation:
+      "SENN, F. C.: <em>Christian Liturgy: Catholic and Evangelical</em>. Minneapolis: Fortress Press, 1997, 770 pp. ISBN 978-0-8006-2726-3.",
+  },
+  {
+    citation:
+      "SPINKS, B. D.: <em>Luther's Liturgical Criteria and His Reform of the Canon of the Mass</em>. Grove Liturgical Studies 30. Bramcote, Notts.: Grove Books, 1982, 40 pp. ISBN 0-907536-24-7.",
+  },
+  {
+    citation:
       "VAJDA, J.: <em>A History of the Cithara Sanctorum</em>. B.Div. thesis, Concordia Seminary, St. Louis, Missouri, 1944.",
   },
   {
     citation:
-      "VALČO, M.: <em>TEPALIT Digital Companion: AC 1581 / BA 1585 / Cithara Sanctorum 1636 hymn-pair dossier</em>. Concept DOI: 10.5281/zenodo.20081435. Bratislava, 2026. CC BY 4.0.",
+      "VALČO, M.: Chemnitz's Eucharistic Christology as an Impulse for Ecumenical Dialogue between East and West. In: <em>Konštantínove listy</em>, vol. 10, no. 2 (2017), pp. 141 – 150. DOI: 10.17846/CL.2017.10.2.141-150.",
+  },
+  {
+    citation:
+      "VALČO, M.: <em>TEPALIT Digital Companion: Theological Taxonomy and Hymn-Pair Dossier for the Lutheranisation Thesis</em>. Concept DOI: 10.5281/zenodo.20081435. Bratislava, 2026. CC BY 4.0.",
   },
 ];
 
@@ -84,14 +136,14 @@ const bibliography = [
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "ScholarlyArticle",
-  name: "The Cithara Sanctorum (1636) Bound In: Intra-Codex Confessional Stratification in the Bratislava Lyceal Library Exemplar of Agenda Česká 1581 + Bystrická agenda 1585",
+  name: "Intra-Codex Confessional Stratification in the Bratislava Lyceal Library Exemplar of Agenda Česká 1581 and Bystrická agenda 1585 as a Template for The Cithara Sanctorum (1636)",
   alternateName:
     "Cithara Sanctorum (1636) zviazaná: intra-kódexová konfesionálna stratifikácia v exemplári Lyceálnej knižnice v Bratislave",
   url: paperUrl,
   inLanguage: "en",
-  datePublished: "2026-05-08",
+  datePublished: "2026-06-28",
   publishingPrinciples:
-    "Draft v0.1 — abstract and bibliography published under CC BY 4.0; full draft retained until journal submission.",
+    "HE-final draft — abstract and 29-entry bibliography published under CC BY 4.0; full text retained until journal publication.",
   author: {
     "@type": "Person",
     name: "Michal Valčo",
@@ -99,10 +151,10 @@ const jsonLd = {
   },
   publisher: {
     "@type": "Organization",
-    name: "Theologos: Theological Revue",
+    name: "Historia Ecclesiastica",
     parentOrganization: {
       "@type": "Organization",
-      name: "Faculty of Greek-Catholic Theology, University of Prešov",
+      name: "University of Prešov",
     },
   },
   isPartOf: {
@@ -145,7 +197,7 @@ const jsonLd = {
     <div class="mx-auto max-w-content">
       <p class="font-sans text-xs font-medium uppercase tracking-[0.2em] text-gold">
         <a href={`${baseN}/papers/`} class="hover:underline">Štúdie</a>
-        <span aria-hidden="true">·</span> Theologos · Draft v0.1
+        <span aria-hidden="true">·</span> Historia Ecclesiastica · Finálna verzia
       </p>
       <h1 class="mt-4 font-display text-3xl font-bold leading-tight text-parchment-100 md:text-4xl">
         Cithara Sanctorum (1636) zviazaná
@@ -164,10 +216,10 @@ const jsonLd = {
 
       <div class="mt-8 flex flex-wrap items-center gap-3">
         <span class="rounded-full bg-gold/15 px-3 py-1 font-sans text-xs font-semibold text-gold">
-          Návrh v0.1 · pripravený na odoslanie
+          Finálna verzia · Historia Ecclesiastica
         </span>
         <span class="rounded-full bg-parchment-300/20 px-3 py-1 font-sans text-xs text-parchment-300" lang="en">
-          Draft v0.1 · awaiting submission
+          Final draft · submitted to Historia Ecclesiastica
         </span>
       </div>
     </div>
@@ -184,9 +236,9 @@ const jsonLd = {
         <div>
           <dt class="font-semibold uppercase tracking-wider text-ink-300">Cieľové miesto</dt>
           <dd class="mt-0.5 text-ink-400">
-            <span lang="en">Theologos: Theological Revue</span>
+            <span lang="en">Historia Ecclesiastica</span>
             <span class="mt-0.5 block text-[10px] italic text-ink-300">
-              GTF Prešov · ERIH PLUS · ISSN 1335-5570
+              Prešovská univerzita · Scopus-indexed
             </span>
           </dd>
         </div>
@@ -197,7 +249,7 @@ const jsonLd = {
         <div>
           <dt class="font-semibold uppercase tracking-wider text-ink-300">Rozsah</dt>
           <dd class="mt-0.5 text-ink-400">
-            ~9 200 slov · 36 fn. · 16 záznamov bibliografie
+            ~9 800 slov · 41 poznámok pod čiarou · 29 bibliografických záznamov
           </dd>
         </div>
       </dl>
@@ -340,6 +392,13 @@ const jsonLd = {
           PAIR_006 register-shift diff
         </a> ako štyri komparatívne ťahy s analytickými poznámkami.
       </p>
+      <p class="mt-3 text-sm text-ink-400">
+        Interaktívna vizualizácia hlavného nálezu (potiahnuteľný register, kódex,
+        prelomené mlčanie):
+        <a href={`${baseN}/register-shift/`} class="text-burgundy hover:underline">
+          Posun registra
+        </a>.
+      </p>
     </div>
   </section>
 
@@ -399,10 +458,10 @@ const jsonLd = {
   <section class="mx-auto max-w-content px-6 py-10">
     <h2 class="text-section-title text-ink">Bibliografia</h2>
     <p class="mt-1 font-sans text-sm italic text-ink-300" lang="en">
-      Bibliography (16 entries; verified in audit pass 2026-05-08)
+      Bibliography (29 entries; HE-final, verified in audit pass 2026-06-28)
     </p>
     <p class="mt-3 text-xs text-ink-300">
-      Single alphabetical list per Theologos house style. Surnames in small
+      Single alphabetical list per Historia Ecclesiastica house style. Surnames in small
       caps. Diacritics preserved as in original.
     </p>
 
@@ -422,7 +481,7 @@ const jsonLd = {
       How to cite this paper (pre-publication reference)
     </p>
     <p class="mt-4 text-sm text-ink-400">
-      Pred odoslaním do <em>Theologosu</em> sa štúdia cituje ako pracovný
+      Pred publikovaním v <em>Historia Ecclesiastica</em> sa štúdia cituje ako pracovný
       dokument projektu APVV-24-0484, kotvený na trvalom odkaze tejto stránky:
     </p>
 
@@ -448,16 +507,16 @@ const jsonLd = {
   author    = {Val{\\v{c}}o, Michal},
   title     = {{The Cithara Sanctorum (1636) bound in: Intra-codex confessional stratification in the Bratislava Lyceal Library exemplar of Agenda {\\v C}esk{\\'a} 1581 + Bystrick{\\'a} agenda 1585}},
   year      = {2026},
-  note      = {Pre-publication draft, APVV-24-0484 TEPALIT; awaiting submission to Theologos: Theological Revue},
+  note      = {Pre-publication draft, APVV-24-0484 TEPALIT; submitted to Historia Ecclesiastica},
   url       = {${paperUrl}}
 }`}</code></pre>
     </div>
 
     <p class="mt-6 rounded-md bg-burgundy/5 px-4 py-3 text-xs text-burgundy">
       <strong>Po publikácii:</strong> citácia sa nahradí oficiálnym vydaním v
-      <em>Theologos</em> (DOI / strany doplnené po prijatí). Plný text štúdie
+      <em>Historia Ecclesiastica</em> (DOI / strany doplnené po prijatí). Plný text štúdie
       ostáva v repo
-      <code class="font-mono text-[10px]">Drafts/Theologos_Draft_v0.1_Full.md</code>
+      <code class="font-mono text-[10px]">Drafts/Valco - Agenda ceska a bystricka - Final for HE.docx</code>
       do odoslania; po publikácii sa licencia plného textu riadi vydavateľskou
       zmluvou. Abstrakt a bibliografia na tejto stránke sú pod CC BY 4.0.
     </p>
