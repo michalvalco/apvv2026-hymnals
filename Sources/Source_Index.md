@@ -448,7 +448,7 @@ During the digital-source-hunt session (`Sources/Source_Hunt_LateUtraquist_2026-
 
 ---
 
-*End of Source_Index. Next session: write Daniel 2011 source note (load-bearing for Theologos fn. 34); continue with §IX.B Knihopis-Online resolution for the 11 still-📋 late-Utraquist witnesses; consider Tier 2 surveys (Vajta / Junghans / Senn / Eire / Bazlík).*
+*End of Section X. Next session: write Daniel 2011 source note (load-bearing for Theologos fn. 34); continue with §IX.B Knihopis-Online resolution for the 11 still-📋 late-Utraquist witnesses; consider Tier 2 surveys (Vajta / Junghans / Senn / Eire / Bazlík).*
 
 ---
 
@@ -465,3 +465,7 @@ One secondary-literature source, surfaced via a Crossref search during ordinary 
 ---
 
 *End of Section XI. Next action: confirm article language and obtain full text (check the journal's own site before ILL); on full-text acquisition, rewrite `Shkurlyateva_2025.md` from the actual article body, resolve the three open checks above, and reassess status (📋 → 📖 → 📝).*
+
+---
+
+*End of Source_Index.*
