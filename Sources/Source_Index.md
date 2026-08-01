@@ -1,6 +1,8 @@
 # Source Index — TEPALIT Valčo Chapter
 
-**Last updated:** 2026-05-11 (Section X added — six locally-held PDFs surfaced from `resources/` integrated as new secondary-literature entries: `Daniel_1991_Cultural`, `Daniel_review_Eberhard`, `Daniel_2011_Melanchton`, `Kowalska_2005_Ozbrojena`, `Kowalska_2014_Sila`, `Benka_2022_Kazatelsky`. All marked 📖 — PDFs in hand. The Daniel 2011 *Melanchton-Stöckel* article is directly load-bearing for Theologos paper fn. 34.)
+**Last updated:** 2026-07-31 (`Shkurlyateva_2025` documented and added to new **Section XI** — a Russian regional-bulletin article on Lutheran hymnals and confessional identity, surfaced via Crossref search for the TEPALIT grant chapter. Near-verbatim convergence with the chapter's adiaphora / Luther–Karlstadt comparison frame; positioned as a convergent secondary confirmation alongside `Brown_2005`, not an equal. Metadata VERIFIED against Crossref 2026-07-31; full text NOT obtained and article language UNCONFIRMED — probably Russian. Status held at 📋 pending both.)
+
+**Earlier 2026-05-11 update** (Section X added — six locally-held PDFs surfaced from `resources/` integrated as new secondary-literature entries: `Daniel_1991_Cultural`, `Daniel_review_Eberhard`, `Daniel_2011_Melanchton`, `Kowalska_2005_Ozbrojena`, `Kowalska_2014_Sila`, `Benka_2022_Kazatelsky`. All marked 📖 — PDFs in hand. The Daniel 2011 *Melanchton-Stöckel* article is directly load-bearing for Theologos paper fn. 34.)
 
 **Earlier 2026-05-11 update** (digital-source-hunt for the 17 late-Utraquist witnesses in Section IX.B completed — see `Sources/Source_Hunt_LateUtraquist_2026-05-11.md`. 5 OPEN-ACCESS URLs added to existing IX.B entries (Bilejovsky_Kron, Polon_Pomni_1589, Cykada_Hody_1607, Sturm_Ozvani_1584, Bruncvik_Idolorum_1613); 3 new IX.B entries added for items discovered outside David's apparatus: CykadaBruncvik_Limodis_1606, Polon_Zpivani, Bruncvik_Ecclesia_1607. Two title flags raised for Michal's review (Stelcar_Kazani_1586 vs. Knihoveda K15989; Stelcar_Knezstvi_1592 vs. Knihoveda K15993) — not auto-applied per Gotchas.md.)
 
@@ -446,4 +448,27 @@ During the digital-source-hunt session (`Sources/Source_Hunt_LateUtraquist_2026-
 
 ---
 
-*End of Source_Index. Next session: write Daniel 2011 source note (load-bearing for Theologos fn. 34); continue with §IX.B Knihopis-Online resolution for the 11 still-📋 late-Utraquist witnesses; consider Tier 2 surveys (Vajta / Junghans / Senn / Eire / Bazlík).*
+*End of Section X. Next session: write Daniel 2011 source note (load-bearing for Theologos fn. 34); continue with §IX.B Knihopis-Online resolution for the 11 still-📋 late-Utraquist witnesses; consider Tier 2 surveys (Vajta / Junghans / Senn / Eire / Bazlík).*
+
+---
+
+## Section XI — TEPALIT Grant-Chapter Source Scan (2026-07-31)
+
+One secondary-literature source, surfaced via a Crossref search during ordinary chapter-development work rather than a formal Tier-1/Tier-2 survey. Captured at abstract level in `Sources/Shkurlyateva_2025.md` — a metadata-and-abstract note, not a source note written from a full reading. Bibliographic metadata verified against Crossref 2026-07-31; the article body has **not** been obtained — the summary and Key Arguments in the source note are built entirely from the publisher's English abstract.
+
+| Author | Short Title | Short ID | Status | Notes |
+|---|---|---|---|---|
+| Shkurlyateva, D. A. | Lutheran Hymnals as a Reflection of Confessional Identity (2025) | `Shkurlyateva_2025` | 📋 | *The Bulletin of Irkutsk State University, Series: Political Science and Religion Studies* [Известия Иркутского государственного университета. Серия: Политология. Религиоведение] 53 (2025), pp. 105–117. DOI: [10.26516/2073-3380.2025.53.105](https://doi.org/10.26516/2073-3380.2025.53.105). **Language UNCONFIRMED — probably Russian** (regional Irkutsk State University bulletin, a Russian-language journal with English abstracts; only the English abstract is confirmed accessible). **Modest venue weight** — regional university bulletin, zero citations recorded as of 2026-07-31; treat as a useful convergence, not an authority. Near-verbatim fit with the chapter's own comparison frame: works from Pogasy's competing-Lutheran/Reformed-discourses model and argues **adiaphora** is the key concept in Lutheran musical-liturgical identity (free, conscious retention of the historic liturgical system), anchored in the Luther–Karlstadt controversy over worship reform — exactly the axis the chapter uses to distinguish the Lutheran settlement from the Reformed and Brethren alternatives. Supplies a directly testable **comparative grid** of Lutheran hymnal-identity markers (existence of a hymnal, its structure, Gregorian chant, instrumental accompaniment, dogmatic depth) against the chapter's own corpus (`CitharaSanct_1636`, `AgCeska_1581`, `AgBratska_1585`). **Positioned relative to `Brown_2005`:** Brown remains the chapter's closest methodological precedent (hymns as theology-carriers, *lex orandi*, book-length, German mining-town case study); Shkurlyateva is thinner and more schematic, and functions as a **convergent secondary confirmation of the adiaphora axis**, not a replacement or an equal. **Open checks, not yet resolved:** (1) confirm the article's language; (2) obtain full text (the publisher may host an open PDF on the journal's own site — Izvestia Irkutskogo gosudarstvennogo universiteta — check before requesting ILL); (3) determine the geographic scope of the hymnal corpus actually examined (German? Russian-Lutheran? Baltic?) — the abstract argues at the level of Lutheran-vs-Reformed discourse generally and does not state this; if the corpus is Russian-Lutheran rather than Czech/Slovak, transfer to this chapter's corpus is by analogy only. See `Sources/Shkurlyateva_2025.md` for the full source note. |
+
+**Status note:** `Shkurlyateva_2025` is held at 📋 (identified) rather than 📝, even though a structured `Sources/Shkurlyateva_2025.md` note already exists. **This is a deliberate exception to the file's own Status legend**, which defines 📝 as "Source file created" — by that letter, this entry would be 📝. It departs from the legend and from the usual rule-of-thumb (file exists → 📝) illustrated in Section X's status note, because the note itself is built entirely from Crossref metadata and the publisher's English abstract — no full text has been read, no page-pinpoint quotation is possible, and the article's language is unconfirmed. 📝 is reserved for notes that reflect actual engagement with the source; an abstract-only note does not meet that bar. Upgrade to 📖 on obtaining the full text; upgrade to 📝 once the note has been rewritten from a full reading with page-cited quotations.
+
+---
+
+
+**Legend note for a future pass:** if the 📋/📖/📝/✅ ladder is ever revised, the cleanest fix is to make 📝 mean *documented from the full text* and add a separate marker for *metadata-and-abstract capture*, which is a real and now-recurring state the current legend cannot express. Not changed here — rewriting a legend that governs ~450 lines of existing rows is its own task, not a side effect of adding one source.
+
+*End of Section XI. Next action: confirm article language and obtain full text (check the journal's own site before ILL); on full-text acquisition, rewrite `Shkurlyateva_2025.md` from the actual article body, resolve the three open checks above, and reassess status (📋 → 📖 → 📝).*
+
+---
+
+*End of Source_Index.*
