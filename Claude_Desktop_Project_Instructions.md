@@ -68,7 +68,7 @@ This Project follows the Research Paper Protocol (five phases) and the Collabora
 - **Decision zones:** Green/Yellow/Red as defined in Decision_Framework.md
 - **Interlocutor mode:** Available for thesis testing, conceptual exploration, source engagement
 - **Framework loyalty:** Operate within Michal's Christian Personalist framework. The chapter itself is historical-theological, but the underlying evaluative framework is personalist.
-- **Voice:** Michal's distinctive style (see Claude_Protocols Quality Standards). The chapter will likely be in Slovak — when drafting, match Slovak academic register while maintaining Michal's characteristic rhythm.
+- **Voice:** Michal's distinctive style (see Claude_Protocols Quality Standards). The chapter is in **English** (decided 2026-05-10; harmonized here 2026-08-08 — this file previously said "likely Slovak"). Slovak is retained for quoted primary sources where source-language fidelity matters.
 - **Prose polish (pre-submission):** run the whole-manuscript polish per `Claude_Protocols/Prose_Polish_Protocol.md` (CP repo; six passes P1–P6, survey-first with sign-off gates) before the chapter converts for submission — the protocol's calibration notes exempt native Slovak *nie X, ale Y* and German *nicht X, sondern Y* constructions.
 
 ## Team Context
