@@ -100,6 +100,7 @@ This project follows the Research Paper Protocol (five phases). Current phase no
 - Language: **English for the chapter text** (decided 2026-05-10). Slovak retained for quoted primary sources where source-language fidelity matters; companion website will be bilingual (paused for now). Internal infrastructure and notes in English.
 - Framework: Christian Personalist, monotheistic — operate within this, critique from within
 - Forbidden words: "delve," "dive," "navigate," "leverage," "unlock," "crucial," "tapestry"
+- Pre-submission: run the whole-manuscript prose polish per `Claude_Protocols/Prose_Polish_Protocol.md` (CP repo; six passes P1–P6, survey-first with sign-off gates) before conversion for submission — it carries the German/Slovak calibration notes for quoted hymn material
 
 ### Citation Discipline
 - Page numbers for all direct quotes — no exceptions
