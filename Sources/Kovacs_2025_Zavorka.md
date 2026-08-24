@@ -4,7 +4,9 @@
 
 ⚠️ **Language: HUNGARIAN.** The article body is Hungarian throughout; only the keywords are English. Verbatim quotations below are given in the original with page numbers, each followed by a **working English rendering that has not been checked by a second reader**. Before any of this reaches the chapter, the renderings need a bilingual verification pass — the same constraint recorded for `Shkurlyateva_2025` (Russian), and normal rather than exceptional in this field.
 
-**Scan provenance:** Area 4 focused sweep 2026-08-24 → ledger `2026-08-24-18`, VERIFY (P1). Not from a weekly digest — the weekly scan never surfaced it, which is why Area 4 was replaced by `Routines/Quarterly_Lutheran_History_Sweep.md`.
+**Scan provenance:** Area 4 focused sweep 2026-08-24 → ledger `2026-08-24-18`, VERIFY (P1). Not from a weekly digest — the weekly scan never surfaced it, which is why its Lutheran-history area was cut and replaced by a quarterly enumeration routine.
+
+> **Note on paths.** `Research_Scans/Scan_Ledger.md`, `Routines/Weekly_Research_Scan.md` and `Routines/Quarterly_Lutheran_History_Sweep.md` are **external to this repository** — they live in Michal's separate private `Claude_Protocols` repo. They are named so the provenance of a source is traceable, not because anything here resolves them. The same applies wherever these notes cite a ledger ID.
 
 ## Citation
 
